@@ -1,6 +1,6 @@
->This contains the frontend, [Backend](https://github.com/Sukeltaja-App/sukeltaja-backend) can be found here
+>This contains the frontend, Backend can be found [here](https://github.com/Sukeltaja-App/sukeltaja-backend) 
 
-##### This project is created by students from University of Helsinki for Software engineering project - course.
+
 ### STATUS: Developing in progress.
 
 
@@ -17,3 +17,4 @@ Product backlog can be found on these [Google Sheets](https://docs.google.com/sp
 
 Folder containing all the documentation and logs can be found on this [Google Drive](https://drive.google.com/drive/folders/1uOuPRkYjwMznLqBzBnsY3kqNimeE84Uz) folder.
 
+##### This project is created by students from University of Helsinki for Software engineering project - course.
