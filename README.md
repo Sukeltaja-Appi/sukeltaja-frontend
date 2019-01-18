@@ -17,4 +17,3 @@ Product backlog can be found on these [Google Sheets](https://docs.google.com/sp
 
 Folder containing all the documentation and logs can be found on this [Google Drive](https://drive.google.com/drive/folders/1uOuPRkYjwMznLqBzBnsY3kqNimeE84Uz) folder.
 
-##### This project is created by students from University of Helsinki for Software engineering project - course.
