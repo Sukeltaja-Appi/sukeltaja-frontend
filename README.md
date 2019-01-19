@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Sukeltaja-App/sukeltaja-frontend.svg?branch=master)](https://travis-ci.org/Sukeltaja-App/sukeltaja-frontend)
+
 >This contains the frontend, Backend can be found [here](https://github.com/Sukeltaja-App/sukeltaja-backend) 
 
 
