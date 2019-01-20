@@ -6,7 +6,8 @@
     "ios": "expo start --ios",
     "eject": "expo eject",
     "test": "node_modules/.bin/jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test-with-coverage": "jest --coverage && cat ./coverage/lcov.info | codacy-coverage"
   },
   "jest": {
     "preset": "jest-expo"
@@ -21,9 +22,16 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
     "babel-preset-expo": "^5.0.0",
+    "codacy-coverage": "^3.4.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^5.12.1",
     "eslint-plugin-react": "^7.12.4",
-    "jest-expo": "^32.0.0"
+    "jest-expo": "^32.0.0",
+    "jsdom": "^13.1.0",
+    "react-dom": "^16.7.0",
+    "react-native-mock-render": "^0.1.2",
+    "react-test-renderer": "^16.7.0"
   },
   "private": true
 }
