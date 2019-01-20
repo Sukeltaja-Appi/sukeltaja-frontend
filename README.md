@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/05aa734a6b744870b2c4312c18d6c562)](https://app.codacy.com/app/wametsol/sukeltaja-frontend?utm_source=github.com&utm_medium=referral&utm_content=Sukeltaja-App/sukeltaja-frontend&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/Sukeltaja-App/sukeltaja-frontend.svg?branch=master)](https://travis-ci.org/Sukeltaja-App/sukeltaja-frontend)
 
 >This contains the frontend, Backend can be found [here](https://github.com/Sukeltaja-App/sukeltaja-backend) 
