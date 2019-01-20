@@ -1,7 +1,7 @@
 # Sukeltaja App
 
 [![Build Status](https://travis-ci.org/Sukeltaja-App/sukeltaja-frontend.svg?branch=master)](https://travis-ci.org/Sukeltaja-App/sukeltaja-frontend)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/05aa734a6b744870b2c4312c18d6c562)](https://app.codacy.com/app/wametsol/sukeltaja-frontend?utm_source=github.com&utm_medium=referral&utm_content=Sukeltaja-App/sukeltaja-frontend&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/05aa734a6b744870b2c4312c18d6c562)](https://app.codacy.com/app/luupanu/sukeltaja-frontend?utm_source=github.com&utm_medium=referral&utm_content=Sukeltaja-App/sukeltaja-frontend&utm_campaign=Badge_Grade_Dashboard)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/da118659491a49c49c4f9ff01c22ea13)](https://www.codacy.com/app/luupanu/sukeltaja-frontend?utm_source=github.com&utm_medium=referral&utm_content=Sukeltaja-App/sukeltaja-frontend&utm_campaign=Badge_Coverage)
 
 **STATUS: Development in progress.**
