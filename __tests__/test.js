@@ -4,6 +4,7 @@ import { shallow } from 'enzyme'
 
 import HomeScreen from '../components/HomeScreen'
 
+
 describe('<HomeScreen/>', () => {
   it('renders the home screen', () => {
     const homeScreen = renderer
@@ -11,6 +12,7 @@ describe('<HomeScreen/>', () => {
       .toJSON()
     expect(homeScreen).toMatchSnapshot()
   })
+
 
   it('the counter starts from 0', () => {
     const homeScreen = shallow(<HomeScreen/>)
@@ -23,4 +25,5 @@ describe('<HomeScreen/>', () => {
     button.props().onPress()
     expect(homeScreen.state().counter).toEqual(1)
   })
+
 })
