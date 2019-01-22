@@ -25,10 +25,10 @@ class EventsScreen extends React.Component {
   navigate = (value) => this.props.navigation.navigate(value);
   handlePress = () => this.setState({ counter: this.state.counter + 1 })
 
-  eventsButton = () => this.handlePress()
-  postsButton = () => this.handlePress()
-  usersButton = () => this.handlePress()
-  mapButton = () => this.handlePress()
+  browseButton = () => this.handlePress()
+  createButton = () => this.handlePress()
+  joinButton = () => this.handlePress()
+  startButton = () => this.navigate('OngoingEvent')
 
   render() {
     const uri = 'https://upload.wikimedia.org/wikipedia/commons/1/15/Diving_stage.jpg'
@@ -39,19 +39,19 @@ class EventsScreen extends React.Component {
 
           <Text style={styles.h1}>Tapahtumat</Text>
           <Text>Counter: {this.state.counter}</Text>
-          <TouchableOpacity onPress={this.eventsButton} style={styles.button} >
+          <TouchableOpacity onPress={this.browseButton} style={styles.button} >
             <Text style={styles.buttonText}>Selaa</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.postsButton} style={styles.button} >
+          <TouchableOpacity onPress={this.createButton} style={styles.button} >
             <Text style={styles.buttonText}>Luo</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.usersButton} style={styles.button} >
+          <TouchableOpacity onPress={this.joinButton} style={styles.button} >
               <Text style={styles.buttonText}>Liity</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.mapButton} style={stylesLocal.roundButton} >
+          <TouchableOpacity onPress={this.startButton} style={stylesLocal.roundButton} >
             <Text style={styles.buttonText}>Aloita</Text>
           </TouchableOpacity>
 
