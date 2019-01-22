@@ -2,7 +2,19 @@ import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
 import styles from './stylesGlobal';
 
-class HomeScreen extends React.Component {
+const stylesLocal = StyleSheet.create({
+  roundButton: {
+    marginTop: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#24f30c',
+    width: 100,
+    height: 100,
+    borderRadius: 50
+  }
+})
+
+class EventsScreen extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -13,33 +25,34 @@ class HomeScreen extends React.Component {
   navigate = (value) => this.props.navigation.navigate(value);
   handlePress = () => this.setState({ counter: this.state.counter + 1 })
 
-  eventsButton = () => this.navigate('Events')
+  eventsButton = () => this.handlePress()
   postsButton = () => this.handlePress()
   usersButton = () => this.handlePress()
   mapButton = () => this.handlePress()
 
   render() {
-    const uri = 'https://upload.wikimedia.org/wikipedia/commons/5/50/USS_Scorpion_sail.jpg'
+    const uri = 'https://upload.wikimedia.org/wikipedia/commons/1/15/Diving_stage.jpg'
+
     return (
       <View style={styles.container}>
         <ImageBackground source={{ uri }}style={styles.imgBackground} >
 
-          <Text style={styles.h1}>Sukeltaja App</Text>
+          <Text style={styles.h1}>Tapahtumat</Text>
           <Text>Counter: {this.state.counter}</Text>
           <TouchableOpacity onPress={this.eventsButton} style={styles.button} >
-            <Text style={styles.buttonText}>Tapahtumat</Text>
+            <Text style={styles.buttonText}>Selaa</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={this.postsButton} style={styles.button} >
-            <Text style={styles.buttonText}>Julkaisut</Text>
+            <Text style={styles.buttonText}>Luo</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={this.usersButton} style={styles.button} >
-              <Text style={styles.buttonText}>Kirjaudu</Text>
+              <Text style={styles.buttonText}>Liity</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.mapButton} style={styles.button} >
-            <Text style={styles.buttonText}>Kartta</Text>
+          <TouchableOpacity onPress={this.mapButton} style={stylesLocal.roundButton} >
+            <Text style={styles.buttonText}>Aloita</Text>
           </TouchableOpacity>
 
         </ImageBackground>
@@ -48,4 +61,4 @@ class HomeScreen extends React.Component {
   }
 }
 
-export default HomeScreen
+export default EventsScreen
