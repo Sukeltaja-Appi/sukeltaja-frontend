@@ -16,6 +16,8 @@ const data = [
   }
 ]
 
+//  Need to eventually map individual onPress events to
+//  respective ListItem buttons, right now just do a no-op.
 const _onPress = () => {}
 
 const EventListScreen = () => {
