@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, FlatList } from 'react-native'
-import ListItem from './buttons/ListItem'
+import ListItem from './simple/ListItem'
 
 const data = [
   {
