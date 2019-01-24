@@ -21,7 +21,7 @@ class OngoingEventScreen extends React.Component {
       counter: 0
     }
   }
-  
+
   navigate = (value) => this.props.navigation.navigate(value);
   handlePress = () => this.setState({ counter: this.state.counter + 1 })
 
@@ -29,9 +29,17 @@ class OngoingEventScreen extends React.Component {
   inviteButton = () => this.handlePress()
   endButton = () => this.navigate('Events')
 
+  const sendEvent = (startTime) => {
+    const endTime = new Date()
+    const event = {
+      start = startTime,
+      end = endTime
+    }
+  }
+
   render() {
     const uri = 'https://upload.wikimedia.org/wikipedia/commons/c/c2/US_Navy_explosive_ordnance_disposal_%28EOD%29_divers.jpg'
-    //const startTime = new Date()
+    const startTime = new Date()
     return (
       <View style={styles.container}>
         <ImageBackground source={{ uri }}style={styles.imgBackground} >
@@ -47,7 +55,7 @@ class OngoingEventScreen extends React.Component {
               <Text style={styles.buttonText}>Kutsu</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.endButton} style={stylesLocal.roundButton} >
+          <TouchableOpacity onPress={this.endButton(startTime)} style={stylesLocal.roundButton} >
             <Text style={styles.buttonText}>Lopeta</Text>
           </TouchableOpacity>
 

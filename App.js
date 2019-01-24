@@ -12,7 +12,7 @@ const RootStack = createStackNavigator({
     },
     Events: {
       screen: EventsScreen
-    }
+    },
     OngoingEvent: {
       screen: OngoingEventScreen
     }
