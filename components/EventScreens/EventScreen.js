@@ -39,9 +39,6 @@ class EventScreen extends React.Component {
 
           <Text style={styles.h1}>Tapahtumat</Text>
           <Text>Counter: {this.state.counter}</Text>
-          <TouchableOpacity onPress={this.browseButton} style={styles.button} >
-            <Text style={styles.buttonText}>Selaa</Text>
-          </TouchableOpacity>
 
           <TouchableOpacity onPress={this.createButton} style={styles.button} >
             <Text style={styles.buttonText}>Luo</Text>

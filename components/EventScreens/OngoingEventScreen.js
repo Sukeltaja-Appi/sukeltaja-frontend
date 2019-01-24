@@ -31,17 +31,12 @@ class OngoingEventScreen extends React.Component {
 
   render() {
     const uri = 'https://upload.wikimedia.org/wikipedia/commons/c/c2/US_Navy_explosive_ordnance_disposal_%28EOD%29_divers.jpg'
-    //const startTime = new Date()
     return (
       <View style={styles.container}>
         <ImageBackground source={{ uri }}style={styles.imgBackground} >
 
           <Text style={styles.h1}>Tapahtuma käynnissä</Text>
           <Text>Counter: {this.state.counter}</Text>
-
-          <TouchableOpacity onPress={this.mapButton} style={styles.button} >
-              <Text style={styles.buttonText}>Kartta</Text>
-          </TouchableOpacity>
 
           <TouchableOpacity onPress={this.inviteButton} style={styles.button} >
               <Text style={styles.buttonText}>Kutsu</Text>

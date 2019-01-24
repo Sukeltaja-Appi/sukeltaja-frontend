@@ -14,4 +14,5 @@ const MainTabNavigator = createBottomTabNavigator({
 
 const App = createAppContainer(MainTabNavigator);
 
+
 export default App
