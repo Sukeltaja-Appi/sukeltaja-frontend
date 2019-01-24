@@ -1,9 +1,9 @@
 import React from 'react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
-const ArrowRight = () => {
+const ArrowRight = (props) => {
   return (
-    <MaterialCommunityIcons name="chevron-right" size={32} color="#ddd" />
+    <MaterialCommunityIcons name="chevron-right" size={32} color={props.color} />
   )
 }
 
