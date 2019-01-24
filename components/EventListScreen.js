@@ -1,22 +1,36 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
-import styles from './stylesGlobal';
+import { View, FlatList } from 'react-native'
+import ListItem from './buttons/ListItem'
 
-class EventListScreen extends React.Component {
-
-  render() {
-    const uri = 'https://upload.wikimedia.org/wikipedia/commons/5/50/USS_Scorpion_sail.jpg'
-    return (
-      <View style={styles.container}>
-        <ImageBackground source={{ uri }}style={styles.imgBackground} >
-
-          <Text style={styles.h1}>Menneet Tapahtumat</Text>
-
-
-        </ImageBackground>
-      </View>
-    )
+const data = [
+  {
+    title: 'Lisää uusi sukellustapahtuma',
+    desc: 'Tänne lisätietoa'
+  },
+  {
+    title: 'Selaa omia sukellustapahtumia',
+    desc: 'Tännekin lisätietoa'
+  },
+  {
+    title: 'Liity sukellustapahtumaan'
   }
+]
+
+const _onPress = () => {}
+
+const EventListScreen = () => {
+  return (
+    <View style={{ flex: 9, backgroundColor: '#eee' }}>
+      <View style={{ flex: 0.2, backgroundColor: '#eee'}} />
+      <FlatList
+        data={data}
+        renderItem={({ item }) => (
+          <ListItem title={item.title} description={item.desc} onPress={_onPress} />
+        )}
+        keyExtractor={item  => item.title}
+      />
+    </View>
+  )
 }
 
 export default EventListScreen
