@@ -7,6 +7,10 @@ class ProfileMainScreen extends React.Component {
     super()
   }
 
+  static navigationOptions = {
+    header: null ,
+  };
+
   navigate = (value) => this.props.navigation.navigate(value);
 
   render() {

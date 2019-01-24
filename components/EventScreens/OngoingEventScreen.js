@@ -22,6 +22,10 @@ class OngoingEventScreen extends React.Component {
     }
   }
 
+  static navigationOptions = {
+    header: null ,
+  };
+
   navigate = (value) => this.props.navigation.navigate(value);
   handlePress = () => this.setState({ counter: this.state.counter + 1 })
 
