@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
-import styles from './stylesGlobal';
+import styles from '../stylesGlobal';
 
 const stylesLocal = StyleSheet.create({
   roundButton: {
@@ -14,7 +14,7 @@ const stylesLocal = StyleSheet.create({
   }
 })
 
-class EventsScreen extends React.Component {
+class EventScreen extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -28,7 +28,7 @@ class EventsScreen extends React.Component {
   browseButton = () => this.handlePress()
   createButton = () => this.handlePress()
   joinButton = () => this.handlePress()
-  startButton = () => this.navigate('OngoingEvent')
+  startButton = () => this.navigate('OngoingEventScreen')
 
   render() {
     const uri = 'https://upload.wikimedia.org/wikipedia/commons/1/15/Diving_stage.jpg'
@@ -61,4 +61,4 @@ class EventsScreen extends React.Component {
   }
 }
 
-export default EventsScreen
+export default EventScreen

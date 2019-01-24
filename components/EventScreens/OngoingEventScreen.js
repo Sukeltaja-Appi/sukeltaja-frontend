@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
-import styles from './stylesGlobal';
+import styles from '../stylesGlobal';
 
 const stylesLocal = StyleSheet.create({
   roundButton: {
@@ -21,13 +21,13 @@ class OngoingEventScreen extends React.Component {
       counter: 0
     }
   }
-  
+
   navigate = (value) => this.props.navigation.navigate(value);
   handlePress = () => this.setState({ counter: this.state.counter + 1 })
 
   mapButton = () => this.handlePress()
   inviteButton = () => this.handlePress()
-  endButton = () => this.navigate('Events')
+  endButton = () => this.navigate('EventScreen')
 
   render() {
     const uri = 'https://upload.wikimedia.org/wikipedia/commons/c/c2/US_Navy_explosive_ordnance_disposal_%28EOD%29_divers.jpg'

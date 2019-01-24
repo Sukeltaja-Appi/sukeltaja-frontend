@@ -1,23 +1,17 @@
 import React from 'react'
-import {createStackNavigator, createAppContainer} from 'react-navigation'
-import HomeScreen from './components/HomeScreen'
-import EventsScreen from './components/EventsScreen'
-import OngoingEventScreen from './components/OngoingEventScreen'
+import {createBottomTabNavigator, createStackNavigator, createAppContainer} from 'react-navigation'
+import EventScreens from './components/EventScreens'
+import EventListScreen from './components/EventListScreen'
+import ProfileScreens from './components/ProfileScreens'
+//import State from './components/State'
 
-//const App = () => <HomeScreen/>
+const MainTabNavigator = createBottomTabNavigator({
+  EventScreens,
+  EventListScreen,
+  ProfileScreens,
+});
+// ^- Map, and Posts? will be added in the future.
 
-const RootStack = createStackNavigator({
-    Home: {
-      screen: HomeScreen
-    },
-    Events: {
-      screen: EventsScreen
-    },
-    OngoingEvent: {
-      screen: OngoingEventScreen
-    }
-  });
-
-const App = createAppContainer(RootStack);
+const App = createAppContainer(MainTabNavigator);
 
 export default App
