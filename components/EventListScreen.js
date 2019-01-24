@@ -25,7 +25,12 @@ const EventListScreen = () => {
       <FlatList
         data={data}
         renderItem={({ item }) => (
-          <ListItem title={item.title} description={item.desc} onPress={_onPress} />
+          <ListItem
+            title={item.title}
+            description={item.desc}
+            onPress={_onPress}
+            displayArrow
+          />
         )}
         keyExtractor={item  => item.title}
       />
