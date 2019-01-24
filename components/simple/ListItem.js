@@ -37,7 +37,7 @@ const ListItem = (props) => {
               <Text style={stylesLocal.title}>{props.title}</Text>
               <Text style={stylesLocal.desc}>{props.description}</Text>
             </View>
-            <ArrowRight style={{ marginRight: 5 }}/>
+            <ArrowRight />
         </View>
       </TouchableHighlight>
     </View>
