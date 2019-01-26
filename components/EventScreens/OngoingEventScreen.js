@@ -1,6 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
-import styles from '../stylesGlobal';
+import { connect } from 'react-redux'
+import styles from '../stylesGlobal'
+import {addAmount} from '../reducers/EventReducer'
 
 const stylesLocal = StyleSheet.create({
   roundButton: {
@@ -17,9 +19,6 @@ const stylesLocal = StyleSheet.create({
 class OngoingEventScreen extends React.Component {
   constructor() {
     super()
-    this.state = {
-      counter: 0
-    }
   }
 
   static navigationOptions = {
@@ -27,7 +26,7 @@ class OngoingEventScreen extends React.Component {
   };
 
   navigate = (value) => this.props.navigation.navigate(value);
-  handlePress = () => this.setState({ counter: this.state.counter + 1 })
+  handlePress = () => this.props.addAmount(1)
 
   mapButton = () => this.handlePress()
   inviteButton = () => this.handlePress()
@@ -40,7 +39,7 @@ class OngoingEventScreen extends React.Component {
         <ImageBackground source={{ uri }}style={styles.imgBackground} >
 
           <Text style={styles.h1}>Tapahtuma käynnissä</Text>
-          <Text>Counter: {this.state.counter}</Text>
+          <Text>Counter: {this.props.counter}</Text>
 
           <TouchableOpacity onPress={this.inviteButton} style={styles.button} >
               <Text style={styles.buttonText}>Kutsu</Text>
@@ -56,4 +55,19 @@ class OngoingEventScreen extends React.Component {
   }
 }
 
-export default OngoingEventScreen
+const mapStateToProps = (state) => {
+  return {
+    counter: state
+  }
+}
+
+const mapDispatchToProps = {
+  addAmount
+}
+
+const ConnectedOngoingEventScreen = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OngoingEventScreen)
+
+export default ConnectedOngoingEventScreen

@@ -1,9 +1,14 @@
 import React from 'react'
-import {createBottomTabNavigator, createStackNavigator, createAppContainer} from 'react-navigation'
+import {createBottomTabNavigator, createAppContainer} from 'react-navigation'
+
+import { AppRegistry } from 'react-native';
+import { createStore, combineReducers } from 'redux'
+import { Provider } from 'react-redux'
+
 import EventScreens from './components/EventScreens'
 import EventListScreen from './components/EventListScreen'
 import ProfileScreens from './components/ProfileScreens'
-//import State from './components/State'
+import EventReducer from './components/reducers/EventReducer'
 
 import Icon from 'react-native-vector-icons/AntDesign'
 
@@ -44,7 +49,24 @@ const MainTabNavigator = createBottomTabNavigator({
 });
 // ^- Map, and Posts? will be added in the future.
 
-const App = createAppContainer(MainTabNavigator);
+const AppContainer0 = createAppContainer(MainTabNavigator);
 
+const reducer = combineReducers({
+  events: EventReducer
+});
 
-export default App
+const store0 = createStore(EventReducer);
+
+class ProviderPackedApp extends React.Component {
+
+  render() {
+    return (
+      <Provider store={store0}>
+        <AppContainer0 />
+      </Provider>     );
+  }
+}
+
+AppRegistry.registerComponent('SukeltajaApp', () => ProviderPackedApp);
+
+export default ProviderPackedApp
