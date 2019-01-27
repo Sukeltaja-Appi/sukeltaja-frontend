@@ -3,9 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react
 import styles from '../stylesGlobal';
 
 class ProfileMainScreen extends React.Component {
-  constructor() {
-    super()
-  }
 
   static navigationOptions = {
     header: null ,

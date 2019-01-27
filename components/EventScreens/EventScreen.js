@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
 import { connect } from 'react-redux'
 import styles from '../stylesGlobal'
-import {addAmount} from '../reducers/EventReducer'
+import {newEvent, startTime} from '../reducers/EventReducer'
 
 const stylesLocal = StyleSheet.create({
   roundButton: {
@@ -17,35 +17,28 @@ const stylesLocal = StyleSheet.create({
 })
 
 class EventScreen extends React.Component {
-  constructor() {
-    super()
-  }
 
   static navigationOptions = {
     header: null ,
   };
 
   navigate = (value) => this.props.navigation.navigate(value);
-  handlePress = () => this.props.addAmount(1)
 
-  browseButton = () => this.handlePress()
-  createButton = () => this.handlePress()
-  joinButton = () => this.handlePress()
-  startButton = () => this.navigate('OngoingEventScreen')
+  joinButton = () => {}
+  startButton = () => {
+    this.props.startTime()
+    this.props.newEvent(this.props.events.currentID+1)
+    this.navigate('OngoingEventScreen')
+  }
 
   render() {
     const uri = 'https://upload.wikimedia.org/wikipedia/commons/1/15/Diving_stage.jpg'
 
     return (
       <View style={styles.container}>
-        <ImageBackground source={{ uri }}style={styles.imgBackground} >
+        <ImageBackground source={{ uri }} style={styles.imgBackground} >
 
-          <Text style={styles.h1}>Tapahtumat</Text>
-          <Text>Counter: {this.props.counter}</Text>
-
-          <TouchableOpacity onPress={this.createButton} style={styles.button} >
-            <Text style={styles.buttonText}>Luo</Text>
-          </TouchableOpacity>
+          <Text style={styles.h1}>Tapahtuma</Text>
 
           <TouchableOpacity onPress={this.joinButton} style={styles.button} >
               <Text style={styles.buttonText}>Liity</Text>
@@ -63,12 +56,13 @@ class EventScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    counter: state
+    events: state.events
   }
 }
 
 const mapDispatchToProps = {
-  addAmount
+  newEvent,
+  startTime
 }
 
 const ConnectedEventScreen = connect(

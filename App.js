@@ -6,7 +6,7 @@ import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 
 import EventScreens from './components/EventScreens'
-import EventListScreen from './components/EventListScreen'
+import MenuScreens from './components/MenuScreens'
 import ProfileScreens from './components/ProfileScreens'
 import EventReducer from './components/reducers/EventReducer'
 
@@ -23,9 +23,9 @@ const MainTabNavigator = createBottomTabNavigator({
     }
   },
   EventList : {
-    screen: EventListScreen,
+    screen: MenuScreens,
     navigationOptions: {
-        tabBarLabel:"Menneet",
+        tabBarLabel:"Valikko",
         tabBarIcon: ({ tintColor }) => (
           <Icon name="bars" size={30} color="#000000" />
         )
@@ -47,7 +47,7 @@ const MainTabNavigator = createBottomTabNavigator({
     }
   }
 });
-// ^- Map, and Posts? will be added in the future.
+// ^- Map will be added in the future.
 
 const AppContainer0 = createAppContainer(MainTabNavigator);
 
@@ -55,7 +55,7 @@ const reducer = combineReducers({
   events: EventReducer
 });
 
-const store0 = createStore(EventReducer);
+const store0 = createStore(reducer);
 
 class ProviderPackedApp extends React.Component {
 
