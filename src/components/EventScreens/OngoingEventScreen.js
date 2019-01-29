@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
 import { connect } from 'react-redux'
 import styles from '../stylesGlobal'
-import {addAmount, endTime} from '../reducers/EventReducer'
+import { endTime } from '../../reducers/EventReducer'
 
 const stylesLocal = StyleSheet.create({
   roundButton: {
@@ -23,7 +23,6 @@ class OngoingEventScreen extends React.Component {
   };
 
   navigate = (value) => this.props.navigation.navigate(value);
-  handlePress = () => this.props.addAmount(1)
 
   counterButton = () => this.handlePress()
   inviteButton = () => this.handlePress()
@@ -40,13 +39,8 @@ class OngoingEventScreen extends React.Component {
 
           <Text style={styles.h1}>Tapahtuma käynnissä</Text>
 
-
           <TouchableOpacity onPress={this.inviteButton} style={styles.button} >
               <Text style={styles.buttonText}>Kutsu</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.counterButton} style={styles.button} >
-              <Text style={styles.buttonText}>Click Me!</Text>
           </TouchableOpacity>
 
           <Text>Counter: {this.props.events.all.find(e => e.id === this.props.events.currentID).counter}</Text>
@@ -68,7 +62,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  addAmount,
   endTime
 }
 

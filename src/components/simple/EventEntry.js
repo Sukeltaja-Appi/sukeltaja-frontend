@@ -11,7 +11,8 @@ const stylesLocal = StyleSheet.create({
   itemRow: {
     marginTop: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginBottom: 5
   },
   title: {
     fontSize: 17,
@@ -28,20 +29,15 @@ const stylesLocal = StyleSheet.create({
   }
 })
 
-//<Text style={stylesLocal.desc}>Started: {props.startTime}</Text>
-//<Text style={stylesLocal.desc}>Stopped: {props.stopTime}</Text>
-
 const EventEntry = (props) => {
-  console.log(props)
   return (
     <View style={stylesLocal.item}>
       <TouchableHighlight underlayColor='#d9d9d9' onPress={props.onPress}>
         <View style={stylesLocal.itemRow}>
             <View>
+              <Text style={stylesLocal.desc}>ID: {props.id}</Text>
               <Text style={stylesLocal.desc}>Started: {props.startTime.toString()}</Text>
               <Text style={stylesLocal.desc}>End: {props.endTime.toString()}</Text>
-              <Text style={stylesLocal.desc}>ID: {props.id}</Text>
-              <Text style={stylesLocal.desc}>Laskuri: {props.counter}</Text>
             </View>
             { props.displayArrow ? <ArrowRight color="#c7c7cc" /> : null }
         </View>

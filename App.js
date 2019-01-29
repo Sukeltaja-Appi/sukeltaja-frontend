@@ -5,10 +5,10 @@ import { AppRegistry } from 'react-native';
 import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 
-import EventScreens from './components/EventScreens'
-import MenuScreens from './components/MenuScreens'
-import ProfileScreens from './components/ProfileScreens'
-import EventReducer from './components/reducers/EventReducer'
+import EventScreens from './src/components/EventScreens'
+import MenuScreens from './src/components/MenuScreens'
+import ProfileScreens from './src/components/ProfileScreens'
+import EventReducer from './src/reducers/EventReducer'
 
 import Icon from 'react-native-vector-icons/AntDesign'
 
@@ -17,7 +17,8 @@ const MainTabNavigator = createBottomTabNavigator({
     screen: EventScreens,
     navigationOptions: {
         tabBarLabel:"Tapahtuma",
-        tabBarIcon: ({ tintColor }) => (
+        tabBarOptions: { activeTintColor: 'blue'},
+        tabBarIcon: () => (
           <Icon name="circledowno" size={30} color="#000000" />
         )
     }
@@ -26,7 +27,8 @@ const MainTabNavigator = createBottomTabNavigator({
     screen: MenuScreens,
     navigationOptions: {
         tabBarLabel:"Valikko",
-        tabBarIcon: ({ tintColor }) => (
+        tabBarOptions: { activeTintColor: 'blue'},
+        tabBarIcon: () => (
           <Icon name="bars" size={30} color="#000000" />
         )
     }
@@ -35,7 +37,8 @@ const MainTabNavigator = createBottomTabNavigator({
     screen: ProfileScreens,
     navigationOptions: {
         tabBarLabel:"Profiili",
-        tabBarIcon: ({ tintColor }) => (
+        tabBarOptions: { activeTintColor: 'blue'},
+        tabBarIcon: () => (
           <Icon name="user" size={30} color="#000000" />
         )
     }

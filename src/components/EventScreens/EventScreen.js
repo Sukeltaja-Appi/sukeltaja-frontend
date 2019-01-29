@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
 import { connect } from 'react-redux'
 import styles from '../stylesGlobal'
-import {newEvent, startTime} from '../reducers/EventReducer'
+import { newEvent, startTime } from '../../reducers/EventReducer'
 
 const stylesLocal = StyleSheet.create({
   roundButton: {
