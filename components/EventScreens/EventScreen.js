@@ -26,8 +26,8 @@ class EventScreen extends React.Component {
 
   joinButton = () => {}
   startButton = () => {
-    this.props.startTime()
     this.props.newEvent(this.props.events.currentID+1)
+    this.props.startTime()
     this.navigate('OngoingEventScreen')
   }
 

@@ -38,7 +38,6 @@ class EventListScreen extends React.Component {
 //     )
 //   }
 // }
-
 render() {
   const data = this.props.events.all
   let index = 1
@@ -47,10 +46,13 @@ render() {
       <View style={{ flex: 0.2, backgroundColor: '#eee'}} />
       <FlatList
         data={data}
+
         renderItem={({ item }) => (
           <EventEntry
             id={item.id}
             counter={item.counter}
+            startTime={item.startdate}
+            endTime={item.enddate}
             onPress={this._onPress}
             displayArrow
           />
