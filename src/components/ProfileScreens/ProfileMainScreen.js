@@ -34,7 +34,7 @@ class ProfileMainScreen extends React.Component {
 
   render() {
     const uri = 'https://upload.wikimedia.org/wikipedia/commons/5/50/USS_Scorpion_sail.jpg'
-    const _handlePress = () => {}
+    const _handlePress = () => console.log(this.props)
 
     return (
       <View style={stylesLocal.container}>
