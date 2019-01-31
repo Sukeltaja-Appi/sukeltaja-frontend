@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProfileMainScreen/> renders the profile screen snapshot 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "flex": 1,
+      "top": 50,
+    }
+  }
+>
+  <Image
+    source={
+      Object {
+        "uri": "https://upload.wikimedia.org/wikipedia/commons/5/50/USS_Scorpion_sail.jpg",
+      }
+    }
+    style={
+      Object {
+        "borderColor": "#551a8b",
+        "borderRadius": 30,
+        "borderWidth": 3,
+        "height": 150,
+        "marginBottom": 15,
+        "width": 150,
+      }
+    }
+  />
+  <Text
+    style={
+      Object {
+        "color": "#0530fc",
+        "fontSize": 30,
+        "fontWeight": "bold",
+      }
+    }
+  >
+    test_profile
+  </Text>
+  <View
+    style={
+      Object {
+        "flex": 1,
+        "justifyContent": "flex-end",
+        "marginBottom": 100,
+      }
+    }
+  >
+    <View
+      accessibilityRole="button"
+      accessibilityStates={Array []}
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "padding": 8,
+                "textAlign": "center",
+              },
+              Object {
+                "color": "red",
+              },
+            ]
+          }
+        >
+          Kirjaudu ulos
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
