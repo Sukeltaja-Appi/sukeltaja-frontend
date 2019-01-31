@@ -21,9 +21,9 @@ exports[`<ProfileMainScreen/> renders the profile screen snapshot 1`] = `
         "borderColor": "#551a8b",
         "borderRadius": 30,
         "borderWidth": 3,
-        "height": 150,
+        "height": 250,
         "marginBottom": 15,
-        "width": 150,
+        "width": 250,
       }
     }
   />
@@ -35,9 +35,7 @@ exports[`<ProfileMainScreen/> renders the profile screen snapshot 1`] = `
         "fontWeight": "bold",
       }
     }
-  >
-    test_profile
-  </Text>
+  />
   <View
     style={
       Object {

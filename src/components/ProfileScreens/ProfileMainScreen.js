@@ -5,8 +5,8 @@ import { StyleSheet, Text, View, Image, Button } from 'react-native'
 
 const stylesLocal = StyleSheet.create({
   imageBorder: {
-    width: 150,
-    height: 150,
+    width: 250,
+    height: 250,
     borderColor: '#551a8b',
     borderWidth: 3,
     borderRadius: 30,
@@ -24,7 +24,7 @@ const stylesLocal = StyleSheet.create({
   }
 })
 
-class ProfileMainScreen extends React.Component {
+export class ProfileMainScreen extends React.Component {
 
   static navigationOptions = {
     header: null ,
