@@ -13,11 +13,20 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "axios-retry": "^3.1.2",
     "expo": "^32.0.0",
+    "expo-cli": "^2.6.14",
+    "luxon": "^1.10.0",
     "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz"
+    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-navigation": "^3.0.9",
+    "react-redux": "^6.0.0",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
+    "@expo/vector-icons": "^9.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
@@ -30,8 +39,10 @@
     "jest-expo": "^32.0.0",
     "jsdom": "^13.1.0",
     "react-dom": "^16.7.0",
+    "react-native-dotenv": "^0.2.0",
     "react-native-mock-render": "^0.1.2",
-    "react-test-renderer": "^16.7.0"
+    "react-test-renderer": "^16.7.0",
+    "redux-mock-store": "^1.5.3"
   },
   "private": true
 }
