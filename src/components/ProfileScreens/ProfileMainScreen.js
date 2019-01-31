@@ -1,6 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image, Button } from 'react-native'
 import styles from '../stylesGlobal'
+import { connect } from 'react-redux'
+import { StyleSheet, Text, View, Image, Button } from 'react-native'
 
 const stylesLocal = StyleSheet.create({
   imageBorder: {
@@ -23,11 +24,6 @@ const stylesLocal = StyleSheet.create({
   }
 })
 
-// replace with user from backend
-const user = {
-  username: "SamiSukeltaja"
-}
-
 class ProfileMainScreen extends React.Component {
 
   static navigationOptions = {
@@ -43,7 +39,7 @@ class ProfileMainScreen extends React.Component {
     return (
       <View style={stylesLocal.container}>
         <Image style={stylesLocal.imageBorder} source={{ uri }} />
-        <Text style={styles.h1}>{user.username}</Text>
+        <Text style={styles.h1}>{this.props.username}</Text>
         <View style={stylesLocal.buttonContainer}>
           <Button color='red' title="Kirjaudu ulos" onPress={_handlePress} />
         </View>
@@ -52,4 +48,13 @@ class ProfileMainScreen extends React.Component {
   }
 }
 
-export default ProfileMainScreen
+const mapStateToProps = (state) => {
+  return {
+    username: state.user.username
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(ProfileMainScreen)
