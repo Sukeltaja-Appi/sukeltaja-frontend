@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "axios-retry": "^3.1.2",
     "expo": "^32.0.0",
     "expo-cli": "^2.6.14",
     "luxon": "^1.10.0",

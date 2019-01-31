@@ -1,5 +1,11 @@
 import axios from 'axios'
 import { API_URL } from 'react-native-dotenv'
+import axiosRetry from 'axios-retry'
+
+axiosRetry(axios, {
+  retries: 5,
+  retryDelay: axiosRetry.exponentialDelay
+});
 
 const url = `${API_URL}/events`
 
@@ -17,6 +23,7 @@ const setToken = (newToken) => {
 
 const getAll = async () => {
   const response = await axios.get(url)
+  console.log('got all events!')
   return response.data
 }
 
