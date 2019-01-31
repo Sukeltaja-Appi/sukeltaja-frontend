@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import styles from '../stylesGlobal'
 import { createEvent } from '../../reducers/EventReducer'
@@ -35,12 +35,8 @@ class EventScreen extends React.Component {
   }
 
   render() {
-    const uri = 'https://upload.wikimedia.org/wikipedia/commons/1/15/Diving_stage.jpg'
-
     return (
       <View style={styles.container}>
-        <ImageBackground source={{ uri }} style={styles.imgBackground} >
-
           <Text style={styles.h1}>Tapahtuma</Text>
 
           <TouchableOpacity onPress={this.joinButton} style={styles.button} >
@@ -50,8 +46,6 @@ class EventScreen extends React.Component {
           <TouchableOpacity onPress={this.startButton} style={stylesLocal.roundButton} >
             <Text style={styles.buttonText}>Aloita</Text>
           </TouchableOpacity>
-
-        </ImageBackground>
       </View>
     )
   }
