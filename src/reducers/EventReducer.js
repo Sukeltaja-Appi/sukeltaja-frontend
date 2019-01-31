@@ -1,55 +1,62 @@
+import eventService from '../services/events'
 
-let initialState = {
-  userID: "None",
-  currentID: 0,
-  all: []
-}
-
-const EventReducer = (state = initialState, action) => {
+export const EventReducer = (state = [], action) => {
   switch (action.type) {
-    case 'NEW_EVENT':
-      return {userID: "None", currentID: action.data.newID, all:[...state.all, action.data.newEvent]}
-    case 'SET_START_TIME': {
-      const id = state.currentID
-      const eventToChange = state.all.find(e => e.id === id)
-      const changedEvent = {...eventToChange, startdate: new Date()}
-      return {userID: "None", currentID: id, all: state.all.map(event => event.id !== id ? event : changedEvent )}
+    case 'NEW_EVENT': {
+      return [ ...state, action.newEvent ]
     }
-    case 'SET_END_TIME': {
-       const id = state.currentID
-       const eventToChange = state.all.find(e => e.id === id)
-       const changedEvent = {...eventToChange, enddate: new Date()}
-       return {userID: "None", currentID: id, all: state.all.map(event => event.id !== id ? event : changedEvent )}
+    case 'END_EVENT': {
+      const id = action.updatedEvent.id
+      return state.map(event => event.id !== id ? event : action.updatedEvent)
     }
+    case 'INIT_EVENTS':
+      return action.events
+    default:
+      return state
   }
-  return state
 }
 
-export const newEvent = (pID) => {
-  return {
-    type: 'NEW_EVENT',
-    data: {
-      userID: 'None',
-      newID: pID,
-      newEvent: {
-          startdate: new Date(),
-          enddate: new Date(),
-          id: pID
-      }
+export const ongoingEventReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'SET_CURRENT_EVENT': {
+      return action.newEvent
     }
+    default:
+      return state
   }
 }
 
-export const startTime = () => {
-  return {
-    type: 'SET_START_TIME'
+export const initializeEvents = () => {
+  return async (dispatch) => {
+    const events = await eventService.getAll()
+    dispatch({
+      type: 'INIT_EVENTS',
+      events
+    })
   }
 }
 
-export const endTime = () => {
-  return {
-    type: 'SET_END_TIME'
+export const createEvent = (event) => {
+  return async (dispatch) => {
+    const newEvent = await eventService.create(event)
+    dispatch({
+      type: 'NEW_EVENT',
+      newEvent
+    })
+    dispatch({
+      type: 'SET_CURRENT_EVENT',
+      newEvent
+    })
   }
 }
 
-export default EventReducer
+export const endEvent = (event) => {
+  event.enddate = new Date()
+  return async (dispatch) => {
+    const updatedEvent = await eventService.update(event.id, event)
+    dispatch({
+      type: 'END_EVENT',
+      updatedEvent
+    })
+  }
+}

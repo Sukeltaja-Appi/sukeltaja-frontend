@@ -14,7 +14,7 @@ class EventListScreen extends React.Component {
   _onPress = () => {}
 
 render() {
-  const data = this.props.events.all
+  const data = this.props.events
   return (
     <View style={{ flex: 9, backgroundColor: '#eee' }}>
       <View style={{ flex: 0.2, backgroundColor: '#eee'}} />
@@ -23,10 +23,10 @@ render() {
 
         renderItem={({ item }) => (
           <EventEntry
-            id={item.id}
-            counter={item.counter}
+            username={item.user.username}
             startTime={item.startdate}
             endTime={item.enddate}
+            content={item.content}
             onPress={this._onPress}
             displayArrow
           />

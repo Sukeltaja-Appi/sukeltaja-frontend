@@ -1,75 +1,35 @@
 import React from 'react'
-import {createBottomTabNavigator, createAppContainer} from 'react-navigation'
 
 import { AppRegistry } from 'react-native';
-import { createStore, combineReducers } from 'redux'
-import { Provider } from 'react-redux'
+import { connect, Provider } from 'react-redux'
+import store from './src/store'
 
-import EventScreens from './src/components/EventScreens'
-import MenuScreens from './src/components/MenuScreens'
-import ProfileScreens from './src/components/ProfileScreens'
-import EventReducer from './src/reducers/EventReducer'
+import { login } from './src/reducers/userReducer'
+import { initializeEvents } from './src/reducers/EventReducer'
 
-import Icon from 'react-native-vector-icons/AntDesign'
+import AppEntry from './src/AppEntry'
 
-const MainTabNavigator = createBottomTabNavigator({
-  Event0 : {
-    screen: EventScreens,
-    navigationOptions: {
-        tabBarLabel:"Tapahtuma",
-        tabBarOptions: { activeTintColor: 'blue'},
-        tabBarIcon: () => (
-          <Icon name="circledowno" size={30} color="#000000" />
-        )
-    }
-  },
-  EventList : {
-    screen: MenuScreens,
-    navigationOptions: {
-        tabBarLabel:"Valikko",
-        tabBarOptions: { activeTintColor: 'blue'},
-        tabBarIcon: () => (
-          <Icon name="bars" size={30} color="#000000" />
-        )
-    }
-  },
-  Profile : {
-    screen: ProfileScreens,
-    navigationOptions: {
-        tabBarLabel:"Profiili",
-        tabBarOptions: { activeTintColor: 'blue'},
-        tabBarIcon: () => (
-          <Icon name="user" size={30} color="#000000" />
-        )
-    }
-  }
-}, {
-  tabBarOptions : {
-    style: {
-      backgroundColor: '#37fbe5',
-    }
-  }
-});
-// ^- Map will be added in the future.
-
-const AppContainer0 = createAppContainer(MainTabNavigator);
-
-const reducer = combineReducers({
-  events: EventReducer
-});
-
-const store0 = createStore(reducer);
-
-class ProviderPackedApp extends React.Component {
-
-  render() {
-    return (
-      <Provider store={store0}>
-        <AppContainer0 />
-      </Provider>     );
+const mapStateToProps = (state) => {
+  return {
+    ongoingEvent: state.ongoingEvent,
+    events: state.events,
+    user: state.user
   }
 }
 
-AppRegistry.registerComponent('SukeltajaApp', () => ProviderPackedApp);
+const ConnectedApp = connect(
+  mapStateToProps,
+  { login, initializeEvents }
+)(AppEntry)
+
+const ProviderPackedApp = () => {
+  return (
+    <Provider store={store}>
+      <ConnectedApp />
+    </Provider>
+  )
+}
+
+AppRegistry.registerComponent('SukeltajaApp', () => ProviderPackedApp)
 
 export default ProviderPackedApp

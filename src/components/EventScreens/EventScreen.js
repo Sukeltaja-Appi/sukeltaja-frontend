@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
 import { connect } from 'react-redux'
 import styles from '../stylesGlobal'
-import { newEvent, startTime } from '../../reducers/EventReducer'
+import { createEvent } from '../../reducers/EventReducer'
 
 const stylesLocal = StyleSheet.create({
   roundButton: {
@@ -24,11 +24,14 @@ class EventScreen extends React.Component {
 
   navigate = (value) => this.props.navigation.navigate(value);
 
-  joinButton = () => {}
-  startButton = () => {
-    this.props.newEvent(this.props.events.currentID+1)
-    this.props.startTime()
+  startButton = async () => {
+    const event = { content: 'Uusi tapahtuma 3' }
+    await this.props.createEvent(event)
+
     this.navigate('OngoingEventScreen')
+  }
+  joinButton = () => {
+    console.log(this.props)
   }
 
   render() {
@@ -54,20 +57,9 @@ class EventScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    events: state.events
-  }
-}
-
-const mapDispatchToProps = {
-  newEvent,
-  startTime
-}
-
 const ConnectedEventScreen = connect(
-  mapStateToProps,
-  mapDispatchToProps
+  null,
+  { createEvent }
 )(EventScreen)
 
 

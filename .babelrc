@@ -1,0 +1,3 @@
+{
+  "presets": ["expo", "module:react-native-dotenv"]
+}

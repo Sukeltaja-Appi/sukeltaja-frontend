@@ -1,8 +1,8 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import styles from '../stylesGlobal'
-import { endTime } from '../../reducers/EventReducer'
+import { endEvent } from '../../reducers/EventReducer'
 
 const stylesLocal = StyleSheet.create({
   roundButton: {
@@ -17,39 +17,49 @@ const stylesLocal = StyleSheet.create({
 })
 
 class OngoingEventScreen extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      counter: 0
+    }
+  }
 
   static navigationOptions = {
     header: null ,
-  };
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => this.setState({ counter: this.state.counter + 1 }), 1000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
 
   navigate = (value) => this.props.navigation.navigate(value);
 
-  counterButton = () => this.handlePress()
-  inviteButton = () => this.handlePress()
+  inviteButton = () => {
+    console.log(this.props)
+  }
   endButton = () => {
-    this.props.endTime()
+    this.props.endEvent(this.props.ongoingEvent)
     return this.navigate('EventScreen')
   }
 
   render() {
-    const uri = 'https://upload.wikimedia.org/wikipedia/commons/c/c2/US_Navy_explosive_ordnance_disposal_%28EOD%29_divers.jpg'
     return (
       <View style={styles.container}>
-        <ImageBackground source={{ uri }} style={styles.imgBackground} >
-
           <Text style={styles.h1}>Tapahtuma käynnissä</Text>
 
           <TouchableOpacity onPress={this.inviteButton} style={styles.button} >
               <Text style={styles.buttonText}>Kutsu</Text>
           </TouchableOpacity>
 
-          <Text>Counter: {this.props.events.all.find(e => e.id === this.props.events.currentID).counter}</Text>
+          <Text style={styles.h1}>{this.state.counter}</Text>
 
           <TouchableOpacity onPress={this.endButton} style={stylesLocal.roundButton} >
             <Text style={styles.buttonText}>Lopeta</Text>
           </TouchableOpacity>
-
-        </ImageBackground>
       </View>
     )
   }
@@ -57,17 +67,13 @@ class OngoingEventScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    events: state.events
+    ongoingEvent: state.ongoingEvent
   }
-}
-
-const mapDispatchToProps = {
-  endTime
 }
 
 const ConnectedOngoingEventScreen = connect(
   mapStateToProps,
-  mapDispatchToProps
+  { endEvent }
 )(OngoingEventScreen)
 
 export default ConnectedOngoingEventScreen

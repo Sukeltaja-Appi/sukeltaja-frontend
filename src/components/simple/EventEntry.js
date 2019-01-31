@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native'
 import ArrowRight from './ArrowRight'
+import { DateTime, Duration } from 'luxon'
 
 const stylesLocal = StyleSheet.create({
   item: {
@@ -30,16 +31,25 @@ const stylesLocal = StyleSheet.create({
 })
 
 const EventEntry = (props) => {
+  const startTime = DateTime.fromISO(props.startTime).setLocale('fi')
+  const endTime = DateTime.fromISO(props.endTime).setLocale('fi')
+  const duration = Duration.fromMillis(endTime - startTime)
+
   return (
-    <View style={stylesLocal.item}>
-      <TouchableHighlight underlayColor='#d9d9d9' onPress={props.onPress}>
-        <View style={stylesLocal.itemRow}>
+    <View style={ stylesLocal.item }>
+      <TouchableHighlight underlayColor='#d9d9d9' onPress={ props.onPress }>
+        <View style={ stylesLocal.itemRow }>
             <View>
-              <Text style={stylesLocal.desc}>ID: {props.id}</Text>
-              <Text style={stylesLocal.desc}>Started: {props.startTime.toString()}</Text>
-              <Text style={stylesLocal.desc}>End: {props.endTime.toString()}</Text>
+              <Text style={stylesLocal.desc}>Käyttäjä: { props.username }</Text>
+              <Text style={stylesLocal.desc}>Kuvaus: { props.content }</Text>
+              <Text style={stylesLocal.desc}>Alkoi: { startTime.toLocaleString(DateTime.DATETIME_SHORT) }</Text>
+              { props.endTime
+                ? <Text style={stylesLocal.desc}>Kesto: { duration.toFormat("hh'h' mm'm' ss's'") }</Text>
+                : null }
             </View>
-            { props.displayArrow ? <ArrowRight color="#c7c7cc" /> : null }
+            { props.displayArrow
+              ? <ArrowRight color="#c7c7cc" />
+              : null }
         </View>
       </TouchableHighlight>
     </View>
