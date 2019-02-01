@@ -31,8 +31,9 @@ const stylesLocal = StyleSheet.create({
 })
 
 const EventEntry = (props) => {
-  const startTime = DateTime.fromISO(props.startTime).setLocale('fi')
-  const endTime = DateTime.fromISO(props.endTime).setLocale('fi')
+  const event = props.event
+  const startTime = DateTime.fromISO(event.startdate).setLocale('fi')
+  const endTime = DateTime.fromISO(event.enddate).setLocale('fi')
   const duration = Duration.fromMillis(endTime - startTime)
 
   return (
@@ -40,10 +41,10 @@ const EventEntry = (props) => {
       <TouchableHighlight underlayColor='#d9d9d9' onPress={ props.onPress }>
         <View style={ stylesLocal.itemRow }>
             <View>
-              <Text style={stylesLocal.desc}>Käyttäjä: { props.username }</Text>
-              <Text style={stylesLocal.desc}>Kuvaus: { props.content }</Text>
+              <Text style={stylesLocal.desc}>Käyttäjä: { event.username }</Text>
+              <Text style={stylesLocal.desc}>Kuvaus: { event.content }</Text>
               <Text style={stylesLocal.desc}>Alkoi: { startTime.toLocaleString(DateTime.DATETIME_SHORT) }</Text>
-              { props.endTime
+              { event.enddate
                 ? <Text style={stylesLocal.desc}>Kesto: { duration.toFormat("hh'h' mm'm' ss's'") }</Text>
                 : null }
             </View>

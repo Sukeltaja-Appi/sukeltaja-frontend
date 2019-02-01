@@ -14,7 +14,7 @@ class MenuScreen extends React.Component {
     {
       title: 'Lisää uusi sukellustapahtuma',
       desc: 'Tänne lisätietoa',
-      dest: 'MenuScreen'
+      dest: 'CreateEventScreen'
     },
     {
       title: 'Selaa omia sukellustapahtumia',

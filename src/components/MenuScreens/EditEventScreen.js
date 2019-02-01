@@ -45,7 +45,7 @@ const options = {
 class EditEventScreen extends React.Component {
   constructor(props) {
     super(props)
-    this.event = this.props.navigation.state.params.item
+    this.event = this.props.navigation.state.params.event
     this.createValue = {
         content: this.event.content,
         startdate: new Date(this.event.startdate),
@@ -64,11 +64,10 @@ class EditEventScreen extends React.Component {
     this.event.startdate = this.createValue.startdate
     this.event.enddate = this.createValue.enddate
     this.props.updateEvent(this.event)
+    this.navigate('MenuScreen')
   }
 
   render() {
-      console.log(this.event)
-      console.log(this.createValue)
       return (
         <ScrollView>
 

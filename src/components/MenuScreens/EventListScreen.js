@@ -18,14 +18,10 @@ render() {
       <View style={{ flex: 0.2, backgroundColor: '#eee'}} />
       <FlatList
         data={data}
-
         renderItem={({ item }) => (
           <EventEntry
-            username={item.user.username}
-            startTime={item.startdate}
-            endTime={item.enddate}
-            content={item.content}
-            onPress={() => this.navigate('EditEventScreen', {item:item})}
+            event={item}
+            onPress={() => this.navigate('EditEventScreen', {event:item})}
             displayArrow
           />
         )}

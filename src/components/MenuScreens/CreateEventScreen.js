@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView, Text, TouchableOpacity} from 'react-native'
 import { connect } from 'react-redux'
 import t from 'tcomb-form-native';
 
-import { updateEvent } from '../../reducers/EventReducer'
+import { createEvent, endEvent, updateEvent } from '../../reducers/EventReducer'
 import styles from '../stylesGlobal'
 
 const stylesLocal = StyleSheet.create({
@@ -45,11 +45,10 @@ const options = {
 class CreateEventScreen extends React.Component {
   constructor(props) {
     super(props)
-    this.event = this.props.events.find(e => e.id === this.props.navigation.state.params.id)
     this.createValue = {
-        content: this.event.content,
-        startdate: new Date(this.event.startdate),
-        enddate: new Date(this.event.enddate)
+        content: '',
+        startdate: new Date(),
+        enddate: new Date()
       }
     }
 
@@ -59,21 +58,26 @@ class CreateEventScreen extends React.Component {
 
   navigate = (value) => this.props.navigation.navigate(value)
 
-  acceptButton = () => {
-    this.event.content = this.createValue.content
-    this.event.startdate = this.createValue.startdate
-    this.event.enddate = this.createValue.enddate
-    this.props.updateEvent(this.event)
+  createButton = async () => {
+    await this.props.createEvent(this.createValue)
+    let event = this.props.ongoingEvent
+    console.log(event)
+    await this.props.endEvent(this.props.ongoingEvent)
+
+    event.content = this.createValue.content
+    event.startdate = this.createValue.startdate
+    event.enddate = this.createValue.enddate
+
+    await this.props.updateEvent(event)
+    this.navigate('MenuScreen')
   }
 
   render() {
-      console.log(this.event)
-      console.log(this.createValue)
       return (
         <ScrollView>
 
-          <Text>
-          Käyttäjä: {this.event.user.username}
+          <Text style={styles.h1}>
+            Lisää tapahtuma
           </Text>
 
           <Form
@@ -81,10 +85,10 @@ class CreateEventScreen extends React.Component {
           type={Event}
           options={options}
           value={this.createValue}
-          onChange={(value) =>  this.createValue = value} />
+          onChange={(value) => this.createValue = value} />
 
-          <TouchableOpacity onPress={this.acceptButton} style={stylesLocal.roundButton} >
-            <Text style={styles.buttonText}>Hyväksy muutos!</Text>
+          <TouchableOpacity onPress={this.createButton} style={stylesLocal.roundButton} >
+            <Text style={styles.buttonText}>Lisää</Text>
           </TouchableOpacity>
 
         </ScrollView>
@@ -94,13 +98,14 @@ class CreateEventScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    events: state.events
+    events: state.events,
+    ongoingEvent: state.ongoingEvent
   }
 }
 
-const ConnectedEditEventScreen = connect(
+const ConnectedCreateEventScreen = connect(
   mapStateToProps,
-  { updateEvent }
+  { createEvent, endEvent, updateEvent }
 )(CreateEventScreen)
 
 export default ConnectedCreateEventScreen
