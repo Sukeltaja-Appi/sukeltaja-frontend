@@ -9,9 +9,7 @@ class EventListScreen extends React.Component {
     header: null ,
   };
 
-  navigate = (value) => this.props.navigation.navigate(value);
-
-  _onPress = () => {}
+  navigate = (route, params) => this.props.navigation.navigate(route, params)
 
 render() {
   const data = this.props.events
@@ -27,7 +25,7 @@ render() {
             startTime={item.startdate}
             endTime={item.enddate}
             content={item.content}
-            onPress={this._onPress}
+            onPress={() => this.navigate('EditEventScreen', {id:item.id})}
             displayArrow
           />
         )}

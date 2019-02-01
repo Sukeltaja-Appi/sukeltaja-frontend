@@ -5,7 +5,7 @@ export const EventReducer = (state = [], action) => {
     case 'NEW_EVENT': {
       return [ ...state, action.newEvent ]
     }
-    case 'END_EVENT': {
+    case 'UPDATE_EVENT': {
       const id = action.updatedEvent.id
       return state.map(event => event.id !== id ? event : action.updatedEvent)
     }
@@ -50,12 +50,22 @@ export const createEvent = (event) => {
   }
 }
 
+export const updateEvent = (event) => {
+  return async (dispatch) => {
+    const editedEvent = await eventService.update(event.id, event)
+    dispatch({
+      type: 'UPDATE_EVENT',
+      updatedEvent
+    })
+  }
+}
+
 export const endEvent = (event) => {
   event.enddate = new Date()
   return async (dispatch) => {
-    const updatedEvent = await eventService.update(event.id, event)
+    const editedEvent = await eventService.update(event.id, event)
     dispatch({
-      type: 'END_EVENT',
+      type: 'UPDATE_EVENT',
       updatedEvent
     })
   }
