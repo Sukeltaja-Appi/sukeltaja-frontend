@@ -42,10 +42,10 @@ const options = {
   }
 };
 
-class EditEventScreen extends React.Component {
+class CreateEventScreen extends React.Component {
   constructor(props) {
     super(props)
-    this.event = this.props.navigation.state.params.item
+    this.event = this.props.events.find(e => e.id === this.props.navigation.state.params.id)
     this.createValue = {
         content: this.event.content,
         startdate: new Date(this.event.startdate),
@@ -92,9 +92,15 @@ class EditEventScreen extends React.Component {
     }
 }
 
-const ConnectedEditEventScreen = connect(
-  null,
-  { updateEvent }
-)(EditEventScreen)
+const mapStateToProps = (state) => {
+  return {
+    events: state.events
+  }
+}
 
-export default ConnectedEditEventScreen
+const ConnectedEditEventScreen = connect(
+  mapStateToProps,
+  { updateEvent }
+)(CreateEventScreen)
+
+export default ConnectedCreateEventScreen

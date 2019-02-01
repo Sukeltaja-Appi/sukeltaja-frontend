@@ -6,5 +6,6 @@ import EditEventScreen from './EditEventScreen';
 export default createStackNavigator({
   MenuScreen,
   EventListScreen,
-  EditEventScreen
+  EditEventScreen,
+  //CreateEventScreen
 });

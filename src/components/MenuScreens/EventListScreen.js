@@ -25,11 +25,11 @@ render() {
             startTime={item.startdate}
             endTime={item.enddate}
             content={item.content}
-            onPress={() => this.navigate('EditEventScreen', {id:item.id})}
+            onPress={() => this.navigate('EditEventScreen', {item:item})}
             displayArrow
           />
         )}
-        keyExtractor={item  => item.id.toString()}
+        keyExtractor={item  => item.id}
       />
     </View>
   )
