@@ -52,7 +52,7 @@ export const createEvent = (event) => {
 
 export const updateEvent = (event) => {
   return async (dispatch) => {
-    const editedEvent = await eventService.update(event.id, event)
+    const updatedEvent = await eventService.update(event.id, event)
     dispatch({
       type: 'UPDATE_EVENT',
       updatedEvent
@@ -63,7 +63,7 @@ export const updateEvent = (event) => {
 export const endEvent = (event) => {
   event.enddate = new Date()
   return async (dispatch) => {
-    const editedEvent = await eventService.update(event.id, event)
+    const updatedEvent = await eventService.update(event.id, event)
     dispatch({
       type: 'UPDATE_EVENT',
       updatedEvent
