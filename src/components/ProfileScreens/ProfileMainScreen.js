@@ -27,10 +27,10 @@ const stylesLocal = StyleSheet.create({
 export class ProfileMainScreen extends React.Component {
 
   static navigationOptions = {
-    header: null ,
-  };
+    header: null,
+  }
 
-  navigate = (value) => this.props.navigation.navigate(value);
+  navigate = (value) => this.props.navigation.navigate(value)
 
   render() {
     const uri = 'https://upload.wikimedia.org/wikipedia/commons/5/50/USS_Scorpion_sail.jpg'

@@ -5,10 +5,10 @@ import ListItem from '../simple/ListItem'
 class MenuScreen extends React.Component {
 
   static navigationOptions = {
-    header: null ,
-  };
+    header: null,
+  }
 
-  navigate = (value) => this.props.navigation.navigate(value);
+  navigate = (value) => this.props.navigation.navigate(value)
 
   options = [
     {
@@ -32,7 +32,7 @@ class MenuScreen extends React.Component {
 
     return (
       <View style={{ flex: 9, backgroundColor: '#eee' }}>
-        <View style={{ flex: 0.2, backgroundColor: '#eee'}} />
+        <View style={{ flex: 0.2, backgroundColor: '#eee' }} />
         <FlatList
           data={this.options}
           renderItem={({ item }) => (
@@ -43,7 +43,7 @@ class MenuScreen extends React.Component {
               displayArrow
             />
           )}
-          keyExtractor={item  => item.title}
+          keyExtractor={item => item.title}
         />
       </View>
     )

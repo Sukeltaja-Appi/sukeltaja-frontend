@@ -11,6 +11,7 @@ class AppEntry extends React.Component {
       username: USERNAME,
       password: PASSWORD
     }
+
     await this.props.login(credentials)
 
     const { user } = this.props

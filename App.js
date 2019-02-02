@@ -1,6 +1,7 @@
+import { AppRegistry } from 'react-native'
+
 import React from 'react'
 
-import { AppRegistry } from 'react-native';
 import { connect, Provider } from 'react-redux'
 import store from './src/store'
 

@@ -19,13 +19,14 @@ const stylesLocal = StyleSheet.create({
 class EventScreen extends React.Component {
 
   static navigationOptions = {
-    header: null ,
-  };
+    header: null,
+  }
 
-  navigate = (value) => this.props.navigation.navigate(value);
+  navigate = (value) => this.props.navigation.navigate(value)
 
   startButton = async () => {
     const event = { content: 'Uusi tapahtuma 3' }
+
     await this.props.createEvent(event)
 
     this.navigate('OngoingEventScreen')
@@ -37,15 +38,15 @@ class EventScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-          <Text style={styles.h1}>Tapahtuma</Text>
+        <Text style={styles.h1}>Tapahtuma</Text>
 
-          <TouchableOpacity onPress={this.joinButton} style={styles.button} >
-              <Text style={styles.buttonText}>Liity</Text>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={this.joinButton} style={styles.button} >
+          <Text style={styles.buttonText}>Liity</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.startButton} style={stylesLocal.roundButton} >
-            <Text style={styles.buttonText}>Aloita</Text>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={this.startButton} style={stylesLocal.roundButton} >
+          <Text style={styles.buttonText}>Aloita</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -55,6 +56,5 @@ const ConnectedEventScreen = connect(
   null,
   { createEvent }
 )(EventScreen)
-
 
 export default ConnectedEventScreen

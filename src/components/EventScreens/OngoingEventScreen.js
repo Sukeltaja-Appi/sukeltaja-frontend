@@ -25,7 +25,7 @@ class OngoingEventScreen extends React.Component {
   }
 
   static navigationOptions = {
-    header: null ,
+    header: null,
   }
 
   componentDidMount() {
@@ -36,30 +36,31 @@ class OngoingEventScreen extends React.Component {
     clearInterval(this.interval)
   }
 
-  navigate = (value) => this.props.navigation.navigate(value);
+  navigate = (value) => this.props.navigation.navigate(value)
 
   inviteButton = () => {
     console.log(this.props)
   }
   endButton = () => {
     this.props.endEvent(this.props.ongoingEvent)
+
     return this.navigate('EventScreen')
   }
 
   render() {
     return (
       <View style={styles.container}>
-          <Text style={styles.h1}>Tapahtuma käynnissä</Text>
+        <Text style={styles.h1}>Tapahtuma käynnissä</Text>
 
-          <TouchableOpacity onPress={this.inviteButton} style={styles.button} >
-              <Text style={styles.buttonText}>Kutsu</Text>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={this.inviteButton} style={styles.button} >
+          <Text style={styles.buttonText}>Kutsu</Text>
+        </TouchableOpacity>
 
-          <Text style={styles.h1}>{this.state.counter}</Text>
+        <Text style={styles.h1}>{this.state.counter}</Text>
 
-          <TouchableOpacity onPress={this.endButton} style={stylesLocal.roundButton} >
-            <Text style={styles.buttonText}>Lopeta</Text>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={this.endButton} style={stylesLocal.roundButton} >
+          <Text style={styles.buttonText}>Lopeta</Text>
+        </TouchableOpacity>
       </View>
     )
   }

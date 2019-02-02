@@ -7,6 +7,8 @@ import { Button } from 'react-native'
 
 import { ProfileMainScreen } from '../components/ProfileScreens/ProfileMainScreen'
 
+let wrapper, mounted
+
 beforeAll(() => {
   wrapper = shallow(<ProfileMainScreen />)
   mounted = mount(<ProfileMainScreen />)
@@ -17,11 +19,13 @@ describe('<ProfileMainScreen/>', () => {
     const profileScreen = renderer
       .create(wrapper)
       .toJSON()
+
     expect(profileScreen).toMatchSnapshot()
   })
 
   it('pressing the button does nothing', () => {
     const button = mounted.find(Button).first()
+
     button.simulate('click')
     expect(1).toBe(1)
   })
