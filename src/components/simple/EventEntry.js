@@ -41,7 +41,7 @@ const EventEntry = (props) => {
       <TouchableHighlight underlayColor='#d9d9d9' onPress={ props.onPress }>
         <View style={ stylesLocal.itemRow }>
             <View>
-              <Text style={stylesLocal.desc}>Käyttäjä: { event.username }</Text>
+              <Text style={stylesLocal.desc}>Käyttäjä: { event.user.username }</Text>
               <Text style={stylesLocal.desc}>Kuvaus: { event.content }</Text>
               <Text style={stylesLocal.desc}>Alkoi: { startTime.toLocaleString(DateTime.DATETIME_SHORT) }</Text>
               { event.enddate
@@ -50,7 +50,7 @@ const EventEntry = (props) => {
             </View>
             { props.displayArrow
               ? <ArrowRight color="#c7c7cc" />
-              : null }
+            : null }
         </View>
       </TouchableHighlight>
     </View>

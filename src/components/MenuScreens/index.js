@@ -9,4 +9,4 @@ export default createStackNavigator({
   EventListScreen,
   EditEventScreen,
   CreateEventScreen
-});
+})

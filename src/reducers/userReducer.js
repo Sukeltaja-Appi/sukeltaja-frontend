@@ -20,6 +20,7 @@ export const login = (credentials) => {
         username: credentials.username,
         password: credentials.password
       })
+
       dispatch({
         type: 'LOGIN_SUCCESS',
         user
