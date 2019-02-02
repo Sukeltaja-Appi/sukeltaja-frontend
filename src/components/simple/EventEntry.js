@@ -39,17 +39,17 @@ const EventEntry = (props) => {
     <View style={ stylesLocal.item }>
       <TouchableHighlight underlayColor='#d9d9d9' onPress={ props.onPress }>
         <View style={ stylesLocal.itemRow }>
-            <View>
-              <Text style={stylesLocal.desc}>Käyttäjä: { props.username }</Text>
-              <Text style={stylesLocal.desc}>Kuvaus: { props.content }</Text>
-              <Text style={stylesLocal.desc}>Alkoi: { startTime.toLocaleString(DateTime.DATETIME_SHORT) }</Text>
-              { props.endTime
-                ? <Text style={stylesLocal.desc}>Kesto: { duration.toFormat("hh'h' mm'm' ss's'") }</Text>
-                : null }
-            </View>
-            { props.displayArrow
-              ? <ArrowRight color="#c7c7cc" />
+          <View>
+            <Text style={stylesLocal.desc}>Käyttäjä: { props.username }</Text>
+            <Text style={stylesLocal.desc}>Kuvaus: { props.content }</Text>
+            <Text style={stylesLocal.desc}>Alkoi: { startTime.toLocaleString(DateTime.DATETIME_SHORT) }</Text>
+            { props.endTime
+              ? <Text style={stylesLocal.desc}>Kesto: { duration.toFormat("h'h' m'm'") }</Text>
               : null }
+          </View>
+          { props.displayArrow
+            ? <ArrowRight color="#c7c7cc" />
+            : null }
         </View>
       </TouchableHighlight>
     </View>

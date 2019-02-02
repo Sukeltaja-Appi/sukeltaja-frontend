@@ -7,6 +7,7 @@ export const EventReducer = (state = [], action) => {
     }
     case 'END_EVENT': {
       const id = action.updatedEvent.id
+
       return state.map(event => event.id !== id ? event : action.updatedEvent)
     }
     case 'INIT_EVENTS':
@@ -29,6 +30,7 @@ export const ongoingEventReducer = (state = [], action) => {
 export const initializeEvents = () => {
   return async (dispatch) => {
     const events = await eventService.getAll()
+
     dispatch({
       type: 'INIT_EVENTS',
       events
@@ -39,6 +41,7 @@ export const initializeEvents = () => {
 export const createEvent = (event) => {
   return async (dispatch) => {
     const newEvent = await eventService.create(event)
+
     dispatch({
       type: 'NEW_EVENT',
       newEvent
@@ -52,8 +55,10 @@ export const createEvent = (event) => {
 
 export const endEvent = (event) => {
   event.enddate = new Date()
+
   return async (dispatch) => {
     const updatedEvent = await eventService.update(event.id, event)
+
     dispatch({
       type: 'END_EVENT',
       updatedEvent

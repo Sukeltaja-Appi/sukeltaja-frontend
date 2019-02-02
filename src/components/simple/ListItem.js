@@ -33,11 +33,11 @@ const ListItem = (props) => {
     <View style={stylesLocal.item}>
       <TouchableHighlight underlayColor='#d9d9d9' onPress={props.onPress}>
         <View style={stylesLocal.itemRow}>
-            <View>
-              <Text style={stylesLocal.title}>{props.title}</Text>
-              <Text style={stylesLocal.desc}>{props.description}</Text>
-            </View>
-            { props.displayArrow ? <ArrowRight color="#c7c7cc" /> : null }
+          <View>
+            <Text style={stylesLocal.title}>{props.title}</Text>
+            <Text style={stylesLocal.desc}>{props.description}</Text>
+          </View>
+          { props.displayArrow ? <ArrowRight color="#c7c7cc" /> : null }
         </View>
       </TouchableHighlight>
     </View>
