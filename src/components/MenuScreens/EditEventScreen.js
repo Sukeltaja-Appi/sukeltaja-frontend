@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, ScrollView, Text, TouchableOpacity} from 'react-native'
+import { StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import t from 'tcomb-form-native';
+import t from 'tcomb-form-native'
 
 import { updateEvent } from '../../reducers/EventReducer'
 import styles from '../stylesGlobal'
@@ -16,15 +16,15 @@ const stylesLocal = StyleSheet.create({
     height: 70,
     borderRadius: 150
   }
-});
+})
 
-const Form = t.form.Form;
+const Form = t.form.Form
 
 const Event = t.struct({
   content:t.String,
   startdate:t.Date,
   enddate:t.Date,
-});
+})
 
 const options = {
   fields: {
@@ -40,21 +40,21 @@ const options = {
       mode: 'datetime'
     }
   }
-};
+}
 
 class EditEventScreen extends React.Component {
   constructor(props) {
     super(props)
     this.event = this.props.navigation.state.params.event
     this.createValue = {
-        content: this.event.content,
-        startdate: new Date(this.event.startdate),
-        enddate: new Date(this.event.enddate)
-      }
+      content: this.event.content,
+      startdate: new Date(this.event.startdate),
+      enddate: new Date(this.event.enddate)
     }
+  }
 
   static navigationOptions = {
-    header: null ,
+    header: null
   };
 
   navigate = (value) => this.props.navigation.navigate(value)
@@ -68,27 +68,29 @@ class EditEventScreen extends React.Component {
   }
 
   render() {
-      return (
-        <ScrollView>
+    const reference = 'form'
 
-          <Text>
+    return (
+      <ScrollView>
+
+        <Text>
           Käyttäjä: {this.event.user.username}
-          </Text>
+        </Text>
 
-          <Form
-          ref="form"
+        <Form
+          ref={reference}
           type={Event}
           options={options}
           value={this.createValue}
-          onChange={(value) =>  this.createValue = value} />
+          onChange={(value) => this.createValue = value} />
 
-          <TouchableOpacity onPress={this.acceptButton} style={stylesLocal.roundButton} >
-            <Text style={styles.buttonText}>Hyväksy muutos!</Text>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={this.acceptButton} style={stylesLocal.roundButton} >
+          <Text style={styles.buttonText}>Hyväksy muutos!</Text>
+        </TouchableOpacity>
 
-        </ScrollView>
-        )
-    }
+      </ScrollView>
+    )
+  }
 }
 
 const ConnectedEditEventScreen = connect(

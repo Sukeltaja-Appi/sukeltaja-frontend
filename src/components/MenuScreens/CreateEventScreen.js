@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, ScrollView, Text, TouchableOpacity} from 'react-native'
+import { StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import t from 'tcomb-form-native';
+import t from 'tcomb-form-native'
 
 import { createEvent, endEvent, updateEvent } from '../../reducers/EventReducer'
 import styles from '../stylesGlobal'
@@ -16,15 +16,15 @@ const stylesLocal = StyleSheet.create({
     height: 70,
     borderRadius: 150
   }
-});
+})
 
-const Form = t.form.Form;
+const Form = t.form.Form
 
 const Event = t.struct({
   content:t.String,
   startdate:t.Date,
   enddate:t.Date,
-});
+})
 
 const options = {
   fields: {
@@ -40,28 +40,28 @@ const options = {
       mode: 'datetime'
     }
   }
-};
+}
 
 class CreateEventScreen extends React.Component {
   constructor(props) {
     super(props)
     this.createValue = {
-        content: '',
-        startdate: new Date(),
-        enddate: new Date()
-      }
+      content: '',
+      startdate: new Date(),
+      enddate: new Date()
     }
+  }
 
   static navigationOptions = {
-    header: null ,
-  };
+    header: null
+  }
 
   navigate = (value) => this.props.navigation.navigate(value)
 
   createButton = async () => {
     await this.props.createEvent(this.createValue)
     let event = this.props.ongoingEvent
-    console.log(event)
+
     await this.props.endEvent(this.props.ongoingEvent)
 
     event.content = this.createValue.content
@@ -73,27 +73,29 @@ class CreateEventScreen extends React.Component {
   }
 
   render() {
-      return (
-        <ScrollView>
+    const reference = 'form'
 
-          <Text style={styles.h1}>
-            Lisää tapahtuma
-          </Text>
+    return (
+      <ScrollView>
 
-          <Form
-          ref="form"
+        <Text style={styles.h1}>
+          Lisää tapahtuma
+        </Text>
+
+        <Form
+          ref={reference}
           type={Event}
           options={options}
           value={this.createValue}
           onChange={(value) => this.createValue = value} />
 
-          <TouchableOpacity onPress={this.createButton} style={stylesLocal.roundButton} >
-            <Text style={styles.buttonText}>Lisää</Text>
-          </TouchableOpacity>
+        <TouchableOpacity onPress={this.createButton} style={stylesLocal.roundButton} >
+          <Text style={styles.buttonText}>Lisää</Text>
+        </TouchableOpacity>
 
-        </ScrollView>
-        )
-    }
+      </ScrollView>
+    )
+  }
 }
 
 const mapStateToProps = (state) => {

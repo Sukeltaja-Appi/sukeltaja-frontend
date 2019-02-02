@@ -16,18 +16,18 @@ class EventListScreen extends React.Component {
 
     return (
       <View style={{ flex: 9, backgroundColor: '#eee' }}>
-        <View style={{ flex: 0.2, backgroundColor: '#eee'}} />
-          <FlatList
-            data={data}
-            renderItem={({ item }) => (
+        <View style={{ flex: 0.2, backgroundColor: '#eee' }} />
+        <FlatList
+          data={data}
+          renderItem={({ item }) => (
             <EventEntry
               event={item}
-              onPress={() => this.navigate('EditEventScreen', {event:item})}
+              onPress={() => this.navigate('EditEventScreen', { event:item })}
               displayArrow
-              />
-            )}
-            keyExtractor={item  => item.id}
             />
+          )}
+          keyExtractor={item => item.id}
+        />
       </View>
     )
   }
