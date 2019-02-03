@@ -31,7 +31,7 @@ const stylesLocal = StyleSheet.create({
 })
 
 const EventEntry = (props) => {
-  const event = props.event
+  const event = props.item
   const startTime = DateTime.fromISO(event.startdate).setLocale('fi')
   const endTime = DateTime.fromISO(event.enddate).setLocale('fi')
   const duration = Duration.fromMillis(endTime - startTime)

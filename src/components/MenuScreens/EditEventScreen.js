@@ -45,7 +45,7 @@ const options = {
 class EditEventScreen extends React.Component {
   constructor(props) {
     super(props)
-    this.event = this.props.navigation.state.params.event
+    this.event = this.props.navigation.state.params.item
     this.createValue = {
       content: this.event.content,
       startdate: new Date(this.event.startdate),

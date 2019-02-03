@@ -21,8 +21,8 @@ class EventListScreen extends React.Component {
           data={data}
           renderItem={({ item }) => (
             <EventEntry
-              event={item}
-              onPress={() => this.navigate('EditEventScreen', { event:item })}
+              item={item}
+              onPress={() => this.navigate('EditEventScreen', { item:item })}
               displayArrow
             />
           )}
