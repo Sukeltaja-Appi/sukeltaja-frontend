@@ -5,7 +5,7 @@ import { Avatar, Text, Button } from 'react-native-elements'
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
 
-const ProfileMainScreen = (props) => {
+export const ProfileMainScreen = (props) => {
   const uri = 'https://upload.wikimedia.org/wikipedia/commons/5/50/USS_Scorpion_sail.jpg'
 
   return (
