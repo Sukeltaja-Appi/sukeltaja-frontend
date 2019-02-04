@@ -2,6 +2,8 @@ import axios from 'axios'
 import { API_URL } from 'react-native-dotenv'
 import axiosRetry from 'axios-retry'
 
+console.log('LOGIN trying to connect to:', API_URL)
+
 axiosRetry(axios, {
   retries: 5,
   retryDelay: axiosRetry.exponentialDelay

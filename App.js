@@ -6,7 +6,7 @@ import { connect, Provider } from 'react-redux'
 import store from './src/store'
 
 import { login } from './src/reducers/userReducer'
-import { initializeEvents } from './src/reducers/EventReducer'
+import { initializeEvents } from './src/reducers/eventReducer'
 
 import AppEntry from './src/AppEntry'
 
