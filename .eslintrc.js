@@ -45,7 +45,7 @@ module.exports = {
     ],
     "no-multi-spaces": "error",
     "no-magic-numbers": [
-      "error", { "ignore": [0, 1, 60, 1000] }
+      "error", { "ignore": [0, 1, 2, 3, 1000] }
     ],
     "comma-spacing": [
       "error", { "before": false, "after": true }
