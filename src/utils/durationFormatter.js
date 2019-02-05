@@ -1,9 +1,8 @@
 export const format = (duration) => {
-  const { milliseconds } = duration
+  const seconds = duration.milliseconds / 1000
 
   const times = {
-    second: 1000,
-    get minute() { return this.second * 60 },
+    minute: 60,
     get hour() { return this.minute * 60 },
     get day() { return this.hour * 24 }
   }
@@ -12,11 +11,11 @@ export const format = (duration) => {
 
   const format = ["d'd'", "h'h'", "m'm'", "s's'"]
 
-  if (milliseconds >= day) {
+  if (seconds >= day) {
     return duration.toFormat(format.join(' '))
-  } else if (duration.milliseconds >= hour) {
+  } else if (seconds >= hour) {
     return duration.toFormat(format.slice(1).join(' '))
-  } else if (duration.milliseconds >= minute) {
+  } else if (seconds >= minute) {
     return duration.toFormat(format.slice(2).join(' '))
   }
 
