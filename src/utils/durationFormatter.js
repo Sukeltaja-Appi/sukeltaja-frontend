@@ -2,9 +2,10 @@ export const format = (duration) => {
   const { milliseconds } = duration
 
   const times = {
-    minute: 60e3,
-    hour: 3.6e6,
-    day: 86.4e6
+    second: 1000,
+    get minute() { return this.second * 60 },
+    get hour() { return this.minute * 60 },
+    get day() { return this.hour * 24 }
   }
 
   const { day, hour, minute } = times
