@@ -2,9 +2,9 @@ export const format = (duration) => {
   const { milliseconds } = duration
 
   const times = {
-    minute: 60000,
-    hour: 3600000,
-    day: 86400000
+    minute: 60e3,
+    hour: 3.6e6,
+    day: 86.4e6
   }
 
   const { day, hour, minute } = times
