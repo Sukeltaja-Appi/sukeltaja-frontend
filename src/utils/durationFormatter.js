@@ -1,21 +1,17 @@
+import { Duration } from 'luxon'
+
 export const format = (duration) => {
-  const seconds = duration.milliseconds / 1000
-
-  const times = {
-    minute: 60,
-    get hour() { return this.minute * 60 },
-    get day() { return this.hour * 24 }
-  }
-
-  const { day, hour, minute } = times
+  const day = Duration.fromObject({ days: 1 })
+  const hour = Duration.fromObject({ hours: 1 })
+  const minute = Duration.fromObject({ minutes: 1 })
 
   const format = ["d'd'", "h'h'", "m'm'", "s's'"]
 
-  if (seconds >= day) {
+  if (duration >= day) {
     return duration.toFormat(format.join(' '))
-  } else if (seconds >= hour) {
+  } else if (duration >= hour) {
     return duration.toFormat(format.slice(1).join(' '))
-  } else if (seconds >= minute) {
+  } else if (duration >= minute) {
     return duration.toFormat(format.slice(2).join(' '))
   }
 
