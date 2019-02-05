@@ -3,7 +3,7 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import { shallow, mount } from 'enzyme'
 
-import { Button } from 'react-native'
+import { Button } from 'react-native-elements'
 
 import { ProfileMainScreen } from '../components/ProfileScreens/ProfileMainScreen'
 

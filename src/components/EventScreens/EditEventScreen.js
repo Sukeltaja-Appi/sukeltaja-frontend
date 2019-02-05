@@ -3,8 +3,8 @@ import { StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import t from 'tcomb-form-native'
 
-import { createEvent, endEvent, updateEvent } from '../../reducers/EventReducer'
-import styles from '../stylesGlobal'
+import { updateEvent } from '../../reducers/eventReducer'
+import styles from '../../styles/global'
 
 const stylesLocal = StyleSheet.create({
   roundButton: {
@@ -42,34 +42,25 @@ const options = {
   }
 }
 
-class CreateEventScreen extends React.Component {
+class EditEventScreen extends React.Component {
   constructor(props) {
     super(props)
+    this.event = this.props.navigation.state.params.item
     this.createValue = {
-      content: '',
-      startdate: new Date(),
-      enddate: new Date()
+      content: this.event.content,
+      startdate: new Date(this.event.startdate),
+      enddate: new Date(this.event.enddate)
     }
-  }
-
-  static navigationOptions = {
-    header: null
   }
 
   navigate = (value) => this.props.navigation.navigate(value)
 
-  createButton = async () => {
-    await this.props.createEvent(this.createValue)
-    let event = this.props.ongoingEvent
-
-    await this.props.endEvent(this.props.ongoingEvent)
-
-    event.content = this.createValue.content
-    event.startdate = this.createValue.startdate
-    event.enddate = this.createValue.enddate
-
-    await this.props.updateEvent(event)
-    this.navigate('MenuScreen')
+  acceptButton = () => {
+    this.event.content = this.createValue.content
+    this.event.startdate = this.createValue.startdate
+    this.event.enddate = this.createValue.enddate
+    this.props.updateEvent(this.event)
+    this.navigate('EventListScreen')
   }
 
   render() {
@@ -78,8 +69,8 @@ class CreateEventScreen extends React.Component {
     return (
       <ScrollView>
 
-        <Text style={styles.h1}>
-          Lisää tapahtuma
+        <Text>
+          Käyttäjä: {this.event.user.username}
         </Text>
 
         <Form
@@ -89,8 +80,8 @@ class CreateEventScreen extends React.Component {
           value={this.createValue}
           onChange={(value) => this.createValue = value} />
 
-        <TouchableOpacity onPress={this.createButton} style={stylesLocal.roundButton} >
-          <Text style={styles.buttonText}>Lisää</Text>
+        <TouchableOpacity onPress={this.acceptButton} style={stylesLocal.roundButton} >
+          <Text style={styles.buttonText}>Hyväksy muutos!</Text>
         </TouchableOpacity>
 
       </ScrollView>
@@ -98,16 +89,9 @@ class CreateEventScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    events: state.events,
-    ongoingEvent: state.ongoingEvent
-  }
-}
+const ConnectedEditEventScreen = connect(
+  null,
+  { updateEvent }
+)(EditEventScreen)
 
-const ConnectedCreateEventScreen = connect(
-  mapStateToProps,
-  { createEvent, endEvent, updateEvent }
-)(CreateEventScreen)
-
-export default ConnectedCreateEventScreen
+export default ConnectedEditEventScreen

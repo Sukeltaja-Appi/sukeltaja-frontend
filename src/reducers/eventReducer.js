@@ -1,6 +1,6 @@
 import eventService from '../services/events'
 
-export const EventReducer = (state = [], action) => {
+export const eventReducer = (state = [], action) => {
   switch (action.type) {
     case 'NEW_EVENT': {
       return [ ...state, action.newEvent ]
@@ -20,7 +20,7 @@ export const EventReducer = (state = [], action) => {
 export const ongoingEventReducer = (state = [], action) => {
   switch (action.type) {
     case 'SET_CURRENT_EVENT': {
-      return action.newEvent
+      return action.currentEvent
     }
     default:
       return state
@@ -48,7 +48,7 @@ export const createEvent = (event) => {
     })
     dispatch({
       type: 'SET_CURRENT_EVENT',
-      newEvent
+      currentEvent: newEvent
     })
   }
 }
@@ -74,6 +74,10 @@ export const endEvent = (event) => {
     dispatch({
       type: 'UPDATE_EVENT',
       updatedEvent
+    }),
+    dispatch({
+      type: 'SET_CURRENT_EVENT',
+      currentEvent: null
     })
   }
 }
