@@ -3,7 +3,7 @@ import { View, FlatList, Text } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import ArrowRight from '../simple/ArrowRight'
 import styles from '../../styles/global'
-import { DateTime } from 'luxon'
+import { formatDate } from '../../utils/dates'
 import { connect } from 'react-redux'
 
 const style = {
@@ -16,21 +16,8 @@ const style = {
 const EventListScreen = (props) => {
   const { events } = props
 
-  const formatDate = (date) => (
-    DateTime
-      .fromISO(date)
-      .setLocale('fi')
-      .toLocaleString(DateTime.DATETIME_SHORT)
-  )
-
-  const navigate = (id, content, startdate, enddate, item) => (
-    props.navigation.navigate('Event', {
-      id,
-      content,
-      startdate,
-      enddate,
-      item
-    })
+  const navigate = (item) => (
+    props.navigation.navigate('Event', { item })
   )
 
   const eventsSortedByDate = () => (
@@ -51,14 +38,14 @@ const EventListScreen = (props) => {
         <FlatList
           data={eventsSortedByDate()}
           renderItem={({ item }) => {
-            const { id, content, startdate, enddate } = item
+            const { content, startdate } = item
 
             return (
               <ListItem
                 title={content}
                 subtitle={formatDate(startdate)}
                 rightIcon={ <ArrowRight/> }
-                onPress={() => navigate(id, content, startdate, enddate, item)}
+                onPress={() => navigate(item)}
                 subtitleStyle={style.subtitle}
                 bottomDivider
               />
