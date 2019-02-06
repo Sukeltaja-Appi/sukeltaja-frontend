@@ -1,11 +1,11 @@
 import eventService from '../services/events'
 
-export const EventReducer = (state = [], action) => {
+export const eventReducer = (state = [], action) => {
   switch (action.type) {
     case 'NEW_EVENT': {
       return [ ...state, action.newEvent ]
     }
-    case 'END_EVENT': {
+    case 'UPDATE_EVENT': {
       const id = action.updatedEvent.id
 
       return state.map(event => event.id !== id ? event : action.updatedEvent)
@@ -20,7 +20,7 @@ export const EventReducer = (state = [], action) => {
 export const ongoingEventReducer = (state = [], action) => {
   switch (action.type) {
     case 'SET_CURRENT_EVENT': {
-      return action.newEvent
+      return action.currentEvent
     }
     default:
       return state
@@ -38,7 +38,7 @@ export const initializeEvents = () => {
   }
 }
 
-export const createEvent = (event) => {
+export const startEvent = (event) => {
   return async (dispatch) => {
     const newEvent = await eventService.create(event)
 
@@ -48,7 +48,7 @@ export const createEvent = (event) => {
     })
     dispatch({
       type: 'SET_CURRENT_EVENT',
-      newEvent
+      currentEvent: newEvent
     })
   }
 }
@@ -61,6 +61,36 @@ export const endEvent = (event) => {
 
     dispatch({
       type: 'END_EVENT',
+      updatedEvent
+    }),
+    dispatch({
+      type: 'SET_CURRENT_EVENT',
+      currentEvent: null
+    })
+  }
+}
+
+export const createEvent = (event) => {
+
+  return async (dispatch) => {
+    const newEvent = await eventService.create(event)
+
+    dispatch({
+      type: 'NEW_EVENT',
+      newEvent
+    })
+
+    return newEvent
+  }
+}
+
+export const updateEvent = (event) => {
+
+  return async (dispatch) => {
+    const updatedEvent = await eventService.update(event.id, event)
+
+    dispatch({
+      type: 'UPDATE_EVENT',
       updatedEvent
     })
   }

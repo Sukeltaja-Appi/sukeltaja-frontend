@@ -1,48 +1,62 @@
 import React from 'react'
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation'
+import { createBottomTabNavigator, BottomTabBar, createAppContainer } from 'react-navigation'
 
+import DiveScreens from './components/DiveScreens'
 import EventScreens from './components/EventScreens'
-import MenuScreens from './components/MenuScreens'
-import ProfileScreens from './components/ProfileScreens'
+import ProfileMainScreen from './components/ProfileScreens/ProfileMainScreen'
 
-import Icon from 'react-native-vector-icons/AntDesign'
+import { Icon } from 'react-native-elements'
+
+import colors from './styles/colors'
+
+const TabBarComponent = (props) => (<BottomTabBar { ...props } />)
+
+const style = {
+  activeTintColor: '#fff',
+  labelStyle: {
+    fontWeight: 'bold'
+  }
+}
 
 const MainTabNavigator = createBottomTabNavigator({
-  Event0 : {
-    screen: EventScreens,
+  OngoingEvent : {
+    screen: DiveScreens,
     navigationOptions: {
-      tabBarLabel: 'Tapahtuma',
-      tabBarOptions: { activeTintColor: 'blue' },
-      tabBarIcon: () => (
-        <Icon name="circledowno" size={30} color="#000000" />
+      tabBarLabel: 'SUKELLUS',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='anchor' type='feather' color={tintColor} />
       )
     }
   },
   EventList : {
-    screen: MenuScreens,
+    screen: EventScreens,
     navigationOptions: {
-      tabBarLabel: 'Valikko',
-      tabBarOptions: { activeTintColor: 'blue' },
-      tabBarIcon: () => (
-        <Icon name="bars" size={30} color="#000000" />
+      tabBarLabel: 'TAPAHTUMAT',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='archive' type='feather' color={tintColor} />
       )
     }
   },
   Profile : {
-    screen: ProfileScreens,
+    screen: ProfileMainScreen,
     navigationOptions: {
-      tabBarLabel: 'Profiili',
-      tabBarOptions: { activeTintColor: 'blue' },
-      tabBarIcon: () => (
-        <Icon name="user" size={30} color="#000000" />
+      tabBarLabel: 'PROFIILI',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='user' type='feather' color={tintColor} />
       )
     }
   }
 }, {
-  tabBarOptions : {
-    style: {
-      backgroundColor: '#37fbe5',
-    }
+  tabBarComponent: props => {
+    return(
+      <TabBarComponent
+        {...props}
+        style={{ backgroundColor: colors.primary }}
+      />
+    )
   }
 })
 

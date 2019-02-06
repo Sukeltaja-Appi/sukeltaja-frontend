@@ -1,10 +1,7 @@
 import React from 'react'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { Icon } from 'react-native-elements'
+import colors from '../../styles/colors'
 
-const ArrowRight = (props) => {
-  return (
-    <MaterialCommunityIcons name="chevron-right" size={32} color={props.color} />
-  )
-}
+const ArrowRight = () => <Icon name='chevron-right' type='material-community' color={colors.lightgray} />
 
 export default ArrowRight
