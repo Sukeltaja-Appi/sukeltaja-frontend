@@ -60,7 +60,7 @@ export const endEvent = (event) => {
     const updatedEvent = await eventService.update(event.id, event)
 
     dispatch({
-      type: 'END_EVENT',
+      type: 'UPDATE_EVENT',
       updatedEvent
     }),
     dispatch({
