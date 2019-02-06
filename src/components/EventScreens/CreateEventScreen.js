@@ -55,10 +55,7 @@ class CreateEventScreen extends React.Component {
   navigate = (value) => this.props.navigation.navigate(value)
 
   createButton = async () => {
-    await this.props.createEvent(this.createValue)
-    let event = this.props.ongoingEvent
-
-    await this.props.endEvent(this.props.ongoingEvent)
+    let event = await this.props.createEvent(this.createValue)
 
     event.content = this.createValue.content
     event.startdate = this.createValue.startdate

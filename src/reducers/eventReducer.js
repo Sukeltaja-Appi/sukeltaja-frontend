@@ -38,7 +38,7 @@ export const initializeEvents = () => {
   }
 }
 
-export const createEvent = (event) => {
+export const startEvent = (event) => {
   return async (dispatch) => {
     const newEvent = await eventService.create(event)
 
@@ -53,6 +53,37 @@ export const createEvent = (event) => {
   }
 }
 
+export const endEvent = (event) => {
+  event.enddate = new Date()
+
+  return async (dispatch) => {
+    const updatedEvent = await eventService.update(event.id, event)
+
+    dispatch({
+      type: 'END_EVENT',
+      updatedEvent
+    }),
+    dispatch({
+      type: 'SET_CURRENT_EVENT',
+      currentEvent: null
+    })
+  }
+}
+
+export const createEvent = (event) => {
+
+  return async (dispatch) => {
+    const newEvent = await eventService.create(event)
+
+    dispatch({
+      type: 'NEW_EVENT',
+      newEvent
+    })
+
+    return newEvent
+  }
+}
+
 export const updateEvent = (event) => {
 
   return async (dispatch) => {
@@ -61,23 +92,6 @@ export const updateEvent = (event) => {
     dispatch({
       type: 'UPDATE_EVENT',
       updatedEvent
-    })
-  }
-}
-
-export const endEvent = (event) => {
-  event.enddate = new Date()
-
-  return async (dispatch) => {
-    const updatedEvent = await eventService.update(event.id, event)
-
-    dispatch({
-      type: 'UPDATE_EVENT',
-      updatedEvent
-    }),
-    dispatch({
-      type: 'SET_CURRENT_EVENT',
-      currentEvent: null
     })
   }
 }

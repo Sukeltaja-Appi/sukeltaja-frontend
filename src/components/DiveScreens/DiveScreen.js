@@ -4,7 +4,7 @@ import { Text, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
-import { createEvent } from '../../reducers/eventReducer'
+import { startEvent } from '../../reducers/eventReducer'
 
 const style = {
   button: {
@@ -22,7 +22,7 @@ const EventScreen = (props) => {
   const startButton = async () => {
     const event = { content: 'Oma sukellustapahtuma 1' }
 
-    await props.createEvent(event)
+    await props.startEvent(event)
 
     navigate('OngoingDiveScreen')
   }
@@ -45,5 +45,5 @@ const EventScreen = (props) => {
 
 export default connect(
   null,
-  { createEvent }
+  { startEvent }
 )(EventScreen)
