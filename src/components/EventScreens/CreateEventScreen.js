@@ -1,106 +1,110 @@
 import React from 'react'
-import { StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
+import { createEvent } from '../../reducers/eventReducer'
 import t from 'tcomb-form-native'
+import { ScrollView, View } from 'react-native'
+import { Button } from 'react-native-elements'
+import { paddingSides } from '../../styles/global'
+import { now, inOneHour, formatDate } from '../../utils/dates'
 
-import { createEvent, endEvent, updateEvent } from '../../reducers/eventReducer'
-import styles from '../../styles/global'
-
-const stylesLocal = StyleSheet.create({
-  roundButton: {
-    marginTop: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'blue',
-    width: 175,
-    height: 70,
-    borderRadius: 150
-  }
-})
-
-const Form = t.form.Form
-
-const Event = t.struct({
-  content:t.String,
-  startdate:t.Date,
-  enddate:t.Date,
-})
+const { Form } = t.form
 
 const options = {
   fields: {
     content: {
-      label: 'Kuvaus'
+      label: 'Kuvaus',
+      error: 'Kuvaus ei saa olla tyhjä.'
     },
     startdate: {
-      label: 'Aloitus aika',
-      mode: 'datetime'
+      label: 'Aloitusaika',
+      mode: 'datetime',
+      config: {
+        format: (date) => formatDate(date)
+      }
     },
     enddate: {
-      label: 'Lopetus aika',
-      mode: 'datetime'
+      label: 'Lopetusaika',
+      mode: 'datetime',
+      error: 'Tapahtuma ei voi loppua ennen alkamisaikaa.',
+      config: {
+        format: (date) => formatDate(date)
+      }
     }
+  }
+}
+
+const style = {
+  container: {
+    alignItems: 'center',
+    marginTop: 20
+  },
+  scrollview: {
+    width: '100%',
+    backgroundColor: 'white',
+    paddingLeft: paddingSides,
+    paddingRight: paddingSides
   }
 }
 
 class CreateEventScreen extends React.Component {
   constructor(props) {
     super(props)
-    this.createValue = {
-      content: '',
-      startdate: new Date(),
-      enddate: new Date()
+    this.ref = React.createRef()
+    this.state = {
+      event: {
+        content: '',
+        startdate: now(),
+        enddate: inOneHour()
+      }
     }
   }
 
-  navigate = (value) => this.props.navigation.navigate(value)
-
   createButton = async () => {
-    let event = await this.props.createEvent(this.createValue)
+    const validated = this.ref.current.getValue()
+    const { event } = this.state
 
-    event.content = this.createValue.content
-    event.startdate = this.createValue.startdate
-    event.enddate = this.createValue.enddate
+    if (validated) {
+      await this.props.createEvent(event)
 
-    await this.props.updateEvent(event)
-    this.navigate('EventListScreen')
+      this.props.navigation.replace('EventListScreen')
+    }
   }
 
   render() {
-    const reference = 'form'
+    const { event } = this.state
+
+    const DateIsAfter = t.refinement(t.Date, (date) => date >= event.startdate)
+
+    const Event = t.struct({
+      content: t.String,
+      startdate: t.Date,
+      enddate: DateIsAfter
+    })
 
     return (
-      <ScrollView>
+      <View style={style.container}>
+        <ScrollView style={style.scrollview}>
 
-        <Text style={styles.h1}>
-          Lisää tapahtuma
-        </Text>
+          <Form
+            ref={this.ref}
+            type={Event}
+            options={options}
+            value={event}
+            onChange={(event) => this.setState({ event })}
+          />
 
-        <Form
-          ref={reference}
-          type={Event}
-          options={options}
-          value={this.createValue}
-          onChange={(value) => this.createValue = value} />
+          <Button
+            onPress={this.createButton}
+            title="Luo tapahtuma"
+          />
 
-        <TouchableOpacity onPress={this.createButton} style={stylesLocal.roundButton} >
-          <Text style={styles.buttonText}>Lisää</Text>
-        </TouchableOpacity>
-
-      </ScrollView>
+        </ScrollView>
+      </View>
     )
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    events: state.events,
-    ongoingEvent: state.ongoingEvent
-  }
-}
-
-const ConnectedCreateEventScreen = connect(
-  mapStateToProps,
-  { createEvent, endEvent, updateEvent }
+export default connect(
+  null,
+  { createEvent }
 )(CreateEventScreen)
-
-export default ConnectedCreateEventScreen
