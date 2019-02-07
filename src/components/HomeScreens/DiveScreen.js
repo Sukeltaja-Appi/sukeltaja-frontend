@@ -46,7 +46,7 @@ class OngoingEventScreen extends React.Component {
 
     endEvent(ongoingEvent)
 
-    return navigation.navigate('DiveScreen')
+    return navigation.navigate('StartEventScreen')
   }
 
   duration = () => Duration.fromMillis(this.state.counter * 1000).toFormat('hh:mm:ss')

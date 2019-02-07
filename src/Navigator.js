@@ -1,7 +1,7 @@
 import React from 'react'
 import { createBottomTabNavigator, BottomTabBar, createAppContainer } from 'react-navigation'
 
-import DiveScreens from './components/DiveScreens'
+import HomeScreens from './components/HomeScreens'
 import EventScreens from './components/EventScreens'
 import ProfileMainScreen from './components/ProfileScreens/ProfileMainScreen'
 
@@ -20,7 +20,7 @@ const style = {
 
 const MainTabNavigator = createBottomTabNavigator({
   OngoingEvent : {
-    screen: DiveScreens,
+    screen: HomeScreens,
     navigationOptions: {
       tabBarLabel: 'SUKELLUS',
       tabBarOptions: style,

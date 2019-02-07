@@ -1,8 +1,8 @@
 import { createSwitchNavigator } from 'react-navigation'
+import StartEventScreen from './StartEventScreen'
 import DiveScreen from './DiveScreen'
-import OngoingDiveScreen from './OngoingDiveScreen'
 
 export default createSwitchNavigator({
-  DiveScreen,
-  OngoingDiveScreen
+  StartEventScreen,
+  DiveScreen
 }, { headerMode: 'none' })
