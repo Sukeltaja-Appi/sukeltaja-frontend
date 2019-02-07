@@ -2,6 +2,7 @@ import React from 'react'
 import { createBottomTabNavigator, BottomTabBar, createAppContainer } from 'react-navigation'
 
 import DiveScreens from './components/DiveScreens'
+import MapScreens from './components/MapScreens'
 import EventScreens from './components/EventScreens'
 import ProfileMainScreen from './components/ProfileScreens/ProfileMainScreen'
 
@@ -26,6 +27,16 @@ const MainTabNavigator = createBottomTabNavigator({
       tabBarOptions: style,
       tabBarIcon: ({ tintColor }) => (
         <Icon name='anchor' type='feather' color={tintColor} />
+      )
+    }
+  },
+  Map : {
+    screen: MapScreens,
+    navigationOptions: {
+      tabBarLabel: 'KARTTA',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='map-pin' type='feather' color={tintColor} />
       )
     }
   },
