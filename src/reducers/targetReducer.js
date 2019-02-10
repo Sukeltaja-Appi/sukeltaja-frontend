@@ -13,9 +13,14 @@ export const targetReducer = (state = [], action) => {
   }
 }
 
-export const getAllTest = () => {
-  return (dispatch) => {
-    const newTargets = targetService.getAllTest()
+export const getAll = () => {
+  return async (dispatch) => {
+    console.log('Getting targets...')
+    const newTargets = await targetService.getAll()
+
+    console.log('reducerGetAll-----------------')
+    console.log(newTargets)
+    console.log('-----------------------------')
 
     dispatch({
       type: 'REPLACE_TARGETS',
@@ -23,5 +28,3 @@ export const getAllTest = () => {
     })
   }
 }
-
-export const initializeTargets = () => {}

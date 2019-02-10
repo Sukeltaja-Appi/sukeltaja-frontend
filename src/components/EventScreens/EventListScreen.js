@@ -38,11 +38,11 @@ const EventListScreen = (props) => {
         <FlatList
           data={eventsSortedByDate()}
           renderItem={({ item }) => {
-            const { content, startdate } = item
+            const { description, startdate } = item
 
             return (
               <ListItem
-                title={content}
+                title={description}
                 subtitle={formatDate(startdate)}
                 rightIcon={ <ArrowRight/> }
                 onPress={() => navigate(item)}

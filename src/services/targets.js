@@ -9,7 +9,7 @@ axiosRetry(axios, {
   retryDelay: axiosRetry.exponentialDelay
 })
 
-const url = `${API_URL}/targets`
+const url = `${API_URL}/target`
 
 let token = null
 
@@ -31,40 +31,16 @@ const getAll = async () => {
   return response.data
 }
 
-// const create = async (newObject) => {
-//   const response = await axios.post(url, newObject, config())
-//
-//   return response.data
-// }
-//
-// const update = async (id, updatedObject) => {
-//   const response = await axios.put(`${url}/${id}`, updatedObject, config())
-//
-//   return response.data
-// }
+const create = async (newObject) => {
+  const response = await axios.post(url, newObject, config())
 
-const testData = [
-  {
-    id: "j1h24123fds",
-    name: "Kohde1",
-    type: "Laiva",
-    depth: 30,
-    latitude: 60.3,
-    longitude: 25.3
-  },
-  {
-    id: "f8sg7ajafj",
-    name: "Kohde2",
-    type: "Sukellusvene",
-    depth: 50,
-    latitude: 60.02,
-    longitude: 25.02
-  },
-]
-
-const getAllTest = () => {
-  console.log('got all test targets!')
-  return testData
+  return response.data
 }
 
-export default { getAll, setToken, getAllTest }
+const update = async (id, updatedObject) => {
+  const response = await axios.put(`${url}/${id}`, updatedObject, config())
+
+  return response.data
+}
+
+export default { setToken, getAll, create, update }
