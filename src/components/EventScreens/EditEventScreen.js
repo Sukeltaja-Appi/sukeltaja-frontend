@@ -55,7 +55,7 @@ class EditEventScreen extends React.Component {
             onFormChange={(event) => this.setState({ event })}
             onButtonPress={this.updateButton}
             buttonStyle={{ backgroundColor: colors.success }}
-            buttonTitle="Muokkaa tapahtumaa"
+            buttonTitle='Tallenna muutokset'
           />
         </ScrollView>
       </View>
