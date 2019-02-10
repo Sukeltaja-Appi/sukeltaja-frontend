@@ -32,7 +32,7 @@ class MainMapScreen extends React.Component {
           latitude: 60.1,
           longitude: 25.1
         }
-      },
+      }
     }
   }
 
@@ -61,7 +61,7 @@ class MainMapScreen extends React.Component {
 
     let location = await Location.getCurrentPositionAsync({})
 
-    this.setState({ locationResult: JSON.stringify(location), location, })
+    this.setState({ locationResult: JSON.stringify(location), location })
   }
 
   updateButton = () => {
@@ -69,7 +69,10 @@ class MainMapScreen extends React.Component {
   }
 
   render() {
-    const markers = this.props.targets.map(target => {
+    const { coords } = this.state.location
+    const { targets } = this.props
+
+    const markers = targets.map(target => {
       return (
         <MapView.Marker
           coordinate={{
@@ -89,14 +92,14 @@ class MainMapScreen extends React.Component {
         <MapView
           style={{ alignSelf: 'stretch', flex:7 }}
           region={{
-            latitude: this.state.location.coords.latitude,
-            longitude: this.state.location.coords.longitude,
+            latitude: coords.latitude,
+            longitude: coords.longitude,
             latitudeDelta: 0.3688,
             longitudeDelta: 0.1684
           }}
         >
           <MapView.Marker
-            coordinate={this.state.location.coords}
+            coordinate={coords}
             title="Minä"
             description="Viimeisin sijaintini."
           />
