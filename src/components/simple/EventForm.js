@@ -67,6 +67,7 @@ const EventForm = React.forwardRef((props, ref) => {
       />
 
       <Button
+        buttonStyle={props.buttonStyle}
         onPress={onButtonPress}
         title={buttonTitle}
       />
