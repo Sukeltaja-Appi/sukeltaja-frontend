@@ -14,7 +14,8 @@ const mapStateToProps = (state) => {
   return {
     ongoingEvent: state.ongoingEvent,
     events: state.events,
-    user: state.user
+    user: state.user,
+    targets: state.targets
   }
 }
 

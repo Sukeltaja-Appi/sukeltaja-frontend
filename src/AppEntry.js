@@ -2,6 +2,7 @@ import React from 'react'
 
 import { USERNAME, PASSWORD } from 'react-native-dotenv'
 import eventService from './services/events'
+import targetService from './services/targets'
 import Navigator from './Navigator'
 
 class AppEntry extends React.Component {
@@ -18,6 +19,7 @@ class AppEntry extends React.Component {
 
     if (user) {
       eventService.setToken(user.token)
+      targetService.setToken(user.token)
     } else {
       // notify user of wrong username/pw
     }

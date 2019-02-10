@@ -17,6 +17,7 @@
     "axios-retry": "^3.1.2",
     "expo": "^32.0.0",
     "expo-cli": "^2.6.14",
+    "lint": "^1.1.2",
     "luxon": "^1.10.0",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
