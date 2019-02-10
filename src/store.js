@@ -4,12 +4,15 @@ import thunk from 'redux-thunk'
 import { eventReducer, ongoingEventReducer } from './reducers/eventReducer'
 import userReducer from './reducers/userReducer'
 import { targetReducer } from './reducers/targetReducer'
+import { diveReducer, ongoingDiveReducer } from './reducers/diveReducer'
 
 const reducer = combineReducers({
   ongoingEvent: ongoingEventReducer,
   events: eventReducer,
   user: userReducer,
-  targets: targetReducer
+  targets: targetReducer,
+  ongoingDive: ongoingDiveReducer,
+  dives: diveReducer
 })
 
 const store = createStore(
