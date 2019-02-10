@@ -14,17 +14,30 @@ class EditEventScreen extends React.Component {
     const { navigation } = props
 
     const {
+      id,
+      description,
       startdate,
       enddate,
-      description
     } = navigation.getParam('item')
 
     this.state = {
       event: {
+        id,
         description,
         startdate: new Date(startdate),
         enddate: new Date(enddate)
       }
+    }
+  }
+
+  updateButton = async () => {
+    const validated = this.ref.current.getValue()
+    const { event } = this.state
+
+    if (validated) {
+      const updatedEvent = await this.props.updateEvent(event)
+
+      this.props.navigation.replace('Event', { item: updatedEvent })
     }
   }
 
@@ -40,7 +53,7 @@ class EditEventScreen extends React.Component {
             ref={this.ref}
             event={event}
             onFormChange={(event) => this.setState({ event })}
-            onButtonPress={this.createButton}
+            onButtonPress={this.updateButton}
             buttonStyle={{ backgroundColor: colors.success }}
             buttonTitle="Muokkaa tapahtumaa"
           />
