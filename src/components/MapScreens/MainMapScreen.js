@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { Constants, MapView, Location, Permissions } from 'expo'
+import { MapView, Location, Permissions } from 'expo'
 
 import { updateEvent } from '../../reducers/eventReducer'
 import { getAll } from '../../reducers/targetReducer'
