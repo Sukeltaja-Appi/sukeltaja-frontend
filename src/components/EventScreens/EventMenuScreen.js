@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, FlatList } from 'react-native'
 import { ListItem, Icon } from 'react-native-elements'
-import ArrowRight from '../simple/ArrowRight'
 import styles from '../../styles/global'
 
 const MenuScreen = (props) => {
@@ -35,9 +34,9 @@ const MenuScreen = (props) => {
             title={item.title}
             subtitle={item.subtitle}
             leftIcon={item.leftIcon}
-            rightIcon={ <ArrowRight/> }
             onPress={() => navigate(item.destination)}
             bottomDivider
+            chevron
           />
         )}
         keyExtractor={item => item.title}

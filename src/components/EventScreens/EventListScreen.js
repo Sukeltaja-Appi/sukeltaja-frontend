@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, FlatList, Text } from 'react-native'
 import { ListItem } from 'react-native-elements'
-import ArrowRight from '../simple/ArrowRight'
 import styles from '../../styles/global'
 import { formatDate } from '../../utils/dates'
 import { connect } from 'react-redux'
@@ -44,10 +43,10 @@ const EventListScreen = (props) => {
               <ListItem
                 title={description}
                 subtitle={formatDate(startdate)}
-                rightIcon={ <ArrowRight/> }
                 onPress={() => navigate(item)}
                 subtitleStyle={style.subtitle}
                 bottomDivider
+                chevron
               />
             )}
           }
