@@ -1,43 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 import { Button } from 'react-native-elements'
 import { MapView, Location, Permissions } from 'expo'
 
+import styles from '../../styles/global'
+
 import { getAll } from '../../reducers/targetReducer'
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#34495e',
-  },
-  buttonContainer: {
-    flex: 1,
+const style = {
+  row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     padding: 10
-  },
-  button: {
-    marginBottom: 20,
-    alignItems: 'center',
-    backgroundColor: '#50d8ee',
-    width: 120,
-    height: 30,
-    borderRadius: 10
-  },
-  buttonText: {
-    fontSize: 20
   }
-})
+}
 
 class MainMapScreen extends React.Component {
   constructor(props) {
@@ -108,7 +85,7 @@ class MainMapScreen extends React.Component {
     }) || []
 
     return (
-      <View style={styles.container}>
+      <View style={styles.noPadding}>
         <MapView
           style={{ alignSelf: 'stretch', flex:7 }}
           region={{
@@ -128,7 +105,7 @@ class MainMapScreen extends React.Component {
 
         </MapView>
 
-        <View style={styles.buttonContainer} >
+        <View style={style.row} >
           <Button
             title="Paikanna"
             onPress={this._getLocationAsync}
