@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, StyleSheet } from 'react-native'
+import { Button } from 'react-native-elements'
 import { MapView, Location, Permissions } from 'expo'
 
 import { getAll } from '../../reducers/targetReducer'
@@ -24,10 +25,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10
-  },
-  bc2: {
-    width: '40%',
-    height: 30
   },
   button: {
     marginBottom: 20,
@@ -132,22 +129,15 @@ class MainMapScreen extends React.Component {
         </MapView>
 
         <View style={styles.buttonContainer} >
-          <View style={styles.bc2} >
-            <TouchableOpacity
-              style={styles.button}
-              onPress={this._getLocationAsync}
-            >
-              <Text style={styles.buttonText}> Paikanna </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.bc2} >
-            <TouchableOpacity
-              style={styles.button}
-              onPress={this.updateButton}
-            >
-              <Text style={styles.buttonText}> Päivitä </Text>
-            </TouchableOpacity>
-          </View>
+          <Button
+            title="Paikanna"
+            onPress={this._getLocationAsync}
+          />
+          <View style={{ width: 20 }}/>
+          <Button
+            title="Päivitä"
+            onPress={this.updateButton}
+          />
         </View>
 
       </View>
