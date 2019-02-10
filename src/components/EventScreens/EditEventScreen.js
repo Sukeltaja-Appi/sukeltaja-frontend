@@ -21,14 +21,14 @@ const stylesLocal = StyleSheet.create({
 const Form = t.form.Form
 
 const Event = t.struct({
-  content:t.String,
+  description:t.String,
   startdate:t.Date,
   enddate:t.Date,
 })
 
 const options = {
   fields: {
-    content: {
+    description: {
       label: 'Kuvaus'
     },
     startdate: {
@@ -47,7 +47,7 @@ class EditEventScreen extends React.Component {
     super(props)
     this.event = this.props.navigation.state.params.item
     this.createValue = {
-      content: this.event.content,
+      description: this.event.description,
       startdate: new Date(this.event.startdate),
       enddate: new Date(this.event.enddate)
     }
@@ -56,7 +56,7 @@ class EditEventScreen extends React.Component {
   navigate = (value) => this.props.navigation.navigate(value)
 
   acceptButton = () => {
-    this.event.content = this.createValue.content
+    this.event.description = this.createValue.description
     this.event.startdate = this.createValue.startdate
     this.event.enddate = this.createValue.enddate
     this.props.updateEvent(this.event)

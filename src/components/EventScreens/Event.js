@@ -16,7 +16,7 @@ const style = {
 const Event = (props) => {
   const { navigation } = props
 
-  const { startdate, enddate, content } = navigation.getParam('item')
+  const { startdate, enddate, description } = navigation.getParam('item')
 
   const navigate = (route, params) => props.navigation.navigate(route, params)
 
@@ -25,7 +25,7 @@ const Event = (props) => {
   return (
     <View style={styles.noPadding}>
       <View style={style}>
-        <Text h4>{content}</Text>
+        <Text h4>{description}</Text>
         <Text>Alkoi: { formatDate(startdate) }</Text>
         { enddate ? <Text>Kesto: {formatDuration(duration)}</Text> : null }
         <TouchableOpacity

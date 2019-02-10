@@ -11,7 +11,7 @@ const { Form } = t.form
 
 const options = {
   fields: {
-    content: {
+    description: {
       label: 'Kuvaus',
       error: 'Kuvaus ei saa olla tyhjä.'
     },
@@ -52,7 +52,7 @@ class CreateEventScreen extends React.Component {
     this.ref = React.createRef()
     this.state = {
       event: {
-        content: '',
+        description: '',
         startdate: now(),
         enddate: inOneHour()
       }
@@ -76,7 +76,7 @@ class CreateEventScreen extends React.Component {
     const DateIsAfter = t.refinement(t.Date, (date) => date >= event.startdate)
 
     const Event = t.struct({
-      content: t.String,
+      description: t.String,
       startdate: t.Date,
       enddate: DateIsAfter
     })
