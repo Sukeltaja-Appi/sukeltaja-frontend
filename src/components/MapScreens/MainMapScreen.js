@@ -46,9 +46,19 @@ class MainMapScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      mapRegion: { latitude: 60.1, longitude: 25.1, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
+      mapRegion: {
+        latitude: 60.1,
+        longitude: 25.1,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+      },
       locationResult: null,
-      location: { coords: { latitude: 60.1, longitude: 25.1 } },
+      location: {
+        coords: {
+          latitude: 60.1,
+          longitude: 25.1
+        }
+      },
     }
   }
 
@@ -107,7 +117,8 @@ class MainMapScreen extends React.Component {
           region={{
             latitude: this.state.location.coords.latitude,
             longitude: this.state.location.coords.longitude,
-            latitudeDelta: 0.3688, longitudeDelta: 0.1684
+            latitudeDelta: 0.3688,
+            longitudeDelta: 0.1684
           }}
         >
           <MapView.Marker
