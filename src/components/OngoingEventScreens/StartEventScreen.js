@@ -24,7 +24,7 @@ const EventScreen = (props) => {
 
     await props.startEvent(event)
 
-    navigate('DiveScreen')
+    navigate('OngoingEventScreen')
   }
 
   return (
