@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { MapView, Location, Permissions } from 'expo'
 
-import { updateEvent } from '../../reducers/eventReducer'
 import { getAll } from '../../reducers/targetReducer'
 
 const styles = StyleSheet.create({
@@ -145,13 +144,9 @@ class MainMapScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  targets: state.targets,
-  events: state.events,
-  ongoingEvent: state.ongoingEvent
-})
+const mapStateToProps = (state) => ({ targets: state.targets })
 
 export default connect(
   mapStateToProps,
-  { updateEvent, getAll }
+  { getAll }
 )(MainMapScreen)
