@@ -20,7 +20,7 @@ const EventScreen = (props) => {
   const navigate = (value) => props.navigation.navigate(value)
 
   const startButton = async () => {
-    const event = { content: 'Oma sukellustapahtuma 1' }
+    const event = { description: 'Oma sukellustapahtuma 1' }
 
     await props.startEvent(event)
 
