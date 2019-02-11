@@ -35,9 +35,7 @@ class CreateEventScreen extends React.Component {
 
     return (
       <View style={styles.noPadding}>
-        <ScrollView
-          contentContainerStyle={{ alignItems: 'center' }}
-        >
+        <ScrollView>
           <EventForm
             ref={this.ref}
             event={event}

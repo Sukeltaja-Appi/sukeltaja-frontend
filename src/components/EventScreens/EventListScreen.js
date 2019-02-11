@@ -50,7 +50,7 @@ const EventListScreen = (props) => {
               />
             )}
           }
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item.id}
         />
       </View>
     )

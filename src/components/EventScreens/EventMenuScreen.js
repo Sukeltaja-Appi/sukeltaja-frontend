@@ -29,16 +29,25 @@ const MenuScreen = (props) => {
     <View style={styles.noPadding}>
       <FlatList
         data={data}
-        renderItem={ ({ item }) => (
-          <ListItem
-            title={item.title}
-            subtitle={item.subtitle}
-            leftIcon={item.leftIcon}
-            onPress={() => navigate(item.destination)}
-            bottomDivider
-            chevron
-          />
-        )}
+        renderItem={ ({ item }) => {
+          const {
+            title,
+            subtitle,
+            leftIcon,
+            destination
+          } = item
+
+          return (
+            <ListItem
+              title={title}
+              subtitle={subtitle}
+              leftIcon={leftIcon}
+              onPress={() => navigate(destination)}
+              bottomDivider
+              chevron
+            />
+          )}
+        }
         keyExtractor={item => item.title}
       />
     </View>
