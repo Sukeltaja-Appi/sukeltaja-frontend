@@ -7,8 +7,7 @@ exports[`<ProfileMainScreen/> renders the profile screen snapshot 1`] = `
       "alignItems": "center",
       "backgroundColor": "#eeeeee",
       "flex": 1,
-      "paddingLeft": 21,
-      "paddingRight": 21,
+      "paddingHorizontal": 21,
       "paddingTop": 50,
     }
   }
