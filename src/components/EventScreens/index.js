@@ -37,5 +37,10 @@ export default createStackNavigator({
     }
   }
 }, {
-  headerBackTitleVisible: false
+  headerBackTitleVisible: false,
+  defaultNavigationOptions: {
+    headerTitleStyle: {
+      flexBasis: '100%'
+    }
+  }
 })
