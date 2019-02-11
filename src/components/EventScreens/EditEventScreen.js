@@ -36,19 +36,20 @@ class EditEventScreen extends React.Component {
     if (validated) {
       const updatedEvent = await this.props.updateEvent(event)
 
-      const action = StackActions.reset({
+      const navigateAction = (routeName, params) => NavigationActions.navigate({
+        routeName, params
+      })
+
+      const resetAction = StackActions.reset({
         index: 2,
         actions: [
-          NavigationActions.navigate({ routeName: 'EventMenuScreen' }),
-          NavigationActions.navigate({ routeName: 'EventListScreen' }),
-          NavigationActions.navigate({
-            routeName: 'Event',
-            params: { item: updatedEvent }
-          })
+          navigateAction('EventMenuScreen'),
+          navigateAction('EventListScreen'),
+          navigateAction('Event', { item: updatedEvent })
         ]
       })
 
-      this.props.navigation.dispatch(action)
+      this.props.navigation.dispatch(resetAction)
     }
   }
 
