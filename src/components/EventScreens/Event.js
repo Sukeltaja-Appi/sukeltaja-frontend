@@ -17,7 +17,7 @@ const style = {
     justifyContent: 'center'
   },
   title: {
-    flex: 7
+    flex: 5
   },
   divider: {
     marginVertical: 20
@@ -46,6 +46,7 @@ const Event = (props) => {
             onPress={() => navigate('EditEventScreen', { item: navigation.getParam('item') })}
             color={colors.red}
             size={34}
+            iconStyle={{ padding: 8 }}
             containerStyle={style.iconContainer}
           />
         </View>
