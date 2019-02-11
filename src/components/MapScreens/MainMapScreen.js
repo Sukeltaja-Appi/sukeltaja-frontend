@@ -9,10 +9,12 @@ import styles from '../../styles/global'
 import { getAll } from '../../reducers/targetReducer'
 
 const style = {
-  row: {
-    flexDirection: 'row',
+  buttonRow: {
     justifyContent: 'center',
     padding: 10
+  },
+  buttonDivider: {
+    width: 20
   }
 }
 
@@ -73,16 +75,24 @@ class MainMapScreen extends React.Component {
     const { targets } = this.props
 
     const markers = targets.map(target => {
+      const {
+        latitude,
+        longitude,
+        name,
+        type,
+        id
+      } = target
+
       return (
         <MapView.Marker
           coordinate={{
-            latitude: target.latitude,
-            longitude: target.longitude
+            latitude,
+            longitude
           }}
-          title={target.name}
-          description={target.type}
+          title={name}
+          description={type}
           pinColor='blue'
-          key={target.id}
+          key={id}
         />
       )
     }) || []
@@ -90,7 +100,7 @@ class MainMapScreen extends React.Component {
     return (
       <View style={styles.noPadding}>
         <MapView
-          style={{ alignSelf: 'stretch', flex:7 }}
+          style={styles.flex}
           region={{
             latitude: coords.latitude,
             longitude: coords.longitude,
@@ -108,12 +118,12 @@ class MainMapScreen extends React.Component {
 
         </MapView>
 
-        <View style={style.row} >
+        <View style={{ ...styles.row, ...style.buttonRow }}>
           <Button
             title="Paikanna"
             onPress={this._getLocationAsync}
           />
-          <View style={{ width: 20 }}/>
+          <View style={style.buttonDivider}/>
           <Button
             title="Päivitä"
             onPress={this.updateButton}

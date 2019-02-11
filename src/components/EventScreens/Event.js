@@ -12,9 +12,9 @@ const style = {
     backgroundColor: 'white'
   },
   iconContainer: {
+    flex: 1,
     alignItems: 'flex-end',
-    justifyContent: 'center',
-    flex: 1
+    justifyContent: 'center'
   },
   title: {
     flex: 7
