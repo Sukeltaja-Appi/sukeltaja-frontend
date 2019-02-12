@@ -1,16 +1,30 @@
 import React from 'react'
-import { View, TouchableOpacity } from 'react-native'
-import { Text, Divider } from 'react-native-elements'
+import { View } from 'react-native'
+import { Text, Divider, Icon } from 'react-native-elements'
 import styles, { paddingSides } from '../../styles/global'
-import { DateTime, Duration } from 'luxon'
-import { formatDuration, formatDate } from '../../utils/dates'
+import colors from '../../styles/colors'
+import { formatDate } from '../../utils/dates'
 
 const style = {
-  paddingTop: 10,
-  paddingLeft: paddingSides,
-  paddingRight: paddingSides,
-  paddingBottom: 10,
-  backgroundColor: 'white'
+  container: {
+    paddingHorizontal: paddingSides,
+    paddingVertical: 10,
+    backgroundColor: 'white'
+  },
+  iconContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'center'
+  },
+  title: {
+    flex: 5
+  },
+  divider: {
+    marginVertical: 20
+  },
+  text: {
+    fontSize: 16
+  }
 }
 
 const Event = (props) => {
@@ -20,19 +34,27 @@ const Event = (props) => {
 
   const navigate = (route, params) => props.navigation.navigate(route, params)
 
-  const duration = Duration.fromMillis(DateTime.fromISO(enddate) - DateTime.fromISO(startdate))
-
   return (
     <View style={styles.noPadding}>
-      <View style={style}>
-        <Text h4>{description}</Text>
-        <Text>Alkoi: { formatDate(startdate) }</Text>
-        { enddate ? <Text>Kesto: {formatDuration(duration)}</Text> : null }
-        <TouchableOpacity
-          onPress={() => navigate('EditEventScreen', { item: navigation.getParam('item') })}
-          style={styles.button} >
-          <Text style={styles.buttonText}>Muokkaa</Text>
-        </TouchableOpacity>
+      <View style={style.container}>
+
+        <View style={styles.row}>
+          <Text h3 style={style.title}>{description}</Text>
+          <Icon
+            name='edit'
+            type='feather'
+            onPress={() => navigate('EditEventScreen', { item: navigation.getParam('item') })}
+            color={colors.red}
+            size={34}
+            iconStyle={{ padding: 8 }}
+            containerStyle={style.iconContainer}
+          />
+        </View>
+
+        <Divider style={style.divider} />
+
+        <Text style={style.text}>Aloitusaika:   { formatDate(startdate) }</Text>
+        <Text style={style.text}>Lopetusaika: { formatDate(enddate) }</Text>
       </View>
       <Divider />
     </View>

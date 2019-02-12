@@ -11,6 +11,12 @@ const OngoingEventStack = createStackNavigator({
     }
   },
   DiveScreen
+}, {
+  defaultNavigationOptions: {
+    headerTitleStyle: {
+      flexBasis: '100%'
+    }
+  }
 })
 
 export default createSwitchNavigator({

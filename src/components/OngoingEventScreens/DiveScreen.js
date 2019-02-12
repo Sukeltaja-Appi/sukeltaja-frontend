@@ -9,17 +9,14 @@ import { Duration } from 'luxon'
 
 const style = {
   button: {
+    ...styles.roundButton,
     backgroundColor: colors.red,
-    width: 100,
-    height: 100,
-    borderRadius: 50,
   },
   counter: {
     marginTop: 50,
     backgroundColor: colors.secondary,
     color: 'white',
-    paddingTop: 21,
-    paddingBottom: 21,
+    paddingVertical: 21,
     flexGrow: 1,
     textAlign: 'center'
   }

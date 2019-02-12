@@ -9,15 +9,13 @@ export default createStackNavigator({
   EventMenuScreen: {
     screen: EventMenuScreen,
     navigationOptions: {
-      headerTitle: 'Tapahtumat',
-      headerBackTitle: null
+      headerTitle: 'Tapahtumat'
     }
   },
   EventListScreen: {
     screen: EventListScreen,
     navigationOptions: {
-      headerTitle: 'Omat tapahtumat',
-      headerBackTitle: null
+      headerTitle: 'Omat tapahtumat'
     }
   },
   Event: {
@@ -29,15 +27,20 @@ export default createStackNavigator({
   EditEventScreen: {
     screen: EditEventScreen,
     navigationOptions: {
-      headerTitle: 'Muokkaa tapahtumaa',
-      headerBackTitle: null
+      headerTitle: 'Muokkaa tapahtumaa'
     }
   },
   CreateEventScreen: {
     screen: CreateEventScreen,
     navigationOptions: {
-      headerTitle: 'Luo tapahtuma',
-      headerBackTitle: null
+      headerTitle: 'Luo tapahtuma'
+    }
+  }
+}, {
+  headerBackTitleVisible: false,
+  defaultNavigationOptions: {
+    headerTitleStyle: {
+      flexBasis: '100%'
     }
   }
 })

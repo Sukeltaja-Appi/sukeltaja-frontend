@@ -12,5 +12,7 @@ export default {
   gray: '#d9d9d9',
   lightgray: '#c7c7cc',
 
+  success: '#52c41a',
+
   background: '#eeeeee'
 }

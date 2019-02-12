@@ -8,10 +8,8 @@ import { startEvent } from '../../reducers/eventReducer'
 
 const style = {
   button: {
+    ...styles.roundButton,
     backgroundColor: colors.green,
-    width: 100,
-    height: 100,
-    borderRadius: 50,
   }
 }
 
