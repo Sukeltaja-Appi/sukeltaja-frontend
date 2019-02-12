@@ -16,7 +16,9 @@ const style = {
 const Event = (props) => {
   const { navigation } = props
 
-  const { startdate, enddate, description } = navigation.getParam('item')
+  const { startdate, enddate, description, dives } = navigation.getParam('item')
+
+  const divesString = JSON.stringify(dives)
 
   const navigate = (route, params) => props.navigation.navigate(route, params)
 
@@ -33,6 +35,7 @@ const Event = (props) => {
           style={styles.button} >
           <Text style={styles.buttonText}>Muokkaa</Text>
         </TouchableOpacity>
+        <Text> Sukellukset: {divesString} </Text>
       </View>
       <Divider />
     </View>

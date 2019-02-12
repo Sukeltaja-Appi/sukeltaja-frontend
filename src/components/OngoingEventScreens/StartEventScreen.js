@@ -15,12 +15,15 @@ const style = {
   }
 }
 
-const EventScreen = (props) => {
+const StartEventScreen = (props) => {
 
   const navigate = (value) => props.navigation.navigate(value)
 
   const startButton = async () => {
-    const event = { description: 'Oma sukellustapahtuma 1' }
+    const event = {
+      description: 'Oma sukellustapahtuma 1',
+      dives: []
+    }
 
     await props.startEvent(event)
 
@@ -46,4 +49,4 @@ const EventScreen = (props) => {
 export default connect(
   null,
   { startEvent }
-)(EventScreen)
+)(StartEventScreen)
