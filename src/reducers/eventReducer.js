@@ -93,5 +93,7 @@ export const updateEvent = (event) => {
       type: 'UPDATE_EVENT',
       updatedEvent
     })
+
+    return updatedEvent
   }
 }

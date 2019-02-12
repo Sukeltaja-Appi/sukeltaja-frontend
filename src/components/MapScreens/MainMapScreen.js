@@ -9,10 +9,12 @@ import styles from '../../styles/global'
 import { getAll } from '../../reducers/targetReducer'
 
 const style = {
-  row: {
-    flexDirection: 'row',
+  buttonRow: {
     justifyContent: 'center',
     padding: 10
+  },
+  buttonDivider: {
+    width: 20
   }
 }
 
@@ -32,7 +34,7 @@ class MainMapScreen extends React.Component {
           latitude: 60.1,
           longitude: 25.1
         }
-      },
+      }
     }
   }
 
@@ -61,7 +63,7 @@ class MainMapScreen extends React.Component {
 
     let location = await Location.getCurrentPositionAsync({})
 
-    this.setState({ locationResult: JSON.stringify(location), location, })
+    this.setState({ locationResult: JSON.stringify(location), location })
   }
 
   updateButton = () => {
@@ -69,17 +71,28 @@ class MainMapScreen extends React.Component {
   }
 
   render() {
-    const markers = this.props.targets.map(target => {
+    const { coords } = this.state.location
+    const { targets } = this.props
+
+    const markers = targets.map(target => {
+      const {
+        latitude,
+        longitude,
+        name,
+        type,
+        id
+      } = target
+
       return (
         <MapView.Marker
           coordinate={{
-            latitude: target.latitude,
-            longitude: target.longitude
+            latitude,
+            longitude
           }}
-          title={target.name}
-          description={target.type}
+          title={name}
+          description={type}
           pinColor='blue'
-          key={target.id}
+          key={id}
         />
       )
     }) || []
@@ -87,16 +100,16 @@ class MainMapScreen extends React.Component {
     return (
       <View style={styles.noPadding}>
         <MapView
-          style={{ alignSelf: 'stretch', flex:7 }}
+          style={styles.flex}
           region={{
-            latitude: this.state.location.coords.latitude,
-            longitude: this.state.location.coords.longitude,
+            latitude: coords.latitude,
+            longitude: coords.longitude,
             latitudeDelta: 0.3688,
             longitudeDelta: 0.1684
           }}
         >
           <MapView.Marker
-            coordinate={this.state.location.coords}
+            coordinate={coords}
             title="Minä"
             description="Viimeisin sijaintini."
           />
@@ -105,12 +118,12 @@ class MainMapScreen extends React.Component {
 
         </MapView>
 
-        <View style={style.row} >
+        <View style={{ ...styles.row, ...style.buttonRow }}>
           <Button
             title="Paikanna"
             onPress={this._getLocationAsync}
           />
-          <View style={{ width: 20 }}/>
+          <View style={style.buttonDivider}/>
           <Button
             title="Päivitä"
             onPress={this.updateButton}

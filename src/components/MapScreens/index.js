@@ -9,4 +9,10 @@ export default createStackNavigator({
       headerBackTitle: null
     }
   }
+}, {
+  defaultNavigationOptions: {
+    headerTitleStyle: {
+      flexBasis: '100%'
+    }
+  }
 })

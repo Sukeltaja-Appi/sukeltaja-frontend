@@ -53,26 +53,14 @@ export const startDive = (dive) => {
   }
 }
 
-// export const endDive = (dive) => {
-//
-//   return async (dispatch) => {
-//     const updatedDive = await diveService.update(dive.id, dive)
-//
-//     dispatch({
-//       type: 'UPDATE_DIVE',
-//       updatedDive
-//     }),
-//     dispatch({
-//       type: 'SET_CURRENT_DIVE',
-//       currentDive: null
-//     })
-//   }
-// }
+export const endDive = (dive) => {
+  return async (dispatch) => {
+    const updatedDive = await diveService.update(dive.id, dive)
 
-export const endDive = () => {
-
-  return (dispatch) => {
-
+    dispatch({
+      type: 'UPDATE_DIVE',
+      updatedDive
+    }),
     dispatch({
       type: 'SET_CURRENT_DIVE',
       currentDive: null

@@ -4,13 +4,15 @@ import colors from './colors'
 export const paddingSides = 21
 
 export default StyleSheet.create({
+  flex: {
+    flex: 1
+  },
   centered: {
     flex: 1,
     backgroundColor: colors.background,
     alignItems: 'center',
     paddingTop: 50,
-    paddingLeft: paddingSides,
-    paddingRight: paddingSides
+    paddingHorizontal: paddingSides
   },
   noPadding: {
     flex: 1,
@@ -29,20 +31,9 @@ export default StyleSheet.create({
     fontSize: 18,
     textAlign: 'center'
   },
-  h1: {
-    fontWeight: 'bold',
-    fontSize: 30,
-    color: '#0530fc'
-  },
-  button: {
-    marginBottom: 20,
-    alignItems: 'center',
-    backgroundColor: '#50d8ee',
-    width: 120,
-    height: 40,
-    borderRadius: 10
-  },
-  buttonText: {
-    fontSize: 20
+  roundButton: {
+    width: 100,
+    height: 100,
+    borderRadius: 50
   }
 })

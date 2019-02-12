@@ -8,10 +8,8 @@ import { startEvent } from '../../reducers/eventReducer'
 
 const style = {
   button: {
+    ...styles.roundButton,
     backgroundColor: colors.green,
-    width: 100,
-    height: 100,
-    borderRadius: 50,
   }
 }
 
@@ -32,10 +30,10 @@ const StartEventScreen = (props) => {
 
   return (
     <View style={styles.centered}>
-      <Text h1>Aloita sukellus</Text>
+      <Text h1>Aloita Tapahtuma</Text>
 
       <Text style={styles.h5}>
-        Voit aloittaa uuden sukelluksen nopeasti joko alla olevalla napilla,
+        Voit aloittaa uuden tapahtuman nopeasti joko alla olevalla napilla,
         tai luomalla uuden tapahtuman Tapahtumat-välilehdellä.
       </Text>
 
