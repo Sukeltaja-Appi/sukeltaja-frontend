@@ -89,11 +89,11 @@ class MainMapScreen extends React.Component {
         latitude,
         longitude,
         name,
-        type,
-        id
+        type
       } = target
 
       let color = 'blue'
+
       if(selectedTargets.includes(target)) color = 'green'
 
       return (
@@ -138,10 +138,10 @@ class MainMapScreen extends React.Component {
             onPress={this._getLocationAsync}
           />
           <View style={style.buttonDivider}/>
-            <Button
-              title="Päivitä"
-              onPress={this.updateButton}
-            />
+          <Button
+            title="Päivitä"
+            onPress={this.updateButton}
+          />
           <View style={style.buttonDivider}/>
           <Button
             title="Poista Valinnat"
