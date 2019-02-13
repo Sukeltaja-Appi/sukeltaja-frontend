@@ -24,7 +24,7 @@ const setToken = (newToken) => {
 }
 
 const getAll = async () => {
-  const response = await axios.get(url)
+  const response = await axios.get(url, config())
 
   console.log('got all events!')
 
