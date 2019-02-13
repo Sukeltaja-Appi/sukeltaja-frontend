@@ -67,11 +67,10 @@ class DiveScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) =>
-  ({
-    ongoingDive: state.ongoingDive,
-    ongoingEvent: state.ongoingEvent
-  })
+const mapStateToProps = (state) => ({
+  ongoingDive: state.ongoingDive,
+  ongoingEvent: state.ongoingEvent
+})
 
 export default connect(
   mapStateToProps,
