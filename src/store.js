@@ -1,18 +1,18 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
-import { eventReducer, ongoingEventReducer } from './reducers/eventReducer'
-import userReducer from './reducers/userReducer'
-import { targetReducer } from './reducers/targetReducer'
 import { diveReducer, ongoingDiveReducer } from './reducers/diveReducer'
+import { eventReducer, ongoingEventReducer } from './reducers/eventReducer'
+import { targetReducer } from './reducers/targetReducer'
+import userReducer from './reducers/userReducer'
 
 const reducer = combineReducers({
-  ongoingEvent: ongoingEventReducer,
+  dives: diveReducer,
   events: eventReducer,
-  user: userReducer,
-  targets: targetReducer,
   ongoingDive: ongoingDiveReducer,
-  dives: diveReducer
+  ongoingEvent: ongoingEventReducer,
+  targets: targetReducer,
+  user: userReducer
 })
 
 const store = createStore(
