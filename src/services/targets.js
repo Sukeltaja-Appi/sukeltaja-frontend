@@ -9,7 +9,7 @@ axiosRetry(axios, {
   retryDelay: axiosRetry.exponentialDelay
 })
 
-const url = `${API_URL}/target`
+const url = `${API_URL}/targets`
 
 let token = null
 
@@ -24,7 +24,7 @@ const setToken = (newToken) => {
 }
 
 const getAll = async () => {
-  const response = await axios.get(url)
+  const response = await axios.get(url, config())
 
   console.log('got all targets!')
 

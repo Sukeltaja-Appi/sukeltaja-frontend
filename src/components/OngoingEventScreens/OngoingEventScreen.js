@@ -56,8 +56,9 @@ const OngoingEventScreen = (props) => {
   const diveButton = async () => {
     //const coords = await this._getLocationAsync().coords
 
-    const dive = {
+    let dive = {
       event: props.ongoingEvent.id,
+      startdate: new Date(),
       latitude: magic1 + Math.random(), // coords.latitude,
       longitude: magic2 + Math.random()//coords.longitude
     }
