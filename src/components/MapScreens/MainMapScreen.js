@@ -6,7 +6,7 @@ import { MapView, Location, Permissions } from 'expo'
 
 import styles from '../../styles/global'
 
-import { getAll } from '../../reducers/targetReducer'
+import { getAll, selectTarget, resetTargets } from '../../reducers/targetReducer'
 
 const style = {
   buttonRow: {
@@ -34,7 +34,7 @@ class MainMapScreen extends React.Component {
           latitude: 60.1,
           longitude: 25.1
         }
-      }
+      },
     }
   }
 
@@ -70,11 +70,21 @@ class MainMapScreen extends React.Component {
     this.loadTargets()
   }
 
+  resetTargetsButton = () => {
+    this.props.resetTargets()
+    this.render()
+  }
+
+  pressTarget = (target) => {
+    this.props.selectTarget(target)
+    this.render()
+  }
+
   render() {
     const { coords } = this.state.location
-    const { targets } = this.props
+    const { targets, selectedTargets } = this.props
 
-    const markers = targets.map(target => {
+    let markers = targets.map(target => {
       const {
         latitude,
         longitude,
@@ -82,6 +92,9 @@ class MainMapScreen extends React.Component {
         type,
         id
       } = target
+
+      let color = 'blue'
+      if(selectedTargets.includes(target)) color = 'green'
 
       return (
         <MapView.Marker
@@ -91,8 +104,9 @@ class MainMapScreen extends React.Component {
           }}
           title={name}
           description={type}
-          pinColor='blue'
-          key={id}
+          pinColor={color}
+          key={Math.random().toString()} //Needed for update in gmaps.
+          onPress={() => this.pressTarget(target)}
         />
       )
     }) || []
@@ -124,20 +138,28 @@ class MainMapScreen extends React.Component {
             onPress={this._getLocationAsync}
           />
           <View style={style.buttonDivider}/>
+            <Button
+              title="Päivitä"
+              onPress={this.updateButton}
+            />
+          <View style={style.buttonDivider}/>
           <Button
-            title="Päivitä"
-            onPress={this.updateButton}
+            title="Poista Valinnat"
+            onPress={this.resetTargetsButton}
           />
         </View>
-
       </View>
     )
   }
 }
 
-const mapStateToProps = (state) => ({ targets: state.targets })
+const mapStateToProps = (state) => ({
+  selectedTargets: state.selectedTargets,
+  targets: state.targets,
+  ongoingEvent: state.ongoingEvent
+})
 
 export default connect(
   mapStateToProps,
-  { getAll }
+  { getAll, selectTarget, resetTargets }
 )(MainMapScreen)

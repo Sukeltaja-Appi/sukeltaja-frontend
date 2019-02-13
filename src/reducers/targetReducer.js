@@ -13,18 +13,45 @@ export const targetReducer = (state = [], action) => {
   }
 }
 
+export const selectedTargetReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'SELECT_TARGET':
+      return [ ...state, action.target ]
+    case 'SELECT_TARGETS':
+      return [ ...state, ...action.targets ]
+    case 'SET_SELECTED_TARGETS':
+      return action.targets
+    default:
+      return state
+  }
+}
+
 export const getAll = () => {
   return async (dispatch) => {
     console.log('Getting targets...')
     const newTargets = await targetService.getAll()
 
-    console.log('reducerGetAll-----------------')
-    console.log(newTargets)
-    console.log('-----------------------------')
-
     dispatch({
       type: 'REPLACE_TARGETS',
       newTargets
+    })
+  }
+}
+
+export const selectTarget = (target) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'SELECT_TARGET',
+      target
+    })
+  }
+}
+
+export const resetTargets = () => {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_SELECTED_TARGETS',
+      targets: []
     })
   }
 }

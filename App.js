@@ -16,7 +16,9 @@ const mapStateToProps = (state) => {
     ongoingEvent: state.ongoingEvent,
     events: state.events,
     user: state.user,
+    selectedTargets: state.selectedTargetReducer,
     targets: state.targets,
+    ongoingDive: state.ongoingDiveReducer,
     dives: state.dives
   }
 }

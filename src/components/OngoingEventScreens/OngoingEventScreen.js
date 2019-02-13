@@ -33,7 +33,11 @@ const OngoingEventScreen = (props) => {
   const navigate = (value) => props.navigation.navigate(value)
 
   const endEventButton = () => {
-    props.endEvent(props.ongoingEvent)
+    const { ongoingEvent, selectedTargets } = props
+    const length = selectedTargets.length
+    if(length > 0) ongoingEvent.target = selectedTargets[length-1].id
+    
+    props.endEvent(ongoingEvent)
 
     navigate('StartEventScreen')
   }
@@ -75,7 +79,10 @@ const OngoingEventScreen = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({ ongoingEvent: state.ongoingEvent })
+const mapStateToProps = (state) => ({
+  ongoingEvent: state.ongoingEvent,
+  selectedTargets: state.selectedTargets
+})
 
 export default connect(
   mapStateToProps,

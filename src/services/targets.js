@@ -9,7 +9,7 @@ axiosRetry(axios, {
   retryDelay: axiosRetry.exponentialDelay
 })
 
-const url = `${API_URL}/targets`
+const url = `${API_URL}/target`
 
 let token = null
 
