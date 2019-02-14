@@ -6,7 +6,7 @@ import { MapView, Location, Permissions } from 'expo'
 
 import styles from '../../styles/global'
 
-import { getAll, selectTarget, resetTargets } from '../../reducers/targetReducer'
+import { getAll, selectTarget, resetTargets, setSelectedTargets } from '../../reducers/targetReducer'
 
 const style = {
   buttonRow: {
@@ -76,8 +76,24 @@ class MainMapScreen extends React.Component {
   }
 
   pressTarget = (target) => {
-    this.props.selectTarget(target)
-    this.render()
+    let { selectedTargets, selectTarget, setSelectedTargets } = this.props
+    let i = 0
+    let found = false
+
+    for (i=0; i<selectedTargets.length; i++) {
+      if (selectedTargets[i].id === target.id) {
+        found = true
+        break
+      }
+    }
+    if(!found) selectTarget(target)
+    else {
+      let targets = selectedTargets
+
+      targets.splice(i, 1)
+      setSelectedTargets(targets)
+    }
+    this.forceUpdate()
   }
 
   render() {
@@ -161,5 +177,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { getAll, selectTarget, resetTargets }
+  { getAll, selectTarget, resetTargets, setSelectedTargets }
 )(MainMapScreen)

@@ -47,6 +47,15 @@ export const selectTarget = (target) => {
   }
 }
 
+export const setSelectedTargets = (targets) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_SELECTED_TARGETS',
+      targets: targets
+    })
+  }
+}
+
 export const resetTargets = () => {
   return (dispatch) => {
     dispatch({
