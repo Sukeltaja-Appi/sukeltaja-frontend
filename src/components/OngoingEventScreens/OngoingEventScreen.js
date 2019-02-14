@@ -1,11 +1,11 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Text, Button } from 'react-native-elements'
-//import { Location, Permissions } from 'expo'
 import { connect } from 'react-redux'
 
 import { endEvent } from '../../reducers/eventReducer'
 import { startDive } from '../../reducers/diveReducer'
+import locationService from '../../services/location'
 
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
@@ -43,25 +43,18 @@ const OngoingEventScreen = (props) => {
     navigate('StartEventScreen')
   }
 
-  // _getLocationAsync = async () => {
-  //   let { status } = await Permissions.askAsync(Permissions.LOCATION)
-  //
-  //   if (status !== 'granted') {
-  //     this.setState({location})
-  //   }
-  //
-  //   return await Location.getCurrentPositionAsync({})
-  // }
-
   const diveButton = async () => {
-    //const coords = await this._getLocationAsync().coords
-
     let dive = {
       event: props.ongoingEvent.id,
       startdate: new Date(),
-      latitude: magic1 + Math.random(), // coords.latitude,
-      longitude: magic2 + Math.random()//coords.longitude
+      latitude: magic1 + Math.random(),
+      longitude: magic2 + Math.random()
     }
+
+    const location = await locationService.getLocationAsync()
+
+    dive.latitude = location.coords.latitude
+    dive.longitude = location.coords.longitude
 
     await props.startDive(dive)
 
