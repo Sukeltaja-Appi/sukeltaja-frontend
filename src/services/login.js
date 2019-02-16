@@ -1,17 +1,20 @@
 import axios from 'axios'
-import { API_URL } from 'react-native-dotenv'
 import axiosRetry from 'axios-retry'
-
-console.log('LOGIN trying to connect to:', API_URL)
 
 axiosRetry(axios, {
   retries: 5,
   retryDelay: axiosRetry.exponentialDelay
 })
 
-const url = `${API_URL}/login`
+let url = null
+
+const setUrl = (newUrl) => {
+  url = `${newUrl}/login`
+}
 
 const login = async (credentials) => {
+  console.log(' LOGIN trying to connect to:', url)
+
   const response = await axios.post(url, credentials)
 
   console.log('login done!')
@@ -19,4 +22,4 @@ const login = async (credentials) => {
   return response.data
 }
 
-export default { login }
+export default { login, setUrl }

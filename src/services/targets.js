@@ -1,15 +1,12 @@
 import axios from 'axios'
-import { API_URL } from 'react-native-dotenv'
 import axiosRetry from 'axios-retry'
-
-console.log('TARGETS trying to connect to:', API_URL)
-
+ 
 axiosRetry(axios, {
   retries: 5,
   retryDelay: axiosRetry.exponentialDelay
 })
 
-const url = `${API_URL}/targets`
+let url = null
 
 let token = null
 
@@ -23,7 +20,13 @@ const setToken = (newToken) => {
   token = `bearer ${newToken}`
 }
 
+const setUrl = (newUrl) => {
+  url = `${newUrl}/targets`
+}
+
 const getAll = async () => {
+  console.log('TARGETS trying to connect to:', url)
+
   const response = await axios.get(url, config())
 
   console.log('got all targets!')
@@ -43,4 +46,4 @@ const update = async (id, updatedObject) => {
   return response.data
 }
 
-export default { setToken, getAll, create, update }
+export default { setToken, getAll, create, update, setUrl }
