@@ -6,8 +6,7 @@ axiosRetry(axios, {
   retryDelay: axiosRetry.exponentialDelay
 })
 
-let url = null 
-
+let url = null
 let token = null
 
 const config = () => {
