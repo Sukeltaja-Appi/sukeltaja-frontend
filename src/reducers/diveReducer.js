@@ -93,3 +93,16 @@ export const updateDive = (dive) => {
     })
   }
 }
+
+export const forgetDives = () => {
+  return (dispatch) => {
+    dispatch({
+      type: 'INIT_DIVES',
+      dives: []
+    })
+    dispatch({
+      type: 'SET_CURRENT_DIVE',
+      currentDive: []
+    })
+  }
+}

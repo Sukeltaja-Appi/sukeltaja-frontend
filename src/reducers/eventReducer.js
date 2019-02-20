@@ -97,3 +97,16 @@ export const updateEvent = (event) => {
     return updatedEvent
   }
 }
+
+export const forgetEvents = () => {
+  return (dispatch) => {
+    dispatch({
+      type: 'INIT_EVENTS',
+      events: []
+    })
+    dispatch({
+      type: 'SET_CURRENT_EVENT',
+      currentEvent: []
+    })
+  }
+}
