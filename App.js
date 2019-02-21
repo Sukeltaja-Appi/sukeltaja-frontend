@@ -7,6 +7,7 @@ import store from './src/store'
 
 import { login } from './src/reducers/userReducer'
 import { initializeEvents } from './src/reducers/eventReducer'
+import { initializeDives } from './src/reducers/diveReducer'
 
 import AppEntry from './src/AppEntry'
 
@@ -15,13 +16,16 @@ const mapStateToProps = (state) => {
     ongoingEvent: state.ongoingEvent,
     events: state.events,
     user: state.user,
-    targets: state.targets
+    selectedTargets: state.selectedTargetReducer,
+    targets: state.targets,
+    ongoingDive: state.ongoingDiveReducer,
+    dives: state.dives
   }
 }
 
 const ConnectedApp = connect(
   mapStateToProps,
-  { login, initializeEvents }
+  { login, initializeEvents, initializeDives }
 )(AppEntry)
 
 const ProviderPackedApp = () => {

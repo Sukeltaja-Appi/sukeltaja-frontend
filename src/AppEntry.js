@@ -1,17 +1,23 @@
 import React from 'react'
 
-import { USERNAME, PASSWORD } from 'react-native-dotenv'
+import { USERNAME, PASSWORD, API_URL } from 'react-native-dotenv'
 import eventService from './services/events'
 import targetService from './services/targets'
+import diveService from './services/dives'
+import userService from './services/users'
+import loginService from './services/login'
 import Navigator from './Navigator'
 
 class AppEntry extends React.Component {
   componentDidMount = async () => {
-    await this.props.initializeEvents()
     const credentials = {
       username: USERNAME,
       password: PASSWORD
     }
+
+    console.log(API_URL)
+
+    loginService.setUrl(API_URL)
 
     await this.props.login(credentials)
 
@@ -20,6 +26,16 @@ class AppEntry extends React.Component {
     if (user) {
       eventService.setToken(user.token)
       targetService.setToken(user.token)
+      diveService.setToken(user.token)
+      userService.setToken(user.token)
+
+      eventService.setUrl(API_URL)
+      targetService.setUrl(API_URL)
+      diveService.setUrl(API_URL)
+      userService.setUrl(API_URL)
+
+      await this.props.initializeEvents()
+      await this.props.initializeDives()
     } else {
       // notify user of wrong username/pw
     }

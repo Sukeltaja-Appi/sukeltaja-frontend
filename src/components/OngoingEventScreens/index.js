@@ -7,7 +7,8 @@ const OngoingEventStack = createStackNavigator({
   OngoingEventScreen : {
     screen: OngoingEventScreen,
     navigationOptions: {
-      headerBackTitle: null
+      headerBackTitle: null,
+      header: null
     }
   },
   DiveScreen

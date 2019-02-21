@@ -13,12 +13,15 @@ const style = {
   }
 }
 
-const EventScreen = (props) => {
+const StartEventScreen = (props) => {
 
   const navigate = (value) => props.navigation.navigate(value)
 
   const startButton = async () => {
-    const event = { description: 'Oma sukellustapahtuma 1' }
+    const event = {
+      description: 'Oma sukellustapahtuma 1',
+      dives: []
+    }
 
     await props.startEvent(event)
 
@@ -27,10 +30,10 @@ const EventScreen = (props) => {
 
   return (
     <View style={styles.centered}>
-      <Text h1>Aloita sukellus</Text>
+      <Text h1>Aloita Tapahtuma</Text>
 
       <Text style={styles.h5}>
-        Voit aloittaa uuden sukelluksen nopeasti joko alla olevalla napilla,
+        Voit aloittaa uuden tapahtuman nopeasti joko alla olevalla napilla,
         tai luomalla uuden tapahtuman Tapahtumat-välilehdellä.
       </Text>
 
@@ -44,4 +47,4 @@ const EventScreen = (props) => {
 export default connect(
   null,
   { startEvent }
-)(EventScreen)
+)(StartEventScreen)

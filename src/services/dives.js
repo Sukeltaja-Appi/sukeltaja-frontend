@@ -20,15 +20,15 @@ const setToken = (newToken) => {
 }
 
 const setUrl = (newUrl) => {
-  url = `${newUrl}/targets`
+  url = `${newUrl}/dives`
 }
 
 const getAll = async () => {
-  console.log('TARGETS trying to connect to:', url)
+  console.log('DIVES trying to connect to:', url)
 
   const response = await axios.get(url, config())
 
-  console.log('got all targets!')
+  console.log('got all dives!')
 
   return response.data
 }
@@ -45,4 +45,4 @@ const update = async (id, updatedObject) => {
   return response.data
 }
 
-export default { setToken, getAll, create, update, setUrl }
+export default { getAll, create, setToken, update, setUrl }

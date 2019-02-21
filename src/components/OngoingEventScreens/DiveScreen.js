@@ -4,7 +4,7 @@ import { Text, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
-import { endEvent } from '../../reducers/eventReducer'
+import { endDive } from '../../reducers/diveReducer'
 import { Duration } from 'luxon'
 
 const style = {
@@ -22,7 +22,7 @@ const style = {
   }
 }
 
-class OngoingEventScreen extends React.Component {
+class DiveScreen extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -39,11 +39,14 @@ class OngoingEventScreen extends React.Component {
   }
 
   endButton = () => {
-    const { endEvent, ongoingEvent, navigation } = this.props
+    const { endDive, ongoingEvent, ongoingDive, navigation } = this.props
 
-    endEvent(ongoingEvent)
+    ongoingDive.enddate = new Date()
+    ongoingDive.event = ongoingEvent.id
+    ongoingEvent.dives = [ ...ongoingEvent.dives, ongoingDive.id ]
+    endDive(ongoingDive)
 
-    return navigation.navigate('StartEventScreen')
+    return navigation.navigate('OngoingEventScreen')
   }
 
   duration = () => Duration.fromMillis(this.state.counter * 1000).toFormat('hh:mm:ss')
@@ -65,9 +68,12 @@ class OngoingEventScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({ ongoingEvent: state.ongoingEvent })
+const mapStateToProps = (state) => ({
+  ongoingDive: state.ongoingDive,
+  ongoingEvent: state.ongoingEvent
+})
 
 export default connect(
   mapStateToProps,
-  { endEvent }
-)(OngoingEventScreen)
+  { endDive }
+)(DiveScreen)

@@ -4,7 +4,7 @@ import { createBottomTabNavigator, BottomTabBar, createAppContainer } from 'reac
 import OngoingEventScreens from './components/OngoingEventScreens'
 import MapScreens from './components/MapScreens'
 import EventScreens from './components/EventScreens'
-import ProfileMainScreen from './components/ProfileScreens/ProfileMainScreen'
+import ProfileMainScreen from './components/ProfileScreens'
 
 import { Icon } from 'react-native-elements'
 

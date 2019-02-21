@@ -32,6 +32,9 @@ const Event = (props) => {
 
   const { startdate, enddate, description } = navigation.getParam('item')
 
+  //const { startdate, enddate, description, dives } = navigation.getParam('item')
+  //const divesString = JSON.stringify(dives)
+
   const navigate = (route, params) => props.navigation.navigate(route, params)
 
   return (

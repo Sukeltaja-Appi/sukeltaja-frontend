@@ -2,11 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
 import { Button } from 'react-native-elements'
-import { MapView, Location, Permissions } from 'expo'
-
+import { MapView } from 'expo'
+import locationService from '../../services/location'
 import styles from '../../styles/global'
 
-import { getAll } from '../../reducers/targetReducer'
+import { getAll, selectTarget, resetTargets, setSelectedTargets } from '../../reducers/targetReducer'
 
 const style = {
   buttonRow: {
@@ -25,10 +25,9 @@ class MainMapScreen extends React.Component {
       mapRegion: {
         latitude: 60.1,
         longitude: 25.1,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421
+        latitudeDelta: 0.3688,
+        longitudeDelta: 0.1684
       },
-      locationResult: null,
       location: {
         coords: {
           latitude: 60.1,
@@ -39,7 +38,7 @@ class MainMapScreen extends React.Component {
   }
 
   componentDidMount() {
-    this._getLocationAsync()
+    this.locateUser()
     this.loadTargets()
   }
 
@@ -51,37 +50,75 @@ class MainMapScreen extends React.Component {
     this.setState({ mapRegion })
   }
 
-  _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION)
+  locateUser = async () => {
+    let location = await locationService.getLocationAsync()
 
-    if (status !== 'granted') {
-      this.setState({
-        locationResult: 'Paikannusta ei sallittu.',
-        location,
-      })
+    let mapRegion = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: 0.3688,
+      longitudeDelta: 0.1684
     }
 
-    let location = await Location.getCurrentPositionAsync({})
-
-    this.setState({ locationResult: JSON.stringify(location), location })
+    this.setState({ mapRegion, location })
   }
 
   updateButton = () => {
     this.loadTargets()
   }
 
+  resetTargetsButton = () => {
+    this.props.resetTargets()
+    this.render()
+  }
+
+  pressTarget = (target) => {
+    let { selectedTargets, selectTarget, setSelectedTargets } = this.props
+    let i = 0
+    let found = false
+
+    for (i=0; i<selectedTargets.length; i++) {
+      if (selectedTargets[i].id === target.id) {
+        found = true
+        break
+      }
+    }
+    if(!found) selectTarget(target)
+    else {
+      let targets = selectedTargets
+
+      targets.splice(i, 1)
+      setSelectedTargets(targets)
+    }
+
+    this.setState({
+      mapRegion: {
+        latitude: target.latitude,
+        longitude: target.longitude,
+        latitudeDelta: this.state.mapRegion.latitudeDelta,
+        longitudeDelta: this.state.mapRegion.longitudeDelta
+      }
+    })
+
+    this.forceUpdate()
+  }
+
   render() {
     const { coords } = this.state.location
-    const { targets } = this.props
+    const mapRegion = this.state.mapRegion
+    const { targets, selectedTargets } = this.props
 
-    const markers = targets.map(target => {
+    let markers = targets.map(target => {
       const {
         latitude,
         longitude,
         name,
-        type,
-        id
+        type
       } = target
+
+      let color = 'blue'
+
+      if(selectedTargets.includes(target)) color = 'green'
 
       return (
         <MapView.Marker
@@ -91,8 +128,9 @@ class MainMapScreen extends React.Component {
           }}
           title={name}
           description={type}
-          pinColor='blue'
-          key={id}
+          pinColor={color}
+          key={Math.random().toString()} //Needed for update in gmaps.
+          onPress={() => this.pressTarget(target)}
         />
       )
     }) || []
@@ -101,12 +139,7 @@ class MainMapScreen extends React.Component {
       <View style={styles.noPadding}>
         <MapView
           style={styles.flex}
-          region={{
-            latitude: coords.latitude,
-            longitude: coords.longitude,
-            latitudeDelta: 0.3688,
-            longitudeDelta: 0.1684
-          }}
+          region={mapRegion}
         >
           <MapView.Marker
             coordinate={coords}
@@ -121,23 +154,31 @@ class MainMapScreen extends React.Component {
         <View style={{ ...styles.row, ...style.buttonRow }}>
           <Button
             title="Paikanna"
-            onPress={this._getLocationAsync}
+            onPress={this.locateUser}
           />
           <View style={style.buttonDivider}/>
           <Button
             title="Päivitä"
             onPress={this.updateButton}
           />
+          <View style={style.buttonDivider}/>
+          <Button
+            title="Poista Valinnat"
+            onPress={this.resetTargetsButton}
+          />
         </View>
-
       </View>
     )
   }
 }
 
-const mapStateToProps = (state) => ({ targets: state.targets })
+const mapStateToProps = (state) => ({
+  selectedTargets: state.selectedTargets,
+  targets: state.targets,
+  ongoingEvent: state.ongoingEvent
+})
 
 export default connect(
   mapStateToProps,
-  { getAll }
+  { getAll, selectTarget, resetTargets, setSelectedTargets }
 )(MainMapScreen)
