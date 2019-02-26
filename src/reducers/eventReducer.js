@@ -2,9 +2,8 @@ import eventService from '../services/events'
 
 export const eventReducer = (state = [], action) => {
   switch (action.type) {
-    case 'NEW_EVENT': {
+    case 'NEW_EVENT':
       return [ ...state, action.newEvent ]
-    }
     case 'UPDATE_EVENT': {
       const id = action.updatedEvent.id
 
@@ -19,9 +18,8 @@ export const eventReducer = (state = [], action) => {
 
 export const ongoingEventReducer = (state = [], action) => {
   switch (action.type) {
-    case 'SET_CURRENT_EVENT': {
+    case 'SET_CURRENT_EVENT':
       return action.currentEvent
-    }
     default:
       return state
   }

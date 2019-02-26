@@ -1,4 +1,5 @@
 import loginService from '../services/login'
+import userService from '../services/users'
 
 const userReducer = (store = [], action) => {
   switch (action.type) {
@@ -10,6 +11,35 @@ const userReducer = (store = [], action) => {
       return []
     default:
       return store
+  }
+}
+
+export const friendReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'NEW_FRIEND':
+      return [ ...state, action.user ]
+    case 'DELETE_FRIEND': {
+      let newState = state
+      newState.splice(newState.indexOf(action.user), 1)
+      return newState
+    }
+    case 'LOAD_FRIENDS':
+      return action.users
+    default:
+      return state
+  }
+}
+
+export const selectedUserReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'SELECT_USER':
+      return [ ...state, action.user ]
+    case 'SELECT_USERS':
+      return [ ...state, ...action.users ]
+    case 'SET_SELECTED_USERS':
+      return action.users
+    default:
+      return state
   }
 }
 
@@ -36,6 +66,17 @@ export const login = (credentials) => {
 export const logout = () => {
   return {
     type: 'LOGOUT'
+  }
+}
+
+export const loadFriends = () => {
+  return async (dispatch) => {
+    const users = await userService.getAll()
+
+    dispatch({
+      type: 'LOAD_FRIENDS',
+      users
+    })
   }
 }
 

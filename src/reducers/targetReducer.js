@@ -6,7 +6,7 @@ export const targetReducer = (state = [], action) => {
       return [ ...state, action.newTarget ]
     case 'ADD_TARGETS':
       return [ ...state, ...action.newTargets ]
-    case 'REPLACE_TARGETS':
+    case 'SET_TARGETS':
       return action.newTargets
     default:
       return state
@@ -32,7 +32,7 @@ export const getAll = () => {
     const newTargets = await targetService.getAll()
 
     dispatch({
-      type: 'REPLACE_TARGETS',
+      type: 'SET_TARGETS',
       newTargets
     })
   }

@@ -32,4 +32,20 @@ const create = async (newObject) => {
   return response.data
 }
 
-export default { setToken, setUrl, create }
+const getAll = async () => {
+  console.log('USERS trying to connect to:', url)
+
+  const response = await axios.get(url, config())
+
+  console.log('got users!')
+
+  return response.data
+}
+
+const get = async (id) => {
+  const response = await axios.get(`${url}/${id}`, updatedObject, config())
+
+  return response.data
+}
+
+export default { setToken, setUrl, create, get, getAll }

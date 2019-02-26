@@ -1,12 +1,116 @@
-import { createSwitchNavigator } from 'react-navigation'
+import React from 'react'
+import {
+  createSwitchNavigator,
+  MaterialTopTabBar,
+  createMaterialTopTabNavigator,
+  createStackNavigator
+} from 'react-navigation'
+
 import ProfileMainScreen from './ProfileMainScreen'
+import ConversationsScreen from './ConversationsScreen'
+import Conversation from './Conversation'
+import FriendsScreen from './FriendsScreen'
+import UserSettingsScreen from './UserSettingsScreen'
 import LoginScreen from './LoginScreen'
 
+import { Icon } from 'react-native-elements'
+
+import colors from '../../styles/colors'
+
+const TabBarComponent = (props) => (<MaterialTopTabBar { ...props } />)
+
+const style = {
+  activeTintColor: '#fff',
+  labelStyle: {
+    fontWeight: 'bold',
+    fontSize: 10
+  }
+}
+
+const ConversationStack = createStackNavigator({
+  ConversationsScreen: {
+    screen: ConversationsScreen,
+    navigationOptions: {
+      headerTitle: 'Viestit'
+    }
+  },
+  Conversation: {
+    screen: Conversation,
+    navigationOptions: {
+      headerTitle: 'Keskustelu'
+    }
+  }
+}, {})
+
+const UserTab = createMaterialTopTabNavigator({
+  ProfileMain : {
+    screen: ProfileMainScreen,
+    navigationOptions: {
+      tabBarLabel: 'PROFIILI',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='home' type='feather' color={tintColor} />
+      )
+    }
+  },
+  Conversations : {
+    screen: ConversationStack,
+    navigationOptions: {
+      tabBarLabel: 'VIESTIT',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='inbox' type='feather' color={tintColor} />
+      )
+    }
+  },
+  Friends : {
+    screen: FriendsScreen,
+    navigationOptions: {
+      tabBarLabel: 'KAVERIT',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='users' type='feather' color={tintColor} />
+      )
+    }
+  },
+  Settings : {
+    screen: UserSettingsScreen,
+    navigationOptions: {
+      tabBarLabel: 'ASETUKSET',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='settings' type='feather' color={tintColor} />
+      )
+    }
+  }
+}, {
+  tabBarComponent: props => {
+    return(
+      <TabBarComponent
+        {...props}
+        style={{
+          backgroundColor: colors.primary,
+          paddingTop: 10
+        }}
+      />
+    )
+  }
+})
+
 export default createSwitchNavigator({
-  ProfileMainScreen: {
-    screen: ProfileMainScreen
+  UserTab: {
+    screen: UserTab
   },
   LoginScreen: {
     screen: LoginScreen
   }
-}, { headerMode: 'none' })
+}, {
+  headerMode: 'none'
+})
+
+// export default createStackNavigator({
+//   UserTab,
+//   LoginScreen
+// }, {
+//   headerMode: 'none',
+//   initialRouteName: "UserTab" })

@@ -61,7 +61,7 @@ class LoginScreen extends React.Component {
     if(response.data) {
       await this.login()
     } else {
-      console.log('Registeration failed!')
+      console.log('Registration failed!')
     }
   }
 
@@ -80,7 +80,7 @@ class LoginScreen extends React.Component {
       await initializeEvents()
       await initializeDives()
 
-      this.navigate('ProfileMainScreen')
+      this.navigate('UserTab')
     } else {
       console.log('Wrong username or password')
     }

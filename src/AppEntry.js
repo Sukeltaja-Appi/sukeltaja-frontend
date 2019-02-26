@@ -18,6 +18,10 @@ class AppEntry extends React.Component {
     console.log(API_URL)
 
     loginService.setUrl(API_URL)
+    eventService.setUrl(API_URL)
+    targetService.setUrl(API_URL)
+    diveService.setUrl(API_URL)
+    userService.setUrl(API_URL)
 
     await this.props.login(credentials)
 
@@ -28,11 +32,6 @@ class AppEntry extends React.Component {
       targetService.setToken(user.token)
       diveService.setToken(user.token)
       userService.setToken(user.token)
-
-      eventService.setUrl(API_URL)
-      targetService.setUrl(API_URL)
-      diveService.setUrl(API_URL)
-      userService.setUrl(API_URL)
 
       await this.props.initializeEvents()
       await this.props.initializeDives()
