@@ -24,7 +24,8 @@ const style = {
   labelStyle: {
     fontWeight: 'bold',
     fontSize: 10
-  }
+  },
+  //showIcon: true
 }
 
 const ConversationStack = createStackNavigator({
@@ -48,6 +49,7 @@ const UserTab = createMaterialTopTabNavigator({
     navigationOptions: {
       tabBarLabel: 'PROFIILI',
       tabBarOptions: style,
+      showIcon: true,
       tabBarIcon: ({ tintColor }) => (
         <Icon name='home' type='feather' color={tintColor} />
       )
@@ -89,7 +91,7 @@ const UserTab = createMaterialTopTabNavigator({
       <TabBarComponent
         {...props}
         style={{
-          backgroundColor: colors.primary,
+          backgroundColor: colors.primary_light,
           paddingTop: 10
         }}
       />
