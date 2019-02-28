@@ -3,10 +3,9 @@ import { View } from 'react-native'
 import { Text, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 
-import { endEvent } from '../../reducers/eventReducer'
+import { endEvent, mergeOngoingEvent } from '../../reducers/eventReducer'
 import { startDive } from '../../reducers/diveReducer'
 import locationService from '../../services/location'
-
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
 
@@ -38,14 +37,17 @@ const OngoingEventScreen = (props) => {
 
     if(length > 0) ongoingEvent.target = selectedTargets[length-1].id
 
+    await props.mergeOngoingEvent(ongoingEvent)
     await props.endEvent(ongoingEvent)
 
     navigate('StartEventScreen')
   }
 
   const diveButton = async () => {
+    const { ongoingEvent } = props
+
     let dive = {
-      event: props.ongoingEvent.id,
+      event: ongoingEvent.id,
       startdate: new Date(),
       latitude: magic1 + Math.random(),
       longitude: magic2 + Math.random()
@@ -57,6 +59,7 @@ const OngoingEventScreen = (props) => {
     dive.longitude = location.coords.longitude
 
     await props.startDive(dive)
+    await props.mergeOngoingEvent(ongoingEvent)
 
     navigate('DiveScreen')
   }
@@ -81,5 +84,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { endEvent, startDive }
+  { endEvent, startDive, mergeOngoingEvent }
 )(OngoingEventScreen)

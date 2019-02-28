@@ -38,13 +38,13 @@ class DiveScreen extends React.Component {
     clearInterval(this.interval)
   }
 
-  endButton = () => {
+  endButton = async () => {
     const { endDive, ongoingEvent, ongoingDive, navigation } = this.props
 
     ongoingDive.enddate = new Date()
     ongoingDive.event = ongoingEvent.id
-    ongoingEvent.dives = [ ...ongoingEvent.dives, ongoingDive.id ]
-    endDive(ongoingDive)
+    //ongoingEvent.dives = [ ...ongoingEvent.dives, ongoingDive.id ]
+    await endDive(ongoingDive)
 
     return navigation.navigate('OngoingEventScreen')
   }
