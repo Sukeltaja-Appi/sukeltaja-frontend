@@ -4,7 +4,7 @@ import { Text, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
-import { NavigationEvents } from "react-navigation";
+import { NavigationEvents } from 'react-navigation'
 import { startEvent } from '../../reducers/eventReducer'
 
 const style = {
@@ -32,14 +32,15 @@ const StartEventScreen = (props) => {
   const reRouteIfOngoingEventExists = () => {
     const { ongoingEvent } = props
 
-    if(typeof ongoingEvent == 'undefined' || ongoingEvent == null) {
-    } else navigate('OngoingEventScreen')
+    if(typeof ongoingEvent !== 'undefined' && ongoingEvent !== null) {
+      navigate('OngoingEventScreen')
+    }
   }
 
   return (
     <View style={styles.centered}>
       <NavigationEvents
-        onWillFocus={payload => {
+        onWillFocus={() => {
           reRouteIfOngoingEventExists()
         }}
       />

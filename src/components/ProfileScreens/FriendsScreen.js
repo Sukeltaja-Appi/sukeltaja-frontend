@@ -9,7 +9,7 @@ const FriendsScreen = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({})
+//const mapStateToProps = (state) => ({})
 
 export default connect(
   null,
