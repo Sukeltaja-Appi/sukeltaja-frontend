@@ -24,6 +24,16 @@ const setUrl = (newUrl) => {
   url = `${newUrl}/messages`
 }
 
+const getAll = async () => {
+  console.log('MESSAGES trying to connect to:', url)
+
+  const response = await axios.get(url, config())
+
+  console.log('got all events!')
+
+  return response.data
+}
+
 const create = async (newObject) => {
   const response = await axios.post(url, newObject, config())
 
@@ -36,4 +46,4 @@ const update = async (id, updatedObject) => {
   return response.data
 }
 
-export default { create, setToken, update, setUrl }
+export default { create, setToken, update, setUrl, getAll }

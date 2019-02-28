@@ -1,28 +1,33 @@
 import messageService from '../services/messages'
 
-export const messageReducer = (state = [], action) {
+export const messageReducer = (state = [], action) => {
   switch(action.type) {
     case 'NEW_MESSAGE':
       return [ ...state, action.message ]
     case 'NEW_MESSAGES':
       return [ ...state, ...action.messages ]
     case 'UPDATE_MESSAGE': {
-      const id = action.updatedMessage.id
+      const id = action.message.id
 
-      return state.map(message => message.id !== id ? message : action.updatedMessage)
+      return state.map(message => message.id !== id ? message : action.message)
     }
     case 'UPDATE_MESSAGES': {
       let updatedMessages = []
+
       for (i = 0; i < state.length; i++) {
-        for (j = 0; j < action.updatedMessages.length; j++) {
-          if(state[i].id === action.updatedMessages[j].id) {
-            updatedMessages.push(action.updatedMessages[j].id)
-            action.updatedMessages.splice(j, 1)
-            break Continues
+        let found = false
+block:
+        if(!found) {
+          for (j = 0; j < action.messages.length; j++) {
+            if(state[i].id === action.messages[j].id) {
+              updatedMessages.push(action.messages[j].id)
+              action.updatedMessages.splice(j, 1)
+              found = true
+              break block
+            }
           }
+          updatedMessages.push(state[i].id)
         }
-        updatedMessages.push(state[i].id)
-        Continues:
       }
       return updatedMessages
     }
@@ -33,7 +38,7 @@ export const messageReducer = (state = [], action) {
   }
 }
 
-export const selectedMessageReducer = (state = [], action) {
+export const selectedMessageReducer = (state = [], action) => {
   switch(action.type) {
     case 'SELECT_MESSAGE':
       return [ ...state, action.message ]

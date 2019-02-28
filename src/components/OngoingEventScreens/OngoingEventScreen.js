@@ -32,13 +32,13 @@ const OngoingEventScreen = (props) => {
 
   const navigate = (value) => props.navigation.navigate(value)
 
-  const endEventButton = () => {
+  const endEventButton = async () => {
     const { ongoingEvent, selectedTargets } = props
     const length = selectedTargets.length
 
     if(length > 0) ongoingEvent.target = selectedTargets[length-1].id
 
-    props.endEvent(ongoingEvent)
+    await props.endEvent(ongoingEvent)
 
     navigate('StartEventScreen')
   }

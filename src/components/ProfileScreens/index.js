@@ -7,8 +7,7 @@ import {
 } from 'react-navigation'
 
 import ProfileMainScreen from './ProfileMainScreen'
-import ConversationsScreen from './ConversationsScreen'
-import Conversation from './Conversation'
+import InvitesScreen from './InvitesScreen'
 import FriendsScreen from './FriendsScreen'
 import UserSettingsScreen from './UserSettingsScreen'
 import LoginScreen from './LoginScreen'
@@ -25,23 +24,8 @@ const style = {
     fontWeight: 'bold',
     fontSize: 10
   },
-  //showIcon: true
+  showIcon: true
 }
-
-const ConversationStack = createStackNavigator({
-  ConversationsScreen: {
-    screen: ConversationsScreen,
-    navigationOptions: {
-      headerTitle: 'Viestit'
-    }
-  },
-  Conversation: {
-    screen: Conversation,
-    navigationOptions: {
-      headerTitle: 'Keskustelu'
-    }
-  }
-}, {})
 
 const UserTab = createMaterialTopTabNavigator({
   ProfileMain : {
@@ -56,9 +40,9 @@ const UserTab = createMaterialTopTabNavigator({
     }
   },
   Conversations : {
-    screen: ConversationStack,
+    screen: InvitesScreen,
     navigationOptions: {
-      tabBarLabel: 'VIESTIT',
+      tabBarLabel: 'KUTSUT',
       tabBarOptions: style,
       tabBarIcon: ({ tintColor }) => (
         <Icon name='inbox' type='feather' color={tintColor} />

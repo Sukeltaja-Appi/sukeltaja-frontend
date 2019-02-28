@@ -34,6 +34,12 @@ const getAll = async () => {
   return response.data
 }
 
+const get = async (id) => {
+  const response = await axios.get(`${url}/${id}`, config())
+
+  return response.data
+}
+
 const create = async (newObject) => {
   const response = await axios.post(url, newObject, config())
 
@@ -46,4 +52,4 @@ const update = async (id, updatedObject) => {
   return response.data
 }
 
-export default { getAll, create, setToken, update, setUrl }
+export default { getAll, get, create, setToken, update, setUrl }

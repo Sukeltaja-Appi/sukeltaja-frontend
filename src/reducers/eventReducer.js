@@ -16,7 +16,7 @@ export const eventReducer = (state = [], action) => {
   }
 }
 
-export const ongoingEventReducer = (state = [], action) => {
+export const ongoingEventReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_CURRENT_EVENT':
       return action.currentEvent
@@ -105,6 +105,66 @@ export const forgetEvents = () => {
     dispatch({
       type: 'SET_CURRENT_EVENT',
       currentEvent: []
+    })
+  }
+}
+
+export const getOngoingEvent = (event) => {
+
+  return async (dispatch) => {
+    const updatedEvent = await eventService.get(event)
+
+    dispatch({
+      type: 'SET_CURRENT_EVENT',
+      currentEvent: updatedEvent
+    })
+  }
+}
+
+// Merges the corresponding event on the server, with the clients event.
+// 1. Only the creator can add admins
+// 2. creator and admins can add users.
+// 3. Everyone can add new dives.
+export const mergeOngoingEvent = (event, userID) => {
+
+  return async (dispatch) => {
+    let updatedEvent = await eventService.get(event)
+
+    let edited = false
+
+    for (i = 0; i < event.dives.length; i++) {
+      if(!updatedEvent.dives.includes(event.dives[i])) {
+        updatedEvent.dives.push(event.dives[i])
+        edited = true
+      }
+    }
+
+    if(updatedEvent.creator == userID || updatedEvent.admins.includes(userID)) {
+      for (i = 0; i < event.participants.length; i++) {
+        if(!updatedEvent.participants.includes(event.participants[i])) {
+          updatedEvent.participants.push(event.participants[i])
+          edited = true
+        }
+      }
+    }
+
+    if(updatedEvent.creator == userID) {
+      for (i = 0; i < event.admins.length; i++) {
+        if(!updatedEvent.admins.includes(event.admins[i])) {
+          updatedEvent.admins.push(event.admins[i])
+          edited = true
+        }
+      }
+      if(typeof ongoingEvent.title != 'undefined') updatedEvent.title = event.title
+      if(typeof ongoingEvent.description != 'undefined') updatedEvent.description = event.description
+      if(typeof ongoingEvent.target != 'undefined') updatedEvent.target = event.target
+    }
+
+    if(edited) updatedEvent = await eventService.update(updatedEvent.id, updatedEvent)
+
+    dispatch({
+      type: 'SET_CURRENT_EVENT',
+      currentEvent: updatedEvent
     })
   }
 }

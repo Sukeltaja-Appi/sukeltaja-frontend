@@ -4,6 +4,7 @@ import { Text, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
+import { NavigationEvents } from "react-navigation";
 import { startEvent } from '../../reducers/eventReducer'
 
 const style = {
@@ -28,8 +29,21 @@ const StartEventScreen = (props) => {
     navigate('OngoingEventScreen')
   }
 
+  const reRouteIfOngoingEventExists = () => {
+    const { ongoingEvent } = props
+
+    if(typeof ongoingEvent == 'undefined' || ongoingEvent == null) {
+    } else navigate('OngoingEventScreen')
+  }
+
   return (
     <View style={styles.centered}>
+      <NavigationEvents
+        onWillFocus={payload => {
+          reRouteIfOngoingEventExists()
+        }}
+      />
+
       <Text h1>Aloita Tapahtuma</Text>
 
       <Text style={styles.h5}>
@@ -44,7 +58,11 @@ const StartEventScreen = (props) => {
   )
 }
 
+const mapStateToProps = (state) => ({
+  ongoingEvent: state.ongoingEvent
+})
+
 export default connect(
-  null,
+  mapStateToProps,
   { startEvent }
 )(StartEventScreen)

@@ -1,7 +1,7 @@
 import loginService from '../services/login'
 import userService from '../services/users'
 
-const userReducer = (store = [], action) => {
+export const userReducer = (store = [], action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
       return action.user
@@ -14,23 +14,32 @@ const userReducer = (store = [], action) => {
   }
 }
 
-export const friendReducer = (state = [], action) => {
+// export const friendReducer = (state = [], action) => {
+//   switch (action.type) {
+//     case 'NEW_FRIEND':
+//       return [ ...state, action.user ]
+//     case 'DELETE_FRIEND': {
+//       let newState = state
+//       newState.splice(newState.indexOf(action.user), 1)
+//       return newState
+//     }
+//     case 'LOAD_FRIENDS':
+//       return action.users
+//     default:
+//       return state
+//   }
+// }
+
+export const usersReducer = (state = [], action) => {
   switch (action.type) {
-    case 'NEW_FRIEND':
-      return [ ...state, action.user ]
-    case 'DELETE_FRIEND': {
-      let newState = state
-      newState.splice(newState.indexOf(action.user), 1)
-      return newState
-    }
-    case 'LOAD_FRIENDS':
+    case 'LOAD_USERS':
       return action.users
     default:
       return state
   }
 }
 
-export const selectedUserReducer = (state = [], action) => {
+export const selectedUsersReducer = (state = [], action) => {
   switch (action.type) {
     case 'SELECT_USER':
       return [ ...state, action.user ]

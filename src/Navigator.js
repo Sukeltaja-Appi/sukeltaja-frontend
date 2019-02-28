@@ -53,7 +53,7 @@ const MainTabNavigator = createBottomTabNavigator({
   Profile : {
     screen: ProfileMainScreen,
     navigationOptions: {
-      tabBarLabel: 'PROFIILI',
+      tabBarLabel: 'KÄYTTÄJÄ',
       tabBarOptions: style,
       tabBarIcon: ({ tintColor }) => (
         <Icon name='user' type='feather' color={tintColor} />
