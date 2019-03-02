@@ -78,12 +78,12 @@ export const logout = () => {
   }
 }
 
-export const loadFriends = () => {
+export const loadAllUsers = () => {
   return async (dispatch) => {
     const users = await userService.getAll()
 
     dispatch({
-      type: 'LOAD_FRIENDS',
+      type: 'LOAD_USERS',
       users
     })
   }

@@ -17,7 +17,7 @@ export const diveReducer = (state = [], action) => {
   }
 }
 
-export const ongoingDiveReducer = (state = [], action) => {
+export const ongoingDiveReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_CURRENT_DIVE': {
       return action.currentDive

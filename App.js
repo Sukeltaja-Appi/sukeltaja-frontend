@@ -15,9 +15,9 @@ const mapStateToProps = (state) => {
   return {
     user: state.user,
     users: state.users,
+    selectedUsers: state.selectedUsers,
     selectedMessages: state.selectedMessages,
     messages: state.messages,
-    selectedUsers: state.selectedUsers,
     ongoingEvent: state.ongoingEvent,
     events: state.events,
     ongoingDive: state.ongoingDive,
