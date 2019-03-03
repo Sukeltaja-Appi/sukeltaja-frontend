@@ -7,6 +7,7 @@ function copyProps(src, target) {
   const props = Object.getOwnPropertyNames(src)
     .filter(prop => typeof target[prop] === 'undefined')
     .map(prop => Object.getOwnPropertyDescriptor(src, prop))
+
   Object.defineProperties(target, props)
 }
 
@@ -25,6 +26,7 @@ Enzyme.configure({ adapter: new Adapter() })
 
 // Ignore React Web errors when using React Native
 const originalConsoleError = console.error
+
 console.error = (message) => {
   if (message.startsWith('Warning:')) {
     return

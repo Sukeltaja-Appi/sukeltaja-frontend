@@ -13,7 +13,7 @@ const setUrl = (newUrl) => {
 }
 
 const login = async (credentials) => {
-  console.log(' LOGIN trying to connect to:', url)
+  console.log('LOGIN trying to connect to:', url)
 
   const response = await axios.post(url, credentials)
 
