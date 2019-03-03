@@ -53,6 +53,9 @@ export const startEvent = (event) => {
 
 export const endEvent = (event) => {
   event.enddate = new Date()
+  if ( typeof event.creator !== 'undefined'
+    && typeof event.creator._id !== 'undefined'
+  ) event.creator = event.creator._id
 
   return async (dispatch) => {
     const updatedEvent = await eventService.update(event.id, event)
@@ -83,6 +86,9 @@ export const createEvent = (event) => {
 }
 
 export const updateEvent = (event) => {
+  if ( typeof event.creator !== 'undefined'
+    && typeof event.creator._id !== 'undefined'
+  ) event.creator = event.creator._id
 
   return async (dispatch) => {
     const updatedEvent = await eventService.update(event.id, event)
@@ -132,24 +138,31 @@ export const mergeOngoingEvent = (event, userID) => {
     let updatedEvent = await eventService.get(event.id)
 
     let edited = false
-    if(updatedEvent.creator == userID || updatedEvent.admins.includes(userID)) {
+    // if(updatedEvent.creator === userID || updatedEvent.admins.includes(userID)) {
+    //
+    // }
 
-    }
-
-    if(updatedEvent.creator == userID) {
-      if(typeof ongoingEvent.title != 'undefined') {
+    if(updatedEvent.creator === userID) {
+      if(typeof updatedEvent.title !== 'undefined') {
         updatedEvent.title = event.title
         edited = true
-      } else if(typeof ongoingEvent.description != 'undefined') {
+      }
+      if(typeof updatedEvent.description !== 'undefined') {
         updatedEvent.description = event.description
         edited = true
-      } else if(typeof ongoingEvent.target != 'undefined') {
+      }
+      if(typeof updatedEvent.target !== 'undefined') {
         updatedEvent.target = event.target
         edited = true
       }
     }
 
-    if(edited) updatedEvent = await eventService.update(updatedEvent.id, updatedEvent)
+    if(edited) {
+      if ( typeof updatedEvent.creator !== 'undefined'
+        && typeof updatedEvent.creator._id !== 'undefined'
+      ) updatedEvent.creator = updatedEvent.creator._id
+      updatedEvent = await eventService.update(updatedEvent.id, updatedEvent)
+    }
 
     dispatch({
       type: 'UPDATE_EVENT',

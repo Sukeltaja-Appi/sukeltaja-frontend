@@ -1,4 +1,4 @@
-import messageService from '../services/messages'
+//import messageService from '../services/messages'
 
 export const messageReducer = (state = [], action) => {
   switch(action.type) {
@@ -14,11 +14,12 @@ export const messageReducer = (state = [], action) => {
     case 'UPDATE_MESSAGES': {
       let updatedMessages = []
 
-      for (i = 0; i < state.length; i++) {
+      for (let i = 0; i < state.length; i++) {
         let found = false
-block:
+
+        block:
         if(!found) {
-          for (j = 0; j < action.messages.length; j++) {
+          for (let j = 0; j < action.messages.length; j++) {
             if(state[i].id === action.messages[j].id) {
               updatedMessages.push(action.messages[j].id)
               action.updatedMessages.splice(j, 1)
@@ -29,12 +30,13 @@ block:
           updatedMessages.push(state[i].id)
         }
       }
+
       return updatedMessages
     }
     case 'SET_MESSAGES':
       return action.messages
     default:
-    return state
+      return state
   }
 }
 
@@ -47,6 +49,6 @@ export const selectedMessageReducer = (state = [], action) => {
     case 'SET_SELECTED_MESSAGES':
       return action.messages
     default:
-    return state
+      return state
   }
 }

@@ -43,7 +43,7 @@ const getAll = async () => {
 }
 
 const get = async (id) => {
-  const response = await axios.get(`${url}/${id}`, updatedObject, config())
+  const response = await axios.get(`${url}/${id}`, config())
 
   return response.data
 }

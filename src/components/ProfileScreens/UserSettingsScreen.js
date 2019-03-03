@@ -2,14 +2,14 @@ import React from 'react'
 import { View } from 'react-native'
 import { connect } from 'react-redux'
 
-const UserSettingsScreen = (props) => {
+const UserSettingsScreen = () => {
 
   return(
     <View></View>
   )
 }
 
-const mapStateToProps = (state) => ({})
+//const mapStateToProps = (state) => ({})
 
 export default connect(
   null,

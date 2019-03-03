@@ -59,7 +59,6 @@ export default connect(
   }
 )(LoginHandler)
 
-
 // let lh = null
 //
 // const initLoginHandler = () => {

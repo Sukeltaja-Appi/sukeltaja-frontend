@@ -63,10 +63,23 @@ const OngoingEventScreen = (props) => {
 
   }
 
-  //const { creator, admins, participants } = props.ongoingEvent
-  //let users = [ creator, ...admins, ...participants ]
-  const users = []
+  const displayName = (participant) => {
+    if (typeof participant.username !== 'undefined') return participant.username
+    return participant
+  }
 
+  const returnID = (participant) => {
+    if (typeof participant._id !== 'undefined') return participant._id
+    return participant
+  }
+
+  let users = []
+  if (typeof props.ongoingEvent !== 'undefined' && props.ongoingEvent !== null ) {
+    const { creator, admins, participants } = props.ongoingEvent
+    users = [ creator, ...admins, ...participants ]
+  }
+
+console.log(users[0])
   return (
     <View style={style.main}>
       <Text h1 >Meneillään oleva tapahtuma</Text>
@@ -81,14 +94,14 @@ const OngoingEventScreen = (props) => {
 
             return (
               <ListItem
-                title={item.username || item}
+                title={displayName(item)}
                 onPress={() => selectUser(item)}
                 bottomDivider
                 chevron
               />
             )}
           }
-          keyExtractor={item => item.id || item}
+          keyExtractor={item => returnID(item)}
         />
       </View>
 
