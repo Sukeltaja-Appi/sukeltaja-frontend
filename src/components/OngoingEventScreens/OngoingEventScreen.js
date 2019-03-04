@@ -13,6 +13,9 @@ const style = {
     ...styles.roundButton,
     backgroundColor: colors.red,
   },
+  buttonInvite: {
+    backgroundColor: colors.green
+  },
   main: {
     flex: 1,
     backgroundColor: colors.background,
@@ -59,7 +62,7 @@ const OngoingEventScreen = (props) => {
     navigate('StartEventScreen')
   }
 
-  const selectUser = () => {
+  const pressUser = () => {
 
   }
 
@@ -78,8 +81,10 @@ const OngoingEventScreen = (props) => {
     const { creator, admins, participants } = props.ongoingEvent
     users = [ creator, ...admins, ...participants ]
   }
-
 console.log(users[0])
+
+
+
   return (
     <View style={style.main}>
       <Text h1 >Meneillään oleva tapahtuma</Text>
@@ -95,16 +100,20 @@ console.log(users[0])
             return (
               <ListItem
                 title={displayName(item)}
-                onPress={() => selectUser(item)}
+                onPress={() => pressUser(item)}
                 bottomDivider
-                chevron
               />
             )}
           }
           keyExtractor={item => returnID(item)}
         />
+          <Button
+            title='+ Kutsu lisää osallistujia'
+            onPress={() => navigate('InviteScreen')}
+            buttonStyle={style.buttonInvite}
+            raised
+          />
       </View>
-
 
       <View style={style.bottom}>
         <Button title='Lopeta' onPress={() => endEventButton()} buttonStyle={style.buttonEnd} raised />

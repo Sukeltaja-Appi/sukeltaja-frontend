@@ -1,5 +1,6 @@
 import loginService from '../services/login'
 import userService from '../services/users'
+import { objectToID } from '../utils/utilityFunctions'
 
 export const userReducer = (store = [], action) => {
   switch (action.type) {
@@ -43,8 +44,10 @@ export const selectedUsersReducer = (state = [], action) => {
   switch (action.type) {
     case 'SELECT_USER':
       return [ ...state, action.user ]
-    case 'SELECT_USERS':
-      return [ ...state, ...action.users ]
+    case 'DESELECT_USER': {
+      state.splice(state.findIndex((u) => {return u.id === action.id}), 1)
+      return state
+    }
     case 'SET_SELECTED_USERS':
       return action.users
     default:
@@ -85,6 +88,24 @@ export const loadAllUsers = () => {
     dispatch({
       type: 'LOAD_USERS',
       users
+    })
+  }
+}
+
+export const selectUser = (user) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'SELECT_USER',
+      user
+    })
+  }
+}
+
+export const deselectUser = (user) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'DESELECT_USER',
+      id: objectToID(user)
     })
   }
 }

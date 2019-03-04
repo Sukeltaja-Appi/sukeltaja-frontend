@@ -3,10 +3,12 @@ import {
   createSwitchNavigator,
   MaterialTopTabBar,
   createMaterialTopTabNavigator,
+  createStackNavigator
 } from 'react-navigation'
 
 import StartEventScreen from './StartEventScreen'
 import OngoingEventScreen from './OngoingEventScreen'
+import InviteScreen from './InviteScreen'
 import DiveScreen from './DiveScreen'
 import TargetScreen from './TargetScreen'
 
@@ -24,6 +26,11 @@ const style = {
   },
   showIcon: true
 }
+
+const OngoingEventScreenStack = createStackNavigator ({
+  OngoingEventScreen,
+  InviteScreen
+}, { headerMode: 'none' })
 
 const OngoingEventTab = createMaterialTopTabNavigator({
   TargetScreen : {
@@ -48,7 +55,7 @@ const OngoingEventTab = createMaterialTopTabNavigator({
     }
   },
   OngoingEventScreen : {
-    screen: OngoingEventScreen,
+    screen: OngoingEventScreenStack,
     navigationOptions: {
       tabBarLabel: 'TAPAHTUMA',
       tabBarOptions: style,
@@ -70,23 +77,6 @@ const OngoingEventTab = createMaterialTopTabNavigator({
     )
   }
 })
-
-// const OngoingEventStack = createStackNavigator({
-//   OngoingEventScreen : {
-//     screen: OngoingEventScreen,
-//     navigationOptions: {
-//       headerBackTitle: null,
-//       header: null
-//     }
-//   },
-//   DiveScreen
-// }, {
-//   defaultNavigationOptions: {
-//     headerTitleStyle: {
-//       flexBasis: '100%'
-//     }
-// }
-
 
 export default createSwitchNavigator({
   StartEventScreen,

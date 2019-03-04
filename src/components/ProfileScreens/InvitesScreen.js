@@ -4,7 +4,7 @@ import { ListItem, Button } from 'react-native-elements'
 import styles from '../../styles/global'
 import { formatDate } from '../../utils/dates'
 import { connect } from 'react-redux'
-import { joinOngoingEvent } from '../../reducers/eventReducer'
+import { getOngoingEvent } from '../../reducers/eventReducer'
 
 const style = {
   subtitle: {
@@ -101,5 +101,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { joinOngoingEvent }
+  { getOngoingEvent }
 )(InvitesScreen)

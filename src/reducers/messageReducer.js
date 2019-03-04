@@ -1,37 +1,11 @@
-//import messageService from '../services/messages'
+import messageService from '../services/messages'
+import { objectToID } from '../utils/utilityFunctions'
 
 export const messageReducer = (state = [], action) => {
   switch(action.type) {
-    case 'NEW_MESSAGE':
-      return [ ...state, action.message ]
-    case 'NEW_MESSAGES':
-      return [ ...state, ...action.messages ]
-    case 'UPDATE_MESSAGE': {
-      const id = action.message.id
-
-      return state.map(message => message.id !== id ? message : action.message)
-    }
-    case 'UPDATE_MESSAGES': {
-      let updatedMessages = []
-
-      for (let i = 0; i < state.length; i++) {
-        let found = false
-
-        block:
-        if(!found) {
-          for (let j = 0; j < action.messages.length; j++) {
-            if(state[i].id === action.messages[j].id) {
-              updatedMessages.push(action.messages[j].id)
-              action.updatedMessages.splice(j, 1)
-              found = true
-              break block
-            }
-          }
-          updatedMessages.push(state[i].id)
-        }
-      }
-
-      return updatedMessages
+    case 'REMOVE_MESSAGE': {
+      state.splice(state.findIndex((m) => {return m.id === action.id}), 1)
+      return state
     }
     case 'SET_MESSAGES':
       return action.messages
@@ -51,4 +25,48 @@ export const selectedMessageReducer = (state = [], action) => {
     default:
       return state
   }
+}
+
+export const getMessages = () => {
+  return async (dispatch) => {
+    const messages = await messageService.getAll()
+
+    dispatch ({
+      type: 'SET_MESSAGES',
+      messages
+    })
+  }
+}
+
+export const checkMessage = (message, userID, status) => {
+  const userIndex = message.receivers.findIndex((u) => {return u === userID})
+  message.received[userIndex] = status
+
+  return async (dispatch) => {
+    await messageService.update(message.id, message)
+
+    dispatch ({
+      type: 'REMOVE_MESSAGE',
+      id: message.id
+    })
+  }
+}
+
+export const sendMessage = async (type, data, sender, receivers) => {
+  for (let i=0; i<receivers.length; i++) receivers[i] = objectToID(receivers[i])
+  sender = objectToID(sender)
+
+  received = []
+  for (let i = 0; i < receivers.length; i++) received.push('pending')
+
+  let message = {
+    created: new Date(),
+    sender,
+    receivers,
+    received,
+    type,
+    data
+  }
+
+  await messageService.create(message)
 }
