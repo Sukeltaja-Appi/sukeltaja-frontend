@@ -11,6 +11,7 @@ import OngoingEventScreen from './OngoingEventScreen'
 import InviteScreen from './InviteScreen'
 import DiveScreen from './DiveScreen'
 import TargetScreen from './TargetScreen'
+import SingleTargetScreen from './TargetScreen'
 
 import { Icon } from 'react-native-elements'
 
@@ -32,9 +33,14 @@ const OngoingEventScreenStack = createStackNavigator ({
   InviteScreen
 }, { headerMode: 'none' })
 
+const TargetScreenStack = createStackNavigator ({
+  TargetScreen,
+  SingleTargetScreen
+}, { headerMode: 'none' })
+
 const OngoingEventTab = createMaterialTopTabNavigator({
   TargetScreen : {
-    screen: TargetScreen,
+    screen: TargetScreenStack,
     navigationOptions: {
       tabBarLabel: 'KOHDE',
       tabBarOptions: style,
