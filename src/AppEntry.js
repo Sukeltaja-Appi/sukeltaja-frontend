@@ -6,6 +6,7 @@ import targetService from './services/targets'
 import diveService from './services/dives'
 import userService from './services/users'
 import loginService from './services/login'
+import messageService from './services/messages'
 import Navigator from './Navigator'
 
 class AppEntry extends React.Component {
@@ -22,6 +23,7 @@ class AppEntry extends React.Component {
     targetService.setUrl(API_URL)
     diveService.setUrl(API_URL)
     userService.setUrl(API_URL)
+    messageService.setUrl(API_URL)
 
     await this.props.login(credentials)
 
@@ -32,6 +34,7 @@ class AppEntry extends React.Component {
       targetService.setToken(user.token)
       diveService.setToken(user.token)
       userService.setToken(user.token)
+      messageService.setToken(user.token)
 
       await this.props.initializeEvents()
       await this.props.initializeDives()

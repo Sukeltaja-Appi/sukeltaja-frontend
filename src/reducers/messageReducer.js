@@ -5,6 +5,7 @@ export const messageReducer = (state = [], action) => {
   switch(action.type) {
     case 'REMOVE_MESSAGE': {
       state.splice(state.findIndex((m) => {return m.id === action.id}), 1)
+
       return state
     }
     case 'SET_MESSAGES':
@@ -40,6 +41,7 @@ export const getMessages = () => {
 
 export const checkMessage = (message, userID, status) => {
   const userIndex = message.receivers.findIndex((u) => {return u === userID})
+
   message.received[userIndex] = status
 
   return async (dispatch) => {
@@ -56,7 +58,8 @@ export const sendMessage = async (type, data, sender, receivers) => {
   for (let i=0; i<receivers.length; i++) receivers[i] = objectToID(receivers[i])
   sender = objectToID(sender)
 
-  received = []
+  const received = []
+
   for (let i = 0; i < receivers.length; i++) received.push('pending')
 
   let message = {

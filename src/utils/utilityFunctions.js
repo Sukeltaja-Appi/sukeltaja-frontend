@@ -4,6 +4,7 @@ export const objectToID = (obj) => {
     if ( typeof obj._id !== 'undefined' ) return obj._id
     if ( typeof obj.id !== 'undefined' ) return obj.id
   }
+
   return obj
 }
 
@@ -13,6 +14,7 @@ export const usernameOrId = (obj) => {
     if ( typeof obj.id !== 'undefined' ) return obj.id
     if ( typeof obj._id !== 'undefined' ) return obj._id
   }
+
   return obj
 }
 
@@ -31,6 +33,7 @@ export const userEqualsObject = (user, obj) => {
       return obj._id === user.id
     }
   }
+
   return obj === user.id
 }
 
@@ -39,5 +42,6 @@ export const userIsInArray = (user, users) => {
   for(let i = 0; i < users.length; i++) {
     if(userEqualsObject(user, users[i])) return true
   }
+
   return false
 }

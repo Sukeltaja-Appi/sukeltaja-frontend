@@ -55,7 +55,7 @@ const OngoingEventScreen = (props) => {
     if(length > 0) ongoingEvent.target = selectedTargets[length-1].id
 
     await endDives()
-    await props.mergeOngoingEvent(ongoingEvent)
+    await props.mergeOngoingEvent(ongoingEvent, user.id)
     ongoingEvent = props.ongoingEvent
     await props.endEvent(ongoingEvent)
 
@@ -67,6 +67,7 @@ const OngoingEventScreen = (props) => {
   }
 
   const displayName = (participant) => {
+    console.log(participant)
     if (typeof participant.username !== 'undefined') return participant.username
     return participant
   }
@@ -125,7 +126,8 @@ console.log(users[0])
 const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
   ongoingDive: state.ongoingDive,
-  selectedTargets: state.selectedTargets
+  selectedTargets: state.selectedTargets,
+  user: state.user
 })
 
 export default connect(

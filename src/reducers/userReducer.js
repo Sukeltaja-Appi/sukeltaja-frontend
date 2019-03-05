@@ -110,4 +110,13 @@ export const deselectUser = (user) => {
   }
 }
 
+export const clearSelectedUsers = () => {
+  return (dispatch) => {
+    dispatch({
+      type: 'SET_SELECTED_USERS',
+      users: []
+    })
+  }
+}
+
 export default userReducer

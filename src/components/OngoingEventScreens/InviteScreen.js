@@ -4,7 +4,7 @@ import { CheckBox, Button } from 'react-native-elements'
 import styles from '../../styles/global'
 import { connect } from 'react-redux'
 import { usernameOrId, userEqualsObject, userIsInArray } from '../../utils/utilityFunctions'
-import { loadAllUsers, selectUser, deselectUser } from '../../reducers/userReducer'
+import { loadAllUsers, selectUser, deselectUser, clearSelectedUsers } from '../../reducers/userReducer'
 import { sendMessage } from '../../reducers/messageReducer'
 
 const style = {
@@ -30,6 +30,11 @@ class InviteScreen extends React.Component {
     }
   }
 
+  refreshComponent = () => {
+    this.navigate('OngoingEventScreen')
+    this.navigate('InviteScreen')
+  }
+
   componentDidMount() {
     if(this.props.users.length == 0) this.loadUsers()
   }
@@ -41,9 +46,9 @@ class InviteScreen extends React.Component {
   }
 
   inviteAdmins = async () => {
-    const { sendMessage, user, selectedUsers, ongoingEvent } = this.props
+    const { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers } = this.props
     const { creator, pending } = ongoingEvent
-
+    console.log(selectedUsers.length)
     if(userEqualsObject(user, creator)) {
 
       for(let i = 0; i < selectedUsers.length; i++) {
@@ -55,17 +60,20 @@ class InviteScreen extends React.Component {
 
       await sendMessage(
         'invitation_admin',
-        {},
-        user.id,
+        ongoingEvent,
+        { id: user.id, username: user.username },
         selectedUsers
       )
+
+      await clearSelectedUsers()
+      this.refreshComponent()
     }
   }
 
   inviteParticipants = async () => {
-    const { sendMessage, user, selectedUsers, ongoingEvent } = this.props
+    const { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers } = this.props
     const { creator, admins, pending } = ongoingEvent
-
+    console.log(selectedUsers.length)
     if(userEqualsObject(user, creator) || userIsInArray(user, admins)) {
 
       for(let i = 0; i < selectedUsers.length; i++) {
@@ -77,16 +85,18 @@ class InviteScreen extends React.Component {
 
       await sendMessage(
         'invitation_participant',
-        {},
-        user.id,
+        ongoingEvent,
+        { id: user.id, username: user.username },
         selectedUsers
       )
+
+      await clearSelectedUsers()
+      this.refreshComponent()
     }
   }
 
   pressUser = (u) => {
     const { selectUser, deselectUser, selectedUsers } = this.props
-    let { checked } = this.state
 
     if (!selectedUsers.includes(u)) selectUser(u)
     else deselectUser(u)
@@ -94,8 +104,13 @@ class InviteScreen extends React.Component {
     // Navigation is done to force rerendering because
     // this.forceUpdate() is not enough for some reason.
     // This is very slow however so it should be fixed.
-    this.navigate('OngoingEventScreen')
-    this.navigate('InviteScreen')
+    // this.navigate('OngoingEventScreen')
+    // this.navigate('InviteScreen')
+    this.refreshComponent()
+
+    console.log('SelectedUsers:')
+    console.log(selectedUsers.length)
+    for(let i=0; i<selectedUsers.length; i++) console.log(selectedUsers[i].username || selectedUsers[i])
   }
 
   renderListItem = (u) => {
@@ -110,6 +125,7 @@ class InviteScreen extends React.Component {
         />
       )
     }
+
     return (
       <CheckBox
         title={usernameOrId(u)}
@@ -182,5 +198,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { sendMessage, loadAllUsers, selectUser, deselectUser }
+  { sendMessage, loadAllUsers, selectUser, deselectUser, clearSelectedUsers }
 )(InviteScreen)

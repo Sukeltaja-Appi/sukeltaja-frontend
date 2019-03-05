@@ -51,7 +51,7 @@ class DiveScreen extends React.Component {
   }
 
   diveButton = async () => {
-    let { ongoingEvent, navigation, startDive, mergeOngoingEvent } = this.props
+    let { ongoingEvent, user, navigation, startDive, mergeOngoingEvent } = this.props
 
     let dive = {
       event: ongoingEvent.id,
@@ -68,7 +68,7 @@ class DiveScreen extends React.Component {
 
     await startDive(dive)
     ongoingEvent = this.props.ongoingEvent
-    await mergeOngoingEvent(ongoingEvent)
+    await mergeOngoingEvent(ongoingEvent, user.id)
 
     this.state.ongoing = true
     this.state.counter = 0
@@ -122,7 +122,8 @@ class DiveScreen extends React.Component {
 
 const mapStateToProps = (state) => ({
   ongoingDive: state.ongoingDive,
-  ongoingEvent: state.ongoingEvent
+  ongoingEvent: state.ongoingEvent,
+  user: state.user
 })
 
 export default connect(
