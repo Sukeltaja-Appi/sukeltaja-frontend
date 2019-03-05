@@ -15,6 +15,17 @@ export const messageReducer = (state = [], action) => {
   }
 }
 
+export const sentMessageReducer = (state = [], action) => {
+  switch(action.type) {
+    case 'SEND_MESSAGE':
+      return [ ...state, action.message ]
+    case 'SET_SENT_MESSAGES':
+      return action.messages
+    default:
+      return state
+  }
+}
+
 export const selectedMessageReducer = (state = [], action) => {
   switch(action.type) {
     case 'SELECT_MESSAGE':
@@ -54,7 +65,7 @@ export const checkMessage = (message, userID, status) => {
   }
 }
 
-export const sendMessage = async (type, data, sender, receivers) => {
+export const sendMessage = (type, data, sender, receivers) => {
   for (let i=0; i<receivers.length; i++) receivers[i] = objectToID(receivers[i])
   sender = objectToID(sender)
 
@@ -71,5 +82,12 @@ export const sendMessage = async (type, data, sender, receivers) => {
     data
   }
 
-  await messageService.create(message)
+  return async (dispatch) => {
+    message = await messageService.create(message)
+
+    dispatch ({
+      type: 'SEND_MESSAGE',
+      message
+    })
+  }
 }

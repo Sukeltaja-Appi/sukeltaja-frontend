@@ -3,9 +3,10 @@ import { View, FlatList, Text } from 'react-native'
 import { CheckBox, Button } from 'react-native-elements'
 import styles from '../../styles/global'
 import { connect } from 'react-redux'
-import { usernameOrId, userEqualsObject, userIsInArray } from '../../utils/utilityFunctions'
+import { usernameOrId, userEqualsObject, userIsInArray, objectToID } from '../../utils/utilityFunctions'
 import { loadAllUsers, selectUser, deselectUser, clearSelectedUsers } from '../../reducers/userReducer'
 import { sendMessage } from '../../reducers/messageReducer'
+import { mergeOngoingEvent } from '../../reducers/eventReducer'
 
 const style = {
   subtitle: {
@@ -25,9 +26,14 @@ class InviteScreen extends React.Component {
   constructor(props) {
     super(props)
     this.showList = this.showList.bind(this)
-    this.state = {
-      dummy: 0
-    }
+  }
+
+  logSelectedUsers = () => {
+    let { selectedUsers } = this.props
+
+    console.log('SelectedUsers:')
+    console.log(selectedUsers.length)
+    for(let i=0; i<selectedUsers.length; i++) console.log(selectedUsers[i].username || selectedUsers[i])
   }
 
   refreshComponent = () => {
@@ -36,7 +42,7 @@ class InviteScreen extends React.Component {
   }
 
   componentDidMount() {
-    if(this.props.users.length == 0) this.loadUsers()
+    if(this.props.users.length === 0) this.loadUsers()
   }
 
   navigate = (value) => this.props.navigation.navigate(value)
@@ -46,17 +52,21 @@ class InviteScreen extends React.Component {
   }
 
   inviteAdmins = async () => {
-    const { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers } = this.props
-    const { creator, pending } = ongoingEvent
-    console.log(selectedUsers.length)
+    let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers, mergeOngoingEvent } = this.props
+    let { creator, pending } = ongoingEvent
+
     if(userEqualsObject(user, creator)) {
 
       for(let i = 0; i < selectedUsers.length; i++) {
-        pending.push({
-          user: selectedUsers[i].id,
-          access: 'admin'
-        })
+        if(!userIsInArray(selectedUsers[i], pending)) {
+          pending.push({
+            user: objectToID(selectedUsers[i]),
+            access: 'admin'
+          })
+        }
       }
+
+      await mergeOngoingEvent(ongoingEvent, user.id)
 
       await sendMessage(
         'invitation_admin',
@@ -65,23 +75,40 @@ class InviteScreen extends React.Component {
         selectedUsers
       )
 
-      await clearSelectedUsers()
-      this.refreshComponent()
+      clearSelectedUsers()
+      //this.refreshComponent()
+      this.loadUsers()
     }
   }
 
   inviteParticipants = async () => {
-    const { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers } = this.props
-    const { creator, admins, pending } = ongoingEvent
-    console.log(selectedUsers.length)
+    let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers, mergeOngoingEvent } = this.props
+    let { creator, admins, pending } = ongoingEvent
+
     if(userEqualsObject(user, creator) || userIsInArray(user, admins)) {
 
       for(let i = 0; i < selectedUsers.length; i++) {
-        pending.push({
-          user: selectedUsers[i].id,
-          access: 'participant'
-        })
+        if(!userIsInArray(selectedUsers[i], pending)) {
+          pending.push({
+            user: objectToID(selectedUsers[i]),
+            access: 'participant'
+          })
+        }
       }
+
+      console.log('before merge--------------------------------------------')
+      console.log(ongoingEvent.pending.length)
+      for(let i = 0; i < ongoingEvent.pending.length; i++) console.log(ongoingEvent.pending[i])
+      console.log(ongoingEvent)
+
+      await mergeOngoingEvent(ongoingEvent, user.id)
+
+      console.log('after merge----------------------------------------------')
+      ongoingEvent = this.props.ongoingEvent
+      console.log(ongoingEvent.pending.length)
+      for(let i = 0; i < ongoingEvent.pending.length; i++) console.log(ongoingEvent.pending[i])
+      console.log(ongoingEvent)
+      console.log('---------------------------------------------------------')
 
       await sendMessage(
         'invitation_participant',
@@ -90,27 +117,19 @@ class InviteScreen extends React.Component {
         selectedUsers
       )
 
-      await clearSelectedUsers()
-      this.refreshComponent()
+      clearSelectedUsers()
+      //this.refreshComponent()
+      this.loadUsers()
     }
   }
 
   pressUser = (u) => {
-    const { selectUser, deselectUser, selectedUsers } = this.props
+    let { selectUser, deselectUser, selectedUsers } = this.props
 
-    if (!selectedUsers.includes(u)) selectUser(u)
+    if (!userIsInArray(u, selectedUsers)) selectUser(u)
     else deselectUser(u)
 
-    // Navigation is done to force rerendering because
-    // this.forceUpdate() is not enough for some reason.
-    // This is very slow however so it should be fixed.
-    // this.navigate('OngoingEventScreen')
-    // this.navigate('InviteScreen')
     this.refreshComponent()
-
-    console.log('SelectedUsers:')
-    console.log(selectedUsers.length)
-    for(let i=0; i<selectedUsers.length; i++) console.log(selectedUsers[i].username || selectedUsers[i])
   }
 
   renderListItem = (u) => {
@@ -198,5 +217,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { sendMessage, loadAllUsers, selectUser, deselectUser, clearSelectedUsers }
+  { sendMessage, loadAllUsers, selectUser, deselectUser, clearSelectedUsers, mergeOngoingEvent }
 )(InviteScreen)
