@@ -51,17 +51,18 @@ class DiveScreen extends React.Component {
   }
 
   diveButton = async () => {
-    let { ongoingEvent, user, navigation, startDive, mergeOngoingEvent } = this.props
+    let { ongoingEvent, user, startDive, mergeOngoingEvent } = this.props
 
     let dive = {
       event: ongoingEvent.id,
       startdate: new Date(),
-      latitude: magic1,// + Math.random(),
+      latitude: magic1, // + Math.random(),
       longitude: magic2// + Math.random()
     }
 
     try {
       const location = await locationService.getLocationAsync()
+
       dive.latitude = location.coords.latitude
       dive.longitude = location.coords.longitude
     } catch(err) { console.log('Geolocation unavailable.') }
@@ -76,7 +77,7 @@ class DiveScreen extends React.Component {
   }
 
   endButton = async () => {
-    const { endDive, ongoingEvent, ongoingDive, navigation } = this.props
+    const { endDive, ongoingEvent, ongoingDive } = this.props
 
     ongoingDive.enddate = new Date()
     ongoingDive.event = ongoingEvent.id

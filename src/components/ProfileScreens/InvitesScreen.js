@@ -23,11 +23,11 @@ const style = {
 const InvitesScreen = (props) => {
 
   const join = (message) => {
-
+    return message.sender
   }
 
   const abandon = (message) => {
-
+    return message.sender
   }
 
   const { messages } = props
@@ -66,17 +66,17 @@ const InvitesScreen = (props) => {
                 chevron
               >
 
-              <View style={{ ...styles.row, ...style.buttonRow }}>
-                <Button
-                  title="Liity"
-                  onPress={() => join(item)}
-                />
-                <View style={style.buttonDivider}/>
-                <Button
-                  title="Hylkää"
-                  onPress={() => abandon(item)}
-                />
-              </View>
+                <View style={{ ...styles.row, ...style.buttonRow }}>
+                  <Button
+                    title="Liity"
+                    onPress={() => join(item)}
+                  />
+                  <View style={style.buttonDivider}/>
+                  <Button
+                    title="Hylkää"
+                    onPress={() => abandon(item)}
+                  />
+                </View>
 
               </ListItem>
             )}
@@ -88,10 +88,6 @@ const InvitesScreen = (props) => {
   }
 
   return showMessages()
-
-  return(
-    <View></View>
-  )
 }
 
 const mapStateToProps = (state) => ({

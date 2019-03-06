@@ -8,9 +8,11 @@ const TargetScreen = (props) => {
 
   let target = null
   let length = selectedTargets.length
+
   if(length > 0) target = selectedTargets[length-1]
 
   let targetName = 'No target selected'
+
   if(target !== null) targetName = target.name
 
   return(

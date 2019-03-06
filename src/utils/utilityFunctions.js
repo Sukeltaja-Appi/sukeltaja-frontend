@@ -1,9 +1,9 @@
 
 export const objectToID = (obj) => {
   if ( typeof obj !== 'undefined' ) {
-    if ( typeof obj._id !== 'undefined' ) return obj._id
     if ( typeof obj.id !== 'undefined' ) return obj.id
     if ( typeof obj.user !== 'undefined') return obj.user
+    if ( typeof obj._id !== 'undefined' ) return obj._id
   }
 
   return obj
@@ -43,6 +43,9 @@ export const userEqualsObject = (user, obj) => {
     }
     if ( typeof obj.id !== 'undefined' ) {
       return obj.id === user.id
+    }
+    if ( typeof obj.user !== 'undefined' ) {
+      return obj.user === user.id
     }
     if ( typeof obj._id !== 'undefined' ) {
       return obj._id === user.id

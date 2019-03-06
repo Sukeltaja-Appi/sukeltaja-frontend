@@ -3,10 +3,15 @@ import { View, FlatList, Text } from 'react-native'
 import { CheckBox, Button } from 'react-native-elements'
 import styles from '../../styles/global'
 import { connect } from 'react-redux'
-import { usernameOrId, userEqualsObject, userIsInArray, objectToID } from '../../utils/utilityFunctions'
 import { loadAllUsers, selectUser, deselectUser, clearSelectedUsers } from '../../reducers/userReducer'
 import { sendMessage } from '../../reducers/messageReducer'
 import { mergeOngoingEvent } from '../../reducers/eventReducer'
+
+import {
+  usernameOrId, userEqualsObject,
+  userIsInArray, objectToID,
+  userObjEqualsUserObj
+} from '../../utils/utilityFunctions'
 
 const style = {
   subtitle: {
@@ -53,15 +58,19 @@ class InviteScreen extends React.Component {
 
   inviteAdmins = async () => {
     let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers, mergeOngoingEvent } = this.props
-    let { creator, pending } = ongoingEvent
+    let { creator, admins, participants, pending } = ongoingEvent
 
     if(userEqualsObject(user, creator)) {
 
       for(let i = 0; i < selectedUsers.length; i++) {
-        if(!userIsInArray(selectedUsers[i], pending)) {
+        if(!userIsInArray(selectedUsers[i], pending)
+        && !userIsInArray(selectedUsers[i], admins)
+        && !userIsInArray(selectedUsers[i], participants)
+        && !userObjEqualsUserObj(selectedUsers[i], creator)) {
           pending.push({
             user: objectToID(selectedUsers[i]),
-            access: 'admin'
+            access: 'admin',
+            username: usernameOrId(selectedUsers[i])
           })
         }
       }
@@ -83,32 +92,24 @@ class InviteScreen extends React.Component {
 
   inviteParticipants = async () => {
     let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers, mergeOngoingEvent } = this.props
-    let { creator, admins, pending } = ongoingEvent
+    let { creator, admins, participants, pending } = ongoingEvent
 
     if(userEqualsObject(user, creator) || userIsInArray(user, admins)) {
 
       for(let i = 0; i < selectedUsers.length; i++) {
-        if(!userIsInArray(selectedUsers[i], pending)) {
+        if(!userIsInArray(selectedUsers[i], pending)
+        && !userIsInArray(selectedUsers[i], admins)
+        && !userIsInArray(selectedUsers[i], participants)
+        && !userObjEqualsUserObj(selectedUsers[i], creator)) {
           pending.push({
             user: objectToID(selectedUsers[i]),
-            access: 'participant'
+            access: 'participant',
+            username: usernameOrId(selectedUsers[i])
           })
         }
       }
 
-      console.log('before merge--------------------------------------------')
-      console.log(ongoingEvent.pending.length)
-      for(let i = 0; i < ongoingEvent.pending.length; i++) console.log(ongoingEvent.pending[i])
-      console.log(ongoingEvent)
-
       await mergeOngoingEvent(ongoingEvent, user.id)
-
-      console.log('after merge----------------------------------------------')
-      ongoingEvent = this.props.ongoingEvent
-      console.log(ongoingEvent.pending.length)
-      for(let i = 0; i < ongoingEvent.pending.length; i++) console.log(ongoingEvent.pending[i])
-      console.log(ongoingEvent)
-      console.log('---------------------------------------------------------')
 
       await sendMessage(
         'invitation_participant',

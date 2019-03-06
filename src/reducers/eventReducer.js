@@ -1,5 +1,5 @@
 import eventService from '../services/events'
-import { mergeUserLists, objectToID } from '../utils/utilityFunctions'
+import { mergeUserLists, objectToID, userIsInArray } from '../utils/utilityFunctions'
 
 export const eventReducer = (state = [], action) => {
   switch (action.type) {
@@ -140,13 +140,13 @@ export const mergeOngoingEvent = (event, userID) => {
 
     let edited = false
 
-    if(updatedEvent.creator === userID || updatedEvent.admins.includes(userID)) {
+    if(objectToID(updatedEvent.creator) === userID || userIsInArray(userID, updatedEvent.admins)) {
       updatedEvent.participants = mergeUserLists(updatedEvent.participants, event.participants)
       updatedEvent.pending = mergeUserLists(updatedEvent.pending, event.pending)
       edited = true
     }
 
-    if(updatedEvent.creator === userID) {
+    if(objectToID(updatedEvent.creator) === userID) {
       if(typeof updatedEvent.title !== 'undefined') {
         updatedEvent.title = event.title
         //edited = true
@@ -161,7 +161,7 @@ export const mergeOngoingEvent = (event, userID) => {
       }
 
       updatedEvent.admins = mergeUserLists(updatedEvent.admins, event.admins)
-      edited = true
+      //edited = true
     }
 
     if(edited) {

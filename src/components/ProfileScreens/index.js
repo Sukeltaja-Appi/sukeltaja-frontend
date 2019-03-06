@@ -2,8 +2,7 @@ import React from 'react'
 import {
   createSwitchNavigator,
   MaterialTopTabBar,
-  createMaterialTopTabNavigator,
-  createStackNavigator
+  createMaterialTopTabNavigator
 } from 'react-navigation'
 
 import ProfileMainScreen from './ProfileMainScreen'

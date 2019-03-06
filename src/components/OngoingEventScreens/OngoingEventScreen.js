@@ -49,7 +49,7 @@ const OngoingEventScreen = (props) => {
   }
 
   const endEventButton = async () => {
-    let { ongoingEvent, selectedTargets } = props
+    let { ongoingEvent, selectedTargets, user } = props
     const length = selectedTargets.length
 
     if(length > 0) ongoingEvent.target = selectedTargets[length-1].id
@@ -69,22 +69,25 @@ const OngoingEventScreen = (props) => {
   const displayName = (participant) => {
     console.log(participant)
     if (typeof participant.username !== 'undefined') return participant.username
+
     return participant
   }
 
   const returnID = (participant) => {
     if (typeof participant._id !== 'undefined') return participant._id
+
     return participant
   }
 
   let users = []
+
   if (typeof props.ongoingEvent !== 'undefined' && props.ongoingEvent !== null ) {
     const { creator, admins, participants } = props.ongoingEvent
+
     users = [ creator, ...admins, ...participants ]
   }
-console.log(users[0])
 
-
+  console.log(users[0])
 
   return (
     <View style={style.main}>
@@ -108,12 +111,12 @@ console.log(users[0])
           }
           keyExtractor={item => returnID(item)}
         />
-          <Button
-            title='+ Kutsu lisää osallistujia'
-            onPress={() => navigate('InviteScreen')}
-            buttonStyle={style.buttonInvite}
-            raised
-          />
+        <Button
+          title='+ Kutsu lisää osallistujia'
+          onPress={() => navigate('InviteScreen')}
+          buttonStyle={style.buttonInvite}
+          raised
+        />
       </View>
 
       <View style={style.bottom}>
