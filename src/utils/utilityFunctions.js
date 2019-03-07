@@ -2,7 +2,12 @@
 export const objectToID = (obj) => {
   if ( typeof obj !== 'undefined' ) {
     if ( typeof obj.id !== 'undefined' ) return obj.id
-    if ( typeof obj.user !== 'undefined') return obj.user
+    if ( typeof obj.user !== 'undefined' ) {
+      if ( typeof obj.user._id !== 'undefined' ) return obj.user._id
+      if ( typeof obj.user.id !== 'undefined' ) return obj.user.id
+
+      return obj.user
+    }
     if ( typeof obj._id !== 'undefined' ) return obj._id
   }
 

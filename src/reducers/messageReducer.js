@@ -51,14 +51,10 @@ export const getMessages = () => {
 }
 
 export const checkMessage = (message, userID, status) => {
-  const userIndex = message.receivers.findIndex((u) => {return u === userID})
 
   return async (dispatch) => {
-    message = await messageService.get(messageToID(message))
 
-    message.received[userIndex] = status
-
-    await messageService.update(messageToID(message), message)
+    await messageService.checkMessage(messageToID(message), status)
 
     dispatch ({
       type: 'REMOVE_MESSAGE',

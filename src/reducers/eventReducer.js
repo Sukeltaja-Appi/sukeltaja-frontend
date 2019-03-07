@@ -132,17 +132,43 @@ export const joinOngoingEvent = (event) => {
   }
 }
 
+export const getOngoingEvent = (event) => {
+
+  return async (dispatch) => {
+    const ongoingEvent = await eventService.get(event.id)
+
+    dispatch({
+      type: 'SET_CURRENT_EVENT',
+      currentEvent: ongoingEvent
+    })
+  }
+}
+
 // Merges the corresponding event on the server, with the clients event.
 export const mergeOngoingEvent = (event, userID) => {
 
   return async (dispatch) => {
+    console.log('Before get--------------------------------------')
+    console.log(event)
     let updatedEvent = await eventService.get(event.id)
+
+    console.log('After get--------------------------------------')
+    console.log(updatedEvent)
 
     let edited = false
 
     if(objectToID(updatedEvent.creator) === userID || userIsInArray(userID, updatedEvent.admins)) {
       updatedEvent.participants = mergeUserLists(updatedEvent.participants, event.participants)
       updatedEvent.pending = mergeUserLists(updatedEvent.pending, event.pending)
+
+      for (let i = 0; i < updatedEvent.pending.length; i++) {
+        let request = updatedEvent.pending[i]
+
+        updatedEvent.pending[i] = {
+          access: request.access,
+          user: objectToID(request.user)
+        }
+      }
       edited = true
     }
 
@@ -167,6 +193,8 @@ export const mergeOngoingEvent = (event, userID) => {
     if(edited) {
       updatedEvent.creator = objectToID(updatedEvent.creator)
       updatedEvent = await eventService.update(updatedEvent.id, updatedEvent)
+      console.log('After put--------------------------------------')
+      console.log(updatedEvent)
     }
 
     dispatch({

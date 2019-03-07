@@ -34,6 +34,7 @@ const getAll = async () => {
   return response.data
 }
 
+//unncecessary
 const get = async (id) => {
   const response = await axios.get(`${url}/${id}`, config())
 
@@ -52,4 +53,10 @@ const update = async (id, updatedObject) => {
   return response.data
 }
 
-export default { create, setToken, update, setUrl, getAll, get }
+const checkMessage = async (id, status) => {
+  const response = await axios.put(`${url}/${id}`, { status }, config())
+
+  return response.data
+}
+
+export default { create, setToken, update, setUrl, getAll, get, checkMessage }

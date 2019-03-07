@@ -5,7 +5,7 @@ import styles from '../../styles/global'
 import { connect } from 'react-redux'
 import { loadAllUsers, selectUser, deselectUser, clearSelectedUsers } from '../../reducers/userReducer'
 import { sendMessage } from '../../reducers/messageReducer'
-import { mergeOngoingEvent } from '../../reducers/eventReducer'
+import { mergeOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
 
 import {
   usernameOrId, userEqualsObject,
@@ -41,6 +41,16 @@ class InviteScreen extends React.Component {
     for(let i=0; i<selectedUsers.length; i++) console.log(selectedUsers[i].username || selectedUsers[i])
   }
 
+  debugLogPending = (pending) => {
+    console.log('selectedUsers---------------------------------------')
+    const { selectedUsers } = this.props
+
+    for(let i = 0; i < selectedUsers.length; i++) console.log(selectedUsers[i])
+    console.log('pending---------------------------------------------')
+    for(let i = 0; i < pending.length; i++) console.log(pending[i])
+    console.log('----------------------------------------------------')
+  }
+
   refreshComponent = () => {
     this.navigate('OngoingEventScreen')
     this.navigate('InviteScreen')
@@ -59,23 +69,28 @@ class InviteScreen extends React.Component {
   inviteAdmins = async () => {
     let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers, mergeOngoingEvent } = this.props
     let { creator, admins, participants, pending } = ongoingEvent
+    let pendingUsers = []
+
+    for(let i = 0; i < pending.length; i++) pendingUsers[i] = pending[i].user
 
     if(userEqualsObject(user, creator)) {
 
-      for(let i = 0; i < selectedUsers.length; i++) {
-        if(!userIsInArray(selectedUsers[i], pending)
-        && !userIsInArray(selectedUsers[i], admins)
-        && !userIsInArray(selectedUsers[i], participants)
-        && !userObjEqualsUserObj(selectedUsers[i], creator)) {
-          pending.push({
-            user: objectToID(selectedUsers[i]),
-            access: 'admin',
-            username: usernameOrId(selectedUsers[i])
-          })
-        }
-      }
+      // for(let i = 0; i < selectedUsers.length; i++) {
+      //   if(!userIsInArray(selectedUsers[i], pendingUsers)
+      //   && !userIsInArray(selectedUsers[i], admins)
+      //   && !userIsInArray(selectedUsers[i], participants)
+      //   && !userObjEqualsUserObj(selectedUsers[i], creator)) {
+      //     pending.push({
+      //       user: objectToID(selectedUsers[i]),
+      //       access: 'admin'
+      //     })
+      //   }
+      // }
 
-      await mergeOngoingEvent(ongoingEvent, user.id)
+      this.debugLogPending(ongoingEvent.pending)
+      //await mergeOngoingEvent(ongoingEvent, user.id)
+      await getOngoingEvent(ongoingEvent)
+      this.debugLogPending(ongoingEvent.pending)
 
       await sendMessage(
         'invitation_admin',
@@ -93,23 +108,28 @@ class InviteScreen extends React.Component {
   inviteParticipants = async () => {
     let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers, mergeOngoingEvent } = this.props
     let { creator, admins, participants, pending } = ongoingEvent
+    let pendingUsers = []
+
+    for(let i = 0; i < pending.length; i++) pendingUsers[i] = pending[i].user
 
     if(userEqualsObject(user, creator) || userIsInArray(user, admins)) {
 
-      for(let i = 0; i < selectedUsers.length; i++) {
-        if(!userIsInArray(selectedUsers[i], pending)
-        && !userIsInArray(selectedUsers[i], admins)
-        && !userIsInArray(selectedUsers[i], participants)
-        && !userObjEqualsUserObj(selectedUsers[i], creator)) {
-          pending.push({
-            user: objectToID(selectedUsers[i]),
-            access: 'participant',
-            username: usernameOrId(selectedUsers[i])
-          })
-        }
-      }
+      // for(let i = 0; i < selectedUsers.length; i++) {
+      //   if(!userIsInArray(selectedUsers[i], pendingUsers)
+      //   && !userIsInArray(selectedUsers[i], admins)
+      //   && !userIsInArray(selectedUsers[i], participants)
+      //   && !userObjEqualsUserObj(selectedUsers[i], creator)) {
+      //     pending.push({
+      //       user: objectToID(selectedUsers[i]),
+      //       access: 'participant',
+      //     })
+      //   }
+      // }
 
-      await mergeOngoingEvent(ongoingEvent, user.id)
+      this.debugLogPending(ongoingEvent.pending)
+      //await mergeOngoingEvent(ongoingEvent, user.id)
+      await ongoingEvent(ongoingEvent)
+      this.debugLogPending(ongoingEvent.pending)
 
       await sendMessage(
         'invitation_participant',
@@ -218,5 +238,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { sendMessage, loadAllUsers, selectUser, deselectUser, clearSelectedUsers, mergeOngoingEvent }
+  { sendMessage, loadAllUsers, selectUser,
+    deselectUser, clearSelectedUsers, mergeOngoingEvent,
+    getOngoingEvent }
 )(InviteScreen)

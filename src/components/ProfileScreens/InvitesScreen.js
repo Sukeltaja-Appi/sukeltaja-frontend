@@ -71,6 +71,10 @@ class InvitesScreen extends React.Component {
       return (
         <View style={styles.centered}>
           <Text style={styles.h5}>Ei kutsuja.</Text>
+          <Button
+            title="Hae kutsut"
+            onPress={this.loadMessages}
+          />
         </View>
       )
     }
