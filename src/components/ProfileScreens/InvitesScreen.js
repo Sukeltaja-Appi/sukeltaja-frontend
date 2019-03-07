@@ -4,7 +4,8 @@ import { ListItem, Button } from 'react-native-elements'
 import styles from '../../styles/global'
 import { formatDate } from '../../utils/dates'
 import { connect } from 'react-redux'
-import { getOngoingEvent } from '../../reducers/eventReducer'
+import { getMessages } from '../../reducers/messageReducer'
+import { usernameOrId } from '../../utils/utilityFunctions'
 
 const style = {
   subtitle: {
@@ -20,28 +21,53 @@ const style = {
   }
 }
 
-const InvitesScreen = (props) => {
-
-  const join = (message) => {
-    return message.sender
+class InvitesScreen extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      invites: []
+    }
+  }
+  componentDidMount() {
+    this.loadMessages()
   }
 
-  const abandon = (message) => {
-    return message.sender
+  updateInvites = () => {
+    const { messages } = this.props
+
+    const invites = []
+
+    for (let i = 0; i < messages.length; i++) {
+      let type = messages[i].type
+
+      if(type === 'invitation_participant' || type === 'invitation_admin') {
+        invites.push(messages[i])
+      }
+    }
+
+    this.setState({ invites })
   }
 
-  const { messages } = props
+  loadMessages = async () => {
+    await this.props.getMessages()
+    this.updateInvites()
+  }
 
-  const navigate = (item) => (
-    props.navigation.navigate('Invite', { item })
-  )
+  selectInvite = (message) => {
+    this.props.navigation.navigate('Invite', {
+      invProps: {
+        message: message,
+        parent: this
+      }
+    })
+  }
 
-  const messagesSortedByDate = () => (
-    messages.sort((a, b) => b.created.localeCompare(a.created))
-  )
+  InvitesSortedByDate = () => {
+    return this.state.invites.sort((a, b) => b.created.localeCompare(a.created))
+  }
 
-  const showMessages = () => {
-    if (messages.length === 0) {
+  showMessages = () => {
+    if (this.state.invites.length === 0) {
       return (
         <View style={styles.centered}>
           <Text style={styles.h5}>Ei kutsuja.</Text>
@@ -52,50 +78,43 @@ const InvitesScreen = (props) => {
     return(
       <View style={styles.noPadding}>
         <FlatList
-          data={messagesSortedByDate()}
+          data={this.InvitesSortedByDate()}
           renderItem={({ item }) => {
             const { sender, created } = item
 
             return (
               <ListItem
-                title={sender}
+                title={usernameOrId(sender)}
                 subtitle={formatDate(created)}
-                onPress={() => navigate(item)}
+                onPress={() => this.selectInvite(item)}
                 subtitleStyle={style.subtitle}
                 bottomDivider
                 chevron
-              >
-
-                <View style={{ ...styles.row, ...style.buttonRow }}>
-                  <Button
-                    title="Liity"
-                    onPress={() => join(item)}
-                  />
-                  <View style={style.buttonDivider}/>
-                  <Button
-                    title="Hylkää"
-                    onPress={() => abandon(item)}
-                  />
-                </View>
-
-              </ListItem>
+              />
             )}
           }
           keyExtractor={item => item.id}
+        />
+        <Button
+          title="Hae kutsut"
+          onPress={this.loadMessages}
         />
       </View>
     )
   }
 
-  return showMessages()
+  render() {
+    return this.showMessages()
+  }
 }
 
 const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
-  messages: state.messages
+  messages: state.messages,
+  user: state.user
 })
 
 export default connect(
   mapStateToProps,
-  { getOngoingEvent }
+  { getMessages }
 )(InvitesScreen)

@@ -116,10 +116,10 @@ export const forgetEvents = () => {
   }
 }
 
-export const getOngoingEvent = (event) => {
+export const joinOngoingEvent = (event) => {
 
   return async (dispatch) => {
-    const ongoingEvent = await eventService.get(event)
+    const ongoingEvent = await eventService.acceptEventInvite(event.id)
 
     dispatch({
       type: 'NEW_EVENT',

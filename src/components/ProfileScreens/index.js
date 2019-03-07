@@ -2,11 +2,13 @@ import React from 'react'
 import {
   createSwitchNavigator,
   MaterialTopTabBar,
-  createMaterialTopTabNavigator
+  createMaterialTopTabNavigator,
+  createStackNavigator
 } from 'react-navigation'
 
 import ProfileMainScreen from './ProfileMainScreen'
 import InvitesScreen from './InvitesScreen'
+import Invite from './Invite'
 import FriendsScreen from './FriendsScreen'
 import UserSettingsScreen from './UserSettingsScreen'
 import LoginScreen from './LoginScreen'
@@ -26,6 +28,17 @@ const style = {
   showIcon: true
 }
 
+const MessageStack = createStackNavigator({
+  InvitesScreen: {
+    screen: InvitesScreen
+  },
+  Invite: {
+    screen: Invite
+  }
+}, {
+  headerMode: 'none'
+})
+
 const UserTab = createMaterialTopTabNavigator({
   ProfileMain : {
     screen: ProfileMainScreen,
@@ -39,7 +52,7 @@ const UserTab = createMaterialTopTabNavigator({
     }
   },
   Conversations : {
-    screen: InvitesScreen,
+    screen: MessageStack,
     navigationOptions: {
       tabBarLabel: 'KUTSUT',
       tabBarOptions: style,

@@ -52,4 +52,10 @@ const update = async (id, updatedObject) => {
   return response.data
 }
 
-export default { getAll, get, create, setToken, update, setUrl }
+const acceptEventInvite = async (id) => {
+  const response = await axios.put(`${url}/${id}/add`, {}, config())
+
+  return response.data
+}
+
+export default { getAll, get, create, setToken, update, setUrl, acceptEventInvite }

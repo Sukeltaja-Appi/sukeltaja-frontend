@@ -1,5 +1,5 @@
 import messageService from '../services/messages'
-import { objectToID } from '../utils/utilityFunctions'
+import { objectToID, messageToID } from '../utils/utilityFunctions'
 
 export const messageReducer = (state = [], action) => {
   switch(action.type) {
@@ -53,14 +53,16 @@ export const getMessages = () => {
 export const checkMessage = (message, userID, status) => {
   const userIndex = message.receivers.findIndex((u) => {return u === userID})
 
-  message.received[userIndex] = status
-
   return async (dispatch) => {
-    await messageService.update(message.id, message)
+    message = await messageService.get(messageToID(message))
+
+    message.received[userIndex] = status
+
+    await messageService.update(messageToID(message), message)
 
     dispatch ({
       type: 'REMOVE_MESSAGE',
-      id: message.id
+      id: messageToID(message)
     })
   }
 }
