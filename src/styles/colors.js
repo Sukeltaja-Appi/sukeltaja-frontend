@@ -13,7 +13,7 @@ export default {
   lightgray: '#d9d9d9',
 
   success: '#52c41a',
-  warning: '#ffeb3b',
+  warning: '#faad14',
 
   background: '#eeeeee'
 }
