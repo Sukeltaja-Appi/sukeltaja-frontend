@@ -9,10 +9,11 @@ export default {
 
   red: '#DF0000',
   green: '#008000',
-  gray: '#d9d9d9',
-  lightgray: '#c7c7cc',
+  gray: '#c7c7cc',
+  lightgray: '#d9d9d9',
 
   success: '#52c41a',
+  warning: '#ffeb3b',
 
   background: '#eeeeee'
 }
