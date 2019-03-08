@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 
 import { endEvent } from '../../reducers/eventReducer'
 import { startDive } from '../../reducers/diveReducer'
+import { setCurrentTarget } from '../../reducers/targetReducer'
+
 import locationService from '../../services/location'
 
 import styles from '../../styles/global'
@@ -33,12 +35,10 @@ const OngoingEventScreen = (props) => {
   const navigate = (value) => props.navigation.navigate(value)
 
   const endEventButton = () => {
-    const { ongoingEvent, selectedTargets } = props
-    const length = selectedTargets.length
+    const { ongoingEvent, endEvent, setCurrentTarget } = props
 
-    if(length > 0) ongoingEvent.target = selectedTargets[length-1].id
-
-    props.endEvent(ongoingEvent)
+    endEvent(ongoingEvent)
+    setCurrentTarget(null)
 
     navigate('StartEventScreen')
   }
@@ -75,11 +75,10 @@ const OngoingEventScreen = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  ongoingEvent: state.ongoingEvent,
-  selectedTargets: state.selectedTargets
+  ongoingEvent: state.ongoingEvent
 })
 
 export default connect(
   mapStateToProps,
-  { endEvent, startDive }
+  { endEvent, startDive, setCurrentTarget }
 )(OngoingEventScreen)
