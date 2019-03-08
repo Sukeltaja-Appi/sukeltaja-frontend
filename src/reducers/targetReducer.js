@@ -2,64 +2,48 @@ import targetService from '../services/targets'
 
 export const targetReducer = (state = [], action) => {
   switch (action.type) {
-    case 'ADD_TARGET':
-      return [ ...state, action.newTarget ]
-    case 'ADD_TARGETS':
-      return [ ...state, ...action.newTargets ]
-    case 'REPLACE_TARGETS':
-      return action.newTargets
-    default:
-      return state
-  }
-}
-
-export const selectedTargetReducer = (state = [], action) => {
-  switch (action.type) {
-    case 'SELECT_TARGET':
-      return [ ...state, action.target ]
-    case 'SELECT_TARGETS':
-      return [ ...state, ...action.targets ]
-    case 'SET_SELECTED_TARGETS':
+    case 'INIT_TARGETS':
       return action.targets
     default:
       return state
   }
 }
 
+export const currentTargetReducer = (state = null, action) => {
+  switch (action.type) {
+    case 'SET_CURRENT_TARGET':
+      return action.currentTarget
+    default:
+      return state
+  }
+}
+
+export const setCurrentTarget = (target) => {
+  return {
+    type: 'SET_CURRENT_TARGET',
+    currentTarget: target
+  }
+}
+
 export const getAll = () => {
   return async (dispatch) => {
-    console.log('Getting targets...')
-    const newTargets = await targetService.getAll()
+    const targets = await targetService.getAll()
 
     dispatch({
-      type: 'REPLACE_TARGETS',
-      newTargets
+      type: 'INIT_TARGETS',
+      targets
     })
   }
 }
 
-export const selectTarget = (target) => {
+export const forgetTargets = () => {
   return (dispatch) => {
     dispatch({
-      type: 'SELECT_TARGET',
-      target
+      type: 'SET_CURRENT_TARGET',
+      target: null
     })
-  }
-}
-
-export const setSelectedTargets = (targets) => {
-  return (dispatch) => {
     dispatch({
-      type: 'SET_SELECTED_TARGETS',
-      targets: targets
-    })
-  }
-}
-
-export const resetTargets = () => {
-  return (dispatch) => {
-    dispatch({
-      type: 'SET_SELECTED_TARGETS',
+      type: 'INIT_TARGETS',
       targets: []
     })
   }
