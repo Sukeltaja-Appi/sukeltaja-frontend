@@ -87,10 +87,9 @@ class InviteScreen extends React.Component {
       //   }
       // }
 
-      this.debugLogPending(ongoingEvent.pending)
-      //await mergeOngoingEvent(ongoingEvent, user.id)
-      await getOngoingEvent(ongoingEvent)
-      this.debugLogPending(ongoingEvent.pending)
+      // this.debugLogPending(ongoingEvent.pending)
+      // await mergeOngoingEvent(ongoingEvent, user.id)
+      // this.debugLogPending(ongoingEvent.pending)
 
       await sendMessage(
         'invitation_admin',
@@ -98,6 +97,10 @@ class InviteScreen extends React.Component {
         { id: user.id, username: user.username },
         selectedUsers
       )
+
+      this.debugLogPending(ongoingEvent.pending)
+      await getOngoingEvent(ongoingEvent)
+      this.debugLogPending(ongoingEvent.pending)
 
       clearSelectedUsers()
       //this.refreshComponent()
@@ -126,10 +129,9 @@ class InviteScreen extends React.Component {
       //   }
       // }
 
-      this.debugLogPending(ongoingEvent.pending)
-      //await mergeOngoingEvent(ongoingEvent, user.id)
-      await ongoingEvent(ongoingEvent)
-      this.debugLogPending(ongoingEvent.pending)
+      // this.debugLogPending(ongoingEvent.pending)
+      // await mergeOngoingEvent(ongoingEvent, user.id)
+      // this.debugLogPending(ongoingEvent.pending)
 
       await sendMessage(
         'invitation_participant',
@@ -137,6 +139,10 @@ class InviteScreen extends React.Component {
         { id: user.id, username: user.username },
         selectedUsers
       )
+
+      this.debugLogPending(ongoingEvent.pending)
+      await getOngoingEvent(ongoingEvent)
+      this.debugLogPending(ongoingEvent.pending)
 
       clearSelectedUsers()
       //this.refreshComponent()
