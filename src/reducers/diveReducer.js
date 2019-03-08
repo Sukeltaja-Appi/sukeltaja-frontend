@@ -17,10 +17,10 @@ export const diveReducer = (state = [], action) => {
   }
 }
 
-export const ongoingDiveReducer = (state = [], action) => {
+export const ongoingDiveReducer = (state = null, action) => {
   switch (action.type) {
-    case 'SET_CURRENT_DIVE': {
-      return action.currentDive
+    case 'SET_ONGOING_DIVE': {
+      return action.ongoingDive
     }
     default:
       return state
@@ -46,9 +46,10 @@ export const startDive = (dive) => {
       type: 'NEW_DIVE',
       newDive
     })
+
     dispatch({
-      type: 'SET_CURRENT_DIVE',
-      currentDive: newDive
+      type: 'SET_ONGOING_DIVE',
+      ongoingDive: newDive
     })
   }
 }
@@ -60,10 +61,11 @@ export const endDive = (dive) => {
     dispatch({
       type: 'UPDATE_DIVE',
       updatedDive
-    }),
+    })
+
     dispatch({
-      type: 'SET_CURRENT_DIVE',
-      currentDive: null
+      type: 'SET_ONGOING_DIVE',
+      ongoingDive: null
     })
   }
 }
@@ -100,9 +102,10 @@ export const forgetDives = () => {
       type: 'INIT_DIVES',
       dives: []
     })
+
     dispatch({
-      type: 'SET_CURRENT_DIVE',
-      currentDive: []
+      type: 'SET_ONGOING_DIVE',
+      ongoingDive: null
     })
   }
 }

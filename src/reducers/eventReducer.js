@@ -17,10 +17,10 @@ export const eventReducer = (state = [], action) => {
   }
 }
 
-export const ongoingEventReducer = (state = [], action) => {
+export const ongoingEventReducer = (state = null, action) => {
   switch (action.type) {
-    case 'SET_CURRENT_EVENT': {
-      return action.currentEvent
+    case 'SET_ONGOING_EVENT': {
+      return action.ongoingEvent
     }
     default:
       return state
@@ -46,9 +46,10 @@ export const startEvent = (event) => {
       type: 'NEW_EVENT',
       newEvent
     })
+
     dispatch({
-      type: 'SET_CURRENT_EVENT',
-      currentEvent: newEvent
+      type: 'SET_ONGOING_EVENT',
+      ongoingEvent: newEvent
     })
   }
 }
@@ -63,9 +64,10 @@ export const endEvent = (event) => {
       type: 'UPDATE_EVENT',
       updatedEvent
     }),
+
     dispatch({
-      type: 'SET_CURRENT_EVENT',
-      currentEvent: null
+      type: 'SET_ONGOING_EVENT',
+      ongoingEvent: null
     })
   }
 }
@@ -104,9 +106,10 @@ export const forgetEvents = () => {
       type: 'INIT_EVENTS',
       events: []
     })
+
     dispatch({
-      type: 'SET_CURRENT_EVENT',
-      currentEvent: []
+      type: 'SET_ONGOING_EVENT',
+      ongoingEvent: null
     })
   }
 }
