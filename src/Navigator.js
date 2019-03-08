@@ -2,7 +2,7 @@ import React from 'react'
 import { createBottomTabNavigator, BottomTabBar, createAppContainer } from 'react-navigation'
 
 import OngoingEventScreens from './components/OngoingEventScreens'
-import MapScreens from './components/MapScreens'
+import MainMapScreen from './components/MapScreens/MainMapScreen'
 import EventScreens from './components/EventScreens'
 import ProfileMainScreen from './components/ProfileScreens'
 
@@ -31,7 +31,7 @@ const MainTabNavigator = createBottomTabNavigator({
     }
   },
   Map : {
-    screen: MapScreens,
+    screen: MainMapScreen,
     navigationOptions: {
       tabBarLabel: 'KARTTA',
       tabBarOptions: style,
