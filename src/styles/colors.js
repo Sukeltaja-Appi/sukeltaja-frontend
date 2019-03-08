@@ -4,7 +4,7 @@ export default {
   primary_dark: '#000051',
 
   secondary: '#29b6f6',
-  secondary_light: '#73e8ff',
+  secondary_light: '#d4f0fd',
   secondary_dark: '#0086c3',
 
   red: '#DF0000',
