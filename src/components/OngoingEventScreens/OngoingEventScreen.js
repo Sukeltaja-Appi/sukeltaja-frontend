@@ -86,8 +86,9 @@ const OngoingEventScreen = (props) => {
 
     users = [ creator, ...admins, ...participants ]
   }
-
+  console.log('users:-------------------------------------------------')
   console.log(users[0])
+  console.log('users-^------------------------------------------------')
 
   return (
     <View style={style.main}>

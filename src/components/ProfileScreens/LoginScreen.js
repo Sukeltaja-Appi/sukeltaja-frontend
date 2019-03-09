@@ -10,6 +10,7 @@ import eventService from '../../services/events'
 import targetService from '../../services/targets'
 import diveService from '../../services/dives'
 import userService from '../../services/users'
+import messageService from '../../services/messages'
 import { initializeEvents } from '../../reducers/eventReducer'
 import { initializeDives } from '../../reducers/diveReducer'
 import { login } from '../../reducers/userReducer'
@@ -76,6 +77,7 @@ class LoginScreen extends React.Component {
       targetService.setToken(user.token)
       diveService.setToken(user.token)
       userService.setToken(user.token)
+      messageService.setToken(user.token)
 
       await initializeEvents()
       await initializeDives()

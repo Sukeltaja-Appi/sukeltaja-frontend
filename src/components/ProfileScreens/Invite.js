@@ -28,6 +28,7 @@ const Invite = (props) => {
   console.log(message)
   const join = async () => {
     await joinOngoingEvent(eventToID(message.data))
+    console.log('join---------------', user.id)
     await checkMessage(message, user.id, 'accepted')
     parent.updateInvites()
     navigation.navigate('InvitesScreen')

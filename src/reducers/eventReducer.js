@@ -119,7 +119,12 @@ export const forgetEvents = () => {
 export const joinOngoingEvent = (event) => {
 
   return async (dispatch) => {
-    const ongoingEvent = await eventService.acceptEventInvite(event.id)
+    console.log('Event-------------------------------------------------')
+    console.log(event)
+    console.log('EventID-----------------------------------------------')
+    console.log(objectToID(event))
+    console.log('------------------------------------------------------')
+    const ongoingEvent = await eventService.acceptEventInvite(objectToID(event))
 
     dispatch({
       type: 'NEW_EVENT',

@@ -53,7 +53,8 @@ export const getMessages = () => {
 export const checkMessage = (message, userID, status) => {
 
   return async (dispatch) => {
-
+    console.log('messageToID:--------------------------------------------')
+    console.log(messageToID(message))
     await messageService.checkMessage(messageToID(message), status)
 
     dispatch ({

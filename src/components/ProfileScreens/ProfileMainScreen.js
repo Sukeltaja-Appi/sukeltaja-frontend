@@ -9,6 +9,7 @@ import eventService from '../../services/events'
 import targetService from '../../services/targets'
 import diveService from '../../services/dives'
 import userService from '../../services/users'
+import messageService from '../../services/messages'
 import { forgetEvents } from '../../reducers/eventReducer'
 import { forgetDives } from '../../reducers/diveReducer'
 import { logout } from '../../reducers/userReducer'
@@ -28,6 +29,7 @@ export const ProfileMainScreen = (props) => {
     targetService.setToken('dummy')
     diveService.setToken('dummy')
     userService.setToken('dummy')
+    messageService.setToken('dummy')
 
     navigate('LoginScreen')
   }
