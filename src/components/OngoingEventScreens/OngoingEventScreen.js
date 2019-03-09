@@ -5,12 +5,11 @@ import { connect } from 'react-redux'
 
 import { endEvent, mergeOngoingEvent } from '../../reducers/eventReducer'
 import { endDive } from '../../reducers/diveReducer'
-import styles from '../../styles/global'
 import colors from '../../styles/colors'
+import { usernameOrId } from '../../utils/utilityFunctions'
 
 const style = {
   buttonEnd: {
-    ...styles.roundButton,
     backgroundColor: colors.red,
   },
   buttonInvite: {
@@ -19,7 +18,7 @@ const style = {
   main: {
     flex: 1,
     backgroundColor: colors.background,
-    paddingTop: 50,
+    paddingTop: 15,
   },
   list: {
     flex: 1,
@@ -28,8 +27,10 @@ const style = {
   bottom: {
     flex: 1,
     justifyContent: 'flex-end',
-    marginBottom: 50,
-    alignItems: 'center'
+    marginBottom: 10,
+  },
+  buttonDivider: {
+    height: 15
   }
 }
 
@@ -66,13 +67,6 @@ const OngoingEventScreen = (props) => {
 
   }
 
-  const displayName = (participant) => {
-    console.log(participant)
-    if (typeof participant.username !== 'undefined') return participant.username
-
-    return participant
-  }
-
   const returnID = (participant) => {
     if (typeof participant._id !== 'undefined') return participant._id
 
@@ -87,15 +81,15 @@ const OngoingEventScreen = (props) => {
     users = [ creator, ...admins, ...participants ]
   }
   console.log('users:-------------------------------------------------')
-  console.log(users[0])
+  console.log(users)
   console.log('users-^------------------------------------------------')
 
   return (
     <View style={style.main}>
-      <Text h1 >Meneillään oleva tapahtuma</Text>
+      <Text h3 >Meneillään oleva tapahtuma</Text>
       <View style={{ height: 20 }} />
 
-      <Text h2>Osallistujat:</Text>
+      <Text h4>Osallistujat:</Text>
 
       <View style={style.list}>
         <FlatList
@@ -104,7 +98,7 @@ const OngoingEventScreen = (props) => {
 
             return (
               <ListItem
-                title={displayName(item)}
+                title={usernameOrId(item)}
                 onPress={() => pressUser(item)}
                 bottomDivider
               />
@@ -112,15 +106,17 @@ const OngoingEventScreen = (props) => {
           }
           keyExtractor={item => returnID(item)}
         />
+
+      </View>
+
+      <View style={style.bottom}>
         <Button
           title='+ Kutsu lisää osallistujia'
           onPress={() => navigate('InviteScreen')}
           buttonStyle={style.buttonInvite}
           raised
         />
-      </View>
-
-      <View style={style.bottom}>
+        <View style={style.buttonDivider}/>
         <Button title='Lopeta' onPress={() => endEventButton()} buttonStyle={style.buttonEnd} raised />
       </View>
     </View>
