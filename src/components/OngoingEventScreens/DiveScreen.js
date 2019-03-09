@@ -9,7 +9,8 @@ import colors from '../../styles/colors'
 
 import locationService from '../../services/location'
 import { startDive, endDive } from '../../reducers/diveReducer'
-import { mergeOngoingEvent } from '../../reducers/eventReducer'
+import { mergeOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
+import { eventToID } from '../../utils/utilityFunctions'
 
 const style = {
   buttonEndDive: {
@@ -51,10 +52,10 @@ class DiveScreen extends React.Component {
   }
 
   diveButton = async () => {
-    let { ongoingEvent, user, startDive, mergeOngoingEvent } = this.props
+    let { ongoingEvent, startDive, getOngoingEvent } = this.props
 
     let dive = {
-      event: ongoingEvent.id,
+      event: eventToID(ongoingEvent),
       startdate: new Date(),
       latitude: magic1, // + Math.random(),
       longitude: magic2// + Math.random()
@@ -67,9 +68,13 @@ class DiveScreen extends React.Component {
       dive.longitude = location.coords.longitude
     } catch(err) { console.log('Geolocation unavailable.') }
 
+    console.log('dive-and-event--------------------------------------')
+    console.log(dive)
+    console.log(ongoingEvent)
+    console.log('---------------------------------------------------')
+
     await startDive(dive)
-    ongoingEvent = this.props.ongoingEvent
-    await mergeOngoingEvent(ongoingEvent, user.id)
+    await getOngoingEvent(ongoingEvent)
 
     this.state.ongoing = true
     this.state.counter = 0
@@ -129,5 +134,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { endDive, startDive, mergeOngoingEvent }
+  { endDive, startDive, mergeOngoingEvent, getOngoingEvent }
 )(DiveScreen)

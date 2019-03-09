@@ -1,5 +1,7 @@
 import eventService from '../services/events'
-import { mergeUserLists, objectToID, userIsInArray } from '../utils/utilityFunctions'
+import { mergeUserLists, objectToID,
+  userIsInArray, eventToID
+} from '../utils/utilityFunctions'
 
 export const eventReducer = (state = [], action) => {
   switch (action.type) {
@@ -54,9 +56,7 @@ export const startEvent = (event) => {
 
 export const endEvent = (event) => {
   event.enddate = new Date()
-  if ( typeof event.creator !== 'undefined'
-    && typeof event.creator._id !== 'undefined'
-  ) event.creator = event.creator._id
+  event.creator = objectToID(event.creator)
 
   return async (dispatch) => {
     const updatedEvent = await eventService.update(event.id, event)
@@ -140,11 +140,26 @@ export const joinOngoingEvent = (event) => {
 export const getOngoingEvent = (event) => {
 
   return async (dispatch) => {
-    const ongoingEvent = await eventService.get(event.id)
+    const ongoingEvent = await eventService.get(eventToID(event))
 
     dispatch({
       type: 'SET_CURRENT_EVENT',
       currentEvent: ongoingEvent
+    })
+    dispatch({
+      type: 'UPDATE_EVENT',
+      updatedEvent: ongoingEvent
+    })
+  }
+}
+
+export const leaveOngoingEvent = () => {
+
+  return (dispatch) => {
+
+    dispatch({
+      type: 'SET_CURRENT_EVENT',
+      currentEvent: null
     })
   }
 }

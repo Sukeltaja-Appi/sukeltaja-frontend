@@ -67,7 +67,7 @@ class InviteScreen extends React.Component {
   }
 
   inviteAdmins = async () => {
-    let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers, mergeOngoingEvent } = this.props
+    let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers } = this.props
     let { creator, admins, participants, pending } = ongoingEvent
     let pendingUsers = []
 
@@ -87,10 +87,6 @@ class InviteScreen extends React.Component {
       //   }
       // }
 
-      // this.debugLogPending(ongoingEvent.pending)
-      // await mergeOngoingEvent(ongoingEvent, user.id)
-      // this.debugLogPending(ongoingEvent.pending)
-
       await sendMessage(
         'invitation_admin',
         ongoingEvent,
@@ -109,7 +105,7 @@ class InviteScreen extends React.Component {
   }
 
   inviteParticipants = async () => {
-    let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers, mergeOngoingEvent } = this.props
+    let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers } = this.props
     let { creator, admins, participants, pending } = ongoingEvent
     let pendingUsers = []
 
@@ -129,10 +125,6 @@ class InviteScreen extends React.Component {
       //   }
       // }
 
-      // this.debugLogPending(ongoingEvent.pending)
-      // await mergeOngoingEvent(ongoingEvent, user.id)
-      // this.debugLogPending(ongoingEvent.pending)
-
       await sendMessage(
         'invitation_participant',
         ongoingEvent,
@@ -148,6 +140,11 @@ class InviteScreen extends React.Component {
       //this.refreshComponent()
       this.loadUsers()
     }
+  }
+
+  backButton = async () => {
+    await getOngoingEvent(this.props.ongoingEvent)
+    this.navigate('OngoingEventScreen')
   }
 
   pressUser = (u) => {
@@ -210,7 +207,7 @@ class InviteScreen extends React.Component {
         <View style={{ ...styles.row, ...style.buttonRow }}>
           <Button
             title="<-Takaisin"
-            onPress={() => this.navigate('OngoingEventScreen')}
+            onPress={this.backButton}
           />
           <View style={style.buttonDivider}/>
           <Button

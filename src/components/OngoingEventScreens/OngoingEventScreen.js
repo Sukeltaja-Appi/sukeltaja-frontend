@@ -3,10 +3,10 @@ import { View, FlatList } from 'react-native'
 import { Text, Button, ListItem } from 'react-native-elements'
 import { connect } from 'react-redux'
 
-import { endEvent, mergeOngoingEvent } from '../../reducers/eventReducer'
+import { endEvent, mergeOngoingEvent, leaveOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
 import { endDive } from '../../reducers/diveReducer'
 import colors from '../../styles/colors'
-import { usernameOrId } from '../../utils/utilityFunctions'
+import { usernameOrId, objectToID } from '../../utils/utilityFunctions'
 
 const style = {
   buttonEnd: {
@@ -56,21 +56,39 @@ const OngoingEventScreen = (props) => {
     if(length > 0) ongoingEvent.target = selectedTargets[length-1].id
 
     await endDives()
-    await props.mergeOngoingEvent(ongoingEvent, user.id)
-    ongoingEvent = props.ongoingEvent
     await props.endEvent(ongoingEvent)
 
     navigate('StartEventScreen')
   }
 
-  const pressUser = () => {
-
+  const leaveEventButton = () => {
+    props.leaveOngoingEvent()
+    navigate('StartEventScreen')
   }
 
-  const returnID = (participant) => {
-    if (typeof participant._id !== 'undefined') return participant._id
+  const endButton = async () => {
+    const { user, ongoingEvent } = props
 
-    return participant
+    console.log('ongoingEvent--------------------------------------------')
+    console.log(ongoingEvent)
+    console.log('--------------------------------------------------------')
+
+    if(user.id === objectToID(ongoingEvent.creator)) {
+      endEventButton()
+    }
+    leaveEventButton()
+  }
+
+  const endButtonText = () => {
+    const { ongoingEvent, user } = props
+
+    if(user.id === objectToID(ongoingEvent)) return 'Lopeta'
+
+    return 'Poistu'
+  }
+
+  const pressUser = () => {
+
   }
 
   let users = []
@@ -104,7 +122,7 @@ const OngoingEventScreen = (props) => {
               />
             )}
           }
-          keyExtractor={item => returnID(item)}
+          keyExtractor={item => objectToID(item)}
         />
 
       </View>
@@ -117,7 +135,7 @@ const OngoingEventScreen = (props) => {
           raised
         />
         <View style={style.buttonDivider}/>
-        <Button title='Lopeta' onPress={() => endEventButton()} buttonStyle={style.buttonEnd} raised />
+        <Button title={endButtonText()} onPress={() => endButton()} buttonStyle={style.buttonEnd} raised />
       </View>
     </View>
   )
@@ -132,5 +150,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { endEvent, mergeOngoingEvent, endDive }
+  { endEvent, mergeOngoingEvent, endDive, leaveOngoingEvent, getOngoingEvent }
 )(OngoingEventScreen)

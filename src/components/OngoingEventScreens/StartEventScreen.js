@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
 import { NavigationEvents } from 'react-navigation'
-import { startEvent } from '../../reducers/eventReducer'
+import { startEvent, getOngoingEvent } from '../../reducers/eventReducer'
 
 const style = {
   button: {
@@ -25,6 +25,7 @@ const StartEventScreen = (props) => {
     }
 
     await props.startEvent(event)
+    await getOngoingEvent()
 
     navigate('OngoingEventScreen')
   }
@@ -65,5 +66,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { startEvent }
+  { startEvent, getOngoingEvent }
 )(StartEventScreen)
