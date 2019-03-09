@@ -1,9 +1,11 @@
 import React from 'react'
-import { View } from 'react-native'
-import { Text, Divider, Icon } from 'react-native-elements'
+import { View, Linking, WebView } from 'react-native'
+import { Text, Divider, Icon, Button } from 'react-native-elements'
 import styles, { paddingSides } from '../../styles/global'
+import { KYPPI_URL } from 'react-native-dotenv'
 import colors from '../../styles/colors'
 import locationService from '../../services/location'
+import { getAll, selectTarget, resetTargets } from '../../reducers/targetReducer'
 
 const style = {
   container: {
@@ -17,7 +19,8 @@ const style = {
     justifyContent: 'center'
   },
   title: {
-    flex: 5
+    fontSize: 20,
+    fontWeight: 'bold'
   },
   divider: {
     marginVertical: 20
@@ -27,29 +30,32 @@ const style = {
   }
 }
 
-
-
 const Target = (props) => {
   const { navigation } = props
 
-  const { name, type, latitude, longitude, material, mj_id } = navigation.getParam('item')
-
-  //const { startdate, enddate, description, dives } = navigation.getParam('item')
-  //const divesString = JSON.stringify(dives)
-
-  //const navigate = (route, params) => props.navigation.navigate(route, params)
+  const { item, distance } = navigation.getParam('target')
 
   return (
     <View style={styles.noPadding}>
       <View style={style.container}>
 
-        <View style={styles.row}>
-          <Text h3 style={style.title}>{name}</Text>
-          <Text style={style.text}>{}</Text>
-          <Text style={style.text}>{type}</Text>
-          <Text style={style.text}>{material}</Text>
-          <Text style={style.text}>{mj_id}</Text>
-        </View>
+        <Text style={style.title}>{item.name}</Text>
+        <Text style={style.text}>Etäisyys kohteeseen: {distance} metriä</Text>
+        <Text style={style.text}>Kohteen tyyppi: {item.type}</Text>
+        <Text style={style.text}>Kohteen materiaali: {item.material}</Text>
+        <Button
+          title='MJ-rekisteri'
+          onPress={() => { Linking.openURL(`${KYPPI_URL}${item.mj_id}`) }}
+          buttonStyle={{ marginTop: 8 }}
+        />
+
+        <Button
+          title='Valitse kohteeksi'
+          onPress={() => console.log('Ei tee vielä mitään')}
+          buttonStyle={{ backgroundColor: colors.success, marginTop: 8 }}
+
+        />
+
       </View>
     </View>
   )

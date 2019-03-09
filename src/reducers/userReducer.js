@@ -43,9 +43,9 @@ export const usersReducer = (state = [], action) => {
 export const selectedUsersReducer = (state = [], action) => {
   switch (action.type) {
     case 'SELECT_USER':
-      return [ ...state, action.user ]
+      return [...state, action.user]
     case 'DESELECT_USER': {
-      state.splice(state.findIndex((u) => {return u.id === action.id}), 1)
+      state.splice(state.findIndex((u) => { return u.id === action.id }), 1)
       return state
     }
     case 'SET_SELECTED_USERS':

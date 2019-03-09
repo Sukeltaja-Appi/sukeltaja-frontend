@@ -11,13 +11,13 @@ import OngoingEventScreen from './OngoingEventScreen'
 import InviteScreen from './InviteScreen'
 import DiveScreen from './DiveScreen'
 import TargetScreen from './TargetScreen'
-import SingleTargetScreen from './TargetScreen'
+import SingleTargetScreen from './SingleTargetScreen'
 
 import { Icon } from 'react-native-elements'
 
 import colors from '../../styles/colors'
 
-const TabBarComponent = (props) => (<MaterialTopTabBar { ...props } />)
+const TabBarComponent = (props) => (<MaterialTopTabBar {...props} />)
 
 const style = {
   activeTintColor: '#fff',
@@ -28,18 +28,18 @@ const style = {
   showIcon: true
 }
 
-const OngoingEventScreenStack = createStackNavigator ({
+const OngoingEventScreenStack = createStackNavigator({
   OngoingEventScreen,
   InviteScreen
 }, { headerMode: 'none' })
 
-const TargetScreenStack = createStackNavigator ({
+const TargetScreenStack = createStackNavigator({
   TargetScreen,
   SingleTargetScreen
 }, { headerMode: 'none' })
 
 const OngoingEventTab = createMaterialTopTabNavigator({
-  TargetScreen : {
+  TargetScreen: {
     screen: TargetScreenStack,
     navigationOptions: {
       tabBarLabel: 'KOHDE',
@@ -50,7 +50,7 @@ const OngoingEventTab = createMaterialTopTabNavigator({
       )
     }
   },
-  DiveScreen : {
+  DiveScreen: {
     screen: DiveScreen,
     navigationOptions: {
       tabBarLabel: 'SUKELLUKSET',
@@ -60,7 +60,7 @@ const OngoingEventTab = createMaterialTopTabNavigator({
       )
     }
   },
-  OngoingEventScreen : {
+  OngoingEventScreen: {
     screen: OngoingEventScreenStack,
     navigationOptions: {
       tabBarLabel: 'TAPAHTUMA',
@@ -71,18 +71,18 @@ const OngoingEventTab = createMaterialTopTabNavigator({
     }
   }
 }, {
-  tabBarComponent: props => {
-    return(
-      <TabBarComponent
-        {...props}
-        style={{
-          backgroundColor: colors.primary_light,
-          paddingTop: 10
-        }}
-      />
-    )
-  }
-})
+    tabBarComponent: props => {
+      return (
+        <TabBarComponent
+          {...props}
+          style={{
+            backgroundColor: colors.primary_light,
+            paddingTop: 10
+          }}
+        />
+      )
+    }
+  })
 
 export default createSwitchNavigator({
   StartEventScreen,

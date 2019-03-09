@@ -16,7 +16,7 @@ class AppEntry extends React.Component {
       password: PASSWORD
     }
 
-    console.log(API_URL)
+    console.log(API_URL + "  = current apiurl")
 
     loginService.setUrl(API_URL)
     eventService.setUrl(API_URL)
@@ -38,6 +38,7 @@ class AppEntry extends React.Component {
 
       await this.props.initializeEvents()
       await this.props.initializeDives()
+      await this.props.getAll()
     } else {
       // notify user of wrong username/pw
     }
