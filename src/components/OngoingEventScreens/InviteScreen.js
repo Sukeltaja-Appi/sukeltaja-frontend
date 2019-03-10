@@ -109,7 +109,9 @@ class InviteScreen extends React.Component {
   }
 
   backButton = async () => {
-    await getOngoingEvent(this.props.ongoingEvent)
+    const { ongoingEvent, getOngoingEvent } = this.props
+
+    await getOngoingEvent(ongoingEvent)
     this.navigate('OngoingEvent')
   }
 

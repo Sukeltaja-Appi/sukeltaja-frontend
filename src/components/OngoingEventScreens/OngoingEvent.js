@@ -78,7 +78,7 @@ class OngoingEvent extends React.Component {
   }
 
   toInvites = () => {
-    this.navigate('InviteScreen')
+    this.navigate('InviteScreen', { item: { ongoingComponent: this } })
   }
 
   endButton = () => {
