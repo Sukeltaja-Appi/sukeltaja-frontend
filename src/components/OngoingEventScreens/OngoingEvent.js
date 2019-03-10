@@ -34,7 +34,7 @@ const style = {
   }
 }
 
-const OngoingEventScreen = (props) => {
+const OngoingEvent = (props) => {
 
   const navigate = (value) => props.navigation.navigate(value)
 
@@ -144,4 +144,4 @@ const mapStateToProps = (state) => ({
 export default connect(
   mapStateToProps,
   { endEvent, mergeOngoingEvent, endDive, leaveOngoingEvent, getOngoingEvent }
-)(OngoingEventScreen)
+)(OngoingEvent)
