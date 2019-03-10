@@ -15,22 +15,6 @@ export const userReducer = (store = [], action) => {
   }
 }
 
-// export const friendReducer = (state = [], action) => {
-//   switch (action.type) {
-//     case 'NEW_FRIEND':
-//       return [ ...state, action.user ]
-//     case 'DELETE_FRIEND': {
-//       let newState = state
-//       newState.splice(newState.indexOf(action.user), 1)
-//       return newState
-//     }
-//     case 'LOAD_FRIENDS':
-//       return action.users
-//     default:
-//       return state
-//   }
-// }
-
 export const usersReducer = (state = [], action) => {
   switch (action.type) {
     case 'LOAD_USERS':
@@ -43,7 +27,7 @@ export const usersReducer = (state = [], action) => {
 export const selectedUsersReducer = (state = [], action) => {
   switch (action.type) {
     case 'SELECT_USER':
-      return [ ...state, action.user ]
+      return [...state, action.user]
     case 'DESELECT_USER': {
       state.splice(state.findIndex((u) => {return objectToID(u) === action.id}), 1)
 

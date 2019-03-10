@@ -38,6 +38,7 @@ class AppEntry extends React.Component {
 
       await this.props.initializeEvents()
       await this.props.initializeDives()
+      await this.props.getAll()
     } else {
       // notify user of wrong username/pw
     }
