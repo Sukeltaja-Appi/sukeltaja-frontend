@@ -23,11 +23,16 @@ const style = {
     justifyContent: 'center',
     padding: 10
   },
-  buttonDivider: {
+  divider: {
     height: 10
   },
   buttonGreen: {
     backgroundColor: colors.green,
+  },
+  top: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    marginTop: 10
   },
   bottom: {
     flex: 1,
@@ -41,24 +46,6 @@ class InviteScreen extends React.Component {
     super(props)
     this.showList = this.showList.bind(this)
   }
-
-  logSelectedUsers = () => {
-    let { selectedUsers } = this.props
-
-    console.log('SelectedUsers:')
-    console.log(selectedUsers.length)
-    for(let i=0; i<selectedUsers.length; i++) console.log(selectedUsers[i].username || selectedUsers[i])
-  }
-
-  // debugLogPending = (pending) => {
-  //   console.log('selectedUsers---------------------------------------')
-  //   const { selectedUsers } = this.props
-  //
-  //   for(let i = 0; i < selectedUsers.length; i++) console.log(selectedUsers[i])
-  //   console.log('pending---------------------------------------------')
-  //   for(let i = 0; i < pending.length; i++) console.log(pending[i])
-  //   console.log('----------------------------------------------------')
-  // }
 
   refreshComponent = () => {
     this.navigate('OngoingEvent')
@@ -181,24 +168,26 @@ class InviteScreen extends React.Component {
     return (
       <View style={styles.noPadding}>
 
-        {this.showList()}
+        <View style={style.top}>
+          {this.showList()}
+        </View>
 
         <View style={style.bottom}>
-          <View style={style.buttonDivider}/>
+          <View style={style.divider}/>
           <Button
             title="+ Kutsu Ylläpitäjiä"
             onPress={this.inviteAdmins}
             buttonStyle={style.buttonGreen}
             raised
           />
-          <View style={style.buttonDivider}/>
+          <View style={style.divider}/>
           <Button
             title="+ Kutsu Osallistujia"
             onPress={this.inviteParticipants}
             buttonStyle={style.buttonGreen}
             raised
           />
-          <View style={style.buttonDivider}/>
+          <View style={style.divider}/>
           <Button
             title="<-- Takaisin"
             onPress={this.backButton}
