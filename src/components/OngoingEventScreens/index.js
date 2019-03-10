@@ -1,18 +1,11 @@
 import React from 'react'
-import {
-  createMaterialTopTabNavigator,
-  createStackNavigator,
-  MaterialTopTabBar
-} from 'react-navigation'
-
-import OngoingEventScreen from './OngoingEventScreen'
+import { createMaterialTopTabNavigator, createStackNavigator, MaterialTopTabBar } from 'react-navigation'
+import OngoingEvent from './OngoingEvent'
 import InviteScreen from './InviteScreen'
 import DiveScreen from './DiveScreen'
 import TargetScreen from './TargetScreen'
 import SingleTargetScreen from './SingleTargetScreen'
-
 import { Icon } from 'react-native-elements'
-
 import colors from '../../styles/colors'
 
 const style = {
@@ -26,8 +19,8 @@ const style = {
 
 const TabBarComponent = (props) => (<MaterialTopTabBar {...props} />)
 
-const OngoingEventScreenStack = createStackNavigator({
-  OngoingEventScreen,
+const EventScreenStack = createStackNavigator({
+  OngoingEvent,
   InviteScreen
 }, { headerMode: 'none' })
 
@@ -37,13 +30,14 @@ const TargetScreenStack = createStackNavigator({
 }, { headerMode: 'none' })
 
 export default createMaterialTopTabNavigator({
-  OngoingEventScreen: {
-    screen: OngoingEventScreenStack,
+  TargetScreen: {
+    screen: TargetScreenStack,
     navigationOptions: {
-      tabBarLabel: 'TAPAHTUMA',
+      tabBarLabel: 'KOHDE',
       tabBarOptions: style,
+      showIcon: true,
       tabBarIcon: ({ tintColor }) => (
-        <Icon name='users' type='feather' color={tintColor} />
+        <Icon name='map-pin' type='feather' color={tintColor} />
       )
     }
   },
@@ -57,14 +51,13 @@ export default createMaterialTopTabNavigator({
       )
     }
   },
-  TargetScreen: {
-    screen: TargetScreenStack,
+  EventScreen: {
+    screen: EventScreenStack,
     navigationOptions: {
-      tabBarLabel: 'KOHDE',
+      tabBarLabel: 'TAPAHTUMA',
       tabBarOptions: style,
-      showIcon: true,
       tabBarIcon: ({ tintColor }) => (
-        <Icon name='map-pin' type='feather' color={tintColor} />
+        <Icon name='users' type='feather' color={tintColor} />
       )
     }
   },

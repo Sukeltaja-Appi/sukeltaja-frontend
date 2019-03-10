@@ -1,7 +1,7 @@
 import React from 'react'
 import { createBottomTabNavigator, BottomTabBar, createAppContainer } from 'react-navigation'
 
-import OngoingEventScreens from './components/OngoingEventScreens'
+import OngoingEventScreen from './components/OngoingEventScreens/OngoingEventScreen'
 import MainMapScreen from './components/MapScreens/MainMapScreen'
 import EventScreens from './components/EventScreens'
 import ProfileMainScreen from './components/ProfileScreens'
@@ -21,7 +21,7 @@ const style = {
 
 const MainTabNavigator = createBottomTabNavigator({
   OngoingEvent : {
-    screen: OngoingEventScreens,
+    screen: OngoingEventScreen,
     navigationOptions: {
       tabBarLabel: 'SUKELLUS',
       tabBarOptions: style,

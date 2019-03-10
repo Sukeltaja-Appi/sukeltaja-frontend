@@ -1,9 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import OngoingEvent from './OngoingEvent'
+import OngoingEventTabs from './index'
 import StartEvent from './StartEvent'
 
-const OngoingEventScreen = (props) => props.ongoingEvent ? <OngoingEvent {...props} /> : <StartEvent {...props} />
+class OngoingEventScreen extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  static router = OngoingEventTabs.router
+
+  render() {
+    return this.props.ongoingEvent ? <OngoingEventTabs {...this.props} /> : <StartEvent {...this.props} />
+  }
+}
 
 const mapStateToProps = (state) => ({ ongoingEvent: state.ongoingEvent })
 
