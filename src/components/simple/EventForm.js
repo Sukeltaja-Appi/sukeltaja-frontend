@@ -8,10 +8,17 @@ import { paddingSides } from '../../styles/global'
 const { Form } = t.form
 
 const options = {
+  i18n: {
+    optional: '',
+    required: ''
+  },
   fields: {
+    title: {
+      label: 'Otsikko',
+      error: 'Otsikko ei saa olla tyhjä.'
+    },
     description: {
-      label: 'Kuvaus',
-      error: 'Kuvaus ei saa olla tyhjä.'
+      label: 'Kuvaus'
     },
     startdate: {
       label: 'Aloitusaika',
@@ -51,7 +58,8 @@ const EventForm = React.forwardRef((props, ref) => {
   const DateIsAfter = t.refinement(t.Date, (date) => date >= event.startdate)
 
   const Event = t.struct({
-    description: t.String,
+    title: t.String,
+    description: t.maybe(t.String),
     startdate: t.Date,
     enddate: DateIsAfter
   })

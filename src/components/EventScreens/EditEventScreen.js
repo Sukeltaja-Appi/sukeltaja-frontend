@@ -13,7 +13,8 @@ class EditEventScreen extends React.Component {
     this.ref = React.createRef()
 
     const {
-      id,
+      _id,
+      title,
       description,
       startdate,
       enddate,
@@ -21,7 +22,8 @@ class EditEventScreen extends React.Component {
 
     this.state = {
       event: {
-        id,
+        _id,
+        title,
         description,
         startdate: new Date(startdate),
         enddate: new Date(enddate)
