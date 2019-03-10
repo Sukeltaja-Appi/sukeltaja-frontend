@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
 import locationService from '../../services/location'
-import { getAll, selectTarget, resetTargets } from '../../reducers/targetReducer'
+import { getAll, resetTargets } from '../../reducers/targetReducer'
 
 const style = {
   buttonEnd: {
@@ -36,8 +36,10 @@ const style = {
   }
 }
 
+const magicNumber = 180
+
 Number.prototype.toRad = function () {
-  return this * Math.PI / 180;
+  return this * Math.PI / magicNumber
 }
 
 class TargetScreen extends React.Component {
@@ -120,15 +122,10 @@ class TargetScreen extends React.Component {
     this.render()
   }
 
-  reset = async () => {
-    await resetTargets()
-    let selectedTargets = []
-
-    this.setState({ selectedTargets })
-    this.forceUpdate()
+  reset = () => {
+    this.props.resetTargets()
     this.render()
   }
-
 
   renderListItem = (item) => {
     const distance = this.getDistance(item.latitude, item.longitude).toFixed(0)

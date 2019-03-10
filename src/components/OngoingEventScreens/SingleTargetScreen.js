@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, Linking, WebView } from 'react-native'
-import { Text, Divider, Icon, Button } from 'react-native-elements'
+import { View, Linking } from 'react-native'
+import { Text, Button } from 'react-native-elements'
 import styles, { paddingSides } from '../../styles/global'
 import { KYPPI_URL } from 'react-native-dotenv'
 import colors from '../../styles/colors'
-import locationService from '../../services/location'
-import { getAll, selectTarget, resetTargets } from '../../reducers/targetReducer'
+import { selectTarget, setSelectedTargets} from '../../reducers/targetReducer'
+import { connect } from 'react-redux'
 
 const style = {
   container: {
@@ -30,11 +30,21 @@ const style = {
   }
 }
 
-const Target = (props) => {
+const SingleTargetScreen = (props) => {
   const { navigation } = props
 
   const { item, distance } = navigation.getParam('target')
 
+  const navigate = (value) => navigation.navigate(value)
+
+  const select = (target) => {
+    const targets = [{ target }]
+
+    selectTarget(target)
+    setSelectedTargets(targets)
+    console.log(targets)
+    navigate('TargetScreen')
+  }
   return (
     <View style={styles.noPadding}>
       <View style={style.container}>
@@ -51,7 +61,7 @@ const Target = (props) => {
 
         <Button
           title='Valitse kohteeksi'
-          onPress={() => console.log('Ei tee vielä mitään')}
+          onPress={() => select(item)}
           buttonStyle={{ backgroundColor: colors.success, marginTop: 8 }}
 
         />
@@ -61,4 +71,7 @@ const Target = (props) => {
   )
 }
 
-export default Target
+export default connect(
+  null,
+  { setSelectedTargets, selectTarget }
+)(SingleTargetScreen)

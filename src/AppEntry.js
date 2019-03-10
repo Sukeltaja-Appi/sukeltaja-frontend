@@ -16,7 +16,7 @@ class AppEntry extends React.Component {
       password: PASSWORD
     }
 
-    console.log(API_URL + "  = current apiurl")
+    console.log(API_URL)
 
     loginService.setUrl(API_URL)
     eventService.setUrl(API_URL)
