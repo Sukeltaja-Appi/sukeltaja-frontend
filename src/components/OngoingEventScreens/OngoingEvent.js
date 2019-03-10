@@ -64,10 +64,7 @@ class OngoingEvent extends React.Component {
   }
 
   endEventButton = async () => {
-    let { ongoingEvent, selectedTargets, endEvent } = this.props
-    const length = selectedTargets.length
-
-    if(length > 0) ongoingEvent.target = selectedTargets[length-1].id
+    let { ongoingEvent, endEvent } = this.props
 
     await this.endDives()
     await endEvent(ongoingEvent)
@@ -166,7 +163,6 @@ class OngoingEvent extends React.Component {
 const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
   ongoingDive: state.ongoingDive,
-  selectedTargets: state.selectedTargets,
   user: state.user
 })
 
