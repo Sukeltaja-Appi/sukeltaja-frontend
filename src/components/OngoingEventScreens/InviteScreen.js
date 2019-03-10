@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { loadAllUsers, selectUser, deselectUser, clearSelectedUsers } from '../../reducers/userReducer'
 import { sendMessage } from '../../reducers/messageReducer'
 import { mergeOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
+import { objectToID } from '../../utils/utilityFunctions'
 
 import {
   usernameOrId, userEqualsObject,
@@ -170,7 +171,7 @@ class InviteScreen extends React.Component {
         <FlatList
           data={users}
           renderItem={({ item }) => this.renderListItem(item) }
-          keyExtractor={item => item.id}
+          keyExtractor={item => objectToID(item)}
         />
       )
     }

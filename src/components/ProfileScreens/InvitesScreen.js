@@ -6,6 +6,7 @@ import { formatDate } from '../../utils/dates'
 import { connect } from 'react-redux'
 import { getMessages } from '../../reducers/messageReducer'
 import { usernameOrId } from '../../utils/utilityFunctions'
+import { objectToID } from '../../utils/utilityFunctions'
 
 const style = {
   subtitle: {
@@ -104,7 +105,7 @@ class InvitesScreen extends React.Component {
               />
             )}
           }
-          keyExtractor={item => item.id}
+          keyExtractor={item => objectToID(item)}
         />
         <Button
           title="Hae kutsut"
