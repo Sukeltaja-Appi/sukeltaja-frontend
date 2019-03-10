@@ -32,18 +32,15 @@ class InvitesScreen extends React.Component {
     this.loadMessages()
   }
 
-  logList = (list) => {
-    console.log('listlogStart-------------------------------------------------')
-    for(let i = 0; i < list.length; i++) console.log(list[i])
-    console.log('list length: ', (list.length || 'nothing'))
-    console.log('listlogEnd---------------------------------------------------')
-  }
+  // logList = (list) => {
+  //   console.log('listlogStart-------------------------------------------------')
+  //   for(let i = 0; i < list.length; i++) console.log(list[i])
+  //   console.log('list length: ', (list.length || 'nothing'))
+  //   console.log('listlogEnd---------------------------------------------------')
+  // }
 
   updateInvites = () => {
     const { messages } = this.props
-
-    console.log('updateInvites:-----------------')
-    this.logList(messages)
 
     const invites = []
 
@@ -60,9 +57,6 @@ class InvitesScreen extends React.Component {
 
   loadMessages = async () => {
     await this.props.getMessages()
-    this.logList(this.props.messages)
-    this.logList(this.state.invites)
-
     this.updateInvites()
   }
 

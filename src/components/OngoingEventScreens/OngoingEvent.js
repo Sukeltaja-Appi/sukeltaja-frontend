@@ -34,12 +34,26 @@ const style = {
   }
 }
 
-const OngoingEvent = (props) => {
+class OngoingEvent extends React.Component {
+  constructor(props) {
+    super(props)
+    this.endButton = this.endButton.bind(this)
+  }
 
-  const navigate = (value) => props.navigation.navigate(value)
+  reloadEvent = async () => {
+    const { ongoingEvent, getOngoingEvent } = this.props
 
-  const endDives = async () => {
-    const { endDive, ongoingEvent, ongoingDive } = props
+    await getOngoingEvent(ongoingEvent)
+  }
+
+  componentDidMount() {
+    this.reloadEvent()
+  }
+
+  navigate = (value, item) => this.props.navigation.navigate(value, { item })
+
+  endDives = async () => {
+    const { endDive, ongoingEvent, ongoingDive } = this.props
 
     if(typeof ongoingDive !== 'undefined' && ongoingDive !== null) {
 
@@ -49,89 +63,104 @@ const OngoingEvent = (props) => {
     }
   }
 
-  const endEventButton = async () => {
-    let { ongoingEvent, selectedTargets } = props
+  endEventButton = async () => {
+    let { ongoingEvent, selectedTargets, endEvent } = this.props
     const length = selectedTargets.length
 
     if(length > 0) ongoingEvent.target = selectedTargets[length-1].id
 
-    await endDives()
-    await props.endEvent(ongoingEvent)
+    await this.endDives()
+    await endEvent(ongoingEvent)
 
-    navigate('StartEventScreen')
+    this.navigate('StartEventScreen')
   }
 
-  const leaveEventButton = () => {
-    props.leaveOngoingEvent()
-    navigate('StartEventScreen')
+  leaveEventButton = () => {
+    this.props.leaveOngoingEvent()
+    this.navigate('StartEventScreen')
   }
 
-  const endButton = async () => {
-    const { user, ongoingEvent } = props
+  toInvites = () => {
+    this.navigate('InviteScreen')
+  }
+
+  endButton = () => {
+    const { user, ongoingEvent } = this.props
 
     if(user.id === objectToID(ongoingEvent.creator)) {
-      endEventButton()
-    }
-    leaveEventButton()
-  }
-
-  const endButtonText = () => {
-    const { ongoingEvent, user } = props
-
-    if(user.id === objectToID(ongoingEvent)) return 'Lopeta'
-
-    return 'Poistu'
-  }
-
-  const pressUser = () => {
-
-  }
-
-  let users = []
-
-  if (typeof props.ongoingEvent !== 'undefined' && props.ongoingEvent !== null ) {
-    const { creator, admins, participants } = props.ongoingEvent
-
-    users = [ creator, ...admins, ...participants ]
-  }
-
-  return (
-    <View style={style.main}>
-      <Text h3 >Meneillään oleva tapahtuma</Text>
-      <View style={{ height: 20 }} />
-
-      <Text h4>Osallistujat:</Text>
-
-      <View style={style.list}>
-        <FlatList
-          data={users}
-          renderItem={({ item }) => {
-
-            return (
-              <ListItem
-                title={usernameOrId(item)}
-                onPress={() => pressUser(item)}
-                bottomDivider
-              />
-            )}
-          }
-          keyExtractor={item => objectToID(item)}
-        />
-
-      </View>
-
-      <View style={style.bottom}>
+      return(
         <Button
-          title='+ Kutsu lisää osallistujia'
-          onPress={() => navigate('InviteScreen')}
-          buttonStyle={style.buttonInvite}
+          title='Lopeta'
+          onPress={this.endEventButton}
+          buttonStyle={style.buttonEnd}
           raised
         />
-        <View style={style.buttonDivider}/>
-        <Button title={endButtonText()} onPress={() => endButton()} buttonStyle={style.buttonEnd} raised />
+      )
+    }
+
+    return(
+      <Button
+        title={'Poistu'}
+        onPress={this.leaveEventButton}
+        buttonStyle={style.buttonEnd}
+        raised
+      />
+    )
+  }
+
+  pressUser = (item) => {
+    console.log(item)
+  }
+
+  render () {
+    const { ongoingEvent } = this.props
+
+    let users = []
+
+    if (typeof ongoingEvent !== 'undefined' && ongoingEvent !== null ) {
+      const { creator, admins, participants } = ongoingEvent
+
+      users = [ creator, ...admins, ...participants ]
+    }
+
+    return (
+      <View style={style.main}>
+        <Text h3 >Meneillään oleva tapahtuma</Text>
+        <View style={{ height: 20 }} />
+
+        <Text h4>Osallistujat:</Text>
+
+        <View style={style.list}>
+          <FlatList
+            data={users}
+            renderItem={({ item }) => {
+
+              return (
+                <ListItem
+                  title={usernameOrId(item)}
+                  onPress={this.pressUser(item)}
+                  bottomDivider
+                />
+              )}
+            }
+            keyExtractor={item => objectToID(item)}
+          />
+
+        </View>
+
+        <View style={style.bottom}>
+          <Button
+            title='+ Kutsu lisää osallistujia'
+            onPress={this.toInvites}
+            buttonStyle={style.buttonInvite}
+            raised
+          />
+          <View style={style.buttonDivider}/>
+          {this.endButton()}
+        </View>
       </View>
-    </View>
-  )
+    )
+  }
 }
 
 const mapStateToProps = (state) => ({
