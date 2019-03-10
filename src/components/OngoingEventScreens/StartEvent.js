@@ -7,6 +7,11 @@ import styles from '../../styles/global'
 import colors from '../../styles/colors'
 
 const StartEvent = (props) => {
+
+  // static navigationOptions = {
+  //   header: null ,
+  // };
+
   const { startEvent } = props
 
   const startButton = async () => {
