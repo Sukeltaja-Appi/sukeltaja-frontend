@@ -3,7 +3,7 @@ import thunk from 'redux-thunk'
 
 import { diveReducer, ongoingDiveReducer } from './reducers/diveReducer'
 import { eventReducer, ongoingEventReducer } from './reducers/eventReducer'
-import { targetReducer, selectedTargetReducer } from './reducers/targetReducer'
+import { targetReducer } from './reducers/targetReducer'
 import { userReducer, usersReducer, selectedUsersReducer } from './reducers/userReducer'
 import { messageReducer, selectedMessageReducer }from './reducers/messageReducer'
 
@@ -17,7 +17,6 @@ const reducer = combineReducers({
   events: eventReducer,
   ongoingDive: ongoingDiveReducer,
   dives: diveReducer,
-  selectedTargets: selectedTargetReducer,
   targets: targetReducer,
 })
 

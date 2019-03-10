@@ -14,18 +14,17 @@ import AppEntry from './src/AppEntry'
 
 const mapStateToProps = (state) => {
   return {
+    currentTarget: state.ongoingEvent && state.ongoingEvent.target ? state.ongoingEvent.target : null,
+    targets: state.targets,
+    ongoingDive: state.ongoingDive,
+    dives: state.dives,
+    ongoingEvent: state.ongoingEvent,
+    events: state.events,
     user: state.user,
     users: state.users,
     selectedUsers: state.selectedUsers,
     selectedMessages: state.selectedMessages,
     messages: state.messages,
-    ongoingEvent: state.ongoingEvent,
-    events: state.events,
-    ongoingDive: state.ongoingDive,
-    dives: state.dives,
-    selectedTargets: state.selectedTargets,
-    targets: state.targets,
-
   }
 }
 

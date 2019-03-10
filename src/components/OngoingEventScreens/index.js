@@ -1,12 +1,10 @@
 import React from 'react'
 import {
-  createSwitchNavigator,
-  MaterialTopTabBar,
   createMaterialTopTabNavigator,
-  createStackNavigator
+  createStackNavigator,
+  MaterialTopTabBar
 } from 'react-navigation'
 
-import StartEventScreen from './StartEventScreen'
 import OngoingEventScreen from './OngoingEventScreen'
 import InviteScreen from './InviteScreen'
 import DiveScreen from './DiveScreen'
@@ -17,8 +15,6 @@ import { Icon } from 'react-native-elements'
 
 import colors from '../../styles/colors'
 
-const TabBarComponent = (props) => (<MaterialTopTabBar {...props} />)
-
 const style = {
   activeTintColor: '#fff',
   labelStyle: {
@@ -27,6 +23,8 @@ const style = {
   },
   showIcon: true
 }
+
+const TabBarComponent = (props) => (<MaterialTopTabBar {...props} />)
 
 const OngoingEventScreenStack = createStackNavigator({
   OngoingEventScreen,
@@ -38,7 +36,7 @@ const TargetScreenStack = createStackNavigator({
   SingleTargetScreen
 }, { headerMode: 'none' })
 
-const OngoingEventTab = createMaterialTopTabNavigator({
+export default createMaterialTopTabNavigator({
   TargetScreen: {
     screen: TargetScreenStack,
     navigationOptions: {
@@ -71,20 +69,15 @@ const OngoingEventTab = createMaterialTopTabNavigator({
     }
   }
 }, {
-    tabBarComponent: props => {
-      return (
-        <TabBarComponent
-          {...props}
-          style={{
-            backgroundColor: colors.primary_light,
-            paddingTop: 10
-          }}
-        />
-      )
-    }
-  })
-
-export default createSwitchNavigator({
-  StartEventScreen,
-  OngoingEventTab
-}, { headerMode: 'none' })
+  tabBarComponent: props => {
+    return (
+      <TabBarComponent
+        {...props}
+        style={{
+          backgroundColor: colors.primary_light,
+          paddingTop: 10
+        }}
+      />
+    )
+  }
+})

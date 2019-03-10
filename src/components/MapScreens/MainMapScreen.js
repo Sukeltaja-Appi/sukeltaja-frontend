@@ -1,184 +1,205 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View } from 'react-native'
-import { Button } from 'react-native-elements'
-import { MapView } from 'expo'
-import locationService from '../../services/location'
-import styles from '../../styles/global'
+import { View, StyleSheet } from 'react-native'
+import { SearchBar, Text } from 'react-native-elements'
+import ClusteredMapView from 'react-native-maps-super-cluster'
+import { Marker, Callout } from 'react-native-maps'
+import colors from '../../styles/colors'
+import decimalToDMS from '../../utils/coordinates'
 
-import { getAll, selectTarget, resetTargets, setSelectedTargets } from '../../reducers/targetReducer'
-
-const style = {
-  buttonRow: {
-    justifyContent: 'center',
-    padding: 10
-  },
-  buttonDivider: {
-    width: 20
-  }
-}
+import { getAll } from '../../reducers/targetReducer'
+import Target from './Target'
 
 class MainMapScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      mapRegion: {
-        latitude: 60.1,
-        longitude: 25.1,
-        latitudeDelta: 0.3688,
-        longitudeDelta: 0.1684
+      initialRegion: {
+        latitude: 64.5,
+        longitude: 26,
+        latitudeDelta: 12,
+        longitudeDelta: 12
       },
-      location: {
-        coords: {
-          latitude: 60.1,
-          longitude: 25.1
-        }
-      }
+      overlay: false,
+      search: '',
+      target: null
     }
   }
 
   componentDidMount() {
-    this.locateUser()
-    this.loadTargets()
+    if (this.props.targets.length === 0) {
+      this.loadTargets()
+    }
   }
 
   loadTargets = async () => {
     await this.props.getAll()
   }
 
-  _handleMapRegionChange = mapRegion => {
-    this.setState({ mapRegion })
+  renderCluster = (cluster, onPress) => {
+    const { pointCount, coordinate, clusterId } = cluster
+
+    return (
+      <Marker identifier={`cluster-${clusterId}`} coordinate={coordinate} onPress={onPress}>
+        <View style={style.cluster}>
+          <Text>
+            {pointCount}
+          </Text>
+        </View>
+      </Marker>
+    )
   }
 
-  locateUser = async () => {
-    let location = await locationService.getLocationAsync()
+  renderPinColor = (pin) => this.props.currentTarget && this.props.currentTarget._id === pin._id ? 'green' : 'red'
 
-    let mapRegion = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-      latitudeDelta: 0.3688,
-      longitudeDelta: 0.1684
+  renderMarker = (pin) => {
+    const { _id, name, type } = pin
+    const { location, ...rest } = pin
+
+    return (
+      <Marker
+        identifier={`pin-${_id}`}
+        key={_id}
+        coordinate={location}
+        pinColor={this.renderPinColor(rest)}
+        onCalloutPress={() => this.setState({ overlay: true })}
+      >
+        <Callout>
+          <Text style={{ fontWeight: 'bold' }}>{name}</Text>
+          {type && <Text>{type}</Text>}
+          <Text>{`${decimalToDMS(location.latitude)} N`}</Text>
+          <Text>{`${decimalToDMS(location.longitude)} E`}</Text>
+        </Callout>
+      </Marker>
+    )
+  }
+
+  // According to react-native-maps-super-cluster,
+  // use onMarkerPress instead of using onPress directly on Markers
+  onMarkerPress = (event) => {
+    const { latitude, longitude } = event.nativeEvent.coordinate
+    const target = this.props.targets.find(
+      m => m.latitude === latitude && m.longitude === longitude
+    )
+
+    if (target) {
+      this.setState({ target })
     }
-
-    this.setState({ mapRegion, location })
   }
 
-  updateButton = () => {
-    this.loadTargets()
+  filteredTargets = () => {
+    const search = this.state.search.trim().toLowerCase()
+    const { targets } = this.props
+
+    return search ? targets.filter(t => t.name.toLowerCase().startsWith(search)) : targets
   }
 
-  resetTargetsButton = () => {
-    this.props.resetTargets()
-    this.render()
-  }
+  search = (search) => {
+    const map = this.map.getMapRef()
 
-  pressTarget = (target) => {
-    let { selectedTargets, selectTarget, setSelectedTargets } = this.props
-    let i = 0
-    let found = false
-
-    for (i=0; i<selectedTargets.length; i++) {
-      if (selectedTargets[i].id === target.id) {
-        found = true
-        break
-      }
-    }
-    if(!found) selectTarget(target)
-    else {
-      let targets = selectedTargets
-
-      targets.splice(i, 1)
-      setSelectedTargets(targets)
-    }
-
-    this.setState({
-      mapRegion: {
-        latitude: target.latitude,
-        longitude: target.longitude,
-        latitudeDelta: this.state.mapRegion.latitudeDelta,
-        longitudeDelta: this.state.mapRegion.longitudeDelta
+    this.setState({ search }, () => {
+      if (!search) {
+        map.animateToRegion(this.state.initialRegion)
+      } else if (this.filteredTargets().length > 0) {
+        map.fitToCoordinates(this.filteredTargets().map(m => m.location))
       }
     })
-
-    this.forceUpdate()
   }
 
   render() {
-    const { coords } = this.state.location
-    const mapRegion = this.state.mapRegion
-    const { targets, selectedTargets } = this.props
+    const { initialRegion, target } = this.state
+    const { targets } = this.props
 
-    let markers = targets.map(target => {
-      const {
-        latitude,
-        longitude,
-        name,
-        type
-      } = target
+    targets.map(t => t.location = { longitude: t.longitude, latitude: t.latitude })
 
-      let color = 'blue'
-
-      if(selectedTargets.includes(target)) color = 'green'
-
-      return (
-        <MapView.Marker
-          coordinate={{
-            latitude,
-            longitude
-          }}
-          title={name}
-          description={type}
-          pinColor={color}
-          key={Math.random().toString()} //Needed for update in gmaps.
-          onPress={() => this.pressTarget(target)}
+    return(
+      <View style={style.container}>
+        <ClusteredMapView
+          ref={(r) => { this.map = r }}
+          maxZoom={12}
+          mapPadding={{ top: 100, left: 50, right: 50 }}
+          style={style.map}
+          radius={42}
+          data={this.filteredTargets()}
+          initialRegion={initialRegion}
+          onMarkerPress={this.onMarkerPress}
+          renderMarker={this.renderMarker}
+          renderCluster={this.renderCluster}
+          showsUserLocation={true}
+          userLocationAnnotationTitle=''
         />
-      )
-    }) || []
 
-    return (
-      <View style={styles.noPadding}>
-        <MapView
-          style={styles.flex}
-          region={mapRegion}
-        >
-          <MapView.Marker
-            coordinate={coords}
-            title="Minä"
-            description="Viimeisin sijaintini."
-          />
+        <SearchBar
+          placeholder='Etsi kohde'
+          containerStyle={style.searchContainer}
+          inputContainerStyle={style.searchInputContainer}
+          inputStyle={style.searchInput}
+          lightTheme
+          clearIcon={{ name: 'x', type: 'feather', size: 28 }}
+          onChangeText={this.search}
+          value={this.state.search}
+        />
 
-          {markers}
+        { this.state.overlay
+          && <Target
+            isVisible={this.state.overlay}
+            onBackdropPress={() => this.setState({ overlay: false })}
+            target={target}
+          />
+        }
 
-        </MapView>
-
-        <View style={{ ...styles.row, ...style.buttonRow }}>
-          <Button
-            title="Paikanna"
-            onPress={this.locateUser}
-          />
-          <View style={style.buttonDivider}/>
-          <Button
-            title="Päivitä"
-            onPress={this.updateButton}
-          />
-          <View style={style.buttonDivider}/>
-          <Button
-            title="Poista Valinnat"
-            onPress={this.resetTargetsButton}
-          />
-        </View>
       </View>
     )
   }
 }
 
+const style = StyleSheet.create({
+  cluster: {
+    width: 32,
+    height: 32,
+    borderWidth: 1,
+    borderRadius: 16,
+    alignItems: 'center',
+    borderColor: colors.primary_light,
+    justifyContent: 'center',
+    backgroundColor: '#fff'
+  },
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject
+  },
+  searchContainer: {
+    backgroundColor: 'transparent',
+    width: '95%',
+    position: 'absolute',
+    top: 20,
+    borderBottomColor: 'transparent',
+    borderTopColor: 'transparent'
+  },
+  searchInputContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    height: 50,
+    borderColor: colors.lightgray,
+    borderBottomColor: colors.gray,
+    borderWidth: 1,
+    borderBottomWidth: 1,
+  },
+  searchInput: {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    color: 'black'
+  }
+})
+
 const mapStateToProps = (state) => ({
-  selectedTargets: state.selectedTargets,
-  targets: state.targets,
-  ongoingEvent: state.ongoingEvent
+  currentTarget: state.ongoingEvent && state.ongoingEvent.target ? state.ongoingEvent.target : null,
+  targets: state.targets
 })
 
 export default connect(
   mapStateToProps,
-  { getAll, selectTarget, resetTargets, setSelectedTargets }
+  { getAll }
 )(MainMapScreen)
