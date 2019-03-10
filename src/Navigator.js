@@ -19,7 +19,7 @@ const style = {
   }
 }
 
-const MainTabNavigator = createBottomTabNavigator({
+export const MainTabNavigator = createBottomTabNavigator({
   OngoingEvent : {
     screen: OngoingEventScreen,
     navigationOptions: {

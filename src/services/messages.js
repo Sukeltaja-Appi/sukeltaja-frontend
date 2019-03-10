@@ -1,28 +1,14 @@
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
+import { config } from './users'
+import { apiUrl } from '../config'
 
 axiosRetry(axios, {
   retries: 5,
   retryDelay: axiosRetry.exponentialDelay
 })
 
-let url = null
-
-let token = null
-
-const config = () => {
-  return {
-    headers: { 'Authorization': token }
-  }
-}
-
-const setToken = (newToken) => {
-  token = `bearer ${newToken}`
-}
-
-const setUrl = (newUrl) => {
-  url = `${newUrl}/messages`
-}
+const url = `${apiUrl}/messages`
 
 const getAll = async () => {
   console.log('MESSAGES trying to connect to:', url)
@@ -59,4 +45,4 @@ const checkMessage = async (id, status) => {
   return response.data
 }
 
-export default { create, setToken, update, setUrl, getAll, get, checkMessage }
+export default { create, update, getAll, get, checkMessage }

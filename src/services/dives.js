@@ -1,27 +1,14 @@
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
+import { config } from './users'
+import { apiUrl } from '../config'
 
 axiosRetry(axios, {
   retries: 5,
   retryDelay: axiosRetry.exponentialDelay
 })
 
-let url = null
-let token = null
-
-const config = () => {
-  return {
-    headers: { 'Authorization': token }
-  }
-}
-
-const setToken = (newToken) => {
-  token = `bearer ${newToken}`
-}
-
-const setUrl = (newUrl) => {
-  url = `${newUrl}/dives`
-}
+const url = `${apiUrl}/dives`
 
 const getAll = async () => {
   console.log('DIVES trying to connect to:', url)
@@ -45,4 +32,4 @@ const update = async (id, updatedObject) => {
   return response.data
 }
 
-export default { getAll, create, setToken, update, setUrl }
+export default { getAll, create, update }

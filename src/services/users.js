@@ -1,16 +1,16 @@
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
+import { apiUrl } from '../config'
 
 axiosRetry(axios, {
   retries: 5,
   retryDelay: axiosRetry.exponentialDelay
 })
 
-let url = null
-
+const url = `${apiUrl}/users`
 let token = null
 
-const config = () => {
+export const config = () => {
   return {
     headers: { 'Authorization': token }
   }
@@ -18,10 +18,6 @@ const config = () => {
 
 const setToken = (newToken) => {
   token = `bearer ${newToken}`
-}
-
-const setUrl = (newUrl) => {
-  url = `${newUrl}/users`
 }
 
 const create = async (newObject) => {
@@ -48,4 +44,4 @@ const get = async (id) => {
   return response.data
 }
 
-export default { setToken, setUrl, create, get, getAll }
+export default { setToken, create, get, getAll }
