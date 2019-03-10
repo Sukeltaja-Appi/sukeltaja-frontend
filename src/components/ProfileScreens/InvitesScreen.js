@@ -33,13 +33,6 @@ class InvitesScreen extends React.Component {
     this.loadMessages()
   }
 
-  // logList = (list) => {
-  //   console.log('listlogStart-------------------------------------------------')
-  //   for(let i = 0; i < list.length; i++) console.log(list[i])
-  //   console.log('list length: ', (list.length || 'nothing'))
-  //   console.log('listlogEnd---------------------------------------------------')
-  // }
-
   updateInvites = () => {
     const { messages } = this.props
 

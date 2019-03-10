@@ -68,11 +68,6 @@ class DiveScreen extends React.Component {
       dive.longitude = location.coords.longitude
     } catch(err) { console.log('Geolocation unavailable.') }
 
-    console.log('dive-and-event--------------------------------------')
-    console.log(dive)
-    console.log(ongoingEvent)
-    console.log('---------------------------------------------------')
-
     await startDive(dive)
     await getOngoingEvent(ongoingEvent)
 

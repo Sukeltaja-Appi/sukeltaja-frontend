@@ -55,7 +55,7 @@ class OngoingEvent extends React.Component {
   endDives = async () => {
     const { endDive, ongoingEvent, ongoingDive } = this.props
 
-    if(typeof ongoingDive !== 'undefined' && ongoingDive !== null) {
+    if(ongoingDive) {
 
       ongoingDive.enddate = new Date()
       ongoingDive.event = ongoingEvent.id
@@ -78,7 +78,7 @@ class OngoingEvent extends React.Component {
   }
 
   toInvites = () => {
-    this.navigate('InviteScreen')
+    this.navigate('InviteScreen', { item: { ongoingComponent: this } })
   }
 
   endButton = () => {
@@ -114,7 +114,7 @@ class OngoingEvent extends React.Component {
 
     let users = []
 
-    if (typeof ongoingEvent !== 'undefined' && ongoingEvent !== null ) {
+    if (ongoingEvent) {
       const { creator, admins, participants } = ongoingEvent
 
       users = [ creator, ...admins, ...participants ]
