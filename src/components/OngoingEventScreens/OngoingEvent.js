@@ -55,7 +55,7 @@ class OngoingEvent extends React.Component {
   endDives = async () => {
     const { endDive, ongoingEvent, ongoingDive } = this.props
 
-    if(typeof ongoingDive !== 'undefined' && ongoingDive !== null) {
+    if(ongoingDive) {
 
       ongoingDive.enddate = new Date()
       ongoingDive.event = ongoingEvent.id
