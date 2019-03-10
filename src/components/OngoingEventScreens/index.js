@@ -37,14 +37,13 @@ const TargetScreenStack = createStackNavigator({
 }, { headerMode: 'none' })
 
 export default createMaterialTopTabNavigator({
-  TargetScreen: {
-    screen: TargetScreenStack,
+  OngoingEventScreen: {
+    screen: OngoingEventScreenStack,
     navigationOptions: {
-      tabBarLabel: 'KOHDE',
+      tabBarLabel: 'TAPAHTUMA',
       tabBarOptions: style,
-      showIcon: true,
       tabBarIcon: ({ tintColor }) => (
-        <Icon name='map-pin' type='feather' color={tintColor} />
+        <Icon name='users' type='feather' color={tintColor} />
       )
     }
   },
@@ -58,16 +57,17 @@ export default createMaterialTopTabNavigator({
       )
     }
   },
-  OngoingEventScreen: {
-    screen: OngoingEventScreenStack,
+  TargetScreen: {
+    screen: TargetScreenStack,
     navigationOptions: {
-      tabBarLabel: 'TAPAHTUMA',
+      tabBarLabel: 'KOHDE',
       tabBarOptions: style,
+      showIcon: true,
       tabBarIcon: ({ tintColor }) => (
-        <Icon name='users' type='feather' color={tintColor} />
+        <Icon name='map-pin' type='feather' color={tintColor} />
       )
     }
-  }
+  },
 }, {
   tabBarComponent: props => {
     return (
