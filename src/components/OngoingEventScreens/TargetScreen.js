@@ -1,4 +1,5 @@
 import React from 'react'
+import { KYPPI_URL } from 'react-native-dotenv'
 import { View, Text, FlatList, Linking } from 'react-native'
 import { ListItem, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
@@ -152,10 +153,10 @@ class TargetScreen extends React.Component {
   }
 
   render() {
-    const { selectedTargets } = this.props
+    const { currentTarget } = this.props
     const closestTargets = this.state.closestTargets
 
-    if (selectedTargets.length === 0) {
+    if (!currentTarget) {
       return (
         <View>
           <Button
@@ -175,21 +176,21 @@ class TargetScreen extends React.Component {
 
       )
     }
-    const item = selectedTargets[0]
-    const distance = this.getDistance(item.latitude, item.longitude).toFixed(0)
+    const { latitude, longitude, name, type, material, mj_id } = currentTarget
+    const distance = this.getDistance(latitude, longitude).toFixed(0)
 
     return (
       <View style={styles.noPadding}>
         {this.state.location.coords.latitude
           && <View style={style.container}>
 
-            <Text style={style.title}>{item.name}</Text>
+            <Text style={style.title}>{name}</Text>
             <Text style={style.text}>Etäisyys kohteeseen: {distance} metriä</Text>
-            <Text style={style.text}>Kohteen tyyppi: {item.type}</Text>
-            <Text style={style.text}>Kohteen materiaali: {item.material}</Text>
+            <Text style={style.text}>Kohteen tyyppi: {type}</Text>
+            <Text style={style.text}>Kohteen materiaali: {material}</Text>
             <Button
               title='MJ-rekisteri'
-              onPress={() => { Linking.openURL(`${KYPPI_URL}${item.mj_id}`) }}
+              onPress={() => { Linking.openURL(`${KYPPI_URL}${mj_id}`) }}
               buttonStyle={{ marginTop: 8 }}
             />
 
@@ -208,7 +209,7 @@ class TargetScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  selectedTargets: state.selectedTargets,
+  currentTarget: state.ongoingEvent && state.ongoingEvent.target ? state.ongoingEvent.target : null,
   targets: state.targets,
   closestTargets: state.closestTargets
 })
