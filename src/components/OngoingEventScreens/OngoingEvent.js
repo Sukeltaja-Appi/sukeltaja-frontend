@@ -114,7 +114,7 @@ class OngoingEvent extends React.Component {
 
     let users = []
 
-    if (typeof ongoingEvent !== 'undefined' && ongoingEvent !== null ) {
+    if (ongoingEvent) {
       const { creator, admins, participants } = ongoingEvent
 
       users = [ creator, ...admins, ...participants ]
