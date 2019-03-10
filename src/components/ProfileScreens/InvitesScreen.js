@@ -42,6 +42,9 @@ class InvitesScreen extends React.Component {
   updateInvites = () => {
     const { messages } = this.props
 
+    console.log('updateInvites:-----------------')
+    this.logList(messages)
+
     const invites = []
 
     for (let i = 0; i < messages.length; i++) {

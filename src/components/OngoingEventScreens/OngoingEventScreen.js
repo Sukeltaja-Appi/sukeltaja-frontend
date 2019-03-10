@@ -50,7 +50,7 @@ const OngoingEventScreen = (props) => {
   }
 
   const endEventButton = async () => {
-    let { ongoingEvent, selectedTargets, user } = props
+    let { ongoingEvent, selectedTargets } = props
     const length = selectedTargets.length
 
     if(length > 0) ongoingEvent.target = selectedTargets[length-1].id

@@ -2,6 +2,7 @@ import React from 'react'
 import { View, FlatList, Text } from 'react-native'
 import { CheckBox, Button } from 'react-native-elements'
 import styles from '../../styles/global'
+import colors from '../../styles/colors'
 import { connect } from 'react-redux'
 import { loadAllUsers, selectUser, deselectUser, clearSelectedUsers } from '../../reducers/userReducer'
 import { sendMessage } from '../../reducers/messageReducer'
@@ -9,8 +10,7 @@ import { mergeOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
 
 import {
   usernameOrId, userEqualsObject,
-  userIsInArray, objectToID,
-  userObjEqualsUserObj
+  userIsInArray
 } from '../../utils/utilityFunctions'
 
 const style = {
@@ -23,7 +23,15 @@ const style = {
     padding: 10
   },
   buttonDivider: {
-    width: 20
+    height: 10
+  },
+  buttonGreen: {
+    backgroundColor: colors.green,
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 10
   }
 }
 
@@ -68,24 +76,12 @@ class InviteScreen extends React.Component {
 
   inviteAdmins = async () => {
     let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers } = this.props
-    let { creator, admins, participants, pending } = ongoingEvent
+    let { creator, pending } = ongoingEvent
     let pendingUsers = []
 
     for(let i = 0; i < pending.length; i++) pendingUsers[i] = pending[i].user
 
     if(userEqualsObject(user, creator)) {
-
-      // for(let i = 0; i < selectedUsers.length; i++) {
-      //   if(!userIsInArray(selectedUsers[i], pendingUsers)
-      //   && !userIsInArray(selectedUsers[i], admins)
-      //   && !userIsInArray(selectedUsers[i], participants)
-      //   && !userObjEqualsUserObj(selectedUsers[i], creator)) {
-      //     pending.push({
-      //       user: objectToID(selectedUsers[i]),
-      //       access: 'admin'
-      //     })
-      //   }
-      // }
 
       await sendMessage(
         'invitation_admin',
@@ -99,31 +95,18 @@ class InviteScreen extends React.Component {
       this.debugLogPending(ongoingEvent.pending)
 
       clearSelectedUsers()
-      //this.refreshComponent()
       this.loadUsers()
     }
   }
 
   inviteParticipants = async () => {
     let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers } = this.props
-    let { creator, admins, participants, pending } = ongoingEvent
+    let { creator, admins, pending } = ongoingEvent
     let pendingUsers = []
 
     for(let i = 0; i < pending.length; i++) pendingUsers[i] = pending[i].user
 
     if(userEqualsObject(user, creator) || userIsInArray(user, admins)) {
-
-      // for(let i = 0; i < selectedUsers.length; i++) {
-      //   if(!userIsInArray(selectedUsers[i], pendingUsers)
-      //   && !userIsInArray(selectedUsers[i], admins)
-      //   && !userIsInArray(selectedUsers[i], participants)
-      //   && !userObjEqualsUserObj(selectedUsers[i], creator)) {
-      //     pending.push({
-      //       user: objectToID(selectedUsers[i]),
-      //       access: 'participant',
-      //     })
-      //   }
-      // }
 
       await sendMessage(
         'invitation_participant',
@@ -137,7 +120,6 @@ class InviteScreen extends React.Component {
       this.debugLogPending(ongoingEvent.pending)
 
       clearSelectedUsers()
-      //this.refreshComponent()
       this.loadUsers()
     }
   }
@@ -204,32 +186,32 @@ class InviteScreen extends React.Component {
 
         {this.showList()}
 
-        <View style={{ ...styles.row, ...style.buttonRow }}>
-          <Button
-            title="<-Takaisin"
-            onPress={this.backButton}
-          />
+        <View style={style.bottom}>
           <View style={style.buttonDivider}/>
           <Button
-            title="KutsuA"
+            title="+ Kutsu Ylläpitäjiä"
             onPress={this.inviteAdmins}
+            buttonStyle={style.buttonGreen}
+            raised
           />
           <View style={style.buttonDivider}/>
           <Button
-            title="KutsuP"
+            title="+ Kutsu Osallistujia"
             onPress={this.inviteParticipants}
+            buttonStyle={style.buttonGreen}
+            raised
           />
           <View style={style.buttonDivider}/>
           <Button
-            title="Lataa"
-            onPress={this.loadUsers}
+            title="<-- Takaisin"
+            onPress={this.backButton}
+            raised
           />
         </View>
 
       </View>
     )
   }
-
 }
 
 const mapStateToProps = (state) => ({
