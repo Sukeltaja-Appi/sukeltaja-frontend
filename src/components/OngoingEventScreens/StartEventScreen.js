@@ -14,8 +14,9 @@ const style = {
 }
 
 const StartEventScreen = (props) => {
+  const { navigation, ongoingEvent } = props
 
-  const navigate = (value) => props.navigation.navigate(value)
+  const navigate = (value) => navigation.navigate(value)
 
   const startButton = async () => {
     const event = {
@@ -26,6 +27,10 @@ const StartEventScreen = (props) => {
     await props.startEvent(event)
 
     navigate('OngoingEventScreen')
+  }
+
+  if (ongoingEvent) {
+    navigation.replace('OngoingEventScreen')
   }
 
   return (
@@ -44,7 +49,9 @@ const StartEventScreen = (props) => {
   )
 }
 
+const mapStateToProps = (state) => ({ ongoingEvent: state.ongoingEvent })
+
 export default connect(
-  null,
+  mapStateToProps,
   { startEvent }
 )(StartEventScreen)

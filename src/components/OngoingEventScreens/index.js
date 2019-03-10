@@ -1,10 +1,9 @@
-import { createSwitchNavigator, createStackNavigator } from 'react-navigation'
-import StartEventScreen from './StartEventScreen'
+import { createStackNavigator } from 'react-navigation'
 import OngoingEventScreen from './OngoingEventScreen'
 import DiveScreen from './DiveScreen'
 
-const OngoingEventStack = createStackNavigator({
-  OngoingEventScreen : {
+export default createStackNavigator({
+  OngoingEventScreen: {
     screen: OngoingEventScreen,
     navigationOptions: {
       headerBackTitle: null,
@@ -19,8 +18,3 @@ const OngoingEventStack = createStackNavigator({
     }
   }
 })
-
-export default createSwitchNavigator({
-  StartEventScreen,
-  OngoingEventStack
-}, { headerMode: 'none' })

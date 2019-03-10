@@ -42,8 +42,8 @@ class DiveScreen extends React.Component {
     const { endDive, ongoingEvent, ongoingDive, navigation } = this.props
 
     ongoingDive.enddate = new Date()
-    ongoingDive.event = ongoingEvent.id
-    ongoingEvent.dives = [ ...ongoingEvent.dives, ongoingDive.id ]
+    ongoingDive.event = ongoingEvent._id
+    ongoingEvent.dives = [ ...ongoingEvent.dives, ongoingDive._id ]
     endDive(ongoingDive)
 
     return navigation.navigate('OngoingEventScreen')
