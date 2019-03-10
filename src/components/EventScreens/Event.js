@@ -32,10 +32,7 @@ const Event = (props) => {
 
   const { startdate, enddate, title, description } = navigation.getParam('item')
 
-  //const { startdate, enddate, description, dives } = navigation.getParam('item')
-  //const divesString = JSON.stringify(dives)
-
-  const navigate = (route, params) => props.navigation.navigate(route, params)
+  const navigate = (route, params) => navigation.navigate(route, params)
 
   return (
     <View style={styles.noPadding}>
