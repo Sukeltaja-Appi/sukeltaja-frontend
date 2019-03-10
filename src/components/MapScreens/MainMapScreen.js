@@ -32,6 +32,10 @@ class MainMapScreen extends React.Component {
     }
   }
 
+  loadTargets = async () => {
+    await this.props.getAll()
+  }
+
   renderCluster = (cluster, onPress) => {
     const { pointCount, coordinate, clusterId } = cluster
 
@@ -46,14 +50,18 @@ class MainMapScreen extends React.Component {
     )
   }
 
+  renderPinColor = (pin) => this.props.currentTarget && this.props.currentTarget._id === pin._id ? 'green' : 'red'
+
   renderMarker = (pin) => {
-    const { id, location, name, type } = pin
+    const { _id, name, type } = pin
+    const { location, ...rest } = pin
 
     return (
       <Marker
-        identifier={`pin-${id}`}
-        key={id || Math.random()}
+        identifier={`pin-${_id}`}
+        key={_id}
         coordinate={location}
+        pinColor={this.renderPinColor(rest)}
         onCalloutPress={() => this.setState({ overlay: true })}
       >
         <Callout>
@@ -64,10 +72,6 @@ class MainMapScreen extends React.Component {
         </Callout>
       </Marker>
     )
-  }
-
-  loadTargets = async () => {
-    await this.props.getAll()
   }
 
   // According to react-native-maps-super-cluster,
@@ -190,7 +194,10 @@ const style = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state) => ({ targets: state.targets })
+const mapStateToProps = (state) => ({
+  currentTarget: state.ongoingEvent && state.ongoingEvent.target ? state.ongoingEvent.target : null,
+  targets: state.targets
+})
 
 export default connect(
   mapStateToProps,

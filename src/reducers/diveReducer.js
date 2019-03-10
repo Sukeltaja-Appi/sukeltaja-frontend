@@ -6,9 +6,9 @@ export const diveReducer = (state = [], action) => {
       return [ ...state, action.newDive ]
     }
     case 'UPDATE_DIVE': {
-      const id = action.updatedDive.id
+      const id = action.updatedDive._id
 
-      return state.map(dive => dive.id !== id ? dive : action.updatedDive)
+      return state.map(dive => dive._id !== id ? dive : action.updatedDive)
     }
     case 'INIT_DIVES':
       return action.dives
@@ -56,7 +56,7 @@ export const startDive = (dive) => {
 
 export const endDive = (dive) => {
   return async (dispatch) => {
-    const updatedDive = await diveService.update(dive.id, dive)
+    const updatedDive = await diveService.update(dive._id, dive)
 
     dispatch({
       type: 'UPDATE_DIVE',
@@ -87,7 +87,7 @@ export const createDive = (dive) => {
 export const updateDive = (dive) => {
 
   return async (dispatch) => {
-    const updatedDive = await diveService.update(dive.id, dive)
+    const updatedDive = await diveService.update(dive._id, dive)
 
     dispatch({
       type: 'UPDATE_DIVE',

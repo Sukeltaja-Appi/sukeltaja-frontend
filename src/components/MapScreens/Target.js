@@ -7,8 +7,7 @@ import decimalToDMS from '../../utils/coordinates'
 import { KYPPI_URL } from 'react-native-dotenv'
 import colors from '../../styles/colors'
 
-import { updateEvent } from '../../reducers/eventReducer'
-import { setCurrentTarget } from '../../reducers/targetReducer'
+import { updateEvent, setOngoingEvent } from '../../reducers/eventReducer'
 
 const style = {
   h5: {
@@ -22,22 +21,22 @@ const style = {
 }
 
 const Target = (props) => {
-  const { target, isVisible, onBackdropPress, currentTarget, ongoingEvent, setCurrentTarget, updateEvent } = props
+  const { target, isVisible, onBackdropPress, ongoingEvent, updateEvent, currentTarget, setOngoingEvent } = props
   const { name, type, material, latitude, longitude, mj_id } = target
 
-  const selectTarget = (target) => {
-    setCurrentTarget(target)
-
+  const selectTarget = async (target) => {
     if (ongoingEvent) {
       const event = ongoingEvent
 
-      event.target = target ? target.id : null
+      event.target = target ? target : null
+
+      setOngoingEvent(event)
       updateEvent(event)
     }
   }
 
   const selectTargetButton = () => {
-    if (currentTarget === target) {
+    if (currentTarget && currentTarget._id === target._id) {
       return (
         <Button
           title='Poista kohteen valinta'
@@ -93,11 +92,11 @@ const Target = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-  currentTarget: state.currentTarget,
-  ongoingEvent: state.ongoingEvent,
+  currentTarget: state.ongoingEvent && state.ongoingEvent.target ? state.ongoingEvent.target : null,
+  ongoingEvent: state.ongoingEvent
 })
 
 export default connect(
   mapStateToProps,
-  { setCurrentTarget, updateEvent }
+  { updateEvent, setOngoingEvent }
 )(Target)

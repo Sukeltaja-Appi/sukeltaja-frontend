@@ -6,9 +6,9 @@ export const eventReducer = (state = [], action) => {
       return [ ...state, action.newEvent ]
     }
     case 'UPDATE_EVENT': {
-      const id = action.updatedEvent.id
+      const id = action.updatedEvent._id
 
-      return state.map(event => event.id !== id ? event : action.updatedEvent)
+      return state.map(event => event._id !== id ? event : action.updatedEvent)
     }
     case 'INIT_EVENTS':
       return action.events
@@ -47,10 +47,7 @@ export const startEvent = (event) => {
       newEvent
     })
 
-    dispatch({
-      type: 'SET_ONGOING_EVENT',
-      ongoingEvent: newEvent
-    })
+    dispatch(setOngoingEvent(newEvent))
   }
 }
 
@@ -58,17 +55,14 @@ export const endEvent = (event) => {
   event.enddate = new Date()
 
   return async (dispatch) => {
-    const updatedEvent = await eventService.update(event.id, event)
+    const updatedEvent = await eventService.update(event._id, event)
 
     dispatch({
       type: 'UPDATE_EVENT',
       updatedEvent
     }),
 
-    dispatch({
-      type: 'SET_ONGOING_EVENT',
-      ongoingEvent: null
-    })
+    dispatch(setOngoingEvent(null))
   }
 }
 
@@ -89,7 +83,7 @@ export const createEvent = (event) => {
 export const updateEvent = (event) => {
 
   return async (dispatch) => {
-    const updatedEvent = await eventService.update(event.id, event)
+    const updatedEvent = await eventService.update(event._id, event)
 
     dispatch({
       type: 'UPDATE_EVENT',
@@ -97,6 +91,13 @@ export const updateEvent = (event) => {
     })
 
     return updatedEvent
+  }
+}
+
+export const setOngoingEvent = (event) => {
+  return {
+    type: 'SET_ONGOING_EVENT',
+    ongoingEvent: event
   }
 }
 

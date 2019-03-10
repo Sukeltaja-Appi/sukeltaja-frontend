@@ -9,22 +9,6 @@ export const targetReducer = (state = [], action) => {
   }
 }
 
-export const currentTargetReducer = (state = null, action) => {
-  switch (action.type) {
-    case 'SET_CURRENT_TARGET':
-      return action.currentTarget
-    default:
-      return state
-  }
-}
-
-export const setCurrentTarget = (target) => {
-  return {
-    type: 'SET_CURRENT_TARGET',
-    currentTarget: target
-  }
-}
-
 export const getAll = () => {
   return async (dispatch) => {
     const targets = await targetService.getAll()
@@ -37,14 +21,8 @@ export const getAll = () => {
 }
 
 export const forgetTargets = () => {
-  return (dispatch) => {
-    dispatch({
-      type: 'SET_CURRENT_TARGET',
-      target: null
-    })
-    dispatch({
-      type: 'INIT_TARGETS',
-      targets: []
-    })
+  return {
+    type: 'INIT_TARGETS',
+    targets: []
   }
 }
