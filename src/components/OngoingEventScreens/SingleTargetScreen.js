@@ -4,7 +4,7 @@ import { Text, Button } from 'react-native-elements'
 import styles, { paddingSides } from '../../styles/global'
 import { KYPPI_URL } from 'react-native-dotenv'
 import colors from '../../styles/colors'
-import { selectTarget, setSelectedTargets} from '../../reducers/targetReducer'
+import { selectTarget, setSelectedTargets } from '../../reducers/targetReducer'
 import { connect } from 'react-redux'
 
 const style = {
