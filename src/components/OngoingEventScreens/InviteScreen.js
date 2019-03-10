@@ -49,18 +49,18 @@ class InviteScreen extends React.Component {
     for(let i=0; i<selectedUsers.length; i++) console.log(selectedUsers[i].username || selectedUsers[i])
   }
 
-  debugLogPending = (pending) => {
-    console.log('selectedUsers---------------------------------------')
-    const { selectedUsers } = this.props
-
-    for(let i = 0; i < selectedUsers.length; i++) console.log(selectedUsers[i])
-    console.log('pending---------------------------------------------')
-    for(let i = 0; i < pending.length; i++) console.log(pending[i])
-    console.log('----------------------------------------------------')
-  }
+  // debugLogPending = (pending) => {
+  //   console.log('selectedUsers---------------------------------------')
+  //   const { selectedUsers } = this.props
+  //
+  //   for(let i = 0; i < selectedUsers.length; i++) console.log(selectedUsers[i])
+  //   console.log('pending---------------------------------------------')
+  //   for(let i = 0; i < pending.length; i++) console.log(pending[i])
+  //   console.log('----------------------------------------------------')
+  // }
 
   refreshComponent = () => {
-    this.navigate('OngoingEventScreen')
+    this.navigate('OngoingEvent')
     this.navigate('InviteScreen')
   }
 
@@ -90,9 +90,7 @@ class InviteScreen extends React.Component {
         selectedUsers
       )
 
-      this.debugLogPending(ongoingEvent.pending)
       await getOngoingEvent(ongoingEvent)
-      this.debugLogPending(ongoingEvent.pending)
 
       clearSelectedUsers()
       this.loadUsers()
@@ -115,9 +113,7 @@ class InviteScreen extends React.Component {
         selectedUsers
       )
 
-      this.debugLogPending(ongoingEvent.pending)
       await getOngoingEvent(ongoingEvent)
-      this.debugLogPending(ongoingEvent.pending)
 
       clearSelectedUsers()
       this.loadUsers()
@@ -126,7 +122,7 @@ class InviteScreen extends React.Component {
 
   backButton = async () => {
     await getOngoingEvent(this.props.ongoingEvent)
-    this.navigate('OngoingEventScreen')
+    this.navigate('OngoingEvent')
   }
 
   pressUser = (u) => {
