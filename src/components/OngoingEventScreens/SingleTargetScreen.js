@@ -33,35 +33,25 @@ const style = {
 const SingleTargetScreen = (props) => {
   const { navigation } = props
 
-  const { item, distance } = navigation.getParam('target')
+  const { name, distance, type, material, mj_id } = navigation.getParam('target')
 
-  const navigate = (value) => navigation.navigate(value)
-
-  const select = (target) => {
-    const targets = [{ target }]
-
-    selectTarget(target)
-    setSelectedTargets(targets)
-    console.log(targets)
-    navigate('TargetScreen')
-  }
   return (
     <View style={styles.noPadding}>
       <View style={style.container}>
 
-        <Text style={style.title}>{item.name}</Text>
+        <Text style={style.title}>{name}</Text>
         <Text style={style.text}>Etäisyys kohteeseen: {distance} metriä</Text>
-        <Text style={style.text}>Kohteen tyyppi: {item.type}</Text>
-        <Text style={style.text}>Kohteen materiaali: {item.material}</Text>
+        <Text style={style.text}>Kohteen tyyppi: {type}</Text>
+        <Text style={style.text}>Kohteen materiaali: {material}</Text>
         <Button
           title='MJ-rekisteri'
-          onPress={() => { Linking.openURL(`${KYPPI_URL}${item.mj_id}`) }}
+          onPress={() => { Linking.openURL(`${KYPPI_URL}${mj_id}`) }}
           buttonStyle={{ marginTop: 8 }}
         />
 
         <Button
           title='Valitse kohteeksi'
-          onPress={() => select(item)}
+          onPress={() => console.log('valitaan')}
           buttonStyle={{ backgroundColor: colors.success, marginTop: 8 }}
 
         />

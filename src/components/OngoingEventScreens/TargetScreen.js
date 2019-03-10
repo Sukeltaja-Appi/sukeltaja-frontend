@@ -7,202 +7,158 @@ import styles from '../../styles/global'
 import colors from '../../styles/colors'
 import locationService from '../../services/location'
 import { getAll, resetTargets } from '../../reducers/targetReducer'
+import haversine from '../../utils/haversine'
 
 const style = {
-  buttonEnd: {
-    ...styles.roundButton,
-    backgroundColor: colors.red,
-  },
-  buttonInvite: {
-    backgroundColor: colors.green
-  },
-  main: {
-    flex: 1,
-    backgroundColor: colors.background,
-    paddingTop: 50,
-  },
-  list: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  bottom: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    marginBottom: 50,
-    alignItems: 'center'
-  },
   title: {
     fontSize: 20,
     fontWeight: 'bold'
   }
 }
 
-const magicNumber = 180
-
-Number.prototype.toRad = function () {
-  return this * Math.PI / magicNumber
-}
-
 class TargetScreen extends React.Component {
-  constructor(props) {
-    super(props)
-    this.renderListItem = this.renderListItem.bind(this)
-    this.state = {
-      location: {
-        coords: {
-          latitude: null,
-          longitude: null
-        }
-      },
-      closestTargets: []
-    }
-  }
   componentDidMount() {
     this.updateLocation()
     this.loadTargets()
-    if (this.state.location.coords.latitude && this.state.location.coords.longitude) {
-      this.getClosestTargets()
-    }
-
   }
 
   loadTargets = async () => {
     await this.props.getAll()
-    this.forceUpdate()
+  }
+
+  formattedDistance = (distance) => distance > 1000 ? `${(distance/1000).toFixed(1)} km` : `${distance} m`
+
+  updateLocation = async () => {
+    const location = await locationService.getLocationAsync()
+
+    return location.coords
+  }
+
+  render() {
+    return this.props.currentTarget
+      ? (
+        <SelectedTarget
+          {...this.props}
+          updateLocation={this.updateLocation}
+          formattedDistance={this.formattedDistance}
+        />)
+      : (
+        <ClosestTargets
+          {...this.props}
+          updateLocation={this.updateLocation}
+          formattedDistance={this.formattedDistance}
+        />)
+  }
+}
+
+class ClosestTargets extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      closestTargets: []
+    }
+  }
+
+  getClosestTargets = async (amount) => {
+    const { targets, updateLocation } = this.props
+    const userLocation = await updateLocation()
+
+    targets.map(t => {
+      const targetLocation = { longitude: t.longitude, latitude: t.latitude }
+
+      t.distance = haversine(targetLocation, userLocation)
+    })
+
+    const sorted = targets.sort((a, b) => a.distance - b.distance)
+
+    const closestTargets = sorted.slice(0, amount)
+
+    this.setState({ closestTargets })
   }
 
   navigate = (value, target) => this.props.navigation.navigate(value, { target })
 
-  getDistance = (lat1, lon1) => {
-    if (!this.state.location.coords.latitude || !this.state.location.coords.longitude) {
-      this.updateLocation()
-    }
-    const location = this.state.location
-    const lat2 = location.coords.latitude
-    const lon2 = location.coords.longitude
-    var R = 6371 // km
-    var x1 = lat2 - lat1
-    var dLat = x1.toRad()
-    var x2 = lon2 - lon1
-    var dLon = x2.toRad()
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * Math.sin(dLon / 2) * Math.sin(dLon / 2)
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    var d = R * c
-
-    return d * 1000
-  }
-
-  updateLocation = async () => {
-    console.log('Updating location, OLD: ' + this.state.location.coords.latitude)
-    let location = await locationService.getLocationAsync()
-
-    this.setState({ location })
-    this.forceUpdate()
-
-    console.log('New location: ' + this.state.location.coords.latitude)
-  }
-
-  getClosestTargets = async () => {
-    console.log('Getting closest targets ------------')
-
-    const { targets } = this.props
-
-    for (let i = 0; i < targets.length; i++) {
-      targets[i].distance = this.getDistance(targets[i].latitude, targets[i].longitude)
-    }
-
-    targets.sort(function (a, b) {
-      return a.distance - b.distance
-    })
-    let closestTargets = targets.slice(0, 5)
-
-    this.setState({ closestTargets })
-    this.forceUpdate()
-    this.render()
-  }
-
-  reset = () => {
-    this.props.resetTargets()
-    this.render()
-  }
-
-  renderListItem = (item) => {
-    const distance = this.getDistance(item.latitude, item.longitude).toFixed(0)
-
-    const target = {
-      item,
-      distance
-    }
-    var distanceString
-
-    if (distance > 999) {
-      distanceString = `${(distance / 1000).toFixed(1)} kilometriä`
-    } else {
-      distanceString = `${distance} metriä`
-    }
-
-    return (
-      <ListItem
-        title={<Text style={style.title}>{item.name}</Text>}
-        subtitle={`Etäisyys: ${distanceString}`}
-        onPress={() => this.navigate('SingleTargetScreen', target)}
-        rightIcon={{ type: 'feather', name: 'chevron-right' }}
-        bottomDivider
-      />
-    )
-  }
-
   render() {
-    const { currentTarget } = this.props
-    const closestTargets = this.state.closestTargets
-
-    if (!currentTarget) {
-      return (
-        <View>
-          <Button
-            title='Päivitä lähimmät kohteet'
-            onPress={() => this.getClosestTargets()}
-            buttonStyle={{ backgroundColor: colors.success, marginTop: 8 }}
-          />
-
-          <FlatList
-            data={closestTargets}
-            renderItem={({ item }) =>
-              this.renderListItem(item)
-            }
-            keyExtractor={item => item.id}
-          />
-        </View>
-
-      )
-    }
-    const { latitude, longitude, name, type, material, mj_id } = currentTarget
-    const distance = this.getDistance(latitude, longitude).toFixed(0)
+    const { formattedDistance } = this.props
 
     return (
       <View style={styles.noPadding}>
-        {this.state.location.coords.latitude
-          && <View style={style.container}>
+        <Button
+          title='Päivitä lähimmät kohteet'
+          onPress={() => this.getClosestTargets(10)}
+          buttonStyle={{ backgroundColor: colors.success }}
+        />
 
-            <Text style={style.title}>{name}</Text>
-            <Text style={style.text}>Etäisyys kohteeseen: {distance} metriä</Text>
-            <Text style={style.text}>Kohteen tyyppi: {type}</Text>
-            <Text style={style.text}>Kohteen materiaali: {material}</Text>
-            <Button
-              title='MJ-rekisteri'
-              onPress={() => { Linking.openURL(`${KYPPI_URL}${mj_id}`) }}
-              buttonStyle={{ marginTop: 8 }}
-            />
+        <FlatList
+          data={this.state.closestTargets}
+          renderItem={({ item }) => {
+            const { name, distance } = item
 
-            <Button
-              title='Poista kohteen valinta'
-              onPress={() => this.reset()}
-              buttonStyle={{ backgroundColor: colors.warning, marginTop: 8 }}
+            return (
+              <ListItem
+                title={<Text style={style.title}>{name}</Text>}
+                subtitle={`Etäisyys: ${formattedDistance(distance)}`}
+                onPress={() => this.navigate('SingleTargetScreen', item)}
+                rightIcon={{ type: 'feather', name: 'chevron-right' }}
+                bottomDivider
+              />
+            )}
+          }
+          keyExtractor={item => item._id}
+        />
+      </View>
+    )
+  }
+}
 
-            />
+class SelectedTarget extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      distance: null
+    }
+  }
 
-          </View>
-        }
+  componentDidMount() {
+    this.getDistance()
+  }
+
+  getDistance = async () => {
+    const { currentTarget, updateLocation } = this.props
+    const { latitude, longitude } = currentTarget
+    const userLocation = await updateLocation()
+
+    const distance = haversine({ latitude, longitude }, userLocation)
+
+    this.setState({ distance })
+  }
+
+  render() {
+    const { formattedDistance, currentTarget } = this.props
+    const { name, type, material, mj_id } = currentTarget
+    const { distance } = this.state
+
+    return (
+      <View style={styles.noPadding}>
+        <View style={style.container}>
+
+          <Text style={style.title}>{name}</Text>
+          <Text style={style.text}>Etäisyys kohteeseen: {formattedDistance(distance)}</Text>
+          <Text style={style.text}>Kohteen tyyppi: {type}</Text>
+          <Text style={style.text}>Kohteen materiaali: {material}</Text>
+          <Button
+            title='MJ-rekisteri'
+            onPress={() => { Linking.openURL(`${KYPPI_URL}${mj_id}`) }}
+            buttonStyle={{ marginTop: 8 }}
+          />
+
+          <Button
+            title='Poista kohteen valinta'
+            onPress={() => console.log('poistetaan valinta')}
+            buttonStyle={{ backgroundColor: colors.warning, marginTop: 8 }}
+          />
+
+        </View>
       </View>
     )
   }
