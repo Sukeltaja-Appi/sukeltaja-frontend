@@ -51,8 +51,6 @@ class TargetScreen extends React.Component {
   }
 }
 
-let magic10 = 10
-
 class ClosestTargets extends React.Component {
   constructor(props) {
     super(props)
@@ -82,12 +80,13 @@ class ClosestTargets extends React.Component {
 
   render() {
     const { formattedDistance } = this.props
+    const numberOfTargets = 10
 
     return (
       <View style={styles.noPadding}>
         <Button
           title='Päivitä lähimmät kohteet'
-          onPress={() => this.getClosestTargets(magic10)}
+          onPress={() => this.getClosestTargets(numberOfTargets)}
           buttonStyle={{ backgroundColor: colors.success }}
         />
 

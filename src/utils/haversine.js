@@ -1,7 +1,7 @@
-const magic180 = 180
-
 Number.prototype.toRad = function() {
-  return this * Math.PI / magic180
+  const halfTurn = 180
+
+  return this * Math.PI / halfTurn
 }
 
 const haversine = (coord1, coord2) => {
