@@ -1,26 +1,76 @@
-import { createSwitchNavigator, createStackNavigator } from 'react-navigation'
-import StartEventScreen from './StartEventScreen'
-import OngoingEventScreen from './OngoingEventScreen'
+import React from 'react'
+import { createMaterialTopTabNavigator, createStackNavigator, MaterialTopTabBar } from 'react-navigation'
+import OngoingEvent from './OngoingEvent'
+import InviteScreen from './InviteScreen'
 import DiveScreen from './DiveScreen'
+import TargetScreen from './TargetScreen'
+import Target from '../simple/Target'
+import { Icon } from 'react-native-elements'
+import colors from '../../styles/colors'
 
-const OngoingEventStack = createStackNavigator({
-  OngoingEventScreen : {
-    screen: OngoingEventScreen,
+const style = {
+  activeTintColor: '#fff',
+  labelStyle: {
+    fontWeight: 'bold',
+    fontSize: 10
+  },
+  showIcon: true
+}
+
+const TabBarComponent = (props) => (<MaterialTopTabBar {...props} />)
+
+const EventScreenStack = createStackNavigator({
+  OngoingEvent,
+  InviteScreen
+}, { headerMode: 'none' })
+
+const TargetScreenStack = createStackNavigator({
+  TargetScreen,
+  Target
+}, { headerMode: 'none' })
+
+export default createMaterialTopTabNavigator({
+  TargetScreen: {
+    screen: TargetScreenStack,
     navigationOptions: {
-      headerBackTitle: null,
-      header: null
+      tabBarLabel: 'KOHDE',
+      tabBarOptions: style,
+      showIcon: true,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='map-pin' type='feather' color={tintColor} />
+      )
     }
   },
-  DiveScreen
-}, {
-  defaultNavigationOptions: {
-    headerTitleStyle: {
-      flexBasis: '100%'
+  DiveScreen: {
+    screen: DiveScreen,
+    navigationOptions: {
+      tabBarLabel: 'SUKELLUKSET',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='sunset' type='feather' color={tintColor} />
+      )
     }
+  },
+  EventScreen: {
+    screen: EventScreenStack,
+    navigationOptions: {
+      tabBarLabel: 'TAPAHTUMA',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='users' type='feather' color={tintColor} />
+      )
+    }
+  },
+}, {
+  tabBarComponent: props => {
+    return (
+      <TabBarComponent
+        {...props}
+        style={{
+          backgroundColor: colors.primary_light,
+          paddingTop: 10
+        }}
+      />
+    )
   }
 })
-
-export default createSwitchNavigator({
-  StartEventScreen,
-  OngoingEventStack
-}, { headerMode: 'none' })

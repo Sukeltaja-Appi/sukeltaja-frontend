@@ -1,8 +1,8 @@
 import React from 'react'
 import { createBottomTabNavigator, BottomTabBar, createAppContainer } from 'react-navigation'
 
-import OngoingEventScreens from './components/OngoingEventScreens'
-import MapScreens from './components/MapScreens'
+import OngoingEventScreen from './components/OngoingEventScreens/OngoingEventScreen'
+import MainMapScreen from './components/MapScreens/MainMapScreen'
 import EventScreens from './components/EventScreens'
 import ProfileMainScreen from './components/ProfileScreens'
 
@@ -19,9 +19,9 @@ const style = {
   }
 }
 
-const MainTabNavigator = createBottomTabNavigator({
+export const MainTabNavigator = createBottomTabNavigator({
   OngoingEvent : {
-    screen: OngoingEventScreens,
+    screen: OngoingEventScreen,
     navigationOptions: {
       tabBarLabel: 'SUKELLUS',
       tabBarOptions: style,
@@ -31,7 +31,7 @@ const MainTabNavigator = createBottomTabNavigator({
     }
   },
   Map : {
-    screen: MapScreens,
+    screen: MainMapScreen,
     navigationOptions: {
       tabBarLabel: 'KARTTA',
       tabBarOptions: style,
@@ -53,7 +53,7 @@ const MainTabNavigator = createBottomTabNavigator({
   Profile : {
     screen: ProfileMainScreen,
     navigationOptions: {
-      tabBarLabel: 'PROFIILI',
+      tabBarLabel: 'KÄYTTÄJÄ',
       tabBarOptions: style,
       tabBarIcon: ({ tintColor }) => (
         <Icon name='user' type='feather' color={tintColor} />

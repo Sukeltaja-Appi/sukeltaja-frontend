@@ -3,17 +3,20 @@ import thunk from 'redux-thunk'
 
 import { diveReducer, ongoingDiveReducer } from './reducers/diveReducer'
 import { eventReducer, ongoingEventReducer } from './reducers/eventReducer'
-import { targetReducer, selectedTargetReducer } from './reducers/targetReducer'
-import userReducer from './reducers/userReducer'
+import { targetReducer } from './reducers/targetReducer'
+import { userReducer, usersReducer } from './reducers/userReducer'
+import { messageReducer, selectedMessageReducer }from './reducers/messageReducer'
 
 const reducer = combineReducers({
-  ongoingDive: ongoingDiveReducer,
+  user: userReducer,
+  users: usersReducer,
+  selectedMessages: selectedMessageReducer,
+  messages: messageReducer,
   ongoingEvent: ongoingEventReducer,
-  selectedTargets: selectedTargetReducer,
-  dives: diveReducer,
   events: eventReducer,
+  ongoingDive: ongoingDiveReducer,
+  dives: diveReducer,
   targets: targetReducer,
-  user: userReducer
 })
 
 const store = createStore(

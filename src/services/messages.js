@@ -8,14 +8,21 @@ axiosRetry(axios, {
   retryDelay: axiosRetry.exponentialDelay
 })
 
-const url = `${apiUrl}/dives`
+const url = `${apiUrl}/messages`
 
 const getAll = async () => {
-  console.log('DIVES trying to connect to:', url)
+  console.log('MESSAGES trying to connect to:', url)
 
   const response = await axios.get(url, config())
 
-  console.log('got all dives!')
+  console.log('got all messages!')
+
+  return response.data
+}
+
+//unncecessary
+const get = async (id) => {
+  const response = await axios.get(`${url}/${id}`, config())
 
   return response.data
 }
@@ -32,4 +39,10 @@ const update = async (id, updatedObject) => {
   return response.data
 }
 
-export default { getAll, create, update }
+const checkMessage = async (id, status) => {
+  const response = await axios.put(`${url}/${id}`, { status }, config())
+
+  return response.data
+}
+
+export default { create, update, getAll, get, checkMessage }

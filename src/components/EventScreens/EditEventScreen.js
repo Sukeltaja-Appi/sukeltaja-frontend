@@ -13,28 +13,32 @@ class EditEventScreen extends React.Component {
     this.ref = React.createRef()
 
     const {
-      id,
+      _id,
+      title,
       description,
       startdate,
       enddate,
+      ...rest
     } = props.navigation.getParam('item')
 
     this.state = {
       event: {
-        id,
+        _id,
+        title,
         description,
         startdate: new Date(startdate),
         enddate: new Date(enddate)
-      }
+      },
+      ...rest
     }
   }
 
   updateButton = async () => {
     const validated = this.ref.current.getValue()
-    const { event } = this.state
+    const { event, ...rest } = this.state
 
     if (validated) {
-      const updatedEvent = await this.props.updateEvent(event)
+      const updatedEvent = await this.props.updateEvent({ ...event, ...rest })
 
       const navigateAction = (routeName, params) => NavigationActions.navigate({
         routeName, params

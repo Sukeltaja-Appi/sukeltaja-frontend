@@ -6,9 +6,6 @@ import t from 'tcomb-form-native'
 
 import { paddingSides } from '../../styles/global'
 
-import eventService from '../../services/events'
-import targetService from '../../services/targets'
-import diveService from '../../services/dives'
 import userService from '../../services/users'
 import { initializeEvents } from '../../reducers/eventReducer'
 import { initializeDives } from '../../reducers/diveReducer'
@@ -61,7 +58,7 @@ class LoginScreen extends React.Component {
     if(response.data) {
       await this.login()
     } else {
-      console.log('Registeration failed!')
+      console.log('Registration failed!')
     }
   }
 
@@ -72,15 +69,12 @@ class LoginScreen extends React.Component {
     const { user } = this.props
 
     if (user) {
-      eventService.setToken(user.token)
-      targetService.setToken(user.token)
-      diveService.setToken(user.token)
       userService.setToken(user.token)
 
       await initializeEvents()
       await initializeDives()
 
-      this.navigate('ProfileMainScreen')
+      this.navigate('UserTab')
     } else {
       console.log('Wrong username or password')
     }

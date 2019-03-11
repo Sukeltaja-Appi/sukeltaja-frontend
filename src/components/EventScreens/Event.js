@@ -30,19 +30,16 @@ const style = {
 const Event = (props) => {
   const { navigation } = props
 
-  const { startdate, enddate, description } = navigation.getParam('item')
+  const { startdate, enddate, title, description } = navigation.getParam('item')
 
-  //const { startdate, enddate, description, dives } = navigation.getParam('item')
-  //const divesString = JSON.stringify(dives)
-
-  const navigate = (route, params) => props.navigation.navigate(route, params)
+  const navigate = (route, params) => navigation.navigate(route, params)
 
   return (
     <View style={styles.noPadding}>
       <View style={style.container}>
 
         <View style={styles.row}>
-          <Text h3 style={style.title}>{description}</Text>
+          <Text h3 style={style.title}>{title}</Text>
           <Icon
             name='edit'
             type='feather'
@@ -56,6 +53,7 @@ const Event = (props) => {
 
         <Divider style={style.divider} />
 
+        <Text style={style.text}>Kuvaus:         {description}</Text>
         <Text style={style.text}>Aloitusaika:   { formatDate(startdate) }</Text>
         <Text style={style.text}>Lopetusaika: { formatDate(enddate) }</Text>
       </View>

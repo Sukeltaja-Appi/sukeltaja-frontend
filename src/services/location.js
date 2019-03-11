@@ -1,9 +1,10 @@
-import { Location, Permissions, Alert } from 'expo'
+import { Location, Permissions } from 'expo'
+import { Alert } from 'react-native'
 
 const standardAlert = () => {
   Alert.alert(
     'Paikantaminen epäonnistui.',
-    'Salli paikantaminen puhelimen asetuksista, jos haluat käyttää paikannusta',
+    'Salli paikantaminen puhelimen asetuksista, jos haluat käyttää paikannusta.',
     [
       { text: 'OK', onPress: () => console.log('OK Pressed') },
     ],
@@ -11,23 +12,10 @@ const standardAlert = () => {
   )
 }
 
-const defaultLoc = {
-  coords: {
-    latitude: 60.15,
-    longitude: 24.9
-  },
-  failed: true
-}
-
 let getLocationAsync = async () => {
   let { status } = await Permissions.askAsync(Permissions.LOCATION)
 
-  if (status !== 'granted') {
-    standardAlert()
-
-    return defaultLoc
-
-  } else return await Location.getCurrentPositionAsync({})
+  return status === 'granted' ? await Location.getCurrentPositionAsync({}) : standardAlert()
 }
 
 export default { getLocationAsync }

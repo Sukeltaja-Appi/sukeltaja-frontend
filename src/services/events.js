@@ -1,28 +1,14 @@
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
+import { config } from './users'
+import { apiUrl } from '../config'
 
 axiosRetry(axios, {
   retries: 5,
   retryDelay: axiosRetry.exponentialDelay
 })
 
-let url = null
-
-let token = null
-
-const config = () => {
-  return {
-    headers: { 'Authorization': token }
-  }
-}
-
-const setToken = (newToken) => {
-  token = `bearer ${newToken}`
-}
-
-const setUrl = (newUrl) => {
-  url = `${newUrl}/events`
-}
+const url = `${apiUrl}/events`
 
 const getAll = async () => {
   console.log('EVENTS trying to connect to:', url)
@@ -30,6 +16,12 @@ const getAll = async () => {
   const response = await axios.get(url, config())
 
   console.log('got all events!')
+
+  return response.data
+}
+
+const get = async (id) => {
+  const response = await axios.get(`${url}/${id}`, config())
 
   return response.data
 }
@@ -46,4 +38,10 @@ const update = async (id, updatedObject) => {
   return response.data
 }
 
-export default { getAll, create, setToken, update, setUrl }
+const acceptEventInvite = async (id) => {
+  const response = await axios.put(`${url}/${id}/add`, {}, config())
+
+  return response.data
+}
+
+export default { getAll, get, create, update, acceptEventInvite }

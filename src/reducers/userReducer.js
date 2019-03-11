@@ -1,6 +1,7 @@
 import loginService from '../services/login'
+import userService from '../services/users'
 
-const userReducer = (store = [], action) => {
+export const userReducer = (store = [], action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
       return action.user
@@ -10,6 +11,15 @@ const userReducer = (store = [], action) => {
       return []
     default:
       return store
+  }
+}
+
+export const usersReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'LOAD_USERS':
+      return action.users
+    default:
+      return state
   }
 }
 
@@ -36,6 +46,17 @@ export const login = (credentials) => {
 export const logout = () => {
   return {
     type: 'LOGOUT'
+  }
+}
+
+export const loadAllUsers = () => {
+  return async (dispatch) => {
+    const users = await userService.getAll()
+
+    dispatch({
+      type: 'LOAD_USERS',
+      users
+    })
   }
 }
 
