@@ -1,13 +1,13 @@
 import React from 'react'
-import { KYPPI_URL } from 'react-native-dotenv'
-import { View, Text, FlatList, Linking } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
 import { ListItem, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
 import locationService from '../../services/location'
-import { getAll, resetTargets } from '../../reducers/targetReducer'
+import { getAll } from '../../reducers/targetReducer'
 import haversine from '../../utils/haversine'
+import Target from '../simple/Target'
 
 const style = {
   title: {
@@ -18,36 +18,21 @@ const style = {
 
 class TargetScreen extends React.Component {
   componentDidMount() {
-    this.updateLocation()
     this.loadTargets()
   }
 
   loadTargets = async () => {
-    await this.props.getAll()
-  }
-
-  formattedDistance = (distance) => distance > 1000 ? `${(distance/1000).toFixed(1)} km` : `${distance} m`
-
-  updateLocation = async () => {
-    const location = await locationService.getLocationAsync()
-
-    return location.coords
+    if (this.props.targets.length === 0) {
+      await this.props.getAll()
+    }
   }
 
   render() {
-    return this.props.currentTarget
-      ? (
-        <SelectedTarget
-          {...this.props}
-          updateLocation={this.updateLocation}
-          formattedDistance={this.formattedDistance}
-        />)
-      : (
-        <ClosestTargets
-          {...this.props}
-          updateLocation={this.updateLocation}
-          formattedDistance={this.formattedDistance}
-        />)
+    const { currentTarget } = this.props
+
+    return currentTarget
+      ? <Target {...this.props} target={currentTarget} />
+      : <ClosestTargets {...this.props} />
   }
 }
 
@@ -59,9 +44,19 @@ class ClosestTargets extends React.Component {
     }
   }
 
+  formattedDistance = (distance) => distance > 1000 ? `${(distance/1000).toFixed(1)} km` : `${distance} m`
+
+  updateLocation = async () => {
+    const location = await locationService.getLocationAsync()
+
+    return location ? location.coords : null
+  }
+
   getClosestTargets = async (amount) => {
-    const { targets, updateLocation } = this.props
-    const userLocation = await updateLocation()
+    const { targets } = this.props
+    const userLocation = await this.updateLocation()
+
+    if (!userLocation) return
 
     targets.map(t => {
       const targetLocation = { longitude: t.longitude, latitude: t.latitude }
@@ -79,7 +74,6 @@ class ClosestTargets extends React.Component {
   navigate = (value, target) => this.props.navigation.navigate(value, { target })
 
   render() {
-    const { formattedDistance } = this.props
     const numberOfTargets = 10
 
     return (
@@ -98,9 +92,9 @@ class ClosestTargets extends React.Component {
             return (
               <ListItem
                 title={<Text style={style.title}>{name}</Text>}
-                subtitle={`Etäisyys: ${formattedDistance(distance)}`}
-                onPress={() => this.navigate('SingleTargetScreen', item)}
-                rightIcon={{ type: 'feather', name: 'chevron-right' }}
+                subtitle={`Etäisyys: ${this.formattedDistance(distance)}`}
+                onPress={() => this.navigate('Target', item)}
+                chevron
                 bottomDivider
               />
             )}
@@ -112,66 +106,12 @@ class ClosestTargets extends React.Component {
   }
 }
 
-class SelectedTarget extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      distance: null
-    }
-  }
-
-  componentDidMount() {
-    this.getDistance()
-  }
-
-  getDistance = async () => {
-    const { currentTarget, updateLocation } = this.props
-    const { latitude, longitude } = currentTarget
-    const userLocation = await updateLocation()
-
-    const distance = haversine({ latitude, longitude }, userLocation)
-
-    this.setState({ distance })
-  }
-
-  render() {
-    const { formattedDistance, currentTarget } = this.props
-    const { name, type, material, mj_id } = currentTarget
-    const { distance } = this.state
-
-    return (
-      <View style={styles.noPadding}>
-        <View style={style.container}>
-
-          <Text style={style.title}>{name}</Text>
-          <Text style={style.text}>Etäisyys kohteeseen: {formattedDistance(distance)}</Text>
-          <Text style={style.text}>Kohteen tyyppi: {type}</Text>
-          <Text style={style.text}>Kohteen materiaali: {material}</Text>
-          <Button
-            title='MJ-rekisteri'
-            onPress={() => { Linking.openURL(`${KYPPI_URL}${mj_id}`) }}
-            buttonStyle={{ marginTop: 8 }}
-          />
-
-          <Button
-            title='Poista kohteen valinta'
-            onPress={() => console.log('poistetaan valinta')}
-            buttonStyle={{ backgroundColor: colors.warning, marginTop: 8 }}
-          />
-
-        </View>
-      </View>
-    )
-  }
-}
-
 const mapStateToProps = (state) => ({
   currentTarget: state.ongoingEvent && state.ongoingEvent.target ? state.ongoingEvent.target : null,
-  targets: state.targets,
-  closestTargets: state.closestTargets
+  targets: state.targets
 })
 
 export default connect(
   mapStateToProps,
-  { getAll, resetTargets }
+  { getAll }
 )(TargetScreen)

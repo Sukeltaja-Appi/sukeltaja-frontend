@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
-import { SearchBar, Text } from 'react-native-elements'
+import { SearchBar, Text, Overlay } from 'react-native-elements'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import { Marker, Callout } from 'react-native-maps'
 import colors from '../../styles/colors'
 import decimalToDMS from '../../utils/coordinates'
 
 import { getAll } from '../../reducers/targetReducer'
-import Target from './Target'
+import Target from '../simple/Target'
 
 class MainMapScreen extends React.Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class MainMapScreen extends React.Component {
         longitudeDelta: 12
       },
       overlay: false,
-      search: '',
+      query: '',
       target: null
     }
   }
@@ -88,17 +88,17 @@ class MainMapScreen extends React.Component {
   }
 
   filteredTargets = () => {
-    const search = this.state.search.trim().toLowerCase()
+    const query = this.state.query.trim().toLowerCase()
     const { targets } = this.props
 
-    return search ? targets.filter(t => t.name.toLowerCase().startsWith(search)) : targets
+    return query ? targets.filter(t => t.name.toLowerCase().startsWith(query)) : targets
   }
 
-  search = (search) => {
+  search = (query) => {
     const map = this.map.getMapRef()
 
-    this.setState({ search }, () => {
-      if (!search) {
+    this.setState({ query }, () => {
+      if (!query) {
         map.animateToRegion(this.state.initialRegion)
       } else if (this.filteredTargets().length > 0) {
         map.fitToCoordinates(this.filteredTargets().map(m => m.location))
@@ -107,7 +107,7 @@ class MainMapScreen extends React.Component {
   }
 
   render() {
-    const { initialRegion, target } = this.state
+    const { initialRegion, target, overlay, query } = this.state
     const { targets } = this.props
 
     targets.map(t => t.location = { longitude: t.longitude, latitude: t.latitude })
@@ -137,15 +137,22 @@ class MainMapScreen extends React.Component {
           lightTheme
           clearIcon={{ name: 'x', type: 'feather', size: 28 }}
           onChangeText={this.search}
-          value={this.state.search}
+          value={query}
         />
 
-        { this.state.overlay
-          && <Target
-            isVisible={this.state.overlay}
-            onBackdropPress={() => this.setState({ overlay: false })}
-            target={target}
-          />
+        { overlay
+          && (
+            <Overlay
+              isVisible={this.state.overlay}
+              onBackdropPress={() => this.setState({ overlay: false })}
+              width='100%'
+              height='auto'
+              overlayStyle={style.overlay}
+              animationType='fade'
+            >
+              <Target {...this.props} target={target} />
+            </Overlay>
+          )
         }
 
       </View>
@@ -171,6 +178,10 @@ const style = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject
+  },
+  overlay: {
+    position: 'absolute',
+    bottom: 0
   },
   searchContainer: {
     backgroundColor: 'transparent',

@@ -4,7 +4,7 @@ import OngoingEvent from './OngoingEvent'
 import InviteScreen from './InviteScreen'
 import DiveScreen from './DiveScreen'
 import TargetScreen from './TargetScreen'
-import SingleTargetScreen from './SingleTargetScreen'
+import Target from '../simple/Target'
 import { Icon } from 'react-native-elements'
 import colors from '../../styles/colors'
 
@@ -26,7 +26,7 @@ const EventScreenStack = createStackNavigator({
 
 const TargetScreenStack = createStackNavigator({
   TargetScreen,
-  SingleTargetScreen
+  Target
 }, { headerMode: 'none' })
 
 export default createMaterialTopTabNavigator({
