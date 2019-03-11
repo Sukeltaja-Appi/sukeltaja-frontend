@@ -84,10 +84,6 @@ export const createEvent = (event) => {
 }
 
 export const updateEvent = (event) => {
-  if ( typeof event.creator !== 'undefined'
-    && typeof event.creator._id !== 'undefined'
-  ) event.creator = event.creator._id
-
   return async (dispatch) => {
     const updatedEvent = await eventService.update(event._id, event)
 
