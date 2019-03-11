@@ -1,17 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { connect } from 'react-redux'
 
-const FriendsScreen = () => {
+const FriendsScreen = () => <View />
 
-  return(
-    <View></View>
-  )
-}
-
-//const mapStateToProps = (state) => ({})
-
-export default connect(
-  null,
-  null
-)(FriendsScreen)
+export default FriendsScreen
