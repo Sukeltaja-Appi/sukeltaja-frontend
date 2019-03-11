@@ -6,11 +6,7 @@ import t from 'tcomb-form-native'
 
 import { paddingSides } from '../../styles/global'
 
-import eventService from '../../services/events'
-import targetService from '../../services/targets'
-import diveService from '../../services/dives'
 import userService from '../../services/users'
-import messageService from '../../services/messages'
 import { initializeEvents } from '../../reducers/eventReducer'
 import { initializeDives } from '../../reducers/diveReducer'
 import { login } from '../../reducers/userReducer'
