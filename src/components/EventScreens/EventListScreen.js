@@ -34,7 +34,7 @@ const List = (props) => {
 
   const eventsSortedByDate = () => events.sort((a, b) => b.startdate.localeCompare(a.startdate))
 
-  const isOngoingEvent = (event) => event === ongoingEvent
+  const isOngoingEvent = (event) => ongoingEvent ? event._id === ongoingEvent._id : false
 
   const eventStyle = (event) => ({
     paddingVertical: 0,
