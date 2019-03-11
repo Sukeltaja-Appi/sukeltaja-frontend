@@ -1,7 +1,5 @@
 import eventService from '../services/events'
-import { mergeUserLists, objectToID,
-  userIsInArray, eventToID
-} from '../utils/utilityFunctions'
+import { objectToID, eventToID } from '../utils/utilityFunctions'
 
 export const eventReducer = (state = [], action) => {
   switch (action.type) {
