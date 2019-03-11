@@ -4,7 +4,7 @@ import { CheckBox, Button } from 'react-native-elements'
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
 import { connect } from 'react-redux'
-import { loadAllUsers, selectUser, deselectUser, clearSelectedUsers } from '../../reducers/userReducer'
+import { loadAllUsers } from '../../reducers/userReducer'
 import { sendMessage } from '../../reducers/messageReducer'
 import { mergeOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
 import { objectToID } from '../../utils/utilityFunctions'
@@ -44,12 +44,10 @@ const style = {
 class InviteScreen extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      selectedUsers: []
+    }
     this.showList = this.showList.bind(this)
-  }
-
-  refreshComponent = () => {
-    this.navigate('OngoingEvent')
-    this.navigate('InviteScreen')
   }
 
   componentDidMount() {
@@ -63,7 +61,7 @@ class InviteScreen extends React.Component {
   }
 
   inviteAdmins = async () => {
-    let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers } = this.props
+    let { sendMessage, user, ongoingEvent } = this.props
     let { creator, pending } = ongoingEvent
     let pendingUsers = []
 
@@ -75,18 +73,17 @@ class InviteScreen extends React.Component {
         'invitation_admin',
         ongoingEvent,
         { id: user.id, username: user.username },
-        selectedUsers
+        this.state.selectedUsers
       )
 
       await getOngoingEvent(ongoingEvent)
 
-      clearSelectedUsers()
       this.loadUsers()
     }
   }
 
   inviteParticipants = async () => {
-    let { sendMessage, user, selectedUsers, ongoingEvent, clearSelectedUsers } = this.props
+    let { sendMessage, user, ongoingEvent } = this.props
     let { creator, admins, pending } = ongoingEvent
     let pendingUsers = []
 
@@ -98,12 +95,11 @@ class InviteScreen extends React.Component {
         'invitation_participant',
         ongoingEvent,
         { id: user.id, username: user.username },
-        selectedUsers
+        this.state.selectedUsers
       )
 
       await getOngoingEvent(ongoingEvent)
 
-      clearSelectedUsers()
       this.loadUsers()
     }
   }
@@ -115,33 +111,24 @@ class InviteScreen extends React.Component {
     this.navigate('OngoingEvent')
   }
 
-  pressUser = (u) => {
-    let { selectUser, deselectUser, selectedUsers } = this.props
+  toggleUserSelection = (user) => {
+    const { selectedUsers } = this.state
 
-    if (!userIsInArray(u, selectedUsers)) selectUser(u)
-    else deselectUser(u)
-
-    this.refreshComponent()
+    if (!selectedUsers.includes(user)) {
+      this.setState({ selectedUsers: [...selectedUsers, user] })
+    } else {
+      this.setState({ selectedUsers: selectedUsers.filter(u => u._id !== user._id) })
+    }
   }
 
-  renderListItem = (u) => {
-    const { selectedUsers } = this.props
-
-    if (selectedUsers.includes(u)) {
-      return (
-        <CheckBox
-          title={usernameOrId(u)}
-          onPress={() => this.pressUser(u)}
-          checked={true}
-        />
-      )
-    }
+  renderListItem = (user) => {
+    const { selectedUsers } = this.state
 
     return (
       <CheckBox
-        title={usernameOrId(u)}
-        onPress={() => this.pressUser(u)}
-        checked={false}
+        title={user.username}
+        onPress={() => this.toggleUserSelection(user)}
+        checked={selectedUsers.includes(user)}
       />
     )
   }
@@ -161,6 +148,7 @@ class InviteScreen extends React.Component {
           data={users}
           renderItem={({ item }) => this.renderListItem(item) }
           keyExtractor={item => objectToID(item)}
+          extraData={this.state}
         />
       )
     }
@@ -204,14 +192,11 @@ class InviteScreen extends React.Component {
 
 const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
-  selectedUsers: state.selectedUsers,
   users: state.users,
   user: state.user
 })
 
 export default connect(
   mapStateToProps,
-  { sendMessage, loadAllUsers, selectUser,
-    deselectUser, clearSelectedUsers, mergeOngoingEvent,
-    getOngoingEvent }
+  { sendMessage, loadAllUsers, mergeOngoingEvent, getOngoingEvent }
 )(InviteScreen)
