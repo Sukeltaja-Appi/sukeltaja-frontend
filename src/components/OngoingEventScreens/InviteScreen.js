@@ -9,14 +9,6 @@ import { sendMessage } from '../../reducers/messageReducer'
 import { getOngoingEvent } from '../../reducers/eventReducer'
 
 const style = {
-  subtitle: {
-    fontStyle: 'italic',
-    fontSize: 14
-  },
-  buttonRow: {
-    justifyContent: 'center',
-    padding: 10
-  },
   divider: {
     height: 10
   },
