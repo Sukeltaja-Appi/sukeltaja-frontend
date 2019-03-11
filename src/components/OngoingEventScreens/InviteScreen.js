@@ -6,13 +6,7 @@ import colors from '../../styles/colors'
 import { connect } from 'react-redux'
 import { loadAllUsers } from '../../reducers/userReducer'
 import { sendMessage } from '../../reducers/messageReducer'
-import { mergeOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
-import { objectToID } from '../../utils/utilityFunctions'
-
-import {
-  usernameOrId, userEqualsObject,
-  userIsInArray
-} from '../../utils/utilityFunctions'
+import { getOngoingEvent } from '../../reducers/eventReducer'
 
 const style = {
   subtitle: {
@@ -60,49 +54,28 @@ class InviteScreen extends React.Component {
     await this.props.loadAllUsers()
   }
 
-  inviteAdmins = async () => {
-    let { sendMessage, user, ongoingEvent } = this.props
-    let { creator, pending } = ongoingEvent
-    let pendingUsers = []
+  sendInvite = async (type) => {
+    const { selectedUsers } = this.state
+    const { sendMessage, user, ongoingEvent } = this.props
+    const { creator } = ongoingEvent
 
-    for(let i = 0; i < pending.length; i++) pendingUsers[i] = pending[i].user
+    if (!selectedUsers || user.id !== creator._id) return
 
-    if(userEqualsObject(user, creator)) {
+    await sendMessage(
+      type,
+      ongoingEvent,
+      { id: user.id, username: user.username },
+      this.state.selectedUsers
+    )
 
-      await sendMessage(
-        'invitation_admin',
-        ongoingEvent,
-        { id: user.id, username: user.username },
-        this.state.selectedUsers
-      )
+    await getOngoingEvent(ongoingEvent)
 
-      await getOngoingEvent(ongoingEvent)
-
-      this.loadUsers()
-    }
+    this.loadUsers()
   }
 
-  inviteParticipants = async () => {
-    let { sendMessage, user, ongoingEvent } = this.props
-    let { creator, admins, pending } = ongoingEvent
-    let pendingUsers = []
+  inviteAdmins = () => this.sendInvite('invitation_admin')
 
-    for(let i = 0; i < pending.length; i++) pendingUsers[i] = pending[i].user
-
-    if(userEqualsObject(user, creator) || userIsInArray(user, admins)) {
-
-      await sendMessage(
-        'invitation_participant',
-        ongoingEvent,
-        { id: user.id, username: user.username },
-        this.state.selectedUsers
-      )
-
-      await getOngoingEvent(ongoingEvent)
-
-      this.loadUsers()
-    }
-  }
+  inviteParticipants = () => this.sendInvite('invitation_participant')
 
   backButton = async () => {
     const { ongoingEvent, getOngoingEvent } = this.props
@@ -147,7 +120,7 @@ class InviteScreen extends React.Component {
         <FlatList
           data={users}
           renderItem={({ item }) => this.renderListItem(item) }
-          keyExtractor={item => objectToID(item)}
+          keyExtractor={item => item._id}
           extraData={this.state}
         />
       )
@@ -198,5 +171,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { sendMessage, loadAllUsers, mergeOngoingEvent, getOngoingEvent }
+  { sendMessage, loadAllUsers, getOngoingEvent }
 )(InviteScreen)
