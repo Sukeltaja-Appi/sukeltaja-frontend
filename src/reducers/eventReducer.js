@@ -53,7 +53,6 @@ export const startEvent = (event) => {
 
 export const endEvent = (event) => {
   event.enddate = new Date()
-  event.creator = objectToID(event.creator)
 
   return async (dispatch) => {
     const updatedEvent = await eventService.update(event._id, event)
