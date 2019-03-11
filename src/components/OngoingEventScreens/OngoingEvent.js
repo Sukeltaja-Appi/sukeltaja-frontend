@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native'
 import { Text, Button, ListItem } from 'react-native-elements'
 import { connect } from 'react-redux'
 
-import { endEvent, mergeOngoingEvent, leaveOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
+import { endEvent, leaveOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
 import { endDive } from '../../reducers/diveReducer'
 import colors from '../../styles/colors'
 import { usernameOrId, objectToID } from '../../utils/utilityFunctions'
@@ -168,5 +168,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { endEvent, mergeOngoingEvent, endDive, leaveOngoingEvent, getOngoingEvent }
+  { endEvent, endDive, leaveOngoingEvent, getOngoingEvent }
 )(OngoingEvent)

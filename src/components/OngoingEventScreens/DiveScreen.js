@@ -9,7 +9,7 @@ import colors from '../../styles/colors'
 
 import locationService from '../../services/location'
 import { startDive, endDive } from '../../reducers/diveReducer'
-import { mergeOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
+import { getOngoingEvent } from '../../reducers/eventReducer'
 import { eventToID } from '../../utils/utilityFunctions'
 
 const style = {
@@ -130,5 +130,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { endDive, startDive, mergeOngoingEvent, getOngoingEvent }
+  { endDive, startDive, getOngoingEvent }
 )(DiveScreen)
