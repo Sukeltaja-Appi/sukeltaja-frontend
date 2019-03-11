@@ -73,11 +73,7 @@ class LoginScreen extends React.Component {
     const { user } = this.props
 
     if (user) {
-      eventService.setToken(user.token)
-      targetService.setToken(user.token)
-      diveService.setToken(user.token)
       userService.setToken(user.token)
-      messageService.setToken(user.token)
 
       await initializeEvents()
       await initializeDives()

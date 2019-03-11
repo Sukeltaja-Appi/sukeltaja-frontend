@@ -5,11 +5,7 @@ import { Avatar, Text, Button } from 'react-native-elements'
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
 
-import eventService from '../../services/events'
-import targetService from '../../services/targets'
-import diveService from '../../services/dives'
 import userService from '../../services/users'
-import messageService from '../../services/messages'
 import { forgetEvents } from '../../reducers/eventReducer'
 import { forgetDives } from '../../reducers/diveReducer'
 import { logout } from '../../reducers/userReducer'
@@ -25,11 +21,7 @@ export const ProfileMainScreen = (props) => {
     forgetEvents()
     forgetDives()
     logout()
-    eventService.setToken('dummy')
-    targetService.setToken('dummy')
-    diveService.setToken('dummy')
-    userService.setToken('dummy')
-    messageService.setToken('dummy')
+    userService.setToken(null)
 
     navigate('LoginScreen')
   }
