@@ -55,8 +55,7 @@ class OngoingEvent extends React.Component {
   endDives = async () => {
     const { endDive, ongoingEvent, ongoingDive } = this.props
 
-    if(ongoingDive) {
-
+    if (ongoingDive) {
       ongoingDive.enddate = new Date()
       ongoingDive.event = ongoingEvent.id
       await endDive(ongoingDive)
@@ -122,8 +121,9 @@ class OngoingEvent extends React.Component {
 
     return (
       <View style={style.main}>
-        <Text h3 >Meneillään oleva tapahtuma</Text>
-        <View style={{ height: 20 }} />
+        <View style={{ alignItems: 'center', marginBottom: 20 }}>
+          <Text h3>{ongoingEvent.title}</Text>
+        </View>
 
         <Text h4>Osallistujat:</Text>
 
