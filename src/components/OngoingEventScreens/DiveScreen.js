@@ -94,7 +94,7 @@ class DiveScreen extends React.Component {
     if(!this.state.ongoing) {
       return (
         <View style={styles.centered}>
-          <Text h1>Aloita Sukellus</Text>
+          <Text h1>Aloita sukellus</Text>
 
           <View style={styles.bottom}>
             <Button title='Sukella' onPress={this.diveButton} buttonStyle={style.buttonDive} raised />
