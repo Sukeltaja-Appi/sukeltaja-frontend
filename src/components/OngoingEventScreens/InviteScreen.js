@@ -100,7 +100,11 @@ class InviteScreen extends React.Component {
   }
 
   showList = () => {
-    const { users } = this.props
+    let { users, ongoingEvent } = this.props
+
+    users = users.filter(c => (c._id !== ongoingEvent.creator._id)
+      && !userIsInArray(c, ongoingEvent.admins)
+      && !userIsInArray(c, ongoingEvent.participants))
 
     if (users.length === 0) {
       return (
