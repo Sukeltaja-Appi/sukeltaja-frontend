@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { loadAllUsers } from '../../reducers/userReducer'
 import { sendMessage } from '../../reducers/messageReducer'
 import { getOngoingEvent } from '../../reducers/eventReducer'
-import { userIsInArray } from '../../utils/utilityFunctions'
+import { userIsInArray } from '../../utils/userHandler'
 
 const style = {
   divider: {
