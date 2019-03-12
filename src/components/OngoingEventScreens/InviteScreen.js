@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { loadAllUsers } from '../../reducers/userReducer'
 import { sendMessage } from '../../reducers/messageReducer'
 import { getOngoingEvent } from '../../reducers/eventReducer'
+import { userIsInArray} from '../../utils/utilityFunctions'
 
 const style = {
   divider: {
@@ -48,10 +49,10 @@ class InviteScreen extends React.Component {
 
   sendInvite = async (type) => {
     const { selectedUsers } = this.state
-    const { sendMessage, user, ongoingEvent } = this.props
-    const { creator } = ongoingEvent
+    const { sendMessage, user, ongoingEvent, getOngoingEvent } = this.props
+    const { creator, admins } = ongoingEvent
 
-    if (!selectedUsers || user.id !== creator._id) return
+    if (!selectedUsers || user.id !== creator._id && !userIsInArray(user, admins)) return
 
     await sendMessage(
       type,
