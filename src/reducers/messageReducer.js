@@ -1,5 +1,6 @@
 import messageService from '../services/messages'
-import { objectToID, messageToID } from '../utils/utilityFunctions'
+import { messageToID } from '../utils/utilityFunctions'
+import { userToID } from '../utils/userHandler'
 
 export const messageReducer = (state = [], action) => {
   switch(action.type) {
@@ -67,8 +68,8 @@ export const checkMessage = (message, userID, status) => {
 }
 
 export const sendMessage = (type, data, sender, receivers) => {
-  for (let i=0; i<receivers.length; i++) receivers[i] = objectToID(receivers[i])
-  sender = objectToID(sender)
+  for (let i=0; i<receivers.length; i++) receivers[i] = userToID(receivers[i])
+  sender = userToID(sender)
 
   const received = []
 

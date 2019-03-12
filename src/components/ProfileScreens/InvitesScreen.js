@@ -5,8 +5,7 @@ import styles from '../../styles/global'
 import { formatDate } from '../../utils/dates'
 import { connect } from 'react-redux'
 import { getMessages } from '../../reducers/messageReducer'
-import { usernameOrId } from '../../utils/utilityFunctions'
-import { objectToID } from '../../utils/utilityFunctions'
+import { userToID, usernameOrId } from '../utils/userHandler'
 
 const style = {
   subtitle: {
@@ -98,7 +97,7 @@ class InvitesScreen extends React.Component {
               />
             )}
           }
-          keyExtractor={item => objectToID(item)}
+          keyExtractor={item => userToID(item)}
         />
         <Button
           title="Hae kutsut"

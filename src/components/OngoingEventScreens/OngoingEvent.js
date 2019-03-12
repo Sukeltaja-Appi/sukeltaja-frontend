@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { endEvent, leaveOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
 import { endDive } from '../../reducers/diveReducer'
 import colors from '../../styles/colors'
-import { usernameOrId, objectToID } from '../../utils/utilityFunctions'
+import { usernameOrId, userToID } from '../../utils/userHandler'
 
 const style = {
   buttonEnd: {
@@ -140,7 +140,7 @@ class OngoingEvent extends React.Component {
                 />
               )}
             }
-            keyExtractor={item => objectToID(item)}
+            keyExtractor={item => userToID(item)}
           />
 
         </View>
