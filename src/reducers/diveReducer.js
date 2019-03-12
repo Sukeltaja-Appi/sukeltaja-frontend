@@ -47,10 +47,7 @@ export const startDive = (dive) => {
       newDive
     })
 
-    dispatch({
-      type: 'SET_ONGOING_DIVE',
-      ongoingDive: newDive
-    })
+    dispatch(setOngoingDive(newDive))
   }
 }
 
@@ -63,10 +60,7 @@ export const endDive = (dive) => {
       updatedDive
     })
 
-    dispatch({
-      type: 'SET_ONGOING_DIVE',
-      ongoingDive: null
-    })
+    dispatch(setOngoingDive(null))
   }
 }
 
@@ -103,9 +97,13 @@ export const forgetDives = () => {
       dives: []
     })
 
-    dispatch({
-      type: 'SET_ONGOING_DIVE',
-      ongoingDive: null
-    })
+    dispatch(setOngoingDive(null))
+  }
+}
+
+export const setOngoingDive = (dive) => {
+  return {
+    type: 'SET_ONGOING_DIVE',
+    ongoingDive: dive
   }
 }
