@@ -5,7 +5,7 @@ import styles from '../../styles/global'
 import { formatDate } from '../../utils/dates'
 import { connect } from 'react-redux'
 import { getMessages } from '../../reducers/messageReducer'
-import { userToID, usernameOrId } from '../utils/userHandler'
+import { userToID, usernameOrId } from '../../utils/userHandler'
 
 const style = {
   subtitle: {
