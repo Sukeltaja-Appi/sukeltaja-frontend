@@ -7,7 +7,7 @@ import { targetReducer } from './reducers/targetReducer'
 import { userReducer, usersReducer } from './reducers/userReducer'
 import { messageReducer, selectedMessageReducer }from './reducers/messageReducer'
 
-const reducer = combineReducers({
+const appReducer = combineReducers({
   user: userReducer,
   users: usersReducer,
   selectedMessages: selectedMessageReducer,
@@ -19,8 +19,20 @@ const reducer = combineReducers({
   targets: targetReducer,
 })
 
+const rootReducer = (state, action) => {
+  if (action.type === 'CLEAR_STATE') {
+    state = undefined
+  }
+
+  return appReducer(state, action)
+}
+
+export const clearState = () => {
+  return { type: 'CLEAR_STATE' }
+}
+
 const store = createStore(
-  reducer,
+  rootReducer,
   applyMiddleware(thunk)
 )
 
