@@ -52,13 +52,15 @@ class InviteScreen extends React.Component {
     const { sendMessage, user, ongoingEvent, getOngoingEvent } = this.props
     const { creator, admins } = ongoingEvent
 
-    if (!selectedUsers || user.id !== creator._id && !userIsInArray(user, admins)) return
+    if (!selectedUsers || user._id !== creator._id && !userIsInArray(user, admins)) return
+
+    const receivers = selectedUsers.map(receiver => receiver._id)
 
     await sendMessage(
       type,
       ongoingEvent,
-      { id: user.id, username: user.username },
-      this.state.selectedUsers
+      user._id,
+      receivers
     )
 
     await getOngoingEvent(ongoingEvent)

@@ -28,15 +28,15 @@ const Invite = (props) => {
   console.log(message)
   const join = async () => {
     await joinOngoingEvent(eventToID(message.data))
-    console.log('join---------------', user.id)
-    await checkMessage(message, user.id, 'accepted')
+    console.log('join---------------', user._id)
+    await checkMessage(message, user._id, 'accepted')
     parent.updateInvites()
     //navigation.navigate('InvitesScreen')
     navigation.navigate('OngoingEvent')
   }
 
   const removeInvite = async () => {
-    await checkMessage(message, user.id, 'rejected')
+    await checkMessage(message, user._id, 'rejected')
     parent.updateInvites()
     navigation.navigate('InvitesScreen')
   }

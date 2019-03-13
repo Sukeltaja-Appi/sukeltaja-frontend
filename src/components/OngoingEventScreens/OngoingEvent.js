@@ -83,7 +83,7 @@ class OngoingEvent extends React.Component {
   endButton = () => {
     const { user, ongoingEvent } = this.props
 
-    if(user.id === ongoingEvent.creator._id) {
+    if(user._id === ongoingEvent.creator._id) {
       return(
         <Button
           title='Lopeta'
