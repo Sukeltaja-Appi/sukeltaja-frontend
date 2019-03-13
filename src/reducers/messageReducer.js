@@ -1,6 +1,5 @@
 import messageService from '../services/messages'
 import { messageToID } from '../utils/utilityFunctions'
-import { userToID } from '../utils/userHandler'
 
 export const messageReducer = (state = [], action) => {
   switch(action.type) {
@@ -52,12 +51,9 @@ export const checkMessage = (message, userID, status) => {
 }
 
 export const sendMessage = (type, data, sender, receivers) => {
-  for (let i=0; i<receivers.length; i++) receivers[i] = userToID(receivers[i])
-  sender = userToID(sender)
+  if (!type || !data || !sender || !receivers || receivers.length === 0) return
 
-  const received = []
-
-  for (let i = 0; i < receivers.length; i++) received.push('pending')
+  const received = Array(receivers.length).fill('pending')
 
   let message = {
     created: new Date(),
