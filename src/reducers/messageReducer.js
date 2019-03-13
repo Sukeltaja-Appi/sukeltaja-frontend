@@ -4,11 +4,8 @@ import { userToID } from '../utils/userHandler'
 
 export const messageReducer = (state = [], action) => {
   switch(action.type) {
-    case 'REMOVE_MESSAGE': {
-      state.splice(state.findIndex((m) => {return m.id === action.id}), 1)
-
-      return state
-    }
+    case 'REMOVE_MESSAGE':
+      return state.filter(message => message !== action.id)
     case 'SET_MESSAGES':
       return action.messages
     default:
