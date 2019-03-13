@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import { endEvent, setOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
 import { endDive } from '../../reducers/diveReducer'
 import colors from '../../styles/colors'
-import { usernameOrId, userToID } from '../../utils/userHandler'
 
 const style = {
   buttonEnd: {
@@ -111,36 +110,30 @@ class OngoingEvent extends React.Component {
   render () {
     const { ongoingEvent } = this.props
 
-    let users = []
-
-    if (ongoingEvent) {
-      const { creator, admins, participants } = ongoingEvent
-
-      users = [ creator, ...admins, ...participants ]
-    }
+    const { participants, title } = ongoingEvent
 
     return (
       <View style={style.main}>
         <View style={{ alignItems: 'center', marginBottom: 20 }}>
-          <Text h3>{ongoingEvent.title}</Text>
+          <Text h3>{title}</Text>
         </View>
 
         <Text h4>Osallistujat:</Text>
 
         <View style={style.list}>
           <FlatList
-            data={users}
+            data={participants}
             renderItem={({ item }) => {
 
               return (
                 <ListItem
-                  title={usernameOrId(item)}
+                  title={item.username}
                   onPress={this.pressUser(item)}
                   bottomDivider
                 />
               )}
             }
-            keyExtractor={item => userToID(item)}
+            keyExtractor={item => item._id}
           />
 
         </View>
