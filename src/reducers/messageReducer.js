@@ -27,19 +27,6 @@ export const sentMessageReducer = (state = [], action) => {
   }
 }
 
-export const selectedMessageReducer = (state = [], action) => {
-  switch(action.type) {
-    case 'SELECT_MESSAGE':
-      return [ ...state, action.message ]
-    case 'SELECT_MESSAGES':
-      return [ ...state, ...action.messages ]
-    case 'SET_SELECTED_MESSAGES':
-      return action.messages
-    default:
-      return state
-  }
-}
-
 export const getMessages = () => {
   return async (dispatch) => {
     const messages = await messageService.getAll()
