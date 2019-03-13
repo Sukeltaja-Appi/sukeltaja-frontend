@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native'
 import { Text, Button, ListItem } from 'react-native-elements'
 import { connect } from 'react-redux'
 
-import { endEvent, leaveOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
+import { endEvent, setOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
 import { endDive } from '../../reducers/diveReducer'
 import colors from '../../styles/colors'
 import { usernameOrId, userToID } from '../../utils/userHandler'
@@ -72,7 +72,7 @@ class OngoingEvent extends React.Component {
   }
 
   leaveEventButton = () => {
-    this.props.leaveOngoingEvent()
+    this.props.setOngoingEvent(null)
     this.navigate('StartEventScreen')
   }
 
@@ -168,5 +168,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { endEvent, endDive, leaveOngoingEvent, getOngoingEvent }
+  { endEvent, endDive, setOngoingEvent, getOngoingEvent }
 )(OngoingEvent)

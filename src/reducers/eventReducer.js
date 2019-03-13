@@ -128,11 +128,3 @@ export const getOngoingEvent = (event) => {
     dispatch(setOngoingEvent(ongoingEvent))
   }
 }
-
-export const leaveOngoingEvent = () => {
-
-  return (dispatch) => {
-
-    dispatch(setOngoingEvent(null))
-  }
-}
