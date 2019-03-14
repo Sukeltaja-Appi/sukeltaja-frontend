@@ -6,8 +6,6 @@ import styles from '../../styles/global'
 import colors from '../../styles/colors'
 
 import userService from '../../services/users'
-import { forgetEvents } from '../../reducers/eventReducer'
-import { forgetDives } from '../../reducers/diveReducer'
 import { logout } from '../../reducers/userReducer'
 
 export const ProfileMainScreen = (props) => {
@@ -16,10 +14,8 @@ export const ProfileMainScreen = (props) => {
   const navigate = (value) => props.navigation.navigate(value)
 
   const logoutButton = () => {
-    const { logout, forgetEvents, forgetDives } = props
+    const { logout } = props
 
-    forgetEvents()
-    forgetDives()
     logout()
     userService.setToken(null)
 
@@ -46,5 +42,5 @@ const mapStateToProps = (state) => ({ username: state.user.username })
 
 export default connect(
   mapStateToProps,
-  { logout, forgetEvents, forgetDives }
+  { logout }
 )(ProfileMainScreen)
