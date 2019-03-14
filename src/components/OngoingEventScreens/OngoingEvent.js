@@ -109,8 +109,19 @@ class OngoingEvent extends React.Component {
 
   render () {
     const { ongoingEvent } = this.props
+    const { admins, participants, creator, title } = ongoingEvent
 
-    const { participants, title } = ongoingEvent
+    // This should eventually be replaced by enforcing unique roles
+    // in the backend.
+    const users = [ ...admins, ...participants, creator ]
+    const distinctIds = [ ...new Set(users.map(user => user._id)) ]
+    const distinctUsers = distinctIds
+      .map(_id => {
+        return {
+          _id,
+          username: users.find(user => user._id === _id).username
+        }
+      })
 
     return (
       <View style={style.main}>
@@ -122,7 +133,7 @@ class OngoingEvent extends React.Component {
 
         <View style={style.list}>
           <FlatList
-            data={participants}
+            data={distinctUsers}
             renderItem={({ item }) => {
 
               return (
