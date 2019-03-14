@@ -5,7 +5,6 @@ import styles from '../../styles/global'
 import { formatDate } from '../../utils/dates'
 import { connect } from 'react-redux'
 import { getMessages } from '../../reducers/messageReducer'
-import { userToID, usernameOrId } from '../../utils/userHandler'
 
 const style = {
   subtitle: {
@@ -35,17 +34,7 @@ class InvitesScreen extends React.Component {
   updateInvites = () => {
     const { messages } = this.props
 
-    const invites = []
-
-    for (let i = 0; i < messages.length; i++) {
-      let type = messages[i].type
-
-      if(type === 'invitation_participant' || type === 'invitation_admin') {
-        invites.push(messages[i])
-      }
-    }
-
-    this.setState({ invites })
+    this.setState({ invites: messages.filter(msg => msg.type.startsWith('invitation_')) })
   }
 
   loadMessages = async () => {
@@ -88,7 +77,7 @@ class InvitesScreen extends React.Component {
 
             return (
               <ListItem
-                title={usernameOrId(sender)}
+                title={sender.username}
                 subtitle={formatDate(created)}
                 onPress={() => this.selectInvite(item)}
                 subtitleStyle={style.subtitle}
@@ -97,7 +86,7 @@ class InvitesScreen extends React.Component {
               />
             )}
           }
-          keyExtractor={item => userToID(item)}
+          keyExtractor={item => item._id}
         />
         <Button
           title="Hae kutsut"
