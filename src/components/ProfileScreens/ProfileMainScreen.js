@@ -6,7 +6,7 @@ import styles from '../../styles/global'
 import colors from '../../styles/colors'
 
 import userService from '../../services/users'
-import { logout } from '../../reducers/userReducer'
+import { logout } from '../../store'
 
 export const ProfileMainScreen = (props) => {
   const uri = 'https://upload.wikimedia.org/wikipedia/commons/5/50/USS_Scorpion_sail.jpg'
