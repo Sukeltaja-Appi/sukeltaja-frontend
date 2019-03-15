@@ -134,8 +134,9 @@ class InviteScreen extends React.Component {
   }
 
   render() {
-    const { userIsAdmin, userIsParticipant } = this
-    const invitableUsers = this.props.users.filter(u => !userIsAdmin(u) || !userIsParticipant(u))
+    const { userIsAdmin, userIsCreator } = this
+
+    const invitableUsers = this.props.users.filter(u => !userIsAdmin(u) && !userIsCreator(u))
 
     return (
       <View style={styles.noPadding}>
