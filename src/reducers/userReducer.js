@@ -1,6 +1,5 @@
 import loginService from '../services/login'
 import userService from '../services/users'
-import { clearState } from '../store'
 
 export const userReducer = (state = null, action) => {
   switch (action.type) {
@@ -39,8 +38,6 @@ export const login = (credentials) => {
     }
   }
 }
-
-export const logout = () => clearState()
 
 export const loadAllUsers = () => {
   return async (dispatch) => {

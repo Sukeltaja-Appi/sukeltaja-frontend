@@ -26,7 +26,7 @@ const rootReducer = (state, action) => {
   return appReducer(state, action)
 }
 
-export const clearState = () => {
+export const logout = () => {
   return { type: 'CLEAR_STATE' }
 }
 
