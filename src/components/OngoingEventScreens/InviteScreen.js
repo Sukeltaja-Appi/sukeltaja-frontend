@@ -49,13 +49,14 @@ class InviteScreen extends React.Component {
   userIsCreator = (user) => user._id === this.props.ongoingEvent.creator._id
   userIsAdmin = (user) => this.props.ongoingEvent.admins.map(a => a._id).includes(user._id)
   userIsParticipant = (user) => this.props.ongoingEvent.participants.map(p => p._id).includes(user._id)
+  userIsPending = (user) => this.props.ongoingEvent.pending.map(p => p.user._id).includes(user._id)
 
   sendInvite = async (type) => {
-    const { userIsCreator, userIsAdmin } = this
+    const { userIsCreator, userIsAdmin, userIsPending } = this
     const { selectedUsers } = this.state
     const { sendMessage, user, ongoingEvent, getOngoingEvent } = this.props
 
-    if (!selectedUsers || !userIsCreator(user) && !userIsAdmin(user)) return
+    if (!selectedUsers || !userIsCreator(user) && !userIsAdmin(user) && !userIsPending(user)) return
 
     const receivers = selectedUsers.map(receiver => receiver._id)
 
@@ -134,9 +135,9 @@ class InviteScreen extends React.Component {
   }
 
   render() {
-    const { userIsAdmin, userIsCreator } = this
+    const { userIsAdmin, userIsCreator, userIsPending } = this
 
-    const invitableUsers = this.props.users.filter(u => !userIsAdmin(u) && !userIsCreator(u))
+    const invitableUsers = this.props.users.filter(u => !userIsAdmin(u) && !userIsCreator(u) && !userIsPending(u))
 
     return (
       <View style={styles.noPadding}>
