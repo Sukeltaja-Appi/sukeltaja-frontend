@@ -55,7 +55,7 @@ class LoginScreen extends React.Component {
   register = async () => {
     const response = await userService.create(this.state.credentials)
 
-    if(response.data) {
+    if (response) {
       await this.login()
     } else {
       console.log('Registration failed!')
