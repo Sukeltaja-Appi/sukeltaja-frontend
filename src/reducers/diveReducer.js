@@ -90,17 +90,6 @@ export const updateDive = (dive) => {
   }
 }
 
-export const forgetDives = () => {
-  return (dispatch) => {
-    dispatch({
-      type: 'INIT_DIVES',
-      dives: []
-    })
-
-    dispatch(setOngoingDive(null))
-  }
-}
-
 export const setOngoingDive = (dive) => {
   return {
     type: 'SET_ONGOING_DIVE',

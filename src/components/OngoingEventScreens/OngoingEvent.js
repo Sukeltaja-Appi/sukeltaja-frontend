@@ -3,10 +3,9 @@ import { View, FlatList } from 'react-native'
 import { Text, Button, ListItem } from 'react-native-elements'
 import { connect } from 'react-redux'
 
-import { endEvent, leaveOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
+import { endEvent, setOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
 import { endDive } from '../../reducers/diveReducer'
 import colors from '../../styles/colors'
-import { usernameOrId, userToID } from '../../utils/userHandler'
 
 const style = {
   buttonEnd: {
@@ -72,7 +71,7 @@ class OngoingEvent extends React.Component {
   }
 
   leaveEventButton = () => {
-    this.props.leaveOngoingEvent()
+    this.props.setOngoingEvent(null)
     this.navigate('StartEventScreen')
   }
 
@@ -83,7 +82,7 @@ class OngoingEvent extends React.Component {
   endButton = () => {
     const { user, ongoingEvent } = this.props
 
-    if(user.id === ongoingEvent.creator._id) {
+    if(user._id === ongoingEvent.creator._id) {
       return(
         <Button
           title='Lopeta'
@@ -110,37 +109,42 @@ class OngoingEvent extends React.Component {
 
   render () {
     const { ongoingEvent } = this.props
+    const { admins, participants, creator, title } = ongoingEvent
 
-    let users = []
-
-    if (ongoingEvent) {
-      const { creator, admins, participants } = ongoingEvent
-
-      users = [ creator, ...admins, ...participants ]
-    }
+    // This should eventually be replaced by enforcing unique roles
+    // in the backend.
+    const users = [ ...admins, ...participants, creator ]
+    const distinctIds = [ ...new Set(users.map(user => user._id)) ]
+    const distinctUsers = distinctIds
+      .map(_id => {
+        return {
+          _id,
+          username: users.find(user => user._id === _id).username
+        }
+      })
 
     return (
       <View style={style.main}>
         <View style={{ alignItems: 'center', marginBottom: 20 }}>
-          <Text h3>{ongoingEvent.title}</Text>
+          <Text h3>{title}</Text>
         </View>
 
         <Text h4>Osallistujat:</Text>
 
         <View style={style.list}>
           <FlatList
-            data={users}
+            data={distinctUsers}
             renderItem={({ item }) => {
 
               return (
                 <ListItem
-                  title={usernameOrId(item)}
+                  title={item.username}
                   onPress={this.pressUser(item)}
                   bottomDivider
                 />
               )}
             }
-            keyExtractor={item => userToID(item)}
+            keyExtractor={item => item._id}
           />
 
         </View>
@@ -168,5 +172,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { endEvent, endDive, leaveOngoingEvent, getOngoingEvent }
+  { endEvent, endDive, setOngoingEvent, getOngoingEvent }
 )(OngoingEvent)

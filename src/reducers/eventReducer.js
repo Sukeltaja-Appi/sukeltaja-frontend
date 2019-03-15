@@ -101,17 +101,6 @@ export const setOngoingEvent = (event) => {
   }
 }
 
-export const forgetEvents = () => {
-  return (dispatch) => {
-    dispatch({
-      type: 'INIT_EVENTS',
-      events: []
-    })
-
-    dispatch(setOngoingEvent(null))
-  }
-}
-
 export const joinOngoingEvent = (event) => {
 
   return async (dispatch) => {
@@ -137,13 +126,5 @@ export const getOngoingEvent = (event) => {
     })
 
     dispatch(setOngoingEvent(ongoingEvent))
-  }
-}
-
-export const leaveOngoingEvent = () => {
-
-  return (dispatch) => {
-
-    dispatch(setOngoingEvent(null))
   }
 }

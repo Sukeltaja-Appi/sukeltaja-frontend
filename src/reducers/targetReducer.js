@@ -19,10 +19,3 @@ export const getAll = () => {
     })
   }
 }
-
-export const forgetTargets = () => {
-  return {
-    type: 'INIT_TARGETS',
-    targets: []
-  }
-}

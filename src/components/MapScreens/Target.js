@@ -28,7 +28,7 @@ const Target = (props) => {
     if (ongoingEvent) {
       const event = ongoingEvent
 
-      event.target = target ? target : null
+      event.target = target
 
       setOngoingEvent(event)
       updateEvent(event)

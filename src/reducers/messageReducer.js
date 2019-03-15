@@ -1,14 +1,10 @@
 import messageService from '../services/messages'
 import { messageToID } from '../utils/utilityFunctions'
-import { userToID } from '../utils/userHandler'
 
 export const messageReducer = (state = [], action) => {
   switch(action.type) {
-    case 'REMOVE_MESSAGE': {
-      state.splice(state.findIndex((m) => {return m.id === action.id}), 1)
-
-      return state
-    }
+    case 'REMOVE_MESSAGE':
+      return state.filter(message => message !== action.id)
     case 'SET_MESSAGES':
       return action.messages
     default:
@@ -21,19 +17,6 @@ export const sentMessageReducer = (state = [], action) => {
     case 'SEND_MESSAGE':
       return [ ...state, action.message ]
     case 'SET_SENT_MESSAGES':
-      return action.messages
-    default:
-      return state
-  }
-}
-
-export const selectedMessageReducer = (state = [], action) => {
-  switch(action.type) {
-    case 'SELECT_MESSAGE':
-      return [ ...state, action.message ]
-    case 'SELECT_MESSAGES':
-      return [ ...state, ...action.messages ]
-    case 'SET_SELECTED_MESSAGES':
       return action.messages
     default:
       return state
@@ -68,12 +51,9 @@ export const checkMessage = (message, userID, status) => {
 }
 
 export const sendMessage = (type, data, sender, receivers) => {
-  for (let i=0; i<receivers.length; i++) receivers[i] = userToID(receivers[i])
-  sender = userToID(sender)
+  if (!type || !data || !sender || !receivers || receivers.length === 0) return
 
-  const received = []
-
-  for (let i = 0; i < receivers.length; i++) received.push('pending')
+  const received = Array(receivers.length).fill('pending')
 
   let message = {
     created: new Date(),
