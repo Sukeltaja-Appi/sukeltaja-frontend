@@ -33,7 +33,7 @@ export const userObjEqualsUserObj = (user1, user2) => {
   }
 
   let id1 = userToID(user1)
-  let id2 = userToID(user1)
+  let id2 = userToID(user2)
 
   return id1 === id2
 }

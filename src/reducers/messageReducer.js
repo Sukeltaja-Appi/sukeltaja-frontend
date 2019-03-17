@@ -4,7 +4,7 @@ import { messageToID } from '../utils/utilityFunctions'
 export const messageReducer = (state = [], action) => {
   switch(action.type) {
     case 'REMOVE_MESSAGE':
-      return state.filter(message => message !== action.id)
+      return state.filter(message => messageToID(message) !== action.id)
     case 'SET_MESSAGES':
       return action.messages
     default:
@@ -34,13 +34,9 @@ export const getMessages = () => {
   }
 }
 
-export const checkMessage = (message, userID, status) => {
+export const checkMessage = (message, status) => {
 
   return async (dispatch) => {
-    console.log('message-------------------------------------------------')
-    console.log(message)
-    console.log('messageToID:--------------------------------------------')
-    console.log(messageToID(message))
     await messageService.checkMessage(messageToID(message), status)
 
     dispatch ({

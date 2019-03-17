@@ -22,21 +22,19 @@ const style = {
 }
 
 const Invite = (props) => {
-  const { joinOngoingEvent, checkMessage, user, navigation } = props
+  const { joinOngoingEvent, checkMessage, navigation } = props
   const { message, parent } = navigation.getParam('invProps')
 
-  console.log(message)
   const join = async () => {
     await joinOngoingEvent(eventToID(message.data))
-    console.log('join---------------', user._id)
-    await checkMessage(message, user._id, 'accepted')
+    await checkMessage(message, 'accepted')
     parent.updateInvites()
-    //navigation.navigate('InvitesScreen')
+    navigation.navigate('InvitesScreen')
     navigation.navigate('OngoingEvent')
   }
 
   const removeInvite = async () => {
-    await checkMessage(message, user._id, 'rejected')
+    await checkMessage(message, 'rejected')
     parent.updateInvites()
     navigation.navigate('InvitesScreen')
   }
