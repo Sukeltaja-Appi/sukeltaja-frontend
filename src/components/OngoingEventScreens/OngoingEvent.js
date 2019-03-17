@@ -79,6 +79,18 @@ class OngoingEvent extends React.Component {
     this.navigate('InviteScreen', { item: { ongoingComponent: this } })
   }
 
+  userIsCreator = (user) => user._id === this.props.ongoingEvent.creator._id
+  userIsAdmin = (user) => this.props.ongoingEvent.admins.map(a => a._id).includes(user._id)
+
+  userIsNotAdmin = () => {
+    const { user } = this.props
+    const { userIsCreator, userIsAdmin } = this
+
+    if(!userIsCreator(user) && !userIsAdmin(user)) return true
+
+    return false
+  }
+
   endButton = () => {
     const { user, ongoingEvent } = this.props
 
@@ -154,6 +166,7 @@ class OngoingEvent extends React.Component {
             title='+ Kutsu lisää osallistujia'
             onPress={this.toInvites}
             buttonStyle={style.buttonInvite}
+            disabled={this.userIsNotAdmin()}
             raised
           />
           <View style={style.buttonDivider}/>

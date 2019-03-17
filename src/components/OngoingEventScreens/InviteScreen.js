@@ -52,11 +52,11 @@ class InviteScreen extends React.Component {
   userIsPending = (user) => this.props.ongoingEvent.pending.map(p => p.user._id).includes(user._id)
 
   sendInvite = async (type) => {
-    const { userIsCreator, userIsAdmin, userIsPending } = this
+    const { userIsCreator, userIsAdmin } = this
     const { selectedUsers } = this.state
     const { sendMessage, user, ongoingEvent, getOngoingEvent } = this.props
 
-    if (!selectedUsers || !userIsCreator(user) && !userIsAdmin(user) && !userIsPending(user)) return
+    if (!selectedUsers || !userIsCreator(user) && !userIsAdmin(user)) return
 
     const receivers = selectedUsers.map(receiver => receiver._id)
 
@@ -103,6 +103,18 @@ class InviteScreen extends React.Component {
     }
   }
 
+  //Sets the users checkbox color.
+  // Blue if user has a pening invite.
+  // Green if user is already a participant and is not pending.
+  setUserColor = (user) => {
+    const { userIsPending, userIsParticipant } = this
+
+    if (userIsPending(user)) return { backgroundColor: colors.lightBlue }
+    if (userIsParticipant(user)) return { backgroundColor: colors.green }
+
+    return {}
+  }
+
   renderListItem = (user) => {
     const { selectedUsers } = this.state
 
@@ -111,6 +123,7 @@ class InviteScreen extends React.Component {
         title={user.username}
         onPress={() => this.toggleUserSelection(user)}
         checked={selectedUsers.includes(user)}
+        containerStyle={this.setUserColor(user)}
       />
     )
   }
@@ -135,9 +148,9 @@ class InviteScreen extends React.Component {
   }
 
   render() {
-    const { userIsAdmin, userIsCreator, userIsPending } = this
+    const { userIsAdmin, userIsCreator } = this
 
-    const invitableUsers = this.props.users.filter(u => !userIsAdmin(u) && !userIsCreator(u) && !userIsPending(u))
+    const invitableUsers = this.props.users.filter(u => !userIsAdmin(u) && !userIsCreator(u))
 
     return (
       <View style={styles.noPadding}>
