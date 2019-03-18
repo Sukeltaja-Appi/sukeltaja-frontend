@@ -10,7 +10,7 @@ import colors from '../../styles/colors'
 import locationService from '../../services/location'
 import { startDive, endDive } from '../../reducers/diveReducer'
 import { getOngoingEvent } from '../../reducers/eventReducer'
-import { eventToID } from '../../utils/utilityFunctions'
+import { eventToID } from '../../utils/eventHandler'
 
 const style = {
   buttonEndDive: {

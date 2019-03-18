@@ -5,9 +5,10 @@ import { connect } from 'react-redux'
 
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
-import { eventToID } from '../../utils/utilityFunctions'
 import { joinOngoingEvent } from '../../reducers/eventReducer'
 import { checkMessage } from '../../reducers/messageReducer'
+import { usernameOrId } from '../../utils/userHandler'
+import { eventTitleOrID } from '../../utils/eventHandler'
 
 const style = {
   buttonJoin: {
@@ -18,6 +19,16 @@ const style = {
   },
   buttonDivider: {
     height: 30
+  },
+  h5: {
+    marginTop: 35,
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  h3: {
+    marginTop: 15,
+    fontSize: 26,
+    textAlign: 'center'
   }
 }
 
@@ -26,7 +37,7 @@ const Invite = (props) => {
   const { message, parent } = navigation.getParam('invProps')
 
   const join = async () => {
-    await joinOngoingEvent(eventToID(message.data))
+    await joinOngoingEvent(message.data)
     await checkMessage(message, 'accepted')
     parent.updateInvites()
     navigation.navigate('InvitesScreen')
@@ -39,9 +50,17 @@ const Invite = (props) => {
     navigation.navigate('InvitesScreen')
   }
 
+  const invitationTypeDisplay = () => {
+    if (message.type === 'invitation_admin') return 'Kutsu ylläpitäjäksi tapahtumaan:'
+    if (message.type === 'invitation_participant') return 'Kutsu tapahtumaan:'
+  }
+
   return (
     <View style={styles.noPadding}>
-      <Text style={styles.h5}></Text>
+      <Text style={style.h5}>Lähettäjä: {usernameOrId(message.sender)}</Text>
+      <Text style={style.h5}>{invitationTypeDisplay(message.sender)}</Text>
+      <Text style={style.h3}>{eventTitleOrID(message.data)}</Text>
+      <Text style={style.h5}></Text>
       <Button
         title="Hylkää"
         onPress={() => removeInvite()}

@@ -1,6 +1,5 @@
 import eventService from '../services/events'
-import { eventToID } from '../utils/utilityFunctions'
-import { userToID } from '../utils/userHandler'
+import { eventToID } from '../utils/eventHandler'
 
 export const eventReducer = (state = [], action) => {
   switch (action.type) {
@@ -104,7 +103,7 @@ export const setOngoingEvent = (event) => {
 export const joinOngoingEvent = (event) => {
 
   return async (dispatch) => {
-    const ongoingEvent = await eventService.acceptEventInvite(userToID(event))
+    const ongoingEvent = await eventService.acceptEventInvite(eventToID(event))
 
     dispatch({
       type: 'NEW_EVENT',

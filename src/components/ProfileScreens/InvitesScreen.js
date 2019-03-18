@@ -42,13 +42,15 @@ class InvitesScreen extends React.Component {
     this.updateInvites()
   }
 
-  selectInvite = (message) => {
-    this.props.navigation.navigate('Invite', {
-      invProps: {
-        message: message,
-        parent: this
-      }
-    })
+  selectMessage = (message) => {
+    if(message.type === 'invitation_admin' || message.type === 'invitation_participant') {
+      this.props.navigation.navigate('Invite', {
+        invProps: {
+          message: message,
+          parent: this
+        }
+      })
+    }
   }
 
   InvitesSortedByDate = () => {
@@ -79,7 +81,7 @@ class InvitesScreen extends React.Component {
               <ListItem
                 title={sender.username}
                 subtitle={formatDate(created)}
-                onPress={() => this.selectInvite(item)}
+                onPress={() => this.selectMessage(item)}
                 subtitleStyle={style.subtitle}
                 bottomDivider
                 chevron
