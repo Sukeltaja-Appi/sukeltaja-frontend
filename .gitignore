@@ -6,4 +6,5 @@ npm-debug.*
 *.key
 *.mobileprovision
 coverage/
-.env*
+.env
+.env.production
