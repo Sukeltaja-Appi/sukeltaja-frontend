@@ -68,7 +68,7 @@ class InviteScreen extends React.Component {
     )
 
     await getOngoingEvent(ongoingEvent)
-
+    this.setState({ selectedUsers: [] })
     this.loadUsers()
   }
 
