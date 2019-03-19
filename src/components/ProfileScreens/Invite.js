@@ -9,6 +9,7 @@ import { joinOngoingEvent } from '../../reducers/eventReducer'
 import { checkMessage } from '../../reducers/messageReducer'
 import { usernameOrId } from '../../utils/userHandler'
 import { eventTitleOrID } from '../../utils/eventHandler'
+import { formatDate } from '../../utils/dates'
 
 const style = {
   buttonJoin: {
@@ -21,12 +22,12 @@ const style = {
     height: 30
   },
   h5: {
-    marginTop: 35,
+    marginTop: 25,
     fontSize: 18,
     textAlign: 'center'
   },
   h3: {
-    marginTop: 15,
+    marginTop: 10,
     fontSize: 26,
     textAlign: 'center'
   }
@@ -58,6 +59,7 @@ const Invite = (props) => {
   return (
     <View style={styles.noPadding}>
       <Text style={style.h5}>Lähettäjä: {usernameOrId(message.sender)}</Text>
+      <Text style={style.h5}>Lähetetty: {formatDate(message.created)}</Text>
       <Text style={style.h5}>{invitationTypeDisplay(message.sender)}</Text>
       <Text style={style.h3}>{eventTitleOrID(message.data)}</Text>
       <Text style={style.h5}></Text>
