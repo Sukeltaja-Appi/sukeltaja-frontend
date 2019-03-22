@@ -93,6 +93,15 @@ export const updateEvent = (event) => {
   }
 }
 
+export const updateLocalEvent = (event) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'UPDATE_EVENT',
+      updatedEvent: event
+    })
+  }
+}
+
 export const setOngoingEvent = (event) => {
   return {
     type: 'SET_ONGOING_EVENT',

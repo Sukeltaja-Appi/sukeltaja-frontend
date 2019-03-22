@@ -3,11 +3,13 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import store from './src/store'
 import AppEntry from './src/AppEntry'
+import ServerListener from './ServerListener'
 
 const ProviderPackedApp = () => {
   return (
     <Provider store={store}>
       <AppEntry />
+      <ServerListener />
     </Provider>
   )
 }
