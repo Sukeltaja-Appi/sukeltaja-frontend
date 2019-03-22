@@ -7,7 +7,7 @@ import { login } from './reducers/userReducer'
 import { initializeEvents } from './reducers/eventReducer'
 import { initializeDives } from './reducers/diveReducer'
 import { getAll } from './reducers/targetReducer'
-
+//env1
 class AppEntry extends React.Component {
   constructor(props) {
     super(props)

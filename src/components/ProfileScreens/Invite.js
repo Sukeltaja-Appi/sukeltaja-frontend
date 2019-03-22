@@ -5,9 +5,11 @@ import { connect } from 'react-redux'
 
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
-import { eventToID } from '../../utils/utilityFunctions'
 import { joinOngoingEvent } from '../../reducers/eventReducer'
 import { checkMessage } from '../../reducers/messageReducer'
+import { usernameOrId } from '../../utils/userHandler'
+import { eventTitleOrID } from '../../utils/eventHandler'
+import { formatDate } from '../../utils/dates'
 
 const style = {
   buttonJoin: {
@@ -18,32 +20,49 @@ const style = {
   },
   buttonDivider: {
     height: 30
+  },
+  h5: {
+    marginTop: 25,
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  h3: {
+    marginTop: 10,
+    fontSize: 26,
+    textAlign: 'center'
   }
 }
 
 const Invite = (props) => {
-  const { joinOngoingEvent, checkMessage, user, navigation } = props
+  const { joinOngoingEvent, checkMessage, navigation } = props
   const { message, parent } = navigation.getParam('invProps')
 
-  console.log(message)
   const join = async () => {
-    await joinOngoingEvent(eventToID(message.data))
-    console.log('join---------------', user.id)
-    await checkMessage(message, user.id, 'accepted')
+    await joinOngoingEvent(message.data)
+    await checkMessage(message, 'accepted')
     parent.updateInvites()
-    //navigation.navigate('InvitesScreen')
+    navigation.navigate('InvitesScreen')
     navigation.navigate('OngoingEvent')
   }
 
   const removeInvite = async () => {
-    await checkMessage(message, user.id, 'rejected')
+    await checkMessage(message, 'rejected')
     parent.updateInvites()
     navigation.navigate('InvitesScreen')
   }
 
+  const invitationTypeDisplay = () => {
+    if (message.type === 'invitation_admin') return 'Kutsu ylläpitäjäksi tapahtumaan:'
+    if (message.type === 'invitation_participant') return 'Kutsu tapahtumaan:'
+  }
+
   return (
     <View style={styles.noPadding}>
-      <Text style={styles.h5}></Text>
+      <Text style={style.h5}>Lähettäjä: {usernameOrId(message.sender)}</Text>
+      <Text style={style.h5}>Lähetetty: {formatDate(message.created)}</Text>
+      <Text style={style.h5}>{invitationTypeDisplay(message.sender)}</Text>
+      <Text style={style.h3}>{eventTitleOrID(message.data)}</Text>
+      <Text style={style.h5}></Text>
       <Button
         title="Hylkää"
         onPress={() => removeInvite()}

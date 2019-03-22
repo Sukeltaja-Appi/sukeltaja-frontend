@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { createEvent } from '../../reducers/eventReducer'
 import { View, ScrollView } from 'react-native'
+import { createEvent } from '../../reducers/eventReducer'
 import { now, inOneHour } from '../../utils/dates'
 import EventForm from '../simple/EventForm'
 import styles from '../../styles/global'

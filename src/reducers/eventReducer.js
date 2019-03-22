@@ -1,5 +1,5 @@
 import eventService from '../services/events'
-import { objectToID, eventToID } from '../utils/utilityFunctions'
+import { eventToID } from '../utils/eventHandler'
 
 export const eventReducer = (state = [], action) => {
   switch (action.type) {
@@ -100,38 +100,17 @@ export const setOngoingEvent = (event) => {
   }
 }
 
-export const forgetEvents = () => {
-  return (dispatch) => {
-    dispatch({
-      type: 'INIT_EVENTS',
-      events: []
-    })
-
-    dispatch({
-      type: 'SET_ONGOING_EVENT',
-      ongoingEvent: null
-    })
-  }
-}
-
 export const joinOngoingEvent = (event) => {
 
   return async (dispatch) => {
-    console.log('Event-------------------------------------------------')
-    console.log(event)
-    console.log('EventID-----------------------------------------------')
-    console.log(objectToID(event))
-    console.log('------------------------------------------------------')
-    const ongoingEvent = await eventService.acceptEventInvite(objectToID(event))
+    const ongoingEvent = await eventService.acceptEventInvite(eventToID(event))
 
     dispatch({
       type: 'NEW_EVENT',
       newEvent: ongoingEvent
     })
-    dispatch({
-      type: 'SET_ONGOING_EVENT',
-      ongoingEvent: ongoingEvent
-    })
+
+    dispatch(setOngoingEvent(ongoingEvent))
   }
 }
 
@@ -141,23 +120,10 @@ export const getOngoingEvent = (event) => {
     const ongoingEvent = await eventService.get(eventToID(event))
 
     dispatch({
-      type: 'SET_ONGOING_EVENT',
-      ongoingEvent: ongoingEvent
-    })
-    dispatch({
       type: 'UPDATE_EVENT',
       updatedEvent: ongoingEvent
     })
-  }
-}
 
-export const leaveOngoingEvent = () => {
-
-  return (dispatch) => {
-
-    dispatch({
-      type: 'SET_ONGOING_EVENT',
-      ongoingEvent: null
-    })
+    dispatch(setOngoingEvent(ongoingEvent))
   }
 }

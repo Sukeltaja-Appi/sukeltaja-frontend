@@ -5,8 +5,6 @@ import styles from '../../styles/global'
 import { formatDate } from '../../utils/dates'
 import { connect } from 'react-redux'
 import { getMessages } from '../../reducers/messageReducer'
-import { usernameOrId } from '../../utils/utilityFunctions'
-import { objectToID } from '../../utils/utilityFunctions'
 
 const style = {
   subtitle: {
@@ -36,17 +34,7 @@ class InvitesScreen extends React.Component {
   updateInvites = () => {
     const { messages } = this.props
 
-    const invites = []
-
-    for (let i = 0; i < messages.length; i++) {
-      let type = messages[i].type
-
-      if(type === 'invitation_participant' || type === 'invitation_admin') {
-        invites.push(messages[i])
-      }
-    }
-
-    this.setState({ invites })
+    this.setState({ invites: messages.filter(msg => msg.type.startsWith('invitation_')) })
   }
 
   loadMessages = async () => {
@@ -54,13 +42,15 @@ class InvitesScreen extends React.Component {
     this.updateInvites()
   }
 
-  selectInvite = (message) => {
-    this.props.navigation.navigate('Invite', {
-      invProps: {
-        message: message,
-        parent: this
-      }
-    })
+  selectMessage = (message) => {
+    if(message.type === 'invitation_admin' || message.type === 'invitation_participant') {
+      this.props.navigation.navigate('Invite', {
+        invProps: {
+          message: message,
+          parent: this
+        }
+      })
+    }
   }
 
   InvitesSortedByDate = () => {
@@ -89,16 +79,16 @@ class InvitesScreen extends React.Component {
 
             return (
               <ListItem
-                title={usernameOrId(sender)}
+                title={sender.username}
                 subtitle={formatDate(created)}
-                onPress={() => this.selectInvite(item)}
+                onPress={() => this.selectMessage(item)}
                 subtitleStyle={style.subtitle}
                 bottomDivider
                 chevron
               />
             )}
           }
-          keyExtractor={item => objectToID(item)}
+          keyExtractor={item => item._id}
         />
         <Button
           title="Hae kutsut"

@@ -46,28 +46,45 @@ class InviteScreen extends React.Component {
     await this.props.loadAllUsers()
   }
 
-  sendInvite = async (type) => {
-    const { selectedUsers } = this.state
-    const { sendMessage, user, ongoingEvent } = this.props
-    const { creator } = ongoingEvent
+  userIsCreator = (user) => user._id === this.props.ongoingEvent.creator._id
+  userIsAdmin = (user) => this.props.ongoingEvent.admins.map(a => a._id).includes(user._id)
+  userIsParticipant = (user) => this.props.ongoingEvent.participants.map(p => p._id).includes(user._id)
+  userIsPending = (user) => this.props.ongoingEvent.pending.map(p => p.user._id).includes(user._id)
 
-    if (!selectedUsers || user.id !== creator._id) return
+  sendInvite = async (type) => {
+    const { userIsCreator, userIsAdmin } = this
+    const { selectedUsers } = this.state
+    const { sendMessage, user, ongoingEvent, getOngoingEvent } = this.props
+
+    if (!selectedUsers || !userIsCreator(user) && !userIsAdmin(user)) return
+
+    const receivers = selectedUsers.map(receiver => receiver._id)
 
     await sendMessage(
       type,
       ongoingEvent,
-      { id: user.id, username: user.username },
-      this.state.selectedUsers
+      user._id,
+      receivers
     )
 
     await getOngoingEvent(ongoingEvent)
-
+    this.setState({ selectedUsers: [] })
     this.loadUsers()
   }
 
   inviteAdmins = () => this.sendInvite('invitation_admin')
-
   inviteParticipants = () => this.sendInvite('invitation_participant')
+
+  inviteAdminButtonDisabled = () => {
+    const { selectedUsers } = this.state
+
+    return selectedUsers.length === 0 || selectedUsers.some(u => this.userIsAdmin(u))
+  }
+  inviteParticipantButtonDisabled = () => {
+    const { selectedUsers } = this.state
+
+    return selectedUsers.length === 0 || selectedUsers.some(u => this.userIsParticipant(u))
+  }
 
   backButton = async () => {
     const { ongoingEvent, getOngoingEvent } = this.props
@@ -86,6 +103,18 @@ class InviteScreen extends React.Component {
     }
   }
 
+  //Sets the users checkbox color.
+  // Blue if user has a pening invite.
+  // Green if user is already a participant and is not pending.
+  setUserColor = (user) => {
+    const { userIsPending, userIsParticipant } = this
+
+    if (userIsPending(user)) return { backgroundColor: colors.lightBlue }
+    if (userIsParticipant(user)) return { backgroundColor: colors.green }
+
+    return {}
+  }
+
   renderListItem = (user) => {
     const { selectedUsers } = this.state
 
@@ -94,14 +123,13 @@ class InviteScreen extends React.Component {
         title={user.username}
         onPress={() => this.toggleUserSelection(user)}
         checked={selectedUsers.includes(user)}
+        containerStyle={this.setUserColor(user)}
       />
     )
   }
 
-  showList = () => {
-    const { users } = this.props
-
-    if (users.length === 0) {
+  showList = (invitableUsers) => {
+    if (invitableUsers.length === 0) {
       return (
         <View style={styles.centered}>
           <Text style={styles.h5}>Ei käyttäjiä.</Text>
@@ -110,7 +138,7 @@ class InviteScreen extends React.Component {
     } else {
       return (
         <FlatList
-          data={users}
+          data={invitableUsers}
           renderItem={({ item }) => this.renderListItem(item) }
           keyExtractor={item => item._id}
           extraData={this.state}
@@ -120,26 +148,32 @@ class InviteScreen extends React.Component {
   }
 
   render() {
+    const { userIsAdmin, userIsCreator } = this
+
+    const invitableUsers = this.props.users.filter(u => !userIsAdmin(u) && !userIsCreator(u))
+
     return (
       <View style={styles.noPadding}>
 
         <View style={style.top}>
-          {this.showList()}
+          {this.showList(invitableUsers)}
         </View>
 
         <View style={style.bottom}>
           <View style={style.divider}/>
           <Button
-            title="+ Kutsu Ylläpitäjiä"
+            title="+ Kutsu ylläpitäjäksi"
             onPress={this.inviteAdmins}
             buttonStyle={style.buttonGreen}
             raised
+            disabled={this.inviteAdminButtonDisabled()}
           />
           <View style={style.divider}/>
           <Button
-            title="+ Kutsu Osallistujia"
+            title="+ Kutsu osallistujaksi"
             onPress={this.inviteParticipants}
             buttonStyle={style.buttonGreen}
+            disabled={this.inviteParticipantButtonDisabled()}
             raised
           />
           <View style={style.divider}/>
