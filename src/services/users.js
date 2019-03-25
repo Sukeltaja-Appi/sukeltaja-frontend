@@ -23,8 +23,6 @@ const setToken = (newToken) => {
 const create = async (newObject) => {
   const response = await axios.post(url, newObject)
 
-  console.log(config()) //Koska lint... (config tulee varmasti tarpeen myöhemmin)
-
   return response.data
 }
 

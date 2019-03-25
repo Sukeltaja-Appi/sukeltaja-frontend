@@ -1,11 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import RNEventSource from 'react-native-event-source'
-import { updateLocalEvent } from '../../reducers/eventReducer'
-import { receiveMessage } from '../../reducers/messageReducer'
+import openSocket from 'socket.io-client'
+
+import { updateLocalEvent } from './reducers/eventReducer'
+import { receiveMessage } from './reducers/messageReducer'
+import { config } from './services/users'
 import { apiUrl } from './config'
 
-const url = `${apiUrl}/push`
+const passcolon = 7
+const index = apiUrl.substring(passcolon).indexOf(':')
+const socketUrl = apiUrl.substring(0, passcolon+index)
+
+const port = 7821
 
 // ServerListener:
 // Is a Renderless component that receives updates from the
@@ -13,31 +19,41 @@ const url = `${apiUrl}/push`
 class ServerListener extends React.Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      socket: openSocket(socketUrl + ':' + port)
+    }
   }
 
   componentDidMount() {
-    this.serverSource = new RNEventSource(url)
-
     const { updateLocalEvent, receiveMessage } = this.props
+    const { socket } = this.state
 
     // Grabs updated events
-    this.serverSource.addEventListener('updatedEvent', (data) => {
-      console.log(data.type)
-      console.log(data.data)
-      updateLocalEvent(data.data)
+    socket.on('updatedEvent', event => {
+      updateLocalEvent(event)
+      console.log('received updatedEvent:')
+      console.log(event)
     })
 
     // Grabs new messages
-    this.serverSource.addEventListener('newMessage', (data) => {
-      console.log(data.type)
-      console.log(data.data)
-      receiveMessage(data.data)
+    socket.on('newMessage', message => {
+      receiveMessage(message)
+      console.log('received new message:')
+      console.log(message)
     })
-  }
 
-  componentWillUnmount() {
-    this.eventSource.removeAllListeners()
-    this.eventSource.close()
+    socket.on('connect', async () => {
+      await socket.emit('authentication', config())
+    })
+
+    socket.on('unauthorized', (reason) => {
+      console.log('Unauthorized:', reason)
+
+      socket.disconnect()
+    })
+
+    console.log('ServerListener mounted, listening to:', socketUrl + ':' + port)
   }
 
   render() {
