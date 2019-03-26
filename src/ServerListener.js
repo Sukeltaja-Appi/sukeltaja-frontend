@@ -47,11 +47,11 @@ class ServerListener extends React.Component {
       await socket.emit('authentication', config())
     })
 
-    socket.on('unauthorized', (reason) => {
-      console.log('Unauthorized:', reason)
-
-      socket.disconnect()
-    })
+    // socket.on('unauthorized', (reason) => {
+    //   console.log('Unauthorized:', reason)
+    //
+    //   socket.disconnect()
+    // })
 
     console.log('ServerListener mounted, listening to:', socketUrl + ':' + port)
   }
