@@ -22,6 +22,11 @@ export const ongoingEventReducer = (state = null, action) => {
     case 'SET_ONGOING_EVENT': {
       return action.ongoingEvent
     }
+    case 'UPDATE_IF_ONGOING': {
+      if (state && state._id === action.event._id) return action.event
+
+      return state
+    }
     default:
       return state
   }
@@ -98,6 +103,10 @@ export const updateLocalEvent = (event) => {
     dispatch({
       type: 'UPDATE_EVENT',
       updatedEvent: event
+    })
+    dispatch({
+      type: 'UPDATE_IF_ONGOING',
+      event
     })
   }
 }

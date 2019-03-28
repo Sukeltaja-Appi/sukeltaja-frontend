@@ -13,6 +13,14 @@ const socketUrl = apiUrl.substring(0, passcolon+index)
 
 const port = 7821
 
+const checkAuthInterval = 300 // milliseconds
+
+let serverListener = null
+
+export const getServerListener = () => {
+  return serverListener
+}
+
 // ServerListener:
 // Is a Renderless component that receives updates from the
 // server and keeps the clients data in the reducers upp to date.
@@ -21,39 +29,53 @@ class ServerListener extends React.Component {
     super(props)
 
     this.state = {
-      socket: openSocket(socketUrl + ':' + port)
+      socket: null
     }
+
+    serverListener = this
   }
 
-  componentDidMount() {
-    const { updateLocalEvent, receiveMessage } = this.props
-    const { socket } = this.state
+  componentDidMount = () => {
+    this.setupCommunication()
+  }
 
-    // Grabs updated events
-    socket.on('updatedEvent', event => {
-      updateLocalEvent(event)
-      console.log('received updatedEvent:')
-      console.log(event)
-    })
+  setupCommunication = () => {
+    if(config().headers.Authorization !== null) {
 
-    // Grabs new messages
-    socket.on('newMessage', message => {
-      receiveMessage(message)
-      console.log('received new message:')
-      console.log(message)
-    })
+      const { updateLocalEvent, receiveMessage } = this.props
 
-    socket.on('connect', async () => {
-      await socket.emit('authentication', config())
-    })
+      const socket = openSocket(socketUrl + ':' + port)
 
-    // socket.on('unauthorized', (reason) => {
-    //   console.log('Unauthorized:', reason)
-    //
-    //   socket.disconnect()
-    // })
+      this.setState({ socket: socket })
 
-    console.log('ServerListener mounted, listening to:', socketUrl + ':' + port)
+      // Handles event updates received from the server.
+      socket.on('updatedEvent', event => {
+        updateLocalEvent(event)
+      })
+
+      // Handles new messages received from the server.
+      socket.on('newMessage', message => {
+        receiveMessage(message)
+      })
+
+      socket.on('connect', async () => {
+        await socket.emit('authentication', config())
+      })
+
+      socket.on('unauthorized', (reason) => {
+        console.log('Unauthorized:', reason)
+
+        socket.disconnect()
+      })
+
+      console.log('ServerListener mounted, listening to:', socketUrl + ':' + port)
+
+    } else setTimeout(this.setupCommunication, checkAuthInterval)
+  }
+
+  disconnect = () => {
+    this.state.socket.disconnect()
+    this.setState({ socket: null })
   }
 
   render() {
@@ -61,7 +83,11 @@ class ServerListener extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  messages: state.messages
+})
+
 export default connect(
-  null,
+  mapStateToProps,
   { updateLocalEvent, receiveMessage }
 )(ServerListener)
