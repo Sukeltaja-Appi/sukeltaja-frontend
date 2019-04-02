@@ -44,7 +44,7 @@ class ServerListener extends React.Component {
 
       const { updateLocalEvent, receiveMessage } = this.props
 
-      const socket = openSocket(socketUrl + ':' + port)
+      const socket = openSocket(socketUrl + ':' + port, { path: '/update' })
 
       this.setState({ socket: socket })
 
