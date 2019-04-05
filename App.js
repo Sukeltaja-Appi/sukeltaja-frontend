@@ -3,11 +3,14 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import store from './src/store'
 import AppEntry from './src/AppEntry'
+import { ReduxNetworkProvider } from 'react-native-offline'
 
 const ProviderPackedApp = () => {
   return (
     <Provider store={store}>
-      <AppEntry />
+      <ReduxNetworkProvider>
+        <AppEntry />
+      </ReduxNetworkProvider>
     </Provider>
   )
 }
