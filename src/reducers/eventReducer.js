@@ -45,7 +45,7 @@ export const initializeEvents = () => {
 }
 
 export const startEvent = (event) => {
-  return async (dispatch) => {
+  async function thunk (dispatch) {
     const newEvent = await eventService.create(event)
 
     dispatch({
@@ -55,6 +55,8 @@ export const startEvent = (event) => {
 
     dispatch(setOngoingEvent(newEvent))
   }
+
+  return standardQueuing(thunk)
 }
 
 export const endEvent = (event) => {
@@ -74,16 +76,16 @@ export const endEvent = (event) => {
 
 export const createEvent = (event) => {
 
-  return async (dispatch) => {
+  async function thunk (dispatch) {
     const newEvent = await eventService.create(event)
 
     dispatch({
       type: 'NEW_EVENT',
       newEvent
     })
-
-    return newEvent
   }
+
+  return standardQueuing(thunk)
 }
 
 export const updateEvent = (event) => {
