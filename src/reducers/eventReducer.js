@@ -1,4 +1,5 @@
 import eventService from '../services/events'
+import { standardQueuing } from '../utils/offlineThunkHandler'
 import { eventToID } from '../utils/eventHandler'
 
 export const eventReducer = (state = [], action) => {
@@ -134,7 +135,7 @@ export const joinOngoingEvent = (event) => {
 
 export const getOngoingEvent = (event) => {
 
-  return async (dispatch) => {
+  async function thunk (dispatch) {
     const ongoingEvent = await eventService.get(eventToID(event))
 
     dispatch({
@@ -147,4 +148,6 @@ export const getOngoingEvent = (event) => {
 
     dispatch(setOngoingEvent(ongoingEvent))
   }
+
+  return standardQueuing(thunk)
 }

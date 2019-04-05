@@ -1,4 +1,5 @@
 import messageService from '../services/messages'
+import { standardQueuing } from '../utils/offlineThunkHandler'
 import { messageToID } from '../utils/utilityFunctions'
 
 export const messageReducer = (state = [], action) => {
@@ -26,22 +27,20 @@ export const sentMessageReducer = (state = [], action) => {
 }
 
 export const getMessages = () => {
-  return async (dispatch) => {
+  async function thunk (dispatch) {
     const messages = await messageService.getAll()
 
     dispatch ({
       type: 'SET_MESSAGES',
-      messages,
-      meta: {
-        retry: true
-      }
+      messages
     })
   }
+
+  return standardQueuing(thunk)
 }
 
 export const checkMessage = (message, status) => {
-
-  return async (dispatch) => {
+  async function thunk (dispatch) {
     await messageService.checkMessage(messageToID(message), status)
 
     dispatch ({
@@ -52,6 +51,8 @@ export const checkMessage = (message, status) => {
       }
     })
   }
+
+  return standardQueuing(thunk)
 }
 
 export const sendMessage = (type, data, sender, receivers) => {
@@ -68,7 +69,7 @@ export const sendMessage = (type, data, sender, receivers) => {
     data
   }
 
-  return async (dispatch) => {
+  async function thunk (dispatch) {
     message = await messageService.create(message)
 
     dispatch ({
@@ -79,6 +80,8 @@ export const sendMessage = (type, data, sender, receivers) => {
       }
     })
   }
+
+  return standardQueuing(thunk)
 }
 
 export const receiveMessage = (message) => {

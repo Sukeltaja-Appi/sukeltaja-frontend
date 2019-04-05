@@ -1,4 +1,5 @@
 import targetService from '../services/targets'
+import { standardQueuing } from '../utils/offlineThunkHandler'
 
 export const targetReducer = (state = [], action) => {
   switch (action.type) {
@@ -20,8 +21,5 @@ export const getAll = () => {
     })
   }
 
-  thunk.interceptInOffline = true
-  thunk.meta = { retry: true }
-
-  return thunk
+  return standardQueuing(thunk)
 }
