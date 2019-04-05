@@ -17,7 +17,7 @@ YellowBox.ignoreWarnings(ignoredWarnings)
 const ProviderPackedApp = () => {
   return (
     <Provider store={store}>
-      <ReduxNetworkProvider>
+      <ReduxNetworkProvider pingInterval={1000}>
         <AppEntry />
       </ReduxNetworkProvider>
     </Provider>

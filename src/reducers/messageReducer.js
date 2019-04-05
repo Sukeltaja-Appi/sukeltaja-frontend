@@ -31,7 +31,10 @@ export const getMessages = () => {
 
     dispatch ({
       type: 'SET_MESSAGES',
-      messages
+      messages,
+      meta: {
+        retry: true
+      }
     })
   }
 }
@@ -43,7 +46,10 @@ export const checkMessage = (message, status) => {
 
     dispatch ({
       type: 'REMOVE_MESSAGE',
-      id: messageToID(message)
+      id: messageToID(message),
+      meta: {
+        retry: true
+      }
     })
   }
 }
@@ -67,7 +73,10 @@ export const sendMessage = (type, data, sender, receivers) => {
 
     dispatch ({
       type: 'SEND_MESSAGE',
-      message
+      message,
+      meta: {
+        retry: true
+      }
     })
   }
 }

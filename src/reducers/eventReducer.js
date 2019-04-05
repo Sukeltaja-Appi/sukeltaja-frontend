@@ -139,7 +139,10 @@ export const getOngoingEvent = (event) => {
 
     dispatch({
       type: 'UPDATE_EVENT',
-      updatedEvent: ongoingEvent
+      updatedEvent: ongoingEvent,
+      meta: {
+        retry: true
+      }
     })
 
     dispatch(setOngoingEvent(ongoingEvent))

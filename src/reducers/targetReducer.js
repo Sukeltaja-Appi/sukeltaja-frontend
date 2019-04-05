@@ -10,15 +10,18 @@ export const targetReducer = (state = [], action) => {
 }
 
 export const getAll = () => {
-  return async (dispatch) => {
+
+  async function thunk (dispatch) {
     const targets = await targetService.getAll()
 
     dispatch({
       type: 'INIT_TARGETS',
-      targets,
-      meta: {
-        retry: true
-      }
+      targets
     })
   }
+
+  thunk.interceptInOffline = true
+  thunk.meta = { retry: true }
+
+  return thunk
 }

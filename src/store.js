@@ -10,6 +10,7 @@ import { reducer as network, createNetworkMiddleware } from 'react-native-offlin
 
 const networkMiddleware = createNetworkMiddleware({
   regexActionType: /^INIT_TARGETS$/,
+  queueReleaseThrottle: 50
 })
 
 const appReducer = combineReducers({
