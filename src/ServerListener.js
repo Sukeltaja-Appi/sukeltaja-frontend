@@ -83,11 +83,7 @@ class ServerListener extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  messages: state.messages
-})
-
 export default connect(
-  mapStateToProps,
+  null,
   { updateLocalEvent, receiveMessage }
 )(ServerListener)
