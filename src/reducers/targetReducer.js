@@ -15,7 +15,10 @@ export const getAll = () => {
 
     dispatch({
       type: 'INIT_TARGETS',
-      targets
+      targets,
+      meta: {
+        retry: true
+      }
     })
   }
 }
