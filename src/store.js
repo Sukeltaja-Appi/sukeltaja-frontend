@@ -6,6 +6,11 @@ import { eventReducer, ongoingEventReducer } from './reducers/eventReducer'
 import { targetReducer } from './reducers/targetReducer'
 import { userReducer, usersReducer } from './reducers/userReducer'
 import { messageReducer }from './reducers/messageReducer'
+import { reducer as network, createNetworkMiddleware } from 'react-native-offline'
+
+const networkMiddleware = createNetworkMiddleware({
+  regexActionType: /^INIT_TARGETS$/,
+})
 
 const appReducer = combineReducers({
   user: userReducer,
@@ -16,6 +21,7 @@ const appReducer = combineReducers({
   ongoingDive: ongoingDiveReducer,
   dives: diveReducer,
   targets: targetReducer,
+  network
 })
 
 const rootReducer = (state, action) => {
@@ -32,7 +38,7 @@ export const logout = () => {
 
 const store = createStore(
   rootReducer,
-  applyMiddleware(thunk)
+  applyMiddleware(networkMiddleware, thunk)
 )
 
 export default store
