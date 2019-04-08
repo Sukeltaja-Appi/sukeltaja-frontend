@@ -8,11 +8,11 @@ import colors from '../../styles/colors'
 
 const StartEvent = (props) => {
 
-  const { startEvent } = props
+  const { startEvent, user } = props
 
   const startButton = async () => {
     const event = {
-      title: 'Oma sukellustapahtuma',
+      title: user.username + 'n sukellustapahtuma',
       dives: []
     }
 
@@ -39,7 +39,11 @@ const StartEvent = (props) => {
   )
 }
 
+const mapStateToProps = (state) => ({
+  user: state.user
+})
+
 export default connect(
-  null,
+  mapStateToProps,
   { startEvent }
 )(StartEvent)

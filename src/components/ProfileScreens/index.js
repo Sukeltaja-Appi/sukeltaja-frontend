@@ -9,7 +9,6 @@ import {
 import ProfileMainScreen from './ProfileMainScreen'
 import InvitesScreen from './InvitesScreen'
 import Invite from './Invite'
-import FriendsScreen from './FriendsScreen'
 import UserSettingsScreen from './UserSettingsScreen'
 import LoginScreen from './LoginScreen'
 
@@ -61,16 +60,6 @@ const UserTab = createMaterialTopTabNavigator({
       )
     }
   },
-  Friends : {
-    screen: FriendsScreen,
-    navigationOptions: {
-      tabBarLabel: 'KAVERIT',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='users' type='feather' color={tintColor} />
-      )
-    }
-  },
   Settings : {
     screen: UserSettingsScreen,
     navigationOptions: {
@@ -105,10 +94,3 @@ export default createSwitchNavigator({
 }, {
   headerMode: 'none'
 })
-
-// export default createStackNavigator({
-//   UserTab,
-//   LoginScreen
-// }, {
-//   headerMode: 'none',
-//   initialRouteName: "UserTab" })

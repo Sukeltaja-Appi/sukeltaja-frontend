@@ -45,16 +45,32 @@ class EditEventScreen extends React.Component {
         routeName, params
       })
 
-      const resetAction = StackActions.reset({
-        index: 2,
-        actions: [
-          navigateAction('EventMenuScreen'),
-          navigateAction('EventListScreen'),
-          navigateAction('Event', { item: updatedEvent })
-        ]
-      })
+      const { ongoingEvent } = this.props
 
-      this.props.navigation.dispatch(resetAction)
+      if (ongoingEvent && ongoingEvent._id === this.state.event._id) {
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [
+            navigateAction('EventMenuScreen')
+          ]
+        })
+
+        this.props.navigation.dispatch(resetAction)
+
+        this.props.navigation.navigate('OngoingEvent')
+
+      } else {
+        const resetAction = StackActions.reset({
+          index: 2,
+          actions: [
+            navigateAction('EventMenuScreen'),
+            navigateAction('EventListScreen'),
+            navigateAction('Event', { item: updatedEvent })
+          ]
+        })
+
+        this.props.navigation.dispatch(resetAction)
+      }
     }
   }
 
@@ -78,7 +94,11 @@ class EditEventScreen extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  ongoingEvent: state.ongoingEvent
+})
+
 export default connect(
-  null,
+  mapStateToProps,
   { updateEvent }
 )(EditEventScreen)

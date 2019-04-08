@@ -59,21 +59,6 @@ export const startEvent = (event) => {
   return standardQueuing(thunk)
 }
 
-export const endEvent = (event) => {
-  event.enddate = new Date()
-
-  return async (dispatch) => {
-    const updatedEvent = await eventService.update(event._id, event)
-
-    dispatch({
-      type: 'UPDATE_EVENT',
-      updatedEvent
-    }),
-
-    dispatch(setOngoingEvent(null))
-  }
-}
-
 export const createEvent = (event) => {
 
   async function thunk (dispatch) {
@@ -95,6 +80,10 @@ export const updateEvent = (event) => {
     dispatch({
       type: 'UPDATE_EVENT',
       updatedEvent
+    })
+    dispatch({
+      type: 'UPDATE_IF_ONGOING',
+      event: updatedEvent
     })
 
     return updatedEvent

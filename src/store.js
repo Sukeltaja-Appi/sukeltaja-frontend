@@ -9,8 +9,7 @@ import { messageReducer }from './reducers/messageReducer'
 import { reducer as network, createNetworkMiddleware } from 'react-native-offline'
 
 const networkMiddleware = createNetworkMiddleware({
-  regexActionType: /^INIT_TARGETS$/,
-  queueReleaseThrottle: 50
+  queueReleaseThrottle: 100
 })
 
 const appReducer = combineReducers({

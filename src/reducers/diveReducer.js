@@ -1,4 +1,5 @@
 import diveService from '../services/dives'
+import { standardQueuing } from '../utils/offlineThunkHandler'
 
 export const diveReducer = (state = [], action) => {
   switch (action.type) {
@@ -52,7 +53,8 @@ export const startDive = (dive) => {
 }
 
 export const endDive = (dive) => {
-  return async (dispatch) => {
+
+  async function thunk (dispatch) {
     const updatedDive = await diveService.update(dive._id, dive)
 
     dispatch({
@@ -62,6 +64,8 @@ export const endDive = (dive) => {
 
     dispatch(setOngoingDive(null))
   }
+
+  return standardQueuing(thunk)
 }
 
 export const createDive = (dive) => {
