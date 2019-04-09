@@ -8,6 +8,7 @@ import { initializeEvents } from './reducers/eventReducer'
 import { initializeDives } from './reducers/diveReducer'
 import { getAll } from './reducers/targetReducer'
 import ServerListener from './ServerListener'
+import OfflineNotifier from './components/simple/OfflineNotifier'
 
 class AppEntry extends React.Component {
   constructor(props) {
@@ -38,6 +39,7 @@ class AppEntry extends React.Component {
   render() {
     return (
       <React.Fragment>
+        <OfflineNotifier />
         <Navigator />
         <ServerListener />
       </React.Fragment>

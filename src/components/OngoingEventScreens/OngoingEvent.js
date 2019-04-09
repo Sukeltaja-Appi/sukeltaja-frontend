@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native'
 import { Text, Button, ListItem } from 'react-native-elements'
 import { connect } from 'react-redux'
 
-import { endEvent, setOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
+import { setOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
 import { endDive } from '../../reducers/diveReducer'
 import colors from '../../styles/colors'
 
@@ -34,49 +34,42 @@ const style = {
 }
 
 class OngoingEvent extends React.Component {
-  constructor(props) {
-    super(props)
-    this.endButton = this.endButton.bind(this)
-  }
 
-  reloadEvent = async () => {
+  loadEvent = async () => {
     const { ongoingEvent, getOngoingEvent } = this.props
 
     await getOngoingEvent(ongoingEvent)
   }
 
   componentDidMount() {
-    this.reloadEvent()
+    this.loadEvent()
   }
 
   navigate = (value, item) => this.props.navigation.navigate(value, { item })
+
+  toInvites = () => {
+    this.navigate('InviteScreen', { item: { ongoingComponent: this } })
+  }
+
+  toEditing = () => {
+    this.navigate('EditEventScreen', this.props.ongoingEvent)
+  }
 
   endDives = async () => {
     const { endDive, ongoingEvent, ongoingDive } = this.props
 
     if (ongoingDive) {
       ongoingDive.enddate = new Date()
-      ongoingDive.event = ongoingEvent.id
-      await endDive(ongoingDive)
+      ongoingDive.event = ongoingEvent._id
+      ongoingEvent.dives = [ ...ongoingEvent.dives, ongoingDive._id ]
+      endDive(ongoingDive)
     }
   }
 
-  endEventButton = async () => {
-    let { ongoingEvent, endEvent } = this.props
-
-    await this.endDives()
-    await endEvent(ongoingEvent)
-
-    this.navigate('StartEventScreen')
-  }
-
   leaveEventButton = () => {
+    this.endDives()
     this.props.setOngoingEvent(null)
     this.navigate('StartEventScreen')
-  }
-
-  toInvites = () => {
-    this.navigate('InviteScreen', { item: { ongoingComponent: this } })
   }
 
   userIsCreator = (user) => user._id === this.props.ongoingEvent.creator._id
@@ -89,30 +82,6 @@ class OngoingEvent extends React.Component {
     if(!userIsCreator(user) && !userIsAdmin(user)) return true
 
     return false
-  }
-
-  endButton = () => {
-    const { user, ongoingEvent } = this.props
-
-    if(user._id === ongoingEvent.creator._id) {
-      return(
-        <Button
-          title='Lopeta'
-          onPress={this.endEventButton}
-          buttonStyle={style.buttonEnd}
-          raised
-        />
-      )
-    }
-
-    return(
-      <Button
-        title={'Poistu'}
-        onPress={this.leaveEventButton}
-        buttonStyle={style.buttonEnd}
-        raised
-      />
-    )
   }
 
   pressUser = (item) => {
@@ -170,7 +139,19 @@ class OngoingEvent extends React.Component {
             raised
           />
           <View style={style.buttonDivider}/>
-          {this.endButton()}
+          <Button
+            title='Muokka tapahtumaa'
+            onPress={this.toEditing}
+            disabled={this.userIsNotAdmin()}
+            raised
+          />
+          <View style={style.buttonDivider}/>
+          <Button
+            title={'Poistu'}
+            onPress={this.leaveEventButton}
+            buttonStyle={style.buttonEnd}
+            raised
+          />
         </View>
       </View>
     )
@@ -185,5 +166,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { endEvent, endDive, setOngoingEvent, getOngoingEvent }
+  { endDive, setOngoingEvent, getOngoingEvent }
 )(OngoingEvent)

@@ -12,7 +12,7 @@ const style = {
   activeTintColor: '#fff',
   labelStyle: {
     fontWeight: 'bold',
-    fontSize: 10
+    fontSize: 9
   },
   showIcon: true
 }

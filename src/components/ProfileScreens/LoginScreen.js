@@ -9,6 +9,7 @@ import { paddingSides } from '../../styles/global'
 import userService from '../../services/users'
 import { initializeEvents } from '../../reducers/eventReducer'
 import { initializeDives } from '../../reducers/diveReducer'
+import { getAll } from '../../reducers/targetReducer'
 import { login } from '../../reducers/userReducer'
 
 import { getServerListener } from '../../ServerListener'
@@ -69,7 +70,7 @@ class LoginScreen extends React.Component {
   }
 
   login = async () => {
-    const { login, initializeEvents, initializeDives } = this.props
+    const { login, initializeEvents, initializeDives, getAll } = this.props
 
     await login(this.state.credentials)
     const { user } = this.props
@@ -79,6 +80,7 @@ class LoginScreen extends React.Component {
 
       await initializeEvents()
       await initializeDives()
+      await getAll()
 
       const serverListener = getServerListener()
 
@@ -140,5 +142,5 @@ const mapStateToProps = (state) => ({ user: state.user })
 
 export default connect(
   mapStateToProps,
-  { login, initializeEvents, initializeDives }
+  { login, initializeEvents, initializeDives, getAll }
 )(LoginScreen)
