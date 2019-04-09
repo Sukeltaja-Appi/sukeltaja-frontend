@@ -35,14 +35,14 @@ const style = {
 
 class OngoingEvent extends React.Component {
 
-  reloadEvent = async () => {
+  loadEvent = async () => {
     const { ongoingEvent, getOngoingEvent } = this.props
 
     await getOngoingEvent(ongoingEvent)
   }
 
   componentDidMount() {
-    this.reloadEvent()
+    this.loadEvent()
   }
 
   navigate = (value, item) => this.props.navigation.navigate(value, { item })
