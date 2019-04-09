@@ -8,6 +8,8 @@ import colors from '../../styles/colors'
 import userService from '../../services/users'
 import { logout } from '../../store'
 
+import { getServerListener } from '../../ServerListener'
+
 export const ProfileMainScreen = (props) => {
   const uri = 'https://upload.wikimedia.org/wikipedia/commons/5/50/USS_Scorpion_sail.jpg'
 
@@ -15,6 +17,10 @@ export const ProfileMainScreen = (props) => {
 
   const logoutButton = () => {
     const { logout } = props
+
+    const serverListener = getServerListener()
+
+    serverListener.disconnect()
 
     logout()
     userService.setToken(null)

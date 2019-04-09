@@ -26,9 +26,18 @@ class InvitesScreen extends React.Component {
     this.state = {
       invites: []
     }
-  }
-  componentDidMount() {
+
     this.loadMessages()
+  }
+
+  componentDidMount() {
+    this.updateInvites()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { messages } = nextProps
+
+    this.setState({ invites: messages.filter(msg => msg.type.startsWith('invitation_')) })
   }
 
   updateInvites = () => {

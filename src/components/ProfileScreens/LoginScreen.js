@@ -11,6 +11,8 @@ import { initializeEvents } from '../../reducers/eventReducer'
 import { initializeDives } from '../../reducers/diveReducer'
 import { login } from '../../reducers/userReducer'
 
+import { getServerListener } from '../../ServerListener'
+
 const { Form } = t.form
 
 const style = {
@@ -73,6 +75,10 @@ class LoginScreen extends React.Component {
 
       await initializeEvents()
       await initializeDives()
+
+      const serverListener = getServerListener()
+
+      serverListener.setupCommunication()
 
       this.navigate('UserTab')
     } else {

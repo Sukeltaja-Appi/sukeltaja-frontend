@@ -3,6 +3,8 @@ import { messageToID } from '../utils/utilityFunctions'
 
 export const messageReducer = (state = [], action) => {
   switch(action.type) {
+    case 'NEW_MESSAGE':
+      return [ ...state, action.message ]
     case 'REMOVE_MESSAGE':
       return state.filter(message => messageToID(message) !== action.id)
     case 'SET_MESSAGES':
@@ -65,6 +67,15 @@ export const sendMessage = (type, data, sender, receivers) => {
 
     dispatch ({
       type: 'SEND_MESSAGE',
+      message
+    })
+  }
+}
+
+export const receiveMessage = (message) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'NEW_MESSAGE',
       message
     })
   }

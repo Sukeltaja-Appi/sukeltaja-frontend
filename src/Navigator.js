@@ -4,7 +4,7 @@ import { createBottomTabNavigator, BottomTabBar, createAppContainer } from 'reac
 import OngoingEventScreen from './components/OngoingEventScreens/OngoingEventScreen'
 import MainMapScreen from './components/MapScreens/MainMapScreen'
 import EventScreens from './components/EventScreens'
-import ProfileMainScreen from './components/ProfileScreens'
+import ProfileScreens from './components/ProfileScreens'
 
 import { Icon } from 'react-native-elements'
 
@@ -51,7 +51,7 @@ export const MainTabNavigator = createBottomTabNavigator({
     }
   },
   Profile : {
-    screen: ProfileMainScreen,
+    screen: ProfileScreens,
     navigationOptions: {
       tabBarLabel: 'KÄYTTÄJÄ',
       tabBarOptions: style,
