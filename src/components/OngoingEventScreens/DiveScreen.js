@@ -8,38 +8,49 @@ import styles from '../../styles/global'
 import colors from '../../styles/colors'
 
 import locationService from '../../services/location'
-import { startDive, endDive } from '../../reducers/diveReducer'
+import { startDives, endDives } from '../../reducers/diveReducer'
 import { getOngoingEvent } from '../../reducers/eventReducer'
 import { eventToID } from '../../utils/eventHandler'
 
 const style = {
-  buttonEndDive: {
-    ...styles.roundButton,
+  buttonEndDives: {
     backgroundColor: colors.red
   },
   buttonDive: {
-    ...styles.roundButton,
     backgroundColor: colors.green
   },
   counter: {
-    marginTop: 50,
     backgroundColor: colors.secondary,
     color: 'white',
-    paddingVertical: 21,
-    flexGrow: 1,
     textAlign: 'center'
   },
   list: {
     flex: 1,
     backgroundColor: colors.background,
   },
+  listText: {
+    fontSize: 20
+  },
+  main: {
+    flex: 1,
+    backgroundColor: colors.background,
+    paddingTop: 10,
+  },
+  divider: {
+    height: 10
+  },
+  buttonGreen: {
+    backgroundColor: colors.green,
+  },
   top: {
     flex: 1,
     justifyContent: 'flex-start',
     marginTop: 10
   },
-  listText: {
-    fontSize: 20
+  bottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 20
   }
 }
 
@@ -58,9 +69,9 @@ class DiveScreen extends React.Component {
   }
 
   counterUpdate = () => {
-    const { ongoing, selectedUsers } = this.state
+    const { counter, ongoing, selectedUsers } = this.state
 
-    if(!ongoing) this.setState({ counter: this.state.counter + 1, ongoing, selectedUsers })
+    if(ongoing) this.setState({ counter: counter + 1, ongoing, selectedUsers })
   }
 
   componentDidMount() {
@@ -72,39 +83,46 @@ class DiveScreen extends React.Component {
   }
 
   diveButton = async () => {
-    let { ongoingEvent, startDive, getOngoingEvent, user } = this.props
+    let { ongoingEvent, startDives, getOngoingEvent, user } = this.props
+    const { selectedUsers } = this.state
 
-    let dive = {
-      event: eventToID(ongoingEvent),
-      user: user._id,
-      startdate: new Date(),
-      latitude: magic1, // + Math.random(),
-      longitude: magic2// + Math.random()
-    }
+    let latitude = magic1 // + Math.random()
+    let longitude = magic2 // + Math.random()
 
     try {
       const location = await locationService.getLocationAsync()
 
-      dive.latitude = location.coords.latitude
-      dive.longitude = location.coords.longitude
+      latitude = location.coords.latitude
+      longitude = location.coords.longitude
     } catch(err) { console.log('Geolocation unavailable.') }
 
-    await startDive(dive)
+    const event = eventToID(ongoingEvent)
+    const startdate = new Date()
+
+    let dives = []
+
+    selectedUsers.forEach(u => {
+      dives.push({
+        event,
+        startdate,
+        user: u._id,
+        latitude,
+        longitude
+      })
+    })
+
+    await startDives(dives, user._id)
     await getOngoingEvent(ongoingEvent)
 
-    this.setState({ counter: 0, ongoing: true, selectedUsers: this.state.selectedUsers })
+    this.setState({ counter: 0, ongoing: true, selectedUsers })
   }
 
   endButton = async () => {
-    const { endDive, ongoingEvent, ongoingDive } = this.props
+    let { endDives, ongoingDives, user } = this.props
 
-    ongoingDive.enddate = new Date()
-    ongoingDive.event = ongoingEvent._id
-    ongoingEvent.dives = [ ...ongoingEvent.dives, ongoingDive._id ]
-    endDive(ongoingDive)
+    endDives(ongoingDives, user._id)
 
-    this.state.ongoing = false
-    this.render()
+    this.setState({ counter: this.state.counter, ongoing: false, selectedUsers: [] })
   }
 
   duration = () => Duration.fromMillis(this.state.counter * 1000).toFormat('hh:mm:ss')
@@ -112,7 +130,7 @@ class DiveScreen extends React.Component {
   toggleUserSelection = (user) => {
     const { counter, ongoing, selectedUsers } = this.state
 
-    if(ongoing){
+    if(!ongoing){
       if (!selectedUsers.includes(user)) {
         this.setState({ counter, ongoing, selectedUsers: [...selectedUsers, user] })
       } else {
@@ -124,7 +142,7 @@ class DiveScreen extends React.Component {
   userIsDiving = (user) => {
     const { selectedUsers, ongoing } = this.state
 
-    if(selectedUsers.includes(user) && ongoing) return true
+    if(selectedUsers.map(u => u._id).includes(user._id) && ongoing) return true
 
     //const { dives } = this.props.ongoingEvent
 
@@ -142,14 +160,11 @@ class DiveScreen extends React.Component {
   renderListItem = (user) => {
     const { selectedUsers } = this.state
 
-    console.log('selectedUsers----------------->', selectedUsers)
-    console.log('user-------------------------->', user)
-
     return (
       <CheckBox
         title={user.username}
         onPress={() => this.toggleUserSelection(user)}
-        checked={selectedUsers.includes(user)}
+        checked={selectedUsers.map(u => u._id).includes(user._id)}
         containerStyle={this.setUserColor(user)}
       />
     )
@@ -164,14 +179,12 @@ class DiveScreen extends React.Component {
       )
     } else {
       return (
-        <View style={style.top}>
-          <FlatList
-            data={participantList}
-            renderItem={({ item }) => this.renderListItem(item) }
-            keyExtractor={item => item._id}
-            extraData={this.state}
-          />
-        </View>
+        <FlatList
+          data={participantList}
+          renderItem={({ item }) => this.renderListItem(item) }
+          keyExtractor={item => item._id}
+          extraData={this.state}
+        />
       )
     }
   }
@@ -183,16 +196,16 @@ class DiveScreen extends React.Component {
 
     if(!ongoing) {
       return (
-        <View style={styles.centered}>
+        <View style={styles.noPadding}>
 
-          <Text style={style.listText}>Valitse sukeltajat:</Text>
+          <View style={style.top}>
+            <Text style={style.listText}>Valitse sukeltajat:</Text>
+            {this.showList(participantList)}
+          </View>
 
-          {this.showList(participantList)}
-
-          <Text style={{ fontSize: 20 }}>Aloita sukellus</Text>
-
-          <View style={styles.bottom}>
-            <Button title='Sukella' onPress={this.diveButton} buttonStyle={style.buttonDive} raised />
+          <View style={style.bottom}>
+            <View style={style.divider}/>
+            <Button title='Aloita sukellus' onPress={this.diveButton} buttonStyle={style.buttonDive} raised />
           </View>
 
         </View>
@@ -200,22 +213,19 @@ class DiveScreen extends React.Component {
 
     } else {
       return (
-        <View style={styles.centered}>
+        <View style={styles.noPadding}>
 
-          <Text style={{ fontSize: 20 }}>Valitut sukeltajat:</Text>
+          <View style={style.top}>
+            <Text style={{ fontSize: 20 }}>Valitut sukeltajat:</Text>
+            {this.showList(participantList)}
+          </View>
 
-          {this.showList(participantList)}
-
-          <Text style={{ fontSize: 20 }}>Sukellus käynnissä</Text>
-
-          <View style={styles.row}>
+          <View style={style.bottom}>
+            <View style={style.divider}/>
             <Text h1 style={style.counter}>{this.duration()}</Text>
+            <View style={style.divider}/>
+            <Button title='Lopeta sukellus' onPress={this.endButton} buttonStyle={style.buttonEndDives} raised />
           </View>
-
-          <View style={styles.bottom}>
-            <Button title='Lopeta' onPress={this.endButton} buttonStyle={style.buttonEndDive} raised />
-          </View>
-
         </View>
       )
     }
@@ -223,12 +233,12 @@ class DiveScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  ongoingDive: state.ongoingDive,
+  ongoingDives: state.ongoingDives,
   ongoingEvent: state.ongoingEvent,
   user: state.user
 })
 
 export default connect(
   mapStateToProps,
-  { endDive, startDive, getOngoingEvent }
+  { endDives, startDives, getOngoingEvent }
 )(DiveScreen)

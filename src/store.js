@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
-import { diveReducer, ongoingDiveReducer } from './reducers/diveReducer'
+import { diveReducer, ongoingDivesReducer } from './reducers/diveReducer'
 import { eventReducer, ongoingEventReducer } from './reducers/eventReducer'
 import { targetReducer } from './reducers/targetReducer'
 import { userReducer, usersReducer } from './reducers/userReducer'
@@ -18,7 +18,7 @@ const appReducer = combineReducers({
   messages: messageReducer,
   ongoingEvent: ongoingEventReducer,
   events: eventReducer,
-  ongoingDive: ongoingDiveReducer,
+  ongoingDives: ongoingDivesReducer,
   dives: diveReducer,
   targets: targetReducer,
   network

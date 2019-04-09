@@ -1,5 +1,6 @@
 import diveService from '../services/dives'
 import { standardQueuing } from '../utils/offlineThunkHandler'
+import { userToID } from '../utils/userHandler'
 
 export const diveReducer = (state = [], action) => {
   switch (action.type) {
@@ -18,11 +19,12 @@ export const diveReducer = (state = [], action) => {
   }
 }
 
-export const ongoingDiveReducer = (state = null, action) => {
+export const ongoingDivesReducer = (state = [], action) => {
   switch (action.type) {
-    case 'SET_ONGOING_DIVE': {
-      return action.ongoingDive
-    }
+    case 'NEW_ONGOING_DIVE' :
+      return [ ...state, action.dive ]
+    case 'SET_ONGOING_DIVES':
+      return action.dives
     default:
       return state
   }
@@ -39,30 +41,51 @@ export const initializeDives = () => {
   }
 }
 
-export const startDive = (dive) => {
-  return async (dispatch) => {
-    const newDive = await diveService.create(dive)
-
-    dispatch({
-      type: 'NEW_DIVE',
-      newDive
-    })
-
-    dispatch(setOngoingDive(newDive))
+export const addOngoingDive = (dive) => {
+  return {
+    type: 'NEW_ONGOING_DIVE',
+    dive
   }
 }
 
-export const endDive = (dive) => {
+export const setOngoingDives = (dives) => {
+  return {
+    type: 'SET_ONGOING_DIVES',
+    dives
+  }
+}
 
-  async function thunk (dispatch) {
-    const updatedDive = await diveService.update(dive._id, dive)
+export const startDives = (dives, userID) => {
 
-    dispatch({
-      type: 'UPDATE_DIVE',
-      updatedDive
+  return async (dispatch) => {
+    dives.forEach(async (dive) => {
+      const newDive = await diveService.create(dive)
+
+      if(dive.user === userID) {
+        dispatch({
+          type: 'NEW_DIVE',
+          newDive
+        })
+      }
+      dispatch(addOngoingDive(newDive))
     })
+  }
+}
 
-    dispatch(setOngoingDive(null))
+export const endDives = (dives, userID) => {
+  async function thunk (dispatch) {
+    dives.forEach(async (dive) => {
+      dive.enddate = new Date()
+      const updatedDive = await diveService.update(dive._id, dive)
+
+      if(userToID(dive.user) === userID) {
+        dispatch({
+          type: 'UPDATE_DIVE',
+          updatedDive
+        })
+      }
+    })
+    dispatch(setOngoingDives([]))
   }
 
   return standardQueuing(thunk)
@@ -91,12 +114,5 @@ export const updateDive = (dive) => {
       type: 'UPDATE_DIVE',
       updatedDive
     })
-  }
-}
-
-export const setOngoingDive = (dive) => {
-  return {
-    type: 'SET_ONGOING_DIVE',
-    ongoingDive: dive
   }
 }

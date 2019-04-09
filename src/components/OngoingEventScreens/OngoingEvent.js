@@ -4,7 +4,7 @@ import { Text, Button, ListItem } from 'react-native-elements'
 import { connect } from 'react-redux'
 
 import { setOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
-import { endDive } from '../../reducers/diveReducer'
+import { endDives } from '../../reducers/diveReducer'
 import colors from '../../styles/colors'
 
 const style = {
@@ -55,20 +55,11 @@ class OngoingEvent extends React.Component {
     this.navigate('EditEventScreen', this.props.ongoingEvent)
   }
 
-  endDives = async () => {
-    const { endDive, ongoingEvent, ongoingDive } = this.props
-
-    if (ongoingDive) {
-      ongoingDive.enddate = new Date()
-      ongoingDive.event = ongoingEvent._id
-      ongoingEvent.dives = [ ...ongoingEvent.dives, ongoingDive._id ]
-      endDive(ongoingDive)
-    }
-  }
-
   leaveEventButton = () => {
-    this.endDives()
-    this.props.setOngoingEvent(null)
+    const { setOngoingEvent, endDives, ongoingDives, user } = this.props
+
+    endDives(ongoingDives, user._id)
+    setOngoingEvent(null)
     this.navigate('StartEventScreen')
   }
 
@@ -160,11 +151,11 @@ class OngoingEvent extends React.Component {
 
 const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
-  ongoingDive: state.ongoingDive,
+  ongoingDives: state.ongoingDives,
   user: state.user
 })
 
 export default connect(
   mapStateToProps,
-  { endDive, setOngoingEvent, getOngoingEvent }
+  { endDives, setOngoingEvent, getOngoingEvent }
 )(OngoingEvent)
