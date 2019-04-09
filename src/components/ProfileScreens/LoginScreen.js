@@ -24,6 +24,10 @@ const style = {
   },
   buttonDivider: {
     height: 20
+  },
+  bottomButton: {
+    position: 'fixed',
+    bottom: -100
   }
 }
 
@@ -96,27 +100,37 @@ class LoginScreen extends React.Component {
     })
 
     return (
-      <View style={style.container}>
-        <Form
-          ref={reference}
-          type={User}
-          options={options}
-          value={credentials}
-          onChange={(credentials) => this.setState({ credentials })}
-        />
+      <View>
+        <View style={style.container}>
+          <Form
+            ref={reference}
+            type={User}
+            options={options}
+            value={credentials}
+            onChange={(credentials) => this.setState({ credentials })}
+          />
 
-        <Button
-          onPress={this.login}
-          title="Kirjaudu"
-        />
+          <Button
+            onPress={this.login}
+            title="Kirjaudu"
+          />
 
-        <View style={style.buttonDivider}/>
+          <View style={style.buttonDivider} />
 
-        <Button
-          onPress={this.register}
-          title="Rekisteröidy"
-        />
+          <Button
+            onPress={this.register}
+            title="Rekisteröidy"
+          />
 
+          <View style={style.buttonDivider} />
+
+        </View>
+        <View style={style.bottomButton}>
+          <Button
+            onPress={() => this.navigate('ResetScreen')}
+            title="Unohtuiko salasana?"
+          />
+        </View>
       </View>
     )
   }

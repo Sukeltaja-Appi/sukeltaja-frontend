@@ -1,5 +1,6 @@
 import loginService from '../services/login'
 import userService from '../services/users'
+import resetService from '../services/reset'
 
 export const userReducer = (state = null, action) => {
   switch (action.type) {

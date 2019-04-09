@@ -42,4 +42,4 @@ const get = async (id) => {
   return response.data
 }
 
-export default { setToken, create, get, getAll }
+export default { setToken, create, get, getAll, reset }
