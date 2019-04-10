@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Text } from 'react-native-elements'
+import { Text, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 
 import colors from '../../styles/colors'
@@ -11,17 +11,23 @@ const style = {
     paddingTop: 15
   },
   text: {
-    fontSize: 20
-  }
+    fontSize: 20,
+    textAlign: 'center',
+    color: 'white'
+  },
 }
 
 class OfflineNotifier extends React.Component {
 
-  render () {
-    if(this.props.network.isConnected) return null
+  render() {
+    if (this.props.network.isConnected) return null
     else return (
-      <View style={style.main}>
-        <Text style={style.text}>Verkko ei ole saatavilla.</Text>
+      <View>
+        <View style={style.main}>
+          <Text style={style.text}>Verkkoyhteysongelma.</Text>
+          <Icon name="alert-triangle" type='feather' color='white' />
+          <Text style={style.text}> Palvelut eivät toimi normaalisti.</Text>
+        </View>
       </View>
     )
   }

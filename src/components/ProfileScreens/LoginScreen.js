@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
 
 import { paddingSides } from '../../styles/global'
@@ -29,6 +29,10 @@ const style = {
   bottomButton: {
     position: 'fixed',
     bottom: -100
+  },
+  title: {
+    color: 'white',
+    fontSize: 22,
   }
 }
 
@@ -103,6 +107,14 @@ class LoginScreen extends React.Component {
 
     return (
       <View>
+        <Header
+          placement="center"
+          centerComponent={{ text: 'KIRJAUTUMINEN', style: style.title }}
+          containerStyle={{
+            backgroundColor: '#1a237e',
+            justifyContent: 'space-around',
+          }}
+        />
         <View style={style.container}>
           <Form
             ref={reference}

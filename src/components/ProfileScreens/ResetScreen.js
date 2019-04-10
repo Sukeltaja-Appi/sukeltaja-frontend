@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View } from 'react-native'
-import { Button } from 'react-native-elements'
+import { View, Alert } from 'react-native'
+import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
 import resetService from '../../services/reset'
 import { paddingSides } from '../../styles/global'
@@ -13,21 +13,25 @@ const style = {
     width: '100%',
     backgroundColor: 'white',
     padding: paddingSides,
-    paddingBottom: 5
+    paddingBottom: 50
   },
   buttonDivider: {
     height: 20
   },
   bottomButton: {
     position: 'fixed',
-    bottom: 10
+    bottom: -200
+  },
+  title: {
+    color: 'white',
+    fontSize: 22,
   }
 }
 
 const options = {
   fields: {
     username: {
-      label: 'Käyttäjätunnus:',
+      label: 'Anna käyttäjätunnus:',
       error: 'Käyttäjätunnus ei saa olla tyhjä.'
     }
   }
@@ -37,35 +41,59 @@ class ResetScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: ''
+      username: '',
+      error: ''
 
     }
   }
 
-    navigate = (value) => this.props.navigation.navigate(value)
+  navigate = (value) => this.props.navigation.navigate(value)
 
-    resetPassword = async () => {
-      console.log(this.state.username)
-      console.log('Resetting password for: ' + this.state.username.username)
+  resetPassword = async () => {
+    console.log(this.state.username)
+    console.log('Resetting password for: ' + this.state.username.username)
 
-      await resetService.reset(this.state.username)
+    const message = await resetService.reset(this.state.username)
 
-      console.log('Email sent')
+    if (message.success) {
+      console.log('Reset success, email sent : ', message)
+      Alert.alert('Salasanan vaihtolinkki lähetetty',
+        'Linkki on lähetetty sähköpostiisi ja se on voimassa 10 minuuttia',
+        [{ text: 'Ok', onPress: () => console.log('Ok') }
+        ]
+      )
       this.navigate('LoginScreen')
-
     }
+    if (message.error) {
+      console.log('Reset error: ', message)
+      Alert.alert('Tapahtuma epäonnistui',
+        `Palautuslinkin lähetys ei onnistunut, yritä uudelleen.
+        Varmista että olet kirjoittanut pienet ja suuret kirjaimet oikein.`,
+        [{ text: 'Ok', onPress: () => console.log('Ok') }
+        ]
+      )
+    }
+  }
 
-    render() {
-      const { username } = this.state
-      const User = t.struct({
-        username: t.String
-      })
-      const reference = 'form'
+  render() {
+    const { username } = this.state
+    const User = t.struct({
+      username: t.String
+    })
+    const reference = 'form'
 
-      return (
-
+    return (
+      <View >
+        <Header
+          placement="center"
+          centerComponent={{ text: 'SALASANAN VAIHTO', style: style.title }}
+          containerStyle={{
+            backgroundColor: '#1a237e',
+            justifyContent: 'space-around',
+          }}
+        />
+        <View style={style.buttonDivider} />
         <View style={style.container}>
-
           <Form
             ref={reference}
             type={User}
@@ -73,15 +101,20 @@ class ResetScreen extends React.Component {
             value={username}
             onChange={(username) => this.setState({ username })}
           />
-
+          <View style={style.buttonDivider} />
           <Button
             onPress={this.resetPassword}
             title="Lähetä"
           />
-
+          <View style={style.buttonDivider} />
         </View>
-      )
-    }
+        <Button style={style.bottomButton}
+          onPress={() => this.navigate('LoginScreen')}
+          title="Palaa"
+        />
+      </View>
+    )
+  }
 }
 
 export default connect(
