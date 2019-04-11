@@ -75,9 +75,11 @@ class OngoingEvent extends React.Component {
     return false
   }
 
+  /*eslint-disable */
   pressUser = (item) => {
-    console.log(item)
+    console.log()
   }
+  /*eslint-enable */
 
   render () {
     const { ongoingEvent } = this.props

@@ -26,9 +26,10 @@ const style = {
   buttonDivider: {
     height: 20
   },
-  bottomButton: {
-    position: 'fixed',
-    bottom: -100
+  bottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 20
   },
   title: {
     color: 'white',
@@ -137,13 +138,13 @@ class LoginScreen extends React.Component {
           />
 
           <View style={style.buttonDivider} />
+          <View style={style.buttonDivider} />
 
-        </View>
-        <View style={style.bottomButton}>
           <Button
             onPress={() => this.navigate('ResetScreen')}
             title="Unohtuiko salasana?"
           />
+
         </View>
       </View>
     )

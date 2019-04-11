@@ -24,23 +24,11 @@ const style = {
     color: 'white',
     textAlign: 'center'
   },
-  list: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
   listText: {
     fontSize: 20
   },
-  main: {
-    flex: 1,
-    backgroundColor: colors.background,
-    paddingTop: 10,
-  },
   divider: {
     height: 10
-  },
-  buttonGreen: {
-    backgroundColor: colors.green,
   },
   top: {
     flex: 1,
@@ -66,6 +54,7 @@ class DiveScreen extends React.Component {
       selectedUsers: []
     }
     this.showList = this.showList.bind(this)
+    this.showListTitle = this.showListTitle.bind(this)
   }
 
   counterUpdate = () => {
@@ -74,8 +63,28 @@ class DiveScreen extends React.Component {
     if(ongoing) this.setState({ counter: counter + 1, ongoing, selectedUsers })
   }
 
+  userIsAdmin = () => {
+    const { ongoingEvent, user } = this.props
+
+    if(ongoingEvent.creator._id === user._id) return true
+    if(ongoingEvent.admins.map(u => u._id).includes(user._id)) return true
+
+    return false
+  }
+
+  selectParticipantUser = () => {
+    const { user, ongoingEvent } = this.props
+    const participant = ongoingEvent.participants.find(p => p._id === user._id)
+
+    this.setState({ counter: 0, ongoing: false, selectedUsers: [participant] })
+  }
+
   componentDidMount() {
     this.interval = setInterval(() => this.counterUpdate(), 1000)
+
+    if(!this.userIsAdmin()) {
+      this.selectParticipantUser()
+    }
   }
 
   componentWillUnmount() {
@@ -83,7 +92,7 @@ class DiveScreen extends React.Component {
   }
 
   diveButton = async () => {
-    let { ongoingEvent, startDives, getOngoingEvent, user } = this.props
+    let { ongoingEvent, startDives, user } = this.props
     const { selectedUsers } = this.state
 
     let latitude = magic1 // + Math.random()
@@ -112,7 +121,6 @@ class DiveScreen extends React.Component {
     })
 
     await startDives(dives, user._id)
-    await getOngoingEvent(ongoingEvent)
 
     this.setState({ counter: 0, ongoing: true, selectedUsers })
   }
@@ -122,7 +130,8 @@ class DiveScreen extends React.Component {
 
     endDives(ongoingDives, user._id)
 
-    this.setState({ counter: this.state.counter, ongoing: false, selectedUsers: [] })
+    if(this.userIsAdmin()) this.setState({ counter: this.state.counter, ongoing: false, selectedUsers: [] })
+    else this.selectParticipantUser()
   }
 
   duration = () => Duration.fromMillis(this.state.counter * 1000).toFormat('hh:mm:ss')
@@ -130,7 +139,7 @@ class DiveScreen extends React.Component {
   toggleUserSelection = (user) => {
     const { counter, ongoing, selectedUsers } = this.state
 
-    if(!ongoing){
+    if(!ongoing && this.userIsAdmin()){
       if (!selectedUsers.includes(user)) {
         this.setState({ counter, ongoing, selectedUsers: [...selectedUsers, user] })
       } else {
@@ -140,13 +149,9 @@ class DiveScreen extends React.Component {
   }
 
   userIsDiving = (user) => {
-    const { selectedUsers, ongoing } = this.state
+    const { dives } = this.props.ongoingEvent
 
-    if(selectedUsers.map(u => u._id).includes(user._id) && ongoing) return true
-
-    //const { dives } = this.props.ongoingEvent
-
-    //if (dives.map(d => d.user).includes(user)) return true
+    if (dives.filter(d => !d.enddate).map(d => d.user._id).includes(user._id)) return true
 
     return false
   }
@@ -160,14 +165,27 @@ class DiveScreen extends React.Component {
   renderListItem = (user) => {
     const { selectedUsers } = this.state
 
-    return (
-      <CheckBox
-        title={user.username}
-        onPress={() => this.toggleUserSelection(user)}
-        checked={selectedUsers.map(u => u._id).includes(user._id)}
-        containerStyle={this.setUserColor(user)}
-      />
-    )
+    if(this.userIsAdmin()) {
+      return (
+        <CheckBox
+          title={user.username}
+          onPress={() => this.toggleUserSelection(user)}
+          checked={selectedUsers.map(u => u._id).includes(user._id)}
+          containerStyle={this.setUserColor(user)}
+        />
+      )
+    } else {
+      const userID = this.props.user._id
+
+      return (
+        <CheckBox
+          title={user.username}
+          onPress={() => this.toggleUserSelection(user)}
+          checked={userID === user._id}
+          containerStyle={this.setUserColor(user)}
+        />
+      )
+    }
   }
 
   showList = (participantList) => {
@@ -189,6 +207,12 @@ class DiveScreen extends React.Component {
     }
   }
 
+  showListTitle = () => {
+    if(this.userIsAdmin()) return (<Text style={style.listText}>Valitse sukeltajat:</Text>)
+
+    return (<Text style={style.listText}>Sukeltajat</Text>)
+  }
+
   render() {
     const { creator, admins, participants } = this.props.ongoingEvent
     const participantList = [ creator, ...admins, ...participants ]
@@ -199,7 +223,7 @@ class DiveScreen extends React.Component {
         <View style={styles.noPadding}>
 
           <View style={style.top}>
-            <Text style={style.listText}>Valitse sukeltajat:</Text>
+            {this.showListTitle()}
             {this.showList(participantList)}
           </View>
 

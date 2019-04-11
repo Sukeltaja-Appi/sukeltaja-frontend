@@ -10,9 +10,18 @@ const style = {
     backgroundColor: colors.red,
     paddingTop: 15
   },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   text: {
     fontSize: 20,
     textAlign: 'center',
+    color: 'white'
+  },
+  textSecondary: {
+    fontSize: 20,
     color: 'white'
   },
 }
@@ -24,8 +33,10 @@ class OfflineNotifier extends React.Component {
     else return (
       <View>
         <View style={style.main}>
-          <Text style={style.text}>Verkkoyhteysongelma.</Text>
-          <Icon name="alert-triangle" type='feather' color='white' />
+          <View style={style.row}>
+            <Text style={style.textSecondary}>Verkkoyhteysongelma. </Text>
+            <Icon name="alert-triangle" type='feather' color='white' />
+          </View>
           <Text style={style.text}> Palvelut eivät toimi normaalisti.</Text>
         </View>
       </View>
