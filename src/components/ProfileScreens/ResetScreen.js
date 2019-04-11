@@ -6,6 +6,8 @@ import t from 'tcomb-form-native'
 import resetService from '../../services/reset'
 import { paddingSides } from '../../styles/global'
 
+import styles from '../../styles/global'
+
 const { Form } = t.form
 
 const style = {
@@ -25,6 +27,16 @@ const style = {
   title: {
     color: 'white',
     fontSize: 22,
+  },
+  top: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    marginTop: 10
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 10
   }
 }
 
@@ -93,7 +105,8 @@ class ResetScreen extends React.Component {
           }}
         />
         <View style={style.buttonDivider} />
-        <View style={style.container}>
+        <View style={styles.container}>
+
           <Form
             ref={reference}
             type={User}
@@ -101,17 +114,21 @@ class ResetScreen extends React.Component {
             value={username}
             onChange={(username) => this.setState({ username })}
           />
+
           <View style={style.buttonDivider} />
           <Button
             onPress={this.resetPassword}
             title="Lähetä"
           />
+
           <View style={style.buttonDivider} />
+          <View style={style.buttonDivider} />
+          <Button
+            onPress={() => this.navigate('LoginScreen')}
+            title="Palaa"
+          />
+
         </View>
-        <Button style={style.bottomButton}
-          onPress={() => this.navigate('LoginScreen')}
-          title="Palaa"
-        />
       </View>
     )
   }
