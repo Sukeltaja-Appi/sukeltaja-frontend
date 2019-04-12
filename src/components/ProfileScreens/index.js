@@ -12,6 +12,7 @@ import Invite from './Invite'
 import UserSettingsScreen from './UserSettingsScreen'
 import LoginScreen from './LoginScreen'
 import ResetScreen from './ResetScreen'
+import RegisterScreen from './RegisterScreen'
 
 import { Icon } from 'react-native-elements'
 
@@ -94,6 +95,9 @@ export default createSwitchNavigator({
   },
   ResetScreen: {
     screen: ResetScreen
+  },
+  RegisterScreen: {
+    screen: RegisterScreen
   }
 }, {
   headerMode: 'none'

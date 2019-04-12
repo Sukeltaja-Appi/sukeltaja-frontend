@@ -34,6 +34,10 @@ const style = {
 
 const options = {
   fields: {
+    email: {
+      label: 'Sähköposti osoite:',
+      error: 'Anna validi sähköposti osoite.'
+    },
     username: {
       label: 'Käyttäjätunnus:',
       error: 'Käyttäjätunnus ei saa olla tyhjä.'
@@ -46,7 +50,7 @@ const options = {
   }
 }
 
-class LoginScreen extends React.Component {
+class RegisterScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -58,6 +62,16 @@ class LoginScreen extends React.Component {
   }
 
   navigate = (value) => this.props.navigation.navigate(value)
+
+  register = async () => {
+    const response = await userService.create(this.state.credentials)
+
+    if (response) {
+      await this.login()
+    } else {
+      console.log('Registration failed!')
+    }
+  }
 
   login = async () => {
     const { login, initializeEvents, initializeDives, getAll } = this.props
@@ -87,15 +101,16 @@ class LoginScreen extends React.Component {
     const reference = 'form'
 
     const User = t.struct({
+      email: t.String,
       username: t.String,
-      password: t.String,
+      password: t.String
     })
 
     return (
       <View>
         <Header
           placement="center"
-          centerComponent={{ text: 'KIRJAUTUMINEN', style: style.title }}
+          centerComponent={{ text: 'REKISTERÖITYMINEN', style: style.title }}
           containerStyle={{
             backgroundColor: '#1a237e',
             justifyContent: 'space-around',
@@ -111,14 +126,7 @@ class LoginScreen extends React.Component {
           />
 
           <Button
-            onPress={this.login}
-            title="Kirjaudu"
-          />
-
-          <View style={style.buttonDivider} />
-
-          <Button
-            onPress={() => this.navigate('RegisterScreen')}
+            onPress={this.register}
             title="Rekisteröidy"
           />
 
@@ -126,10 +134,9 @@ class LoginScreen extends React.Component {
           <View style={style.buttonDivider} />
 
           <Button
-            onPress={() => this.navigate('ResetScreen')}
-            title="Unohtuiko salasana?"
+            onPress={() => this.navigate('LoginScreen')}
+            title="Palaa"
           />
-
         </View>
       </View>
     )
@@ -141,4 +148,4 @@ const mapStateToProps = (state) => ({ user: state.user })
 export default connect(
   mapStateToProps,
   { login, initializeEvents, initializeDives, getAll }
-)(LoginScreen)
+)(RegisterScreen)
