@@ -68,7 +68,8 @@ export const MainTabNavigator = createBottomTabNavigator({
         style={{ backgroundColor: colors.primary }}
       />
     )
-  }
+  },
+  initialRouteName: 'Profile'
 })
 
 const Navigator = createAppContainer(MainTabNavigator)

@@ -100,5 +100,6 @@ export default createSwitchNavigator({
     screen: RegisterScreen
   }
 }, {
-  headerMode: 'none'
+  headerMode: 'none',
+  initialRouteName: 'LoginScreen'
 })
