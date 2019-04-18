@@ -58,9 +58,9 @@ class DiveScreen extends React.Component {
   }
 
   counterUpdate = () => {
-    const { counter, ongoing, selectedUsers } = this.state
+    const { counter, ongoing } = this.state
 
-    if(ongoing) this.setState({ counter: counter + 1, ongoing, selectedUsers })
+    if(ongoing) this.setState({ counter: counter + 1 })
   }
 
   userIsAdmin = () => {
@@ -122,7 +122,7 @@ class DiveScreen extends React.Component {
 
     await startDives(dives, user._id)
 
-    this.setState({ counter: 0, ongoing: true, selectedUsers })
+    this.setState({ counter: 0, ongoing: true })
   }
 
   endButton = async () => {
@@ -130,20 +130,20 @@ class DiveScreen extends React.Component {
 
     endDives(ongoingDives, user._id)
 
-    if(this.userIsAdmin()) this.setState({ counter: this.state.counter, ongoing: false, selectedUsers: [] })
+    if(this.userIsAdmin()) this.setState({ ongoing: false, selectedUsers: [] })
     else this.selectParticipantUser()
   }
 
   duration = () => Duration.fromMillis(this.state.counter * 1000).toFormat('hh:mm:ss')
 
   toggleUserSelection = (user) => {
-    const { counter, ongoing, selectedUsers } = this.state
+    const { ongoing, selectedUsers } = this.state
 
     if(!ongoing && this.userIsAdmin()){
       if (!selectedUsers.includes(user)) {
-        this.setState({ counter, ongoing, selectedUsers: [...selectedUsers, user] })
+        this.setState({ selectedUsers: [...selectedUsers, user] })
       } else {
-        this.setState({ counter, ongoing, selectedUsers: selectedUsers.filter(u => u._id !== user._id) })
+        this.setState({ selectedUsers: selectedUsers.filter(u => u._id !== user._id) })
       }
     }
   }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, FlatList, Text } from 'react-native'
-import { CheckBox, Button } from 'react-native-elements'
+import { CheckBox, Button, SearchBar } from 'react-native-elements'
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
 import { connect } from 'react-redux'
@@ -16,14 +16,31 @@ const style = {
     backgroundColor: colors.green,
   },
   top: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    marginTop: 10
+    flex: 2
+  },
+  middle: {
+    flex: 8
   },
   bottom: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    marginBottom: 10
+    flex: 5
+  },
+  searchContainer: {
+    backgroundColor: 'transparent',
+    justifyContent: 'flex-start',
+    borderBottomColor: 'transparent',
+    borderTopColor: 'transparent'
+  },
+  searchInputContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    height: 50,
+    borderColor: colors.lightgray,
+    borderBottomColor: colors.gray,
+    borderWidth: 1,
+    borderBottomWidth: 1,
+  },
+  searchInput: {
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    color: 'black'
   }
 }
 
@@ -31,7 +48,10 @@ class InviteScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedUsers: []
+      displayedUsers: [],
+      selectedUsers: [],
+      query: '',
+      listMessage: 'Ei käyttäjiä'
     }
     this.showList = this.showList.bind(this)
   }
@@ -68,7 +88,7 @@ class InviteScreen extends React.Component {
     )
 
     await getOngoingEvent(ongoingEvent)
-    this.setState({ selectedUsers: [] })
+    this.setState({ selectedUsers: [], displayedUsers: [], listMessage: 'Kutsu lähetetty!' })
     this.loadUsers()
   }
 
@@ -132,7 +152,7 @@ class InviteScreen extends React.Component {
     if (invitableUsers.length === 0) {
       return (
         <View style={styles.centered}>
-          <Text style={styles.h5}>Ei käyttäjiä.</Text>
+          <Text style={styles.h5}>{this.state.listMessage}</Text>
         </View>
       )
     } else {
@@ -147,20 +167,51 @@ class InviteScreen extends React.Component {
     }
   }
 
-  render() {
-    const { userIsAdmin, userIsCreator } = this
+  search = (query) => {
+    let { selectedUsers } = this.state
 
-    const invitableUsers = this.props.users.filter(u => !userIsAdmin(u) && !userIsCreator(u))
+    this.setState({ query }, () => {
+      if (!query || query === '') this.setState({ displayedUsers: selectedUsers, listMessage: 'Ei käyttäjiä!' })
+      else {
+        query = query.toLowerCase()
+        const { users } = this.props
+        const { userIsAdmin, userIsCreator } = this
+
+        const invitableUsers = users.filter(u => !userIsAdmin(u) && !userIsCreator(u))
+
+        let displayedUsers = invitableUsers.filter(u => u.username.toLowerCase().startsWith(query))
+
+        displayedUsers = displayedUsers.filter(u => !selectedUsers.includes(u))
+
+        this.setState({ displayedUsers: [ ...selectedUsers, ...displayedUsers ] })
+      }
+    })
+  }
+
+  render() {
+    const { query, displayedUsers } = this.state
 
     return (
       <View style={styles.noPadding}>
 
         <View style={style.top}>
-          {this.showList(invitableUsers)}
+          <SearchBar
+            placeholder='Etsi käyttäjiä'
+            containerStyle={style.searchContainer}
+            inputContainerStyle={style.searchInputContainer}
+            inputStyle={style.searchInput}
+            lightTheme
+            clearIcon={{ name: 'x', type: 'feather', size: 28 }}
+            onChangeText={(query, invitableUsers) => this.search(query, invitableUsers)}
+            value={query}
+          />
+        </View>
+
+        <View style={style.middle}>
+          {this.showList(displayedUsers)}
         </View>
 
         <View style={style.bottom}>
-          <View style={style.divider}/>
           <Button
             title="+ Kutsu ylläpitäjäksi"
             onPress={this.inviteAdmins}

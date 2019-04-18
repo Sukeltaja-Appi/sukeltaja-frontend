@@ -35,7 +35,7 @@ const style = {
 const options = {
   fields: {
     email: {
-      label: 'Sähköposti osoite:',
+      label: 'Sähköpostiosoite:',
       error: 'Anna validi sähköposti osoite.'
     },
     username: {
