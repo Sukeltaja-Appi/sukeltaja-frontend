@@ -11,12 +11,8 @@ const style = {
     fontStyle: 'italic',
     fontSize: 14
   },
-  buttonRow: {
-    justifyContent: 'center',
-    padding: 10
-  },
-  buttonDivider: {
-    width: 20
+  divider: {
+    height: 10
   }
 }
 
@@ -103,6 +99,7 @@ class InvitesScreen extends React.Component {
           title="Hae kutsut"
           onPress={this.loadMessages}
         />
+        <View style={style.divider}/>
       </View>
     )
   }
