@@ -3,6 +3,7 @@ import { createMaterialTopTabNavigator, createStackNavigator, MaterialTopTabBar 
 import OngoingEvent from './OngoingEvent'
 import InviteScreen from './InviteScreen'
 import DiveScreen from './DiveScreen'
+import ChatScreen from './ChatScreen'
 import TargetScreen from './TargetScreen'
 import Target from '../simple/Target'
 import { Icon } from 'react-native-elements'
@@ -48,6 +49,16 @@ export default createMaterialTopTabNavigator({
       tabBarOptions: style,
       tabBarIcon: ({ tintColor }) => (
         <Icon name='sunset' type='feather' color={tintColor} />
+      )
+    }
+  },
+  ChatScreen: {
+    screen: ChatScreen,
+    navigationOptions: {
+      tabBarLabel: 'KESKUSTELU',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='message-circle' type='feather' color={tintColor} />
       )
     }
   },
