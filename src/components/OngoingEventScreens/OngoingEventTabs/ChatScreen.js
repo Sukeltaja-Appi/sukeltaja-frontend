@@ -2,9 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { View, FlatList, Text } from 'react-native'
 import { ListItem, Button } from 'react-native-elements'
-import styles from '../../../styles/global'
-import { formatDate } from '../../../utils/dates'
 import t from 'tcomb-form-native'
+
+import eventMsgService from '../../../services/eventMessages'
+import { formatDate } from '../../../utils/dates'
+import styles from '../../../styles/global'
 
 const { Form } = t.form
 
@@ -59,15 +61,14 @@ class ChatScreen extends React.Component {
   }
 
   InvitesSortedByDate = () => {
-    // Backend event doesent yet have chat messages. Use below code when it does:
-    // return this.props.ongoingEvent.chatMessages.sort((a, b) => b.created.localeCompare(a.created))
-    return []
+    return this.props.ongoingEvent.eventMessages.sort((a, b) => b.created.localeCompare(a.created))
+    //return []
   }
 
   showMessages = () => {
-    const { chatMessages } = this.props.ongoingEvent
+    const { eventMessages } = this.props.ongoingEvent
 
-    if (!chatMessages || chatMessages === 0) {
+    if (!eventMessages || eventMessages === 0) {
       return (
         <View style={styles.centered}>
           <Text style={styles.h5}>Ei Viestejä.</Text>
@@ -79,12 +80,12 @@ class ChatScreen extends React.Component {
       <FlatList
         data={this.InvitesSortedByDate()}
         renderItem={({ item }) => {
-          const { sender, created, text } = item
+          const { user, created, text } = item
 
           return (
             <ListItem
               title={text}
-              subtitle={sender.username + ', ' + formatDate(created)}
+              subtitle={user.username + ', ' + formatDate(created)}
               onPress={() => this.selectMessage(item)}
               subtitleStyle={style.subtitle}
               bottomDivider
@@ -113,10 +114,15 @@ class ChatScreen extends React.Component {
   }
 
   send = () => {
-    const { message } = this.state
+    let { message } = this.state
 
     if(message && message !== '') {
-      console.log(this.state.message.text)
+      const { ongoingEvent } = this.props
+
+      message.event = ongoingEvent._id
+      message.created = new Date()
+      eventMsgService.create(message)
+      console.log('sent messages:', message)
       this.setState({ message: '' })
     }
   }
@@ -140,8 +146,7 @@ class ChatScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  ongoingEvent: state.ongoingEvent,
-  user: state.user
+  ongoingEvent: state.ongoingEvent
 })
 
 export default connect(
