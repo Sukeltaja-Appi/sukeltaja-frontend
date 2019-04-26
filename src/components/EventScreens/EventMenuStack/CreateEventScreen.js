@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { View, ScrollView } from 'react-native'
-import { createEvent } from '../../reducers/eventReducer'
-import { now, inOneHour } from '../../utils/dates'
-import EventForm from '../common/EventForm'
-import styles from '../../styles/global'
+import EventForm from '../../common/EventForm'
+
+import { createEvent } from '../../../reducers/eventReducer'
+import { now, inOneHour } from '../../../utils/dates'
+import styles from '../../../styles/global'
 
 class CreateEventScreen extends React.Component {
   constructor(props) {

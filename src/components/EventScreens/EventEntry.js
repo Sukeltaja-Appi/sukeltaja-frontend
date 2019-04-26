@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import EventTabs from './index'
+import EventMenuStack from './index'
 import NoUserScreen from '../common/NoUserScreen'
 
 // The entry point for EventScreens.
@@ -9,11 +9,11 @@ class EventEntry extends React.Component {
     super(props)
   }
 
-  static router = EventTabs.router
+  static router = EventMenuStack.router
 
   render() {
-    // If user is not logged in, render NoUserScreen, otherwise EventTabs.
-    return this.props.user ? <EventTabs {...this.props} /> : <NoUserScreen {...this.props} />
+    // If user is not logged in, render NoUserScreen, otherwise EventMenuStack.
+    return this.props.user ? <EventMenuStack {...this.props} /> : <NoUserScreen {...this.props} />
   }
 }
 

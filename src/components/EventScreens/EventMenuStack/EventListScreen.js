@@ -2,10 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { View, FlatList, Text } from 'react-native'
 import { ListItem, CheckBox } from 'react-native-elements'
-import { formatDate } from '../../utils/dates'
-import styles from '../../styles/global'
-import colors from '../../styles/colors'
-import { setOngoingEvent } from '../../reducers/eventReducer'
+
+import { setOngoingEvent } from '../../../reducers/eventReducer'
+import { formatDate } from '../../../utils/dates'
+import colors from '../../../styles/colors'
+import styles from '../../../styles/global'
 
 const style = {
   checkBox: {

@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, FlatList } from 'react-native'
 import { ListItem, Icon } from 'react-native-elements'
-import styles from '../../styles/global'
+
+import styles from '../../../styles/global'
 
 const MenuScreen = (props) => {
 
