@@ -6,10 +6,10 @@ import {
   createStackNavigator
 } from 'react-navigation'
 
-import ProfileMainScreen from './UserTab/ProfileMainScreen'
-import InvitesScreen from './UserTab/InvitesScreen'
-import Invite from './UserTab/Invite'
-import UserSettingsScreen from './UserTab/UserSettingsScreen'
+import ProfileMainScreen from './ProfileTabs/ProfileMainScreen'
+import InvitesScreen from './ProfileTabs/InvitesScreen'
+import Invite from './ProfileTabs/Invite'
+import UserSettingsScreen from './ProfileTabs/UserSettingsScreen'
 
 import LoginScreen from './LoginStack/LoginScreen'
 import ResetScreen from './LoginStack/ResetScreen'
@@ -19,7 +19,7 @@ import { Icon } from 'react-native-elements'
 
 import colors from '../../styles/colors'
 
-const TabBarComponent = (props) => (<MaterialTopTabBar { ...props } />)
+const TabBarComponent = (props) => <MaterialTopTabBar { ...props } />
 
 const style = {
   activeTintColor: '#fff',
@@ -41,7 +41,7 @@ const MessageStack = createStackNavigator({
   headerMode: 'none'
 })
 
-const UserTab = createMaterialTopTabNavigator({
+const ProfileTabs = createMaterialTopTabNavigator({
   ProfileMain : {
     screen: ProfileMainScreen,
     navigationOptions: {
@@ -88,8 +88,8 @@ const UserTab = createMaterialTopTabNavigator({
 })
 
 const LoginStack = createSwitchNavigator({
-  UserTab: {
-    screen: UserTab
+  ProfileTabs: {
+    screen: ProfileTabs
   },
   LoginScreen: {
     screen: LoginScreen
