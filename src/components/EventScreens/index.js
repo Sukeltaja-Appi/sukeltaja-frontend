@@ -5,7 +5,7 @@ import EventListScreen from './EventListScreen'
 import EditEventScreen from './EditEventScreen'
 import Event from './Event'
 
-export default createStackNavigator({
+const EventTabs = createStackNavigator({
   EventMenuScreen: {
     screen: EventMenuScreen,
     navigationOptions: {
@@ -44,3 +44,5 @@ export default createStackNavigator({
     }
   }
 })
+
+export default EventTabs

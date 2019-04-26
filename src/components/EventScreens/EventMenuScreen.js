@@ -18,6 +18,7 @@ const MenuScreen = (props) => {
       leftIcon: () => <Icon name='folder' type='feather' />,
       destination: 'EventListScreen'
     },
+    // delete this if no longer needed
     {
       title: 'Liity sukellustapahtumaan',
       leftIcon: () => <Icon name='user-plus' type='feather' />,
