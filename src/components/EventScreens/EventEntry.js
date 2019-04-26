@@ -12,7 +12,6 @@ class EventEntry extends React.Component {
   static router = EventTabs.router
 
   render() {
-    console.log('do we even get here????')
     // If user is not logged in, render NoUserScreen, otherwise EventTabs.
     return this.props.user ? <EventTabs {...this.props} /> : <NoUserScreen {...this.props} />
   }
