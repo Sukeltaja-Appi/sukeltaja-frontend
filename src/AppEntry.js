@@ -8,7 +8,7 @@ import { initializeEvents } from './reducers/eventReducer'
 import { initializeDives } from './reducers/diveReducer'
 import { getAll } from './reducers/targetReducer'
 import ServerListener from './ServerListener'
-import OfflineNotifier from './components/simple/OfflineNotifier'
+import OfflineNotifier from './components/common/OfflineNotifier'
 
 class AppEntry extends React.Component {
   constructor(props) {
