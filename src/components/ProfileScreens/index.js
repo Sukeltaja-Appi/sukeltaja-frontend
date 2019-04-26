@@ -5,17 +5,16 @@ import {
   createMaterialTopTabNavigator,
   createStackNavigator
 } from 'react-navigation'
+import { Icon } from 'react-native-elements'
 
-import ProfileMainScreen from './ProfileTabs/ProfileMainScreen'
-import InvitesScreen from './ProfileTabs/InvitesScreen'
 import Invite from './ProfileTabs/Invite'
-import UserSettingsScreen from './ProfileTabs/UserSettingsScreen'
+import InvitesScreen from './ProfileTabs/InvitesScreen'
+import ProfileMainScreen from './ProfileTabs/ProfileMainScreen'
+import SettingsScreen from './ProfileTabs/SettingsScreen'
 
 import LoginScreen from './LoginStack/LoginScreen'
-import ResetScreen from './LoginStack/ResetScreen'
 import RegisterScreen from './LoginStack/RegisterScreen'
-
-import { Icon } from 'react-native-elements'
+import ResetScreen from './LoginStack/ResetScreen'
 
 import colors from '../../styles/colors'
 
@@ -64,7 +63,7 @@ const ProfileTabs = createMaterialTopTabNavigator({
     }
   },
   Settings : {
-    screen: UserSettingsScreen,
+    screen: SettingsScreen,
     navigationOptions: {
       tabBarLabel: 'ASETUKSET',
       tabBarOptions: style,
