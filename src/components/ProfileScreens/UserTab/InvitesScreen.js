@@ -1,10 +1,11 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { View, FlatList, Text } from 'react-native'
 import { ListItem, Button } from 'react-native-elements'
-import styles from '../../styles/global'
-import { formatDate } from '../../utils/dates'
-import { connect } from 'react-redux'
-import { getMessages } from '../../reducers/messageReducer'
+
+import { getMessages } from '../../../reducers/messageReducer'
+import { formatDate } from '../../../utils/dates'
+import styles from '../../../styles/global'
 
 const style = {
   subtitle: {

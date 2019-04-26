@@ -3,10 +3,9 @@ import { connect } from 'react-redux'
 import { View, Alert } from 'react-native'
 import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
-import resetService from '../../services/reset'
-import { paddingSides } from '../../styles/global'
 
-import styles from '../../styles/global'
+import resetService from '../../../services/reset'
+import styles, { paddingSides } from '../../../styles/global'
 
 const { Form } = t.form
 

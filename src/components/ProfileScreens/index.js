@@ -6,13 +6,14 @@ import {
   createStackNavigator
 } from 'react-navigation'
 
-import ProfileMainScreen from './ProfileMainScreen'
-import InvitesScreen from './InvitesScreen'
-import Invite from './Invite'
-import UserSettingsScreen from './UserSettingsScreen'
-import LoginScreen from './LoginScreen'
-import ResetScreen from './ResetScreen'
-import RegisterScreen from './RegisterScreen'
+import ProfileMainScreen from './UserTab/ProfileMainScreen'
+import InvitesScreen from './UserTab/InvitesScreen'
+import Invite from './UserTab/Invite'
+import UserSettingsScreen from './UserTab/UserSettingsScreen'
+
+import LoginScreen from './LoginStack/LoginScreen'
+import ResetScreen from './LoginStack/ResetScreen'
+import RegisterScreen from './LoginStack/RegisterScreen'
 
 import { Icon } from 'react-native-elements'
 
@@ -86,7 +87,7 @@ const UserTab = createMaterialTopTabNavigator({
   }
 })
 
-export default createSwitchNavigator({
+const LoginStack = createSwitchNavigator({
   UserTab: {
     screen: UserTab
   },
@@ -102,3 +103,5 @@ export default createSwitchNavigator({
 }, {
   headerMode: 'none'
 })
+
+export default LoginStack

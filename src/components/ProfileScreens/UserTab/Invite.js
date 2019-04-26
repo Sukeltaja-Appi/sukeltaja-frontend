@@ -3,12 +3,12 @@ import { View, Text } from 'react-native'
 import { Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 
-import styles from '../../styles/global'
-import colors from '../../styles/colors'
-import { joinOngoingEvent } from '../../reducers/eventReducer'
-import { checkMessage } from '../../reducers/messageReducer'
-import { usernameOrId } from '../../utils/userHandler'
-import { formatDate } from '../../utils/dates'
+import { joinOngoingEvent } from '../../../reducers/eventReducer'
+import { checkMessage } from '../../../reducers/messageReducer'
+import { usernameOrId } from '../../../utils/userHandler'
+import { formatDate } from '../../../utils/dates'
+import styles from '../../../styles/global'
+import colors from '../../../styles/colors'
 
 const style = {
   buttonJoin: {

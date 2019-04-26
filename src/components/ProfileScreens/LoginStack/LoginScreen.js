@@ -4,15 +4,13 @@ import { View } from 'react-native'
 import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
 
-import { paddingSides } from '../../styles/global'
-
-import userService from '../../services/users'
-import { initializeEvents } from '../../reducers/eventReducer'
-import { initializeDives } from '../../reducers/diveReducer'
-import { getAll } from '../../reducers/targetReducer'
-import { login } from '../../reducers/userReducer'
-
-import { getServerListener } from '../../ServerListener'
+import { getServerListener } from '../../../ServerListener'
+import userService from '../../../services/users'
+import { initializeEvents } from '../../../reducers/eventReducer'
+import { initializeDives } from '../../../reducers/diveReducer'
+import { getAll } from '../../../reducers/targetReducer'
+import { login } from '../../../reducers/userReducer'
+import { paddingSides } from '../../../styles/global'
 
 const { Form } = t.form
 
@@ -34,10 +32,6 @@ const style = {
 
 const options = {
   fields: {
-    email: {
-      label: 'Sähköpostiosoite:',
-      error: 'Anna validi sähköposti osoite.'
-    },
     username: {
       label: 'Käyttäjätunnus:',
       error: 'Käyttäjätunnus ei saa olla tyhjä.'
@@ -50,7 +44,7 @@ const options = {
   }
 }
 
-class RegisterScreen extends React.Component {
+class LoginScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -62,16 +56,6 @@ class RegisterScreen extends React.Component {
   }
 
   navigate = (value) => this.props.navigation.navigate(value)
-
-  register = async () => {
-    const response = await userService.create(this.state.credentials)
-
-    if (response) {
-      await this.login()
-    } else {
-      console.log('Registration failed!')
-    }
-  }
 
   login = async () => {
     const { login, initializeEvents, initializeDives, getAll } = this.props
@@ -101,16 +85,15 @@ class RegisterScreen extends React.Component {
     const reference = 'form'
 
     const User = t.struct({
-      email: t.String,
       username: t.String,
-      password: t.String
+      password: t.String,
     })
 
     return (
       <View>
         <Header
           placement="center"
-          centerComponent={{ text: 'REKISTERÖITYMINEN', style: style.title }}
+          centerComponent={{ text: 'KIRJAUTUMINEN', style: style.title }}
           containerStyle={{
             backgroundColor: '#1a237e',
             justifyContent: 'space-around',
@@ -126,7 +109,14 @@ class RegisterScreen extends React.Component {
           />
 
           <Button
-            onPress={this.register}
+            onPress={this.login}
+            title="Kirjaudu"
+          />
+
+          <View style={style.buttonDivider} />
+
+          <Button
+            onPress={() => this.navigate('RegisterScreen')}
             title="Rekisteröidy"
           />
 
@@ -134,9 +124,10 @@ class RegisterScreen extends React.Component {
           <View style={style.buttonDivider} />
 
           <Button
-            onPress={() => this.navigate('LoginScreen')}
-            title="Palaa"
+            onPress={() => this.navigate('ResetScreen')}
+            title="Unohtuiko salasana?"
           />
+
         </View>
       </View>
     )
@@ -148,4 +139,4 @@ const mapStateToProps = (state) => ({ user: state.user })
 export default connect(
   mapStateToProps,
   { login, initializeEvents, initializeDives, getAll }
-)(RegisterScreen)
+)(LoginScreen)
