@@ -1,11 +1,11 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { View, FlatList, Text } from 'react-native'
 import { ListItem, Button } from 'react-native-elements'
-import styles from '../../styles/global'
-import { formatDate } from '../../utils/dates'
-import { connect } from 'react-redux'
-
+import styles from '../../../styles/global'
+import { formatDate } from '../../../utils/dates'
 import t from 'tcomb-form-native'
+
 const { Form } = t.form
 
 const style = {

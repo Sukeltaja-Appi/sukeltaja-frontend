@@ -3,9 +3,9 @@ import { View, FlatList } from 'react-native'
 import { Text, Button, ListItem } from 'react-native-elements'
 import { connect } from 'react-redux'
 
-import { setOngoingEvent, getOngoingEvent } from '../../reducers/eventReducer'
-import { endDives } from '../../reducers/diveReducer'
-import colors from '../../styles/colors'
+import { setOngoingEvent, getOngoingEvent } from '../../../reducers/eventReducer'
+import { endDives } from '../../../reducers/diveReducer'
+import colors from '../../../styles/colors'
 
 const style = {
   buttonEnd: {
@@ -33,7 +33,7 @@ const style = {
   }
 }
 
-class OngoingEvent extends React.Component {
+class EventScreen extends React.Component {
 
   loadEvent = async () => {
     const { ongoingEvent, getOngoingEvent } = this.props
@@ -152,4 +152,4 @@ const mapStateToProps = (state) => ({
 export default connect(
   mapStateToProps,
   { endDives, setOngoingEvent, getOngoingEvent }
-)(OngoingEvent)
+)(EventScreen)

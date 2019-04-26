@@ -1,12 +1,15 @@
 import React from 'react'
+import { connect } from 'react-redux'
+
 import { View, FlatList, Text } from 'react-native'
 import { CheckBox, Button, SearchBar } from 'react-native-elements'
-import styles from '../../styles/global'
-import colors from '../../styles/colors'
-import { connect } from 'react-redux'
-import { loadAllUsers } from '../../reducers/userReducer'
-import { sendMessage } from '../../reducers/messageReducer'
-import { getOngoingEvent } from '../../reducers/eventReducer'
+
+import { loadAllUsers } from '../../../reducers/userReducer'
+import { sendMessage } from '../../../reducers/messageReducer'
+import { getOngoingEvent } from '../../../reducers/eventReducer'
+
+import styles from '../../../styles/global'
+import colors from '../../../styles/colors'
 
 const style = {
   divider: {

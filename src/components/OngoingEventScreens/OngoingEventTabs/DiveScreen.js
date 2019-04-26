@@ -4,13 +4,13 @@ import { Text, Button, CheckBox } from 'react-native-elements'
 import { Duration } from 'luxon'
 import { connect } from 'react-redux'
 
-import styles from '../../styles/global'
-import colors from '../../styles/colors'
+import styles from '../../../styles/global'
+import colors from '../../../styles/colors'
 
-import locationService from '../../services/location'
-import { startDives, endDives } from '../../reducers/diveReducer'
-import { getOngoingEvent } from '../../reducers/eventReducer'
-import { eventToID } from '../../utils/eventHandler'
+import locationService from '../../../services/location'
+import { startDives, endDives } from '../../../reducers/diveReducer'
+import { getOngoingEvent } from '../../../reducers/eventReducer'
+import { eventToID } from '../../../utils/eventHandler'
 
 const style = {
   buttonEndDives: {

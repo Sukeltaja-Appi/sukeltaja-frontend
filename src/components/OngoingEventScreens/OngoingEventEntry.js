@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import OngoingEventTabs from './index'
 import StartEvent from './StartEvent'
 
-class OngoingEventScreen extends React.Component {
+class OngoingEventEntry extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -20,4 +20,4 @@ const mapStateToProps = (state) => ({ ongoingEvent: state.ongoingEvent })
 export default connect(
   mapStateToProps,
   null
-)(OngoingEventScreen)
+)(OngoingEventEntry)

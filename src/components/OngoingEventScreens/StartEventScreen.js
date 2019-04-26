@@ -6,7 +6,7 @@ import { startEvent } from '../../reducers/eventReducer'
 import styles from '../../styles/global'
 import colors from '../../styles/colors'
 
-const StartEvent = (props) => {
+const StartEventScreen = (props) => {
 
   const { startEvent, user } = props
 
@@ -46,4 +46,4 @@ const mapStateToProps = (state) => ({
 export default connect(
   mapStateToProps,
   { startEvent }
-)(StartEvent)
+)(StartEventScreen)

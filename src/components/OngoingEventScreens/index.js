@@ -1,12 +1,15 @@
 import React from 'react'
 import { createMaterialTopTabNavigator, createStackNavigator, MaterialTopTabBar } from 'react-navigation'
-import OngoingEvent from './OngoingEvent'
-import InviteScreen from './InviteScreen'
-import DiveScreen from './DiveScreen'
-import ChatScreen from './ChatScreen'
-import TargetScreen from './TargetScreen'
-import Target from '../simple/Target'
 import { Icon } from 'react-native-elements'
+
+import ChatScreen from './OngoingEventTabs/ChatScreen'
+import DiveScreen from './OngoingEventTabs/DiveScreen'
+import EventScreen from './OngoingEventTabs/EventScreen'
+import InviteScreen from './OngoingEventTabs/InviteScreen'
+import TargetScreen from './OngoingEventTabs/TargetScreen'
+
+import Target from '../simple/Target'
+
 import colors from '../../styles/colors'
 
 const style = {
@@ -21,7 +24,7 @@ const style = {
 const TabBarComponent = (props) => (<MaterialTopTabBar {...props} />)
 
 const EventScreenStack = createStackNavigator({
-  OngoingEvent,
+  EventScreen,
   InviteScreen
 }, { headerMode: 'none' })
 
@@ -30,7 +33,7 @@ const TargetScreenStack = createStackNavigator({
   Target
 }, { headerMode: 'none' })
 
-export default createMaterialTopTabNavigator({
+const OngoingEventTabs = createMaterialTopTabNavigator({
   TargetScreen: {
     screen: TargetScreenStack,
     navigationOptions: {
@@ -85,3 +88,5 @@ export default createMaterialTopTabNavigator({
     )
   }
 })
+
+export default OngoingEventTabs
