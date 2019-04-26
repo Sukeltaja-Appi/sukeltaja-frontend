@@ -1,15 +1,15 @@
 import React from 'react'
 import {
-  createSwitchNavigator,
-  MaterialTopTabBar,
   createMaterialTopTabNavigator,
-  createStackNavigator
+  createStackNavigator,
+  createSwitchNavigator,
+  MaterialTopTabBar
 } from 'react-navigation'
 import { Icon } from 'react-native-elements'
 
 import Invite from './ProfileTabs/Invite'
 import InvitesScreen from './ProfileTabs/InvitesScreen'
-import ProfileMainScreen from './ProfileTabs/ProfileMainScreen'
+import ProfileScreen from './ProfileTabs/ProfileScreen'
 import SettingsScreen from './ProfileTabs/SettingsScreen'
 
 import LoginScreen from './LoginStack/LoginScreen'
@@ -41,8 +41,8 @@ const MessageStack = createStackNavigator({
 })
 
 const ProfileTabs = createMaterialTopTabNavigator({
-  ProfileMain : {
-    screen: ProfileMainScreen,
+  Profile : {
+    screen: ProfileScreen,
     navigationOptions: {
       tabBarLabel: 'PROFIILI',
       tabBarOptions: style,
