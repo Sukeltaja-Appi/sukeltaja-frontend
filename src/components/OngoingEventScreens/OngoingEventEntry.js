@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import OngoingEventTabs from './index'
 import StartEventScreen from './StartEventScreen'
-import NoUserScreen from '../simple/NoUserScreen'
+import NoUserScreen from '../common/NoUserScreen'
 
 // The entry point for OngoingEventScreens.
 class OngoingEventEntry extends React.Component {

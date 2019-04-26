@@ -8,7 +8,7 @@ import colors from '../../styles/colors'
 import decimalToDMS from '../../utils/coordinates'
 
 import { getAll } from '../../reducers/targetReducer'
-import Target from '../simple/Target'
+import Target from '../common/Target'
 
 class MainMapScreen extends React.Component {
   constructor(props) {

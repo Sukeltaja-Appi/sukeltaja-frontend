@@ -7,7 +7,7 @@ import colors from '../../../styles/colors'
 import locationService from '../../../services/location'
 import { getAll } from '../../../reducers/targetReducer'
 import haversine from '../../../utils/haversine'
-import Target from '../../simple/Target'
+import Target from '../../common/Target'
 
 const style = {
   title: {

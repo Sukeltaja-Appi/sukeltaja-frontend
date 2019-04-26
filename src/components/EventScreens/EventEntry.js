@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import EventTabs from './index'
-import NoUserScreen from '../simple/NoUserScreen'
+import NoUserScreen from '../common/NoUserScreen'
 
 // The entry point for EventScreens.
 class EventEntry extends React.Component {

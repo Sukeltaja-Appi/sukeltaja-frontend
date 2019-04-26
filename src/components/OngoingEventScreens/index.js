@@ -8,7 +8,7 @@ import EventScreen from './OngoingEventTabs/EventScreen'
 import InviteScreen from './OngoingEventTabs/InviteScreen'
 import TargetScreen from './OngoingEventTabs/TargetScreen'
 
-import Target from '../simple/Target'
+import Target from '../common/Target'
 
 import colors from '../../styles/colors'
 
