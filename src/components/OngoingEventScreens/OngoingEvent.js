@@ -125,14 +125,14 @@ class OngoingEvent extends React.Component {
           />
           <View style={style.buttonDivider}/>
           <Button
-            title='Muokka tapahtumaa'
+            title='Muokkaa tapahtumaa'
             onPress={this.toEditing}
             disabled={this.userIsNotAdmin()}
             raised
           />
           <View style={style.buttonDivider}/>
           <Button
-            title={'Poistu'}
+            title='Poistu'
             onPress={this.leaveEventButton}
             buttonStyle={style.buttonEnd}
             raised
