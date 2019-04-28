@@ -46,7 +46,7 @@ class DiveListScreen extends React.Component {
   }
 
   navigate = (value) => this.props.navigation.navigate(value)
-  navigateToDive = (item) => this.props.navigation.navigate('EditDiveScreen', { item })
+  navigateToDive = (item) => this.props.navigation.navigate('Dive', { item })
 
   divesSortedByDate = () => this.props.ongoingEvent.dives.sort((a, b) => b.startdate.localeCompare(a.startdate))
 

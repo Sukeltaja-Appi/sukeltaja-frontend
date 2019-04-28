@@ -6,6 +6,7 @@ import ChatScreen from './OngoingEventTabs/ChatScreen'
 import DiveScreen from './OngoingEventTabs/DiveScreenStack/DiveScreen'
 import DiveListScreen from './OngoingEventTabs/DiveScreenStack/DiveListScreen'
 import CreateDiveScreen from './OngoingEventTabs/DiveScreenStack/CreateDiveScreen'
+import Dive from './OngoingEventTabs/DiveScreenStack/Dive'
 import EventScreen from './OngoingEventTabs/EventScreen'
 import InviteScreen from './OngoingEventTabs/InviteScreen'
 import TargetScreen from './OngoingEventTabs/TargetScreen'
@@ -33,7 +34,8 @@ const EventScreenStack = createStackNavigator({
 const DiveScreenStack = createStackNavigator({
   DiveScreen,
   DiveListScreen,
-  CreateDiveScreen
+  CreateDiveScreen,
+  Dive
 }, { headerMode: 'none' })
 
 const TargetScreenStack = createStackNavigator({
