@@ -76,7 +76,9 @@ class DiveListScreen extends React.Component {
               return (
                 <ListItem
                   title={'Sukeltaja: ' + user.username}
-                  subtitle={'Alkoi: ' + formatDate(startdate) + '\n' + this.displayEndDate(item)
+                  subtitle={
+                    'Alkoi: ' + formatDate(startdate) + '\n'
+                    + this.displayEndDate(item)
                     + '\nKoordinaatit: L:'
                     + parseFloat(latitude).toFixed(n6) + '; P:'
                     + parseFloat(longitude).toFixed(n6)}

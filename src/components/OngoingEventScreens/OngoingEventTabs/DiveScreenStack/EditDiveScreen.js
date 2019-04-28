@@ -1,13 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { StackActions, NavigationActions } from 'react-navigation'
 import { View, ScrollView } from 'react-native'
 import { Button } from 'react-native-elements'
 import DiveForm from '../../../common/DiveForm'
 
 import locationService from '../../../../services/location'
-import { createDive } from '../../../../reducers/diveReducer'
-import { now, inTenMinutes } from '../../../../utils/dates'
-
+import { updateDive } from '../../../../reducers/diveReducer'
 import colors from '../../../../styles/colors'
 import styles from '../../../../styles/global'
 import { paddingSides } from '../../../../styles/global'
@@ -24,28 +23,32 @@ const style = {
   }
 }
 
-class CreateDiveScreen extends React.Component {
+class EditDiveScreen extends React.Component {
   constructor(props) {
     super(props)
     this.ref = React.createRef()
 
-    let longitude = 0.1
-    let latitude = 0.1
-    const { target } = this.props.ongoingEvent
-
-    if (target) {
-      latitude = target.latitude
-      longitude = target.longitude
-    }
+    const {
+      _id,
+      user,
+      startdate,
+      enddate,
+      latitude,
+      longitude,
+      ...rest
+    } = props.navigation.getParam('item')
 
     this.state = {
       dive: {
-        user: '',
-        startdate: now(),
-        enddate: inTenMinutes(),
-        latitude,
-        longitude
-      }
+        _id,
+        user: user.username,
+        startdate: new Date(startdate),
+        enddate: new Date(enddate),
+        longitude,
+        latitude
+      },
+      originalDive: props.navigation.getParam('item'),
+      ...rest
     }
   }
 
@@ -65,14 +68,30 @@ class CreateDiveScreen extends React.Component {
     } catch(err) { console.log('Geolocation unavailable.') }
   }
 
-  // Any user in the event is allowed to create Dives for themselves
-  // To create dives for some other event user, the user must be event admin.
-  createButton = async () => {
+  back = (dive) => {
+    const navigateAction = (routeName, params) => NavigationActions.navigate({
+      routeName, params
+    })
+
+    const resetAction = StackActions.reset({
+      index: 2,
+      actions: [
+        navigateAction('DiveScreen'),
+        navigateAction('DiveListScreen'),
+        navigateAction('Dive', { item: dive })
+      ]
+    })
+
+    this.props.navigation.dispatch(resetAction)
+  }
+
+  updateButton = async () => {
     const validated = this.ref.current.getValue()
     const { dive } = this.state
 
     if (validated) {
-      const { user, ongoingEvent, createDive } = this.props
+      const { user, ongoingEvent, updateDive } = this.props
+
       let { creator, admins, participants } = ongoingEvent
 
       admins = [ creator, ...admins]
@@ -98,16 +117,15 @@ class CreateDiveScreen extends React.Component {
 
       if(allowed) {
         dive.event = ongoingEvent._id
-        await createDive(dive, user._id)
-        this.props.navigation.replace('DiveListScreen')
+        const updatedDive = await updateDive(dive, user._id)
+
+        this.back(updatedDive)
       }
     }
   }
 
-  navigate = (value) => this.props.navigation.navigate(value)
-
   render() {
-    const { dive } = this.state
+    const { dive, originalDive } = this.state
 
     return (
       <View style={styles.noPadding}>
@@ -116,9 +134,9 @@ class CreateDiveScreen extends React.Component {
             ref={this.ref}
             dive={dive}
             onFormChange={(dive) => this.setState({ dive })}
-            onButtonPress={this.createButton}
+            onButtonPress={this.updateButton}
             buttonStyle={{ backgroundColor: colors.success }}
-            buttonTitle="Lisää Sukellus"
+            buttonTitle='Tallenna muutokset'
           />
           <View style={style.buttonContainer}>
             <Button
@@ -129,7 +147,7 @@ class CreateDiveScreen extends React.Component {
             <View style={style.divider}/>
             <Button
               title='<-- Takaisin'
-              onPress={() => this.navigate('DiveListScreen')}
+              onPress={() => this.back(originalDive)}
               raised
             />
           </View>
@@ -146,5 +164,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { createDive }
-)(CreateDiveScreen)
+  { updateDive }
+)(EditDiveScreen)
