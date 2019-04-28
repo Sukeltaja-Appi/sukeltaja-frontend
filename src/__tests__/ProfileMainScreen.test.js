@@ -5,7 +5,7 @@ import { shallow, mount } from 'enzyme'
 
 import { Button } from 'react-native-elements'
 
-import { ProfileMainScreen } from '../components/ProfileScreens/ProfileMainScreen'
+import { ProfileMainScreen } from '../components/ProfileScreens/ProfileTabs/ProfileScreen'
 
 let wrapper, mounted
 
