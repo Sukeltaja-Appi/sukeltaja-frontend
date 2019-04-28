@@ -4,14 +4,15 @@ import { userToID } from '../utils/userHandler'
 
 export const diveReducer = (state = [], action) => {
   switch (action.type) {
-    case 'NEW_DIVE': {
+    case 'NEW_DIVE':
       return [ ...state, action.newDive ]
-    }
     case 'UPDATE_DIVE': {
       const id = action.updatedDive._id
 
       return state.map(dive => dive._id !== id ? dive : action.updatedDive)
     }
+    case 'DELETE_DIVE':
+      return state.filter(d => d._id !== action.dive._id)
     case 'INIT_DIVES':
       return action.dives
     default:
@@ -118,6 +119,21 @@ export const updateDive = (dive, userID) => {
     }
 
     return updatedDive
+  }
+
+  return standardQueuing(thunk)
+}
+
+export const deleteDive = (dive, userID) => {
+  async function thunk (dispatch) {
+    await diveService.del(dive._id)
+
+    if (userID === dive._id) {
+      dispatch({
+        type: 'DELETE_DIVE',
+        dive
+      })
+    }
   }
 
   return standardQueuing(thunk)

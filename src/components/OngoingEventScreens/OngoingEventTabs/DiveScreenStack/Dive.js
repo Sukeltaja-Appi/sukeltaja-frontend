@@ -1,7 +1,9 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Text, Divider, Icon, Button } from 'react-native-elements'
+import { connect } from 'react-redux'
 
+import { deleteDive } from '../../../../reducers/diveReducer'
 import { formatDate } from '../../../../utils/dates'
 import colors from '../../../../styles/colors'
 import styles, { paddingSides } from '../../../../styles/global'
@@ -25,13 +27,18 @@ const style = {
   },
   text: {
     fontSize: 16
+  },
+  buttonDelete: {
+    backgroundColor: colors.red
   }
 }
 
 const Dive = (props) => {
-  const { navigation } = props
+  const { navigation, ongoingDives, ongoingEvent, deleteDive } = props
 
-  const { user, startdate, enddate, latitude, longitude } = navigation.getParam('item')
+  const dive = navigation.getParam('item')
+  const { user, startdate, enddate, latitude, longitude } = dive
+  const currentUser = props.user
 
   const navigate = (route, params) => navigation.navigate(route, params)
 
@@ -43,6 +50,43 @@ const Dive = (props) => {
     return 'Meneillään oleva!'
   }
 
+  let { creator, admins, participants } = ongoingEvent
+
+  admins = [ creator, ...admins ]
+
+  const deletionNotAllowed = () => {
+    if(ongoingDives.map(d => d._id).includes(dive._id)) return true
+    if(currentUser._id !== user._id && !admins.map(a => a._id).includes(currentUser._id)) return true
+
+    return false
+  }
+
+  const deleteButton = async () => {
+
+    const allParticipants = [ creator, ...admins, ...participants ]
+    let allowed = false
+
+    if(!ongoingDives.map(d => d._id).includes(dive._id)) {
+      if (currentUser._id === dive.user._id) allowed = true
+      else if (admins.map(a => a._id).includes(currentUser._id)) {
+
+        for (let i=0; i < allParticipants.length; i++) {
+
+          if(allParticipants[i]._id === dive.user._id) {
+            allowed = true
+            break
+          }
+        }
+      }
+    }
+
+    if(allowed) {
+      await deleteDive(dive, user._id)
+
+      back()
+    }
+  }
+
   return (
     <View style={styles.noPadding}>
       <View style={style.container}>
@@ -52,7 +96,7 @@ const Dive = (props) => {
           <Icon
             name='edit'
             type='feather'
-            onPress={() => navigate('EditDiveScreen', { item: navigation.getParam('item') })}
+            onPress={() => navigate('EditDiveScreen', { item: dive })}
             color={colors.red}
             size={34}
             iconStyle={{ padding: 8 }}
@@ -70,8 +114,18 @@ const Dive = (props) => {
         <Divider style={style.divider} />
 
         <Button
+          title='Poista'
+          buttonStyle={style.buttonDelete}
+          onPress={deleteButton}
+          disabled={deletionNotAllowed()}
+          raised
+        />
+
+        <Divider style={style.divider} />
+
+        <Button
           title='<- Takaisin'
-          onPress={() => back()}
+          onPress={back}
           raised
         />
       </View>
@@ -80,4 +134,13 @@ const Dive = (props) => {
   )
 }
 
-export default Dive
+const mapStateToProps = (state) => ({
+  ongoingEvent: state.ongoingEvent,
+  ongoingDives: state.ongoingDives,
+  user: state.user
+})
+
+export default connect(
+  mapStateToProps,
+  { deleteDive }
+)(Dive)
