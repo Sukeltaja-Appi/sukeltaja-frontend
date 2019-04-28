@@ -3,10 +3,11 @@ import { View, FlatList } from 'react-native'
 import { Text, Button, ListItem } from 'react-native-elements'
 import { connect } from 'react-redux'
 
-import { formatDate } from '../../../utils/dates'
+import { formatDate } from '../../../../utils/dates'
 
-import styles from '../../../styles/global'
-import colors from '../../../styles/colors'
+import colors from '../../../../styles/colors'
+import styles from '../../../../styles/global'
+import { paddingSides } from '../../../../styles/global'
 
 const style = {
   headline: {
@@ -21,18 +22,20 @@ const style = {
     height: 10
   },
   top: {
-    flex: 2,
+    flex: 5,
     justifyContent: 'flex-start',
     marginTop: 10
   },
   bottom: {
-    flex: 1,
+    flex: 2,
     justifyContent: 'flex-end',
-    marginBottom: 20
+    width: '100%',
+    padding: paddingSides,
+    marginBottom: 12
   },
   buttonCreate: {
     backgroundColor: colors.green
-  }
+  },
 }
 
 const n6 = 6
@@ -43,7 +46,7 @@ class DiveListScreen extends React.Component {
   }
 
   navigate = (value) => this.props.navigation.navigate(value)
-  navigateToDive = (item) => this.props.navigation.navigate('Dive', { item })
+  navigateToDive = (item) => this.props.navigation.navigate('EditDiveScreen', { item })
 
   divesSortedByDate = () => this.props.ongoingEvent.dives.sort((a, b) => b.startdate.localeCompare(a.startdate))
 
@@ -90,7 +93,7 @@ class DiveListScreen extends React.Component {
         <View style={style.bottom}>
           <View style={style.divider}/>
           <Button
-            title='Luo uusi sukellus'
+            title='Luo uusi sukellus ->'
             buttonStyle={style.buttonCreate}
             onPress={() => this.navigate('CreateDiveScreen')}
             raised

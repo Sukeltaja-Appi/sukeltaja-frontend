@@ -3,8 +3,9 @@ import { createMaterialTopTabNavigator, createStackNavigator, MaterialTopTabBar 
 import { Icon } from 'react-native-elements'
 
 import ChatScreen from './OngoingEventTabs/ChatScreen'
-import DiveScreen from './OngoingEventTabs/DiveScreen'
-import DiveListScreen from './OngoingEventTabs/DiveListScreen'
+import DiveScreen from './OngoingEventTabs/DiveScreenStack/DiveScreen'
+import DiveListScreen from './OngoingEventTabs/DiveScreenStack/DiveListScreen'
+import CreateDiveScreen from './OngoingEventTabs/DiveScreenStack/CreateDiveScreen'
 import EventScreen from './OngoingEventTabs/EventScreen'
 import InviteScreen from './OngoingEventTabs/InviteScreen'
 import TargetScreen from './OngoingEventTabs/TargetScreen'
@@ -31,7 +32,8 @@ const EventScreenStack = createStackNavigator({
 
 const DiveScreenStack = createStackNavigator({
   DiveScreen,
-  DiveListScreen
+  DiveListScreen,
+  CreateDiveScreen
 }, { headerMode: 'none' })
 
 const TargetScreenStack = createStackNavigator({
@@ -57,7 +59,7 @@ const OngoingEventTabs = createMaterialTopTabNavigator({
       tabBarLabel: 'SUKELLUKSET',
       tabBarOptions: style,
       tabBarIcon: ({ tintColor }) => (
-        <Icon name='sunset' type='feather' color={tintColor} />
+        <Icon name='anchor' type='feather' color={tintColor} />
       )
     }
   },

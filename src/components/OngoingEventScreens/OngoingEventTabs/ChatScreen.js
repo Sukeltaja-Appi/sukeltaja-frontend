@@ -7,6 +7,7 @@ import t from 'tcomb-form-native'
 import eventMsgService from '../../../services/eventMessages'
 import { formatDate } from '../../../utils/dates'
 import styles from '../../../styles/global'
+import { paddingSides } from '../../../styles/global'
 
 const { Form } = t.form
 
@@ -19,7 +20,9 @@ const style = {
     height: 10
   },
   top: {
-    flex: 1
+    flex: 1,
+    width: '100%',
+    padding: paddingSides,
   },
   bottom: {
     flex: 2,

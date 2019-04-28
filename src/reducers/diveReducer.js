@@ -91,18 +91,19 @@ export const endDives = (dives, userID) => {
   return standardQueuing(thunk)
 }
 
-export const createDive = (dive) => {
-
-  return async (dispatch) => {
+export const createDive = (dive, userID) => {
+  async function thunk (dispatch) {
     const newDive = await diveService.create(dive)
 
-    dispatch({
-      type: 'NEW_DIVE',
-      newDive
-    })
-
-    return newDive
+    if (userID === newDive._id) {
+      dispatch({
+        type: 'NEW_DIVE',
+        newDive
+      })
+    }
   }
+
+  return standardQueuing(thunk)
 }
 
 export const updateDive = (dive) => {

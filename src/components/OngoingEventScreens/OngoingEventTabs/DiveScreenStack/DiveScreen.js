@@ -4,13 +4,14 @@ import { Text, Button, CheckBox } from 'react-native-elements'
 import { Duration } from 'luxon'
 import { connect } from 'react-redux'
 
-import styles from '../../../styles/global'
-import colors from '../../../styles/colors'
+import colors from '../../../../styles/colors'
+import styles from '../../../../styles/global'
+import { paddingSides } from '../../../../styles/global'
 
-import locationService from '../../../services/location'
-import { startDives, endDives } from '../../../reducers/diveReducer'
-import { getOngoingEvent } from '../../../reducers/eventReducer'
-import { eventToID } from '../../../utils/eventHandler'
+import locationService from '../../../../services/location'
+import { startDives, endDives } from '../../../../reducers/diveReducer'
+import { getOngoingEvent } from '../../../../reducers/eventReducer'
+import { eventToID } from '../../../../utils/eventHandler'
 
 const style = {
   headline: {
@@ -37,12 +38,16 @@ const style = {
   top: {
     flex: 1,
     justifyContent: 'flex-start',
+    width: '100%',
+    padding: paddingSides,
     marginTop: 10
   },
   bottom: {
     flex: 1,
     justifyContent: 'flex-end',
-    marginBottom: 20
+    width: '100%',
+    padding: paddingSides,
+    marginBottom: 12
   }
 }
 
@@ -98,37 +103,41 @@ class DiveScreen extends React.Component {
   }
 
   diveButton = async () => {
-    let { ongoingEvent, startDives, user } = this.props
     const { selectedUsers } = this.state
 
-    let latitude = magic1 // + Math.random()
-    let longitude = magic2 // + Math.random()
+    if(selectedUsers && selectedUsers.length > 0) {
 
-    try {
-      const location = await locationService.getLocationAsync()
+      let { ongoingEvent, startDives, user } = this.props
 
-      latitude = location.coords.latitude
-      longitude = location.coords.longitude
-    } catch(err) { console.log('Geolocation unavailable.') }
+      let latitude = magic1 // + Math.random()
+      let longitude = magic2 // + Math.random()
 
-    const event = eventToID(ongoingEvent)
-    const startdate = new Date()
+      try {
+        const location = await locationService.getLocationAsync()
 
-    let dives = []
+        latitude = location.coords.latitude
+        longitude = location.coords.longitude
+      } catch(err) { console.log('Geolocation unavailable.') }
 
-    selectedUsers.forEach(u => {
-      dives.push({
-        event,
-        startdate,
-        user: u._id,
-        latitude,
-        longitude
+      const event = eventToID(ongoingEvent)
+      const startdate = new Date()
+
+      let dives = []
+
+      selectedUsers.forEach(u => {
+        dives.push({
+          event,
+          startdate,
+          user: u._id,
+          latitude,
+          longitude
+        })
       })
-    })
 
-    await startDives(dives, user._id)
+      await startDives(dives, user._id)
 
-    this.setState({ counter: 0, ongoing: true })
+      this.setState({ counter: 0, ongoing: true })
+    }
   }
 
   endButton = async () => {
@@ -214,9 +223,17 @@ class DiveScreen extends React.Component {
   }
 
   showListTitle = () => {
-    if(this.userIsAdmin()) return (<Text style={style.listText}>Valitse sukeltajat:</Text>)
+    if(this.userIsAdmin()) return (<Text style={style.listText}>Valitse sukeltajat</Text>)
 
     return (<Text style={style.listText}>Sukeltajat</Text>)
+  }
+
+  noOneIsSelected = () => {
+    const { selectedUsers } = this.state
+
+    if(selectedUsers && selectedUsers.length > 0) return false
+
+    return true
   }
 
   render() {
@@ -229,13 +246,20 @@ class DiveScreen extends React.Component {
         <View style={styles.noPadding}>
 
           <View style={style.top}>
-            {this.showListTitle()}
+            <View style={style.headline}>
+              {this.showListTitle()}
+            </View>
             {this.showList(participantList)}
           </View>
 
           <View style={style.bottom}>
             <View style={style.divider}/>
-            <Button title='Aloita sukellus' onPress={this.diveButton} buttonStyle={style.buttonDive} raised />
+            <Button
+              title='Aloita sukellus'
+              onPress={this.diveButton}
+              buttonStyle={style.buttonDive}
+              disabled={this.noOneIsSelected()}
+              raised />
             <View style={style.divider}/>
             <Button title='Sukelluslistalle ->' onPress={() => this.navigate('DiveListScreen')} raised />
           </View>
@@ -248,7 +272,9 @@ class DiveScreen extends React.Component {
         <View style={styles.noPadding}>
 
           <View style={style.top}>
-            <Text style={{ fontSize: 20 }}>Valitut sukeltajat:</Text>
+            <View style={style.headline}>
+              <Text style={{ fontSize: 20 }}>Valitut sukeltajat</Text>
+            </View>
             {this.showList(participantList)}
           </View>
 
