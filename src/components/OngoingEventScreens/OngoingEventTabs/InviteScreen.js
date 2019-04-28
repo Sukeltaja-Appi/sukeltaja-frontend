@@ -113,7 +113,7 @@ class InviteScreen extends React.Component {
     const { ongoingEvent, getOngoingEvent } = this.props
 
     await getOngoingEvent(ongoingEvent)
-    this.navigate('OngoingEvent')
+    this.navigate('EventScreen')
   }
 
   toggleUserSelection = (user) => {

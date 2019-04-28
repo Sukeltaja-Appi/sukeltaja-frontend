@@ -68,7 +68,7 @@ class ChatScreen extends React.Component {
   showMessages = () => {
     const { eventMessages } = this.props.ongoingEvent
 
-    if (!eventMessages || eventMessages === 0) {
+    if (!eventMessages || eventMessages.length === 0) {
       return (
         <View style={styles.centered}>
           <Text style={styles.h5}>Ei Viestejä.</Text>
@@ -89,7 +89,6 @@ class ChatScreen extends React.Component {
               onPress={() => this.selectMessage(item)}
               subtitleStyle={style.subtitle}
               bottomDivider
-              chevron
             />
           )}
         }

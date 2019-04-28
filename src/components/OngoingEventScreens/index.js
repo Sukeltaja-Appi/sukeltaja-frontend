@@ -4,6 +4,7 @@ import { Icon } from 'react-native-elements'
 
 import ChatScreen from './OngoingEventTabs/ChatScreen'
 import DiveScreen from './OngoingEventTabs/DiveScreen'
+import DiveListScreen from './OngoingEventTabs/DiveListScreen'
 import EventScreen from './OngoingEventTabs/EventScreen'
 import InviteScreen from './OngoingEventTabs/InviteScreen'
 import TargetScreen from './OngoingEventTabs/TargetScreen'
@@ -28,6 +29,11 @@ const EventScreenStack = createStackNavigator({
   InviteScreen
 }, { headerMode: 'none' })
 
+const DiveScreenStack = createStackNavigator({
+  DiveScreen,
+  DiveListScreen
+}, { headerMode: 'none' })
+
 const TargetScreenStack = createStackNavigator({
   TargetScreen,
   Target
@@ -46,7 +52,7 @@ const OngoingEventTabs = createMaterialTopTabNavigator({
     }
   },
   DiveScreen: {
-    screen: DiveScreen,
+    screen: DiveScreenStack,
     navigationOptions: {
       tabBarLabel: 'SUKELLUKSET',
       tabBarOptions: style,

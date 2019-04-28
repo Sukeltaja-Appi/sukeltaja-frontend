@@ -13,6 +13,10 @@ import { getOngoingEvent } from '../../../reducers/eventReducer'
 import { eventToID } from '../../../utils/eventHandler'
 
 const style = {
+  headline: {
+    alignItems: 'center',
+    marginBottom: 10
+  },
   buttonEndDives: {
     backgroundColor: colors.red
   },
@@ -46,8 +50,8 @@ const magic1 = 0.0
 const magic2 = 0.0
 
 class DiveScreen extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       counter: 0,
       ongoing: false,
@@ -56,6 +60,8 @@ class DiveScreen extends React.Component {
     this.showList = this.showList.bind(this)
     this.showListTitle = this.showListTitle.bind(this)
   }
+
+  navigate = (value) => this.props.navigation.navigate(value)
 
   counterUpdate = () => {
     const { counter, ongoing } = this.state
@@ -230,6 +236,8 @@ class DiveScreen extends React.Component {
           <View style={style.bottom}>
             <View style={style.divider}/>
             <Button title='Aloita sukellus' onPress={this.diveButton} buttonStyle={style.buttonDive} raised />
+            <View style={style.divider}/>
+            <Button title='Sukelluslistalle ->' onPress={() => this.navigate('DiveListScreen')} raised />
           </View>
 
         </View>
@@ -249,6 +257,8 @@ class DiveScreen extends React.Component {
             <Text h1 style={style.counter}>{this.duration()}</Text>
             <View style={style.divider}/>
             <Button title='Lopeta sukellus' onPress={this.endButton} buttonStyle={style.buttonEndDives} raised />
+            <View style={style.divider}/>
+            <Button title='Sukelluslista ->' onPress={() => this.navigate('DiveListScreen')} raised />
           </View>
         </View>
       )
