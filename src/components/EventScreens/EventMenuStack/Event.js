@@ -1,7 +1,9 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Text, Divider, Icon } from 'react-native-elements'
+import { Text, Divider, Icon, Button } from 'react-native-elements'
+import { connect } from 'react-redux'
 
+import { deleteEvent } from '../../../reducers/eventReducer'
 import { formatDate } from '../../../utils/dates'
 import colors from '../../../styles/colors'
 import styles, { paddingSides } from '../../../styles/global'
@@ -25,15 +27,24 @@ const style = {
   },
   text: {
     fontSize: 16
+  },
+  buttonDelete: {
+    backgroundColor: colors.red
   }
 }
 
 const Event = (props) => {
-  const { navigation } = props
+  const { navigation, ongoingEvent, deleteEvent } = props
 
-  const { startdate, enddate, title, description } = navigation.getParam('item')
+  const event = navigation.getParam('item')
+  const { startdate, enddate, title, description } = event
 
   const navigate = (route, params) => navigation.navigate(route, params)
+
+  const deleteButton = async () => {
+    await deleteEvent(event, ongoingEvent)
+    navigation.navigate('EventListScreen')
+  }
 
   return (
     <View style={styles.noPadding}>
@@ -57,10 +68,27 @@ const Event = (props) => {
         <Text style={style.text}>Kuvaus:         {description}</Text>
         <Text style={style.text}>Aloitusaika:   { formatDate(startdate) }</Text>
         <Text style={style.text}>Lopetusaika: { formatDate(enddate) }</Text>
+
+        <Divider style={style.divider} />
+
+        <Button
+          title='Poista'
+          buttonStyle={style.buttonDelete}
+          onPress={deleteButton}
+          raised
+        />
+
       </View>
       <Divider />
     </View>
   )
 }
 
-export default Event
+const mapStateToProps = (state) => ({
+  ongoingEvent: state.ongoingEvent
+})
+
+export default connect(
+  mapStateToProps,
+  { deleteEvent }
+)(Event)

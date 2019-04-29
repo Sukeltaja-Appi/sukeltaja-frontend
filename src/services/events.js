@@ -32,6 +32,12 @@ const create = async (newObject) => {
   return response.data
 }
 
+const deleteReference = async (id) => {
+  const response = await axios.delete(`${url}/reference/${id}`, config())
+
+  return response.data
+}
+
 const update = async (id, updatedObject) => {
   const response = await axios.put(`${url}/${id}`, updatedObject, config())
 
@@ -44,4 +50,4 @@ const acceptEventInvite = async (id) => {
   return response.data
 }
 
-export default { getAll, get, create, update, acceptEventInvite }
+export default { getAll, get, create, update, acceptEventInvite, deleteReference }

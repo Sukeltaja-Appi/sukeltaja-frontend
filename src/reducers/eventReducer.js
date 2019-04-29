@@ -11,6 +11,8 @@ export const eventReducer = (state = [], action) => {
 
       return state.map(event => event._id !== id ? event : action.updatedEvent)
     }
+    case 'DELETE_EVENT':
+      return state.filter(e => e._id !== action.event._id)
     case 'INIT_EVENTS':
       return action.events
     default:
@@ -67,6 +69,22 @@ export const createEvent = (event) => {
     dispatch({
       type: 'NEW_EVENT',
       newEvent
+    })
+  }
+
+  return standardQueuing(thunk)
+}
+
+export const deleteEvent = (event, ongoingEvent) => {
+
+  async function thunk (dispatch) {
+    await eventService.deleteReference(event._id)
+    console.log('ongoingEvent in reducer---------->', ongoingEvent)
+    if(ongoingEvent && event._id === ongoingEvent._id) dispatch(setOngoingEvent(null))
+
+    dispatch({
+      type: 'DELETE_EVENT',
+      event
     })
   }
 

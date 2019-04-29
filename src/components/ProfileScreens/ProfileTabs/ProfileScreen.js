@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { View } from 'react-native'
-import { Avatar, Text, Button } from 'react-native-elements'
+import { Image, Text, Button } from 'react-native-elements'
 
 import { logout } from '../../../store'
 import { getServerListener } from '../../../ServerListener'
@@ -10,7 +10,7 @@ import styles from '../../../styles/global'
 import colors from '../../../styles/colors'
 
 export const ProfileMainScreen = (props) => {
-  const uri = 'https://upload.wikimedia.org/wikipedia/commons/5/50/USS_Scorpion_sail.jpg'
+  const uri = require('../../../pictures/mobiililogot_kolmio.png')
 
   const navigate = (value) => props.navigation.navigate(value)
 
@@ -29,7 +29,7 @@ export const ProfileMainScreen = (props) => {
 
   return (
     <View style={styles.centered}>
-      <Avatar source={{ uri }} size="xlarge" rounded />
+      <Image source={ uri } />
       <Text h2>{props.username}</Text>
       <View style={styles.bottom}>
         <Button
