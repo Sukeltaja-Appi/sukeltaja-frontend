@@ -1,7 +1,8 @@
 import React from 'react'
 import { View, FlatList } from 'react-native'
 import { ListItem, Icon } from 'react-native-elements'
-import styles from '../../styles/global'
+
+import styles from '../../../styles/global'
 
 const MenuScreen = (props) => {
 
@@ -18,6 +19,7 @@ const MenuScreen = (props) => {
       leftIcon: () => <Icon name='folder' type='feather' />,
       destination: 'EventListScreen'
     },
+    // delete this if no longer needed
     {
       title: 'Liity sukellustapahtumaan',
       leftIcon: () => <Icon name='user-plus' type='feather' />,

@@ -4,14 +4,15 @@ import { userToID } from '../utils/userHandler'
 
 export const diveReducer = (state = [], action) => {
   switch (action.type) {
-    case 'NEW_DIVE': {
+    case 'NEW_DIVE':
       return [ ...state, action.newDive ]
-    }
     case 'UPDATE_DIVE': {
       const id = action.updatedDive._id
 
       return state.map(dive => dive._id !== id ? dive : action.updatedDive)
     }
+    case 'DELETE_DIVE':
+      return state.filter(d => d._id !== action.dive._id)
     case 'INIT_DIVES':
       return action.dives
     default:
@@ -91,28 +92,49 @@ export const endDives = (dives, userID) => {
   return standardQueuing(thunk)
 }
 
-export const createDive = (dive) => {
-
-  return async (dispatch) => {
+export const createDive = (dive, userID) => {
+  async function thunk (dispatch) {
     const newDive = await diveService.create(dive)
 
-    dispatch({
-      type: 'NEW_DIVE',
-      newDive
-    })
-
-    return newDive
+    if (userID === newDive._id) {
+      dispatch({
+        type: 'NEW_DIVE',
+        newDive
+      })
+    }
   }
+
+  return standardQueuing(thunk)
 }
 
-export const updateDive = (dive) => {
-
-  return async (dispatch) => {
+export const updateDive = (dive, userID) => {
+  async function thunk (dispatch) {
     const updatedDive = await diveService.update(dive._id, dive)
 
-    dispatch({
-      type: 'UPDATE_DIVE',
-      updatedDive
-    })
+    if (userID === updatedDive._id) {
+      dispatch({
+        type: 'UPDATE_DIVE',
+        updatedDive
+      })
+    }
+
+    return updatedDive
   }
+
+  return standardQueuing(thunk)
+}
+
+export const deleteDive = (dive, userID) => {
+  async function thunk (dispatch) {
+    await diveService.del(dive._id)
+
+    if (userID === dive._id) {
+      dispatch({
+        type: 'DELETE_DIVE',
+        dive
+      })
+    }
+  }
+
+  return standardQueuing(thunk)
 }

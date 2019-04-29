@@ -1,9 +1,12 @@
+// Convert to radians.
 Number.prototype.toRad = function() {
   const halfTurn = 180
 
   return this * Math.PI / halfTurn
 }
 
+// Haversine formula to calculate distances between two coordinates.
+// see: https://en.wikipedia.org/wiki/Haversine_formula
 const haversine = (coord1, coord2) => {
   // Radius of the Earth in km
   const R = 6371

@@ -3,13 +3,12 @@ import { View, Text } from 'react-native'
 import { Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 
-import styles from '../../styles/global'
-import colors from '../../styles/colors'
-import { joinOngoingEvent } from '../../reducers/eventReducer'
-import { checkMessage } from '../../reducers/messageReducer'
-import { usernameOrId } from '../../utils/userHandler'
-import { eventTitleOrID } from '../../utils/eventHandler'
-import { formatDate } from '../../utils/dates'
+import { joinOngoingEvent } from '../../../reducers/eventReducer'
+import { checkMessage } from '../../../reducers/messageReducer'
+import { usernameOrId } from '../../../utils/userHandler'
+import { formatDate } from '../../../utils/dates'
+import styles from '../../../styles/global'
+import colors from '../../../styles/colors'
 
 const style = {
   buttonJoin: {
@@ -22,12 +21,12 @@ const style = {
     height: 30
   },
   h5: {
-    marginTop: 25,
+    marginTop: 10,
     fontSize: 18,
     textAlign: 'center'
   },
   h3: {
-    marginTop: 10,
+    marginTop: 6,
     fontSize: 26,
     textAlign: 'center'
   }
@@ -56,13 +55,16 @@ const Invite = (props) => {
     if (message.type === 'invitation_participant') return 'Kutsu tapahtumaan:'
   }
 
+  const { title, startdate, enddate } = message.data
+
   return (
     <View style={styles.noPadding}>
       <Text style={style.h5}>Lähettäjä: {usernameOrId(message.sender)}</Text>
       <Text style={style.h5}>Lähetetty: {formatDate(message.created)}</Text>
       <Text style={style.h5}>{invitationTypeDisplay(message.sender)}</Text>
-      <Text style={style.h3}>{eventTitleOrID(message.data)}</Text>
-      <Text style={style.h5}></Text>
+      <Text style={style.h3}>{title}</Text>
+      <Text style={style.h5}>Alkaa: {formatDate(startdate)}</Text>
+      <Text style={style.h5}>Päättyy: {formatDate(enddate)}</Text>
       <Button
         title="Hylkää"
         onPress={() => removeInvite()}

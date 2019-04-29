@@ -1,9 +1,9 @@
 import React from 'react'
 import { createBottomTabNavigator, BottomTabBar, createAppContainer } from 'react-navigation'
 
-import OngoingEventScreen from './components/OngoingEventScreens/OngoingEventScreen'
-import MainMapScreen from './components/MapScreens/MainMapScreen'
-import EventScreens from './components/EventScreens'
+import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
+import MapScreen from './components/MapScreens/MapScreen'
+import EventEntry from './components/EventScreens/EventEntry'
 import ProfileScreens from './components/ProfileScreens'
 
 import { Icon } from 'react-native-elements'
@@ -21,7 +21,7 @@ const style = {
 
 export const MainTabNavigator = createBottomTabNavigator({
   OngoingEvent : {
-    screen: OngoingEventScreen,
+    screen: OngoingEventEntry,
     navigationOptions: {
       tabBarLabel: 'SUKELLUS',
       tabBarOptions: style,
@@ -31,7 +31,7 @@ export const MainTabNavigator = createBottomTabNavigator({
     }
   },
   Map : {
-    screen: MainMapScreen,
+    screen: MapScreen,
     navigationOptions: {
       tabBarLabel: 'KARTTA',
       tabBarOptions: style,
@@ -41,7 +41,7 @@ export const MainTabNavigator = createBottomTabNavigator({
     }
   },
   EventList : {
-    screen: EventScreens,
+    screen: EventEntry,
     navigationOptions: {
       tabBarLabel: 'TAPAHTUMAT',
       tabBarOptions: style,

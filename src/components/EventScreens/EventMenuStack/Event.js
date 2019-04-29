@@ -1,9 +1,10 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Text, Divider, Icon } from 'react-native-elements'
-import styles, { paddingSides } from '../../styles/global'
-import colors from '../../styles/colors'
-import { formatDate } from '../../utils/dates'
+
+import { formatDate } from '../../../utils/dates'
+import colors from '../../../styles/colors'
+import styles, { paddingSides } from '../../../styles/global'
 
 const style = {
   container: {

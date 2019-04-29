@@ -27,9 +27,9 @@ const create = async (newObject) => {
 }
 
 const getAll = async () => {
-  console.log('USERS trying to connect to:', url)
+  console.log('USERS trying to connect to:', `${url}/names`)
 
-  const response = await axios.get(url, config())
+  const response = await axios.get(`${url}/names`, config())
 
   console.log('got users!')
 

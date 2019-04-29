@@ -1,24 +1,24 @@
 import React from 'react'
 import {
-  createSwitchNavigator,
-  MaterialTopTabBar,
   createMaterialTopTabNavigator,
-  createStackNavigator
+  createStackNavigator,
+  createSwitchNavigator,
+  MaterialTopTabBar
 } from 'react-navigation'
-
-import ProfileMainScreen from './ProfileMainScreen'
-import InvitesScreen from './InvitesScreen'
-import Invite from './Invite'
-import UserSettingsScreen from './UserSettingsScreen'
-import LoginScreen from './LoginScreen'
-import ResetScreen from './ResetScreen'
-import RegisterScreen from './RegisterScreen'
-
 import { Icon } from 'react-native-elements'
+
+import Invite from './ProfileTabs/Invite'
+import InvitesScreen from './ProfileTabs/InvitesScreen'
+import ProfileScreen from './ProfileTabs/ProfileScreen'
+import SettingsScreen from './ProfileTabs/SettingsScreen'
+
+import LoginScreen from './LoginStack/LoginScreen'
+import RegisterScreen from './LoginStack/RegisterScreen'
+import ResetScreen from './LoginStack/ResetScreen'
 
 import colors from '../../styles/colors'
 
-const TabBarComponent = (props) => (<MaterialTopTabBar { ...props } />)
+const TabBarComponent = (props) => <MaterialTopTabBar { ...props } />
 
 const style = {
   activeTintColor: '#fff',
@@ -40,9 +40,9 @@ const MessageStack = createStackNavigator({
   headerMode: 'none'
 })
 
-const UserTab = createMaterialTopTabNavigator({
-  ProfileMain : {
-    screen: ProfileMainScreen,
+const ProfileTabs = createMaterialTopTabNavigator({
+  Profile : {
+    screen: ProfileScreen,
     navigationOptions: {
       tabBarLabel: 'PROFIILI',
       tabBarOptions: style,
@@ -63,7 +63,7 @@ const UserTab = createMaterialTopTabNavigator({
     }
   },
   Settings : {
-    screen: UserSettingsScreen,
+    screen: SettingsScreen,
     navigationOptions: {
       tabBarLabel: 'ASETUKSET',
       tabBarOptions: style,
@@ -86,9 +86,9 @@ const UserTab = createMaterialTopTabNavigator({
   }
 })
 
-export default createSwitchNavigator({
-  UserTab: {
-    screen: UserTab
+const LoginStack = createSwitchNavigator({
+  ProfileTabs: {
+    screen: ProfileTabs
   },
   LoginScreen: {
     screen: LoginScreen
@@ -103,3 +103,5 @@ export default createSwitchNavigator({
   headerMode: 'none',
   initialRouteName: 'LoginScreen'
 })
+
+export default LoginStack

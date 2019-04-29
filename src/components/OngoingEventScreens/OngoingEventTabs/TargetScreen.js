@@ -2,12 +2,12 @@ import React from 'react'
 import { View, Text, FlatList } from 'react-native'
 import { ListItem, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
-import styles from '../../styles/global'
-import colors from '../../styles/colors'
-import locationService from '../../services/location'
-import { getAll } from '../../reducers/targetReducer'
-import haversine from '../../utils/haversine'
-import Target from '../simple/Target'
+import styles from '../../../styles/global'
+import colors from '../../../styles/colors'
+import locationService from '../../../services/location'
+import { getAll } from '../../../reducers/targetReducer'
+import haversine from '../../../utils/haversine'
+import Target from '../../common/Target'
 
 const style = {
   title: {

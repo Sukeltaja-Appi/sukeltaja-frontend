@@ -1,11 +1,12 @@
 import { createStackNavigator } from 'react-navigation'
-import EventMenuScreen from './EventMenuScreen'
-import CreateEventScreen from './CreateEventScreen'
-import EventListScreen from './EventListScreen'
-import EditEventScreen from './EditEventScreen'
-import Event from './Event'
 
-export default createStackNavigator({
+import CreateEventScreen from './EventMenuStack/CreateEventScreen'
+import EditEventScreen from './EventMenuStack/EditEventScreen'
+import Event from './EventMenuStack/Event'
+import EventListScreen from './EventMenuStack/EventListScreen'
+import EventMenuScreen from './EventMenuStack/EventMenuScreen'
+
+const EventMenuStack = createStackNavigator({
   EventMenuScreen: {
     screen: EventMenuScreen,
     navigationOptions: {
@@ -44,3 +45,5 @@ export default createStackNavigator({
     }
   }
 })
+
+export default EventMenuStack

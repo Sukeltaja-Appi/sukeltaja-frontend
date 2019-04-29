@@ -25,8 +25,9 @@ const appReducer = combineReducers({
 })
 
 const rootReducer = (state, action) => {
+  // When user logs out, clear all app state. Leave only fetched targets.
   if (action.type === 'CLEAR_STATE') {
-    state = undefined
+    state = { targets: state.targets }
   }
 
   return appReducer(state, action)

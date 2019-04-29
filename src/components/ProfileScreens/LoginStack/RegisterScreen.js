@@ -4,15 +4,13 @@ import { View } from 'react-native'
 import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
 
-import { paddingSides } from '../../styles/global'
-
-import userService from '../../services/users'
-import { initializeEvents } from '../../reducers/eventReducer'
-import { initializeDives } from '../../reducers/diveReducer'
-import { getAll } from '../../reducers/targetReducer'
-import { login } from '../../reducers/userReducer'
-
-import { getServerListener } from '../../ServerListener'
+import { getServerListener } from '../../../ServerListener'
+import userService from '../../../services/users'
+import { initializeEvents } from '../../../reducers/eventReducer'
+import { initializeDives } from '../../../reducers/diveReducer'
+import { getAll } from '../../../reducers/targetReducer'
+import { login } from '../../../reducers/userReducer'
+import { paddingSides } from '../../../styles/global'
 
 const { Form } = t.form
 
@@ -35,7 +33,7 @@ const style = {
 const options = {
   fields: {
     email: {
-      label: 'Sähköposti osoite:',
+      label: 'Sähköpostiosoite:',
       error: 'Anna validi sähköposti osoite.'
     },
     username: {

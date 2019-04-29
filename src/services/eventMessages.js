@@ -8,17 +8,7 @@ axiosRetry(axios, {
   retryDelay: axiosRetry.exponentialDelay
 })
 
-const url = `${apiUrl}/dives`
-
-const getAll = async () => {
-  console.log('DIVES trying to connect to:', url)
-
-  const response = await axios.get(url, config())
-
-  console.log('got all dives!')
-
-  return response.data
-}
+const url = `${apiUrl}/eventMessages`
 
 const create = async (newObject) => {
   const response = await axios.post(url, newObject, config())
@@ -32,10 +22,4 @@ const update = async (id, updatedObject) => {
   return response.data
 }
 
-const del = async (id) => {
-  const response = await axios.delete(`${url}/${id}`, config())
-
-  return response.data
-}
-
-export default { getAll, create, update, del }
+export default { create, update }

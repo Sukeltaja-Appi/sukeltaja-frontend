@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, ScrollView } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation'
+import { View, ScrollView } from 'react-native'
+import EventForm from '../../common/EventForm'
 
-import styles from '../../styles/global'
-import colors from '../../styles/colors'
-import { updateEvent } from '../../reducers/eventReducer'
-import EventForm from '../simple/EventForm'
+import { updateEvent } from '../../../reducers/eventReducer'
+import styles from '../../../styles/global'
+import colors from '../../../styles/colors'
 
 class EditEventScreen extends React.Component {
   constructor(props) {
