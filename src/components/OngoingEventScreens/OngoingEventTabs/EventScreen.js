@@ -1,11 +1,13 @@
 import React from 'react'
-import { View, FlatList } from 'react-native'
+import { View, ScrollView, FlatList } from 'react-native'
 import { Text, Button, ListItem } from 'react-native-elements'
 import { connect } from 'react-redux'
 
 import { setOngoingEvent, getOngoingEvent } from '../../../reducers/eventReducer'
 import { endDives } from '../../../reducers/diveReducer'
 import colors from '../../../styles/colors'
+import styles from '../../../styles/global'
+import { paddingSides } from '../../../styles/global'
 
 const style = {
   buttonEnd: {
@@ -14,22 +16,23 @@ const style = {
   buttonInvite: {
     backgroundColor: colors.green
   },
-  main: {
-    flex: 1,
-    backgroundColor: colors.background,
-    paddingTop: 15,
-  },
-  list: {
-    flex: 1,
-    backgroundColor: colors.background,
+  top: {
+    justifyContent: 'flex-start',
+    width: '100%',
+    padding: paddingSides,
+    marginTop: 10
   },
   bottom: {
-    flex: 1,
     justifyContent: 'flex-end',
+    width: '100%',
+    padding: paddingSides,
     marginBottom: 10,
   },
   buttonDivider: {
     height: 15
+  },
+  descriptionStyle: {
+    fontSize: 17
   }
 }
 
@@ -83,61 +86,77 @@ class EventScreen extends React.Component {
 
   render () {
     const { ongoingEvent } = this.props
-    const { admins, participants, creator, title } = ongoingEvent
+    const { admins, participants, creator, title, description } = ongoingEvent
 
     // This should eventually be replaced by enforcing unique roles
     // in the backend.
     const users = [ creator, ...admins, ...participants ]
 
     return (
-      <View style={style.main}>
-        <View style={{ alignItems: 'center', marginBottom: 20 }}>
-          <Text h3>{title}</Text>
-        </View>
+      <View style={styles.noPadding}>
+        <ScrollView>
 
-        <Text h4>Osallistujat:</Text>
+          <View style={style.top}>
+            <View style={{ flex: 1 }}>
+              <View style={{ marginBottom: 15 }}>
+                <Text h3>{title}</Text>
+              </View>
 
-        <View style={style.list}>
-          <FlatList
-            data={users}
-            renderItem={({ item }) => {
+              <View style={{ marginBottom: 10 }}>
+                <Text h4>Kuvaus:</Text>
+              </View>
 
-              return (
-                <ListItem
-                  title={item.username}
-                  onPress={this.pressUser(item)}
-                  bottomDivider
-                />
-              )}
-            }
-            keyExtractor={item => item._id}
-          />
+              <Text style={style.descriptionStyle}>{description}</Text>
+            </View>
 
-        </View>
+            <View style={{ flex: 2 }}>
+              <View style={{ marginBottom: 10, magrinTop: 10 }}>
+                <Text h4>Osallistujat:</Text>
+              </View>
 
-        <View style={style.bottom}>
-          <Button
-            title='+ Kutsu lisää osallistujia'
-            onPress={this.toInvites}
-            buttonStyle={style.buttonInvite}
-            disabled={this.userIsNotAdmin()}
-            raised
-          />
-          <View style={style.buttonDivider}/>
-          <Button
-            title='Muokkaa tapahtumaa'
-            onPress={this.toEditing}
-            disabled={this.userIsNotAdmin()}
-            raised
-          />
-          <View style={style.buttonDivider}/>
-          <Button
-            title='Poistu'
-            onPress={this.leaveEventButton}
-            buttonStyle={style.buttonEnd}
-            raised
-          />
-        </View>
+              <FlatList
+                data={users}
+                renderItem={({ item }) => {
+                  return (
+                    <ListItem
+                      title={item.username}
+                      onPress={this.pressUser(item)}
+                      bottomDivider
+                    />
+                  )}
+                }
+                keyExtractor={item => item._id}
+              />
+            </View>
+
+          </View>
+
+          <View style={style.bottom}>
+            <Button
+              title='+ Kutsu lisää osallistujia'
+              onPress={this.toInvites}
+              buttonStyle={style.buttonInvite}
+              disabled={this.userIsNotAdmin()}
+              raised
+            />
+            <View style={style.buttonDivider}/>
+            <Button
+              title='Muokkaa tapahtumaa'
+              onPress={this.toEditing}
+              disabled={this.userIsNotAdmin()}
+              raised
+            />
+            <View style={style.buttonDivider}/>
+            <Button
+              title='Poistu'
+              onPress={this.leaveEventButton}
+              buttonStyle={style.buttonEnd}
+              raised
+            />
+            <View style={style.buttonDivider}/>
+            <View style={style.buttonDivider}/>
+          </View>
+        </ScrollView>
       </View>
     )
   }

@@ -12,7 +12,7 @@ const StartEventScreen = (props) => {
 
   const startButton = async () => {
     const event = {
-      title: user.username + 'n sukellustapahtuma',
+      title: user.username + ': sukellustapahtuma',
       dives: []
     }
 
