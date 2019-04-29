@@ -107,17 +107,13 @@ class EventScreen extends React.Component {
               <Text h3>{title}</Text>
             </View>
 
-            <View style={{ marginBottom: 10 }}>
-              <Text h4>Kuvaus:</Text>
-            </View>
-
             <Text style={style.descriptionStyle}>{description}</Text>
 
           </View>
 
           <View style={style.middle}>
             <Button
-              title='+ Kutsu lisää osallistujia'
+              title='Kutsu lisää osallistujia'
               onPress={this.toInvites}
               buttonStyle={style.buttonInvite}
               disabled={this.userIsNotAdmin()}
