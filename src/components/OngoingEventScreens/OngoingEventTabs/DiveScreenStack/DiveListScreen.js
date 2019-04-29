@@ -53,7 +53,8 @@ class DiveListScreen extends React.Component {
   displayEndDate = (dive) => {
     const { ongoingDives } = this.props
 
-    if (ongoingDives.map(d => d._id).includes(dive._id)) 'Meneillään oleva!'
+    //if (ongoingDives.map(d => d._id).includes(dive._id)) return 'Meneillään oleva!'
+    if (!dive.enddate) return 'Meneillään oleva!'
 
     return 'Loppui: ' + formatDate(dive.enddate)
   }
