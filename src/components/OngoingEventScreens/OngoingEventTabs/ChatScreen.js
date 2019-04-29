@@ -35,6 +35,10 @@ const ChatMessage = t.struct({
 })
 
 const options = {
+  i18n: {
+    optional: '',
+    required: ''
+  },
   fields: {
     text: {
       label: 'Viestikenttä',
