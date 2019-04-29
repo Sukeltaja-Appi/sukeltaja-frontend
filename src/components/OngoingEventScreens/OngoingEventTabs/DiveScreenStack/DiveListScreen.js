@@ -51,9 +51,6 @@ class DiveListScreen extends React.Component {
   divesSortedByDate = () => this.props.ongoingEvent.dives.sort((a, b) => b.startdate.localeCompare(a.startdate))
 
   displayEndDate = (dive) => {
-    const { ongoingDives } = this.props
-
-    //if (ongoingDives.map(d => d._id).includes(dive._id)) return 'Meneillään oleva!'
     if (!dive.enddate) return 'Meneillään oleva!'
 
     return 'Loppui: ' + formatDate(dive.enddate)
