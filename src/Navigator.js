@@ -69,7 +69,7 @@ export const MainTabNavigator = createBottomTabNavigator({
       />
     )
   },
-  initialRouteName: 'Profile'
+  //initialRouteName: 'Profile'
 })
 
 const Navigator = createAppContainer(MainTabNavigator)

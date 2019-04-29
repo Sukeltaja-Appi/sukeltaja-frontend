@@ -101,7 +101,7 @@ const LoginStack = createSwitchNavigator({
   }
 }, {
   headerMode: 'none',
-  initialRouteName: 'LoginScreen'
+  //initialRouteName: 'LoginScreen'
 })
 
 export default LoginStack
