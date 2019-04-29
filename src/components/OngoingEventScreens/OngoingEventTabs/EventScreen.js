@@ -22,6 +22,12 @@ const style = {
     padding: paddingSides,
     marginTop: 10
   },
+  middle: {
+    justifyContent: 'center',
+    width: '100%',
+    padding: paddingSides,
+    marginTop: 10
+  },
   bottom: {
     justifyContent: 'flex-end',
     width: '100%',
@@ -97,41 +103,19 @@ class EventScreen extends React.Component {
         <ScrollView>
 
           <View style={style.top}>
-            <View style={{ flex: 1 }}>
-              <View style={{ marginBottom: 15 }}>
-                <Text h3>{title}</Text>
-              </View>
-
-              <View style={{ marginBottom: 10 }}>
-                <Text h4>Kuvaus:</Text>
-              </View>
-
-              <Text style={style.descriptionStyle}>{description}</Text>
+            <View style={{ marginBottom: 15 }}>
+              <Text h3>{title}</Text>
             </View>
 
-            <View style={{ flex: 2 }}>
-              <View style={{ marginBottom: 10, magrinTop: 10 }}>
-                <Text h4>Osallistujat:</Text>
-              </View>
-
-              <FlatList
-                data={users}
-                renderItem={({ item }) => {
-                  return (
-                    <ListItem
-                      title={item.username}
-                      onPress={this.pressUser(item)}
-                      bottomDivider
-                    />
-                  )}
-                }
-                keyExtractor={item => item._id}
-              />
+            <View style={{ marginBottom: 10 }}>
+              <Text h4>Kuvaus:</Text>
             </View>
+
+            <Text style={style.descriptionStyle}>{description}</Text>
 
           </View>
 
-          <View style={style.bottom}>
+          <View style={style.middle}>
             <Button
               title='+ Kutsu lisää osallistujia'
               onPress={this.toInvites}
@@ -153,9 +137,28 @@ class EventScreen extends React.Component {
               buttonStyle={style.buttonEnd}
               raised
             />
-            <View style={style.buttonDivider}/>
-            <View style={style.buttonDivider}/>
           </View>
+
+          <View style={style.bottom}>
+            <View style={{ marginBottom: 10, magrinTop: 10 }}>
+              <Text h4>Osallistujat:</Text>
+            </View>
+
+            <FlatList
+              data={users}
+              renderItem={({ item }) => {
+                return (
+                  <ListItem
+                    title={item.username}
+                    onPress={this.pressUser(item)}
+                    bottomDivider
+                  />
+                )}
+              }
+              keyExtractor={item => item._id}
+            />
+          </View>
+
         </ScrollView>
       </View>
     )
