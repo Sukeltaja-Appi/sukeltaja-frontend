@@ -9,7 +9,7 @@ import userService from '../../../services/users'
 import styles from '../../../styles/global'
 import colors from '../../../styles/colors'
 
-export const ProfileMainScreen = (props) => {
+export const ProfileScreen = (props) => {
   const uri = require('../../../pictures/mobiililogot_kolmio.png')
 
   const navigate = (value) => props.navigation.navigate(value)
@@ -53,4 +53,4 @@ const mapStateToProps = (state) => ({ username: state.user.username })
 export default connect(
   mapStateToProps,
   { logout }
-)(ProfileMainScreen)
+)(ProfileScreen)
