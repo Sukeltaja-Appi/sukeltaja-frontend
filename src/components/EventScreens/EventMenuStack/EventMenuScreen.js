@@ -20,11 +20,11 @@ const MenuScreen = (props) => {
       destination: 'EventListScreen'
     },
     // delete this if no longer needed
-    {
-      title: 'Liity sukellustapahtumaan',
-      leftIcon: () => <Icon name='user-plus' type='feather' />,
-      destination: 'EventMenuScreen'
-    }
+    // {
+    //   title: 'Liity sukellustapahtumaan',
+    //   leftIcon: () => <Icon name='user-plus' type='feather' />,
+    //   destination: 'EventMenuScreen'
+    // }
   ]
 
   return (

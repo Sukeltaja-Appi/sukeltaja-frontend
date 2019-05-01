@@ -10,7 +10,7 @@ import { Icon } from 'react-native-elements'
 import Invite from './ProfileTabs/Invite'
 import InvitesScreen from './ProfileTabs/InvitesScreen'
 import ProfileScreen from './ProfileTabs/ProfileScreen'
-import SettingsScreen from './ProfileTabs/SettingsScreen'
+//import SettingsScreen from './ProfileTabs/SettingsScreen'
 
 import LoginScreen from './LoginStack/LoginScreen'
 import RegisterScreen from './LoginStack/RegisterScreen'
@@ -62,16 +62,16 @@ const ProfileTabs = createMaterialTopTabNavigator({
       )
     }
   },
-  Settings : {
-    screen: SettingsScreen,
-    navigationOptions: {
-      tabBarLabel: 'ASETUKSET',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='settings' type='feather' color={tintColor} />
-      )
-    }
-  }
+  // Settings : {
+  //   screen: SettingsScreen,
+  //   navigationOptions: {
+  //     tabBarLabel: 'ASETUKSET',
+  //     tabBarOptions: style,
+  //     tabBarIcon: ({ tintColor }) => (
+  //       <Icon name='settings' type='feather' color={tintColor} />
+  //     )
+  //   }
+  // }
 }, {
   tabBarComponent: props => {
     return(
@@ -101,7 +101,7 @@ const LoginStack = createSwitchNavigator({
   }
 }, {
   headerMode: 'none',
-  //initialRouteName: 'LoginScreen'
+  initialRouteName: 'LoginScreen'
 })
 
 export default LoginStack
