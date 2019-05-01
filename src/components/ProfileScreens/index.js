@@ -9,8 +9,9 @@ import { Icon } from 'react-native-elements'
 
 import Invite from './ProfileTabs/Invite'
 import InvitesScreen from './ProfileTabs/InvitesScreen'
+import LicenseScreen from './ProfileTabs/LicenseScreen'
 import ProfileScreen from './ProfileTabs/ProfileScreen'
-//import SettingsScreen from './ProfileTabs/SettingsScreen'
+import SettingsScreen from './ProfileTabs/SettingsScreen'
 
 import LoginScreen from './LoginStack/LoginScreen'
 import RegisterScreen from './LoginStack/RegisterScreen'
@@ -40,6 +41,17 @@ const MessageStack = createStackNavigator({
   headerMode: 'none'
 })
 
+const SettingsStack = createStackNavigator({
+  SettingsScreen: {
+    screen: SettingsScreen
+  },
+  LicenseScreen: {
+    screen: LicenseScreen
+  }
+}, {
+  headerMode: 'none'
+})
+
 const ProfileTabs = createMaterialTopTabNavigator({
   Profile : {
     screen: ProfileScreen,
@@ -62,16 +74,16 @@ const ProfileTabs = createMaterialTopTabNavigator({
       )
     }
   },
-  // Settings : {
-  //   screen: SettingsScreen,
-  //   navigationOptions: {
-  //     tabBarLabel: 'ASETUKSET',
-  //     tabBarOptions: style,
-  //     tabBarIcon: ({ tintColor }) => (
-  //       <Icon name='settings' type='feather' color={tintColor} />
-  //     )
-  //   }
-  // }
+  Settings : {
+    screen: SettingsStack,
+    navigationOptions: {
+      tabBarLabel: 'ASETUKSET',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='settings' type='feather' color={tintColor} />
+      )
+    }
+  }
 }, {
   tabBarComponent: props => {
     return(
