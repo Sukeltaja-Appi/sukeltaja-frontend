@@ -118,11 +118,11 @@ class CreateDiveScreen extends React.Component {
             onFormChange={(dive) => this.setState({ dive })}
             onButtonPress={this.createButton}
             buttonStyle={{ backgroundColor: colors.success }}
-            buttonTitle="Lisää Sukellus"
+            buttonTitle="Lisää sukellus"
           />
           <View style={style.buttonContainer}>
             <Button
-              title='Hae Nykyinen sijaintini'
+              title='Hae nykyinen sijaintini'
               onPress={this.getLocation}
               raised
             />
