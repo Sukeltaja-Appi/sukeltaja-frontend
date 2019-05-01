@@ -9,33 +9,6 @@ import userService from '../../../services/users'
 import styles from '../../../styles/global'
 import colors from '../../../styles/colors'
 
-const style = {
-  main: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: colors.background,
-    width: null,
-    height: null,
-    resizeMode: 'contain'
-  },
-  image: {
-    flex: 2,
-    alignItems: 'center',
-    backgroundColor: colors.background,
-    width: null,
-    height: null,
-    resizeMode: 'contain'
-  },
-  rest: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: colors.background,
-    width: null,
-    height: null,
-    resizeMode: 'contain'
-  }
-}
-
 export const ProfileMainScreen = (props) => {
   const uri = require('../../../pictures/mobiililogot_kolmio.png')
 
@@ -55,27 +28,22 @@ export const ProfileMainScreen = (props) => {
   }
 
   return (
-    <View style={style.main}>
-
-      <View style={style.image}>
-        <ScrollView>
-          <Image source={ uri } />
-        </ScrollView>
-      </View>
-      <View style={style.rest}>
-        <ScrollView>
-          <Text h2>{props.username}</Text>
-          <View style={styles.bottom}>
-            <Button
-              onPress={() => logoutButton()}
-              buttonStyle={{ backgroundColor: colors.red }}
-              title="Kirjaudu ulos"
-              raised
-            />
-          </View>
-        </ScrollView>
-      </View>
-
+    <View style={styles.noPadding}>
+      <ScrollView contentContainerStyle={{ ...styles.centered, paddingTop: 0 }}>
+        <Image
+          style={{ width: 300, height: 266 }}
+          source={uri}
+        />
+        <Text h2>{props.username}</Text>
+        <View style={styles.bottom}>
+          <Button
+            onPress={() => logoutButton()}
+            buttonStyle={{ backgroundColor: colors.red }}
+            title="Kirjaudu ulos"
+            raised
+          />
+        </View>
+      </ScrollView>
     </View>
   )
 }
