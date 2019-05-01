@@ -34,7 +34,7 @@ const options = {
   fields: {
     email: {
       label: 'Sähköpostiosoite:',
-      error: 'Anna validi sähköposti osoite.'
+      error: 'Anna validi sähköpostiosoite.'
     },
     username: {
       label: 'Käyttäjätunnus:',
