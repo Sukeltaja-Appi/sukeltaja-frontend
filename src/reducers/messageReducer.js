@@ -18,7 +18,8 @@ export const messageReducer = (state = [], action) => {
 export const sentMessageReducer = (state = [], action) => {
   switch(action.type) {
     case 'SEND_MESSAGE':
-      return [ ...state, action.message ]
+      return state
+      //return [ ...state, action.message ]
     case 'SET_SENT_MESSAGES':
       return action.messages
     default:

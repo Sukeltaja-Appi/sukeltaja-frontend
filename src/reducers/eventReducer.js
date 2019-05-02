@@ -79,7 +79,6 @@ export const deleteEvent = (event, ongoingEvent) => {
 
   async function thunk (dispatch) {
     await eventService.deleteReference(event._id)
-    console.log('ongoingEvent in reducer---------->', ongoingEvent)
     if(ongoingEvent && event._id === ongoingEvent._id) dispatch(setOngoingEvent(null))
 
     dispatch({
