@@ -7,11 +7,8 @@ import { receiveMessage } from './reducers/messageReducer'
 import { config } from './services/users'
 import { apiUrl } from './config'
 
-const passcolon = 7
-const index = apiUrl.substring(passcolon).indexOf(':')
-const socketUrl = apiUrl.substring(0, passcolon+index)
-
-const port = 7821
+const endCut = 4
+const socketUrl = apiUrl.substring(0, apiUrl.length - endCut)
 
 const checkAuthInterval = 300 // milliseconds
 
@@ -40,14 +37,14 @@ class ServerListener extends React.Component {
   }
 
   setupCommunication = () => {
-    const { socket } = this.state
+    let { socket } = this.state
 
     if(config().headers.Authorization !== null
       && (socket === null || !socket.connected)) {
 
       const { updateLocalEvent, receiveMessage } = this.props
 
-      const socket = openSocket(socketUrl + ':' + port, { path: '/update' })
+      socket = openSocket(socketUrl, { path: '/update' })
 
       this.setState({ socket: socket })
 
@@ -71,7 +68,7 @@ class ServerListener extends React.Component {
         socket.disconnect()
       })
 
-      console.log('ServerListener mounted, listening to:', socketUrl + ':' + port)
+      console.log('ServerListener mounted, listening to: socketUrl')
 
     } else setTimeout(this.setupCommunication, checkAuthInterval)
   }
