@@ -68,7 +68,7 @@ class ServerListener extends React.Component {
         socket.disconnect()
       })
 
-      console.log('ServerListener mounted, listening to: socketUrl')
+      console.log('ServerListener mounted, listening to: ', socketUrl)
 
     } else setTimeout(this.setupCommunication, checkAuthInterval)
   }
