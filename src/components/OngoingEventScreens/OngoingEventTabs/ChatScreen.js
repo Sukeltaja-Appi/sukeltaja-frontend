@@ -1,49 +1,22 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { View, FlatList, Text } from 'react-native'
-import { ListItem, Button } from 'react-native-elements'
-import t from 'tcomb-form-native'
+import { ListItem, Button, Input, Icon } from 'react-native-elements'
 
 import eventMsgService from '../../../services/eventMessages'
 import { formatDate } from '../../../utils/dates'
-import styles from '../../../styles/global'
-import { paddingSides } from '../../../styles/global'
-
-const { Form } = t.form
+import styles, { paddingSides } from '../../../styles/global'
+import colors from '../../../styles/colors'
 
 const style = {
   subtitle: {
     fontStyle: 'italic',
     fontSize: 14
   },
-  divider: {
-    height: 10
-  },
   top: {
     flex: 1,
     width: '100%',
     padding: paddingSides,
-  },
-  bottom: {
-    flex: 2,
-    justifyContent: 'flex-start'
-  }
-}
-
-const ChatMessage = t.struct({
-  text: t.String
-})
-
-const options = {
-  i18n: {
-    optional: '',
-    required: ''
-  },
-  fields: {
-    text: {
-      label: 'Viestikenttä',
-      error: 'Viestikenttä ei saa olla tyhjä.'
-    }
   }
 }
 
@@ -51,26 +24,11 @@ class ChatScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      message: {
-        text: ''
-      }
+      message: ''
     }
-    this.showMessages = this.showMessages.bind(this)
-    this.writeBox = this.writeBox.bind(this)
   }
 
-  componentDidMount() {
-
-  }
-
-  selectMessage = (msg) => {
-    console.log(msg)
-  }
-
-  InvitesSortedByDate = () => {
-    return this.props.ongoingEvent.eventMessages.sort((a, b) => b.created.localeCompare(a.created))
-    //return []
-  }
+  invitesSortedByDate = () => this.props.ongoingEvent.eventMessages.sort((a, b) => b.created.localeCompare(a.created))
 
   showMessages = () => {
     const { eventMessages } = this.props.ongoingEvent
@@ -78,14 +36,14 @@ class ChatScreen extends React.Component {
     if (!eventMessages || eventMessages.length === 0) {
       return (
         <View style={styles.centered}>
-          <Text style={styles.h5}>Ei Viestejä.</Text>
+          <Text style={styles.h5}>Ei viestejä.</Text>
         </View>
       )
     }
 
     return(
       <FlatList
-        data={this.InvitesSortedByDate()}
+        data={this.invitesSortedByDate()}
         renderItem={({ item }) => {
           const { user, created, text } = item
 
@@ -104,31 +62,15 @@ class ChatScreen extends React.Component {
     )
   }
 
-  onFormChange = (message) => {
-    this.setState({ message })
-  }
+  sendMessage = () => {
+    if (this.state.message) {
+      const message = {
+        created: new Date(), // backend should give this instead of untrustworthy client
+        event: this.props.ongoingEvent._id,
+        text: this.state.message
+      }
 
-  writeBox = () => {
-    return (
-      <Form
-        type={ChatMessage}
-        options={options}
-        value={this.state.message}
-        onChange={this.onFormChange}
-      />
-    )
-  }
-
-  send = () => {
-    let { message } = this.state
-
-    if(message && message !== '') {
-      const { ongoingEvent } = this.props
-
-      message.event = ongoingEvent._id
-      message.created = new Date()
       eventMsgService.create(message)
-      console.log('sent messages:', message)
       this.setState({ message: '' })
     }
   }
@@ -137,13 +79,20 @@ class ChatScreen extends React.Component {
     return (
       <View style={styles.noPadding}>
         <View style={style.top}>
-          {this.writeBox()}
+          <Input
+            value={this.state.message}
+            onChangeText={message => this.setState({ message })}
+            rightIcon={() => <Icon name='message-circle' type='feather' color={colors.lightgray}/>}
+            placeholder='Kirjoita viesti'
+            containerStyle={{ backgroundColor: 'white', marginBottom: 10 }}
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+          />
           <Button
-            title="Lähetä"
-            onPress={this.send}
+            title='Lähetä'
+            onPress={this.sendMessage}
           />
         </View>
-        <View style={style.bottom}>
+        <View style={{ flex: 2 }}>
           {this.showMessages()}
         </View>
       </View>
@@ -151,9 +100,7 @@ class ChatScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  ongoingEvent: state.ongoingEvent
-})
+const mapStateToProps = (state) => ({ ongoingEvent: state.ongoingEvent })
 
 export default connect(
   mapStateToProps,
