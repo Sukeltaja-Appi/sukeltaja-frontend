@@ -88,7 +88,7 @@ class RegisterScreen extends React.Component {
 
       serverListener.setupCommunication()
 
-      this.navigate('UserTab')
+      this.navigate('ProfileTabs')
     } else {
       console.log('Wrong username or password')
     }
