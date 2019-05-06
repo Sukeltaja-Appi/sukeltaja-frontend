@@ -3,6 +3,7 @@ import { createMaterialTopTabNavigator, createStackNavigator, MaterialTopTabBar 
 import { Icon } from 'react-native-elements'
 
 import ChatScreen from './OngoingEventTabs/ChatScreen'
+import ChatMessage from './OngoingEventTabs/ChatMessage'
 import DiveScreen from './OngoingEventTabs/DiveScreenStack/DiveScreen'
 import DiveListScreen from './OngoingEventTabs/DiveScreenStack/DiveListScreen'
 import CreateDiveScreen from './OngoingEventTabs/DiveScreenStack/CreateDiveScreen'
@@ -30,6 +31,11 @@ const TabBarComponent = (props) => (<MaterialTopTabBar {...props} />)
 const EventScreenStack = createStackNavigator({
   EventScreen,
   InviteScreen
+}, { headerMode: 'none' })
+
+const ChatScreenStack = createStackNavigator({
+  ChatScreen,
+  ChatMessage
 }, { headerMode: 'none' })
 
 const DiveScreenStack = createStackNavigator({
@@ -68,7 +74,7 @@ const OngoingEventTabs = createMaterialTopTabNavigator({
     }
   },
   ChatScreen: {
-    screen: ChatScreen,
+    screen: ChatScreenStack,
     navigationOptions: {
       tabBarLabel: 'KESKUSTELU',
       tabBarOptions: style,

@@ -62,6 +62,10 @@ class ChatScreen extends React.Component {
     )
   }
 
+  selectMessage = (item) => {
+    this.props.navigation.navigate('ChatMessage', { item })
+  }
+
   sendMessage = () => {
     if (this.state.message) {
       const message = {
