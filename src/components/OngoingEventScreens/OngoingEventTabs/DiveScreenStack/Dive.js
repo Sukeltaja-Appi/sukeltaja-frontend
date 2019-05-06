@@ -34,11 +34,10 @@ const style = {
 }
 
 const Dive = (props) => {
-  const { navigation, ongoingDives, ongoingEvent, deleteDive } = props
+  const { navigation, ongoingDives, ongoingEvent, deleteDive, user } = props
 
   const dive = navigation.getParam('item')
-  const { user, startdate, enddate, latitude, longitude } = dive
-  const currentUser = props.user
+  const { startdate, enddate, latitude, longitude } = dive
 
   const navigate = (route, params) => navigation.navigate(route, params)
 
@@ -50,37 +49,19 @@ const Dive = (props) => {
     return 'Meneillään oleva!'
   }
 
-  let { creator, admins, participants } = ongoingEvent
+  let { creator, admins } = ongoingEvent
 
   admins = [ creator, ...admins ]
 
-  const deletionNotAllowed = () => {
-    if(ongoingDives.map(d => d._id).includes(dive._id)) return true
-    if(currentUser._id !== user._id && !admins.map(a => a._id).includes(currentUser._id)) return true
+  const deletionAllowed = () => {
+    if(ongoingDives.map(d => d._id).includes(dive._id)) return false
+    if(user._id !== dive.user._id && !admins.map(a => a._id).includes(user._id)) return false
 
-    return false
+    return true
   }
 
   const deleteButton = async () => {
-
-    const allParticipants = [ creator, ...admins, ...participants ]
-    let allowed = false
-
-    if(!ongoingDives.map(d => d._id).includes(dive._id)) {
-      if (currentUser._id === dive.user._id) allowed = true
-      else if (admins.map(a => a._id).includes(currentUser._id)) {
-
-        for (let i=0; i < allParticipants.length; i++) {
-
-          if(allParticipants[i]._id === dive.user._id) {
-            allowed = true
-            break
-          }
-        }
-      }
-    }
-
-    if(allowed) {
+    if(deletionAllowed()) {
       await deleteDive(dive, user._id)
 
       back()
@@ -92,7 +73,7 @@ const Dive = (props) => {
       <View style={style.container}>
 
         <View style={styles.row}>
-          <Text h3 style={style.title}>Sukeltaja: {user.username}</Text>
+          <Text h3 style={style.title}>Sukeltaja: {dive.user.username}</Text>
           <Icon
             name='edit'
             type='feather'
@@ -117,7 +98,7 @@ const Dive = (props) => {
           title='Poista'
           buttonStyle={style.buttonDelete}
           onPress={deleteButton}
-          disabled={deletionNotAllowed()}
+          disabled={!deletionAllowed()}
           raised
         />
 
