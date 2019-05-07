@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { Text, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 
-import colors from '../../styles/colors'
+import colors from './styles/colors'
 
 const style = {
   main: {
