@@ -26,6 +26,9 @@ const style = {
   },
 }
 
+// * Monitors internet availability and renders on top of the navigator if there is
+//   no internet connection.
+
 class OfflineNotifier extends React.Component {
 
   render() {

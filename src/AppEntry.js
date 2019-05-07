@@ -10,11 +10,19 @@ import { getAll } from './reducers/targetReducer'
 import ServerListener from './ServerListener'
 import OfflineNotifier from './OfflineNotifier'
 
+// * AppEntry is the first component where the store is available.
+// * App startup code can be placed here.
+// * Components that need to render outside of the Navigator can be
+//   placed here. These may include:
+//   - Renderless components, or notification components that need to
+//     always stay active.
+
 class AppEntry extends React.Component {
   constructor(props) {
     super(props)
   }
 
+  // //Autologin code to speed up development:
   // componentDidMount = async () => {
   //   const credentials = {
   //     username: USERNAME,
@@ -29,7 +37,7 @@ class AppEntry extends React.Component {
   //     userService.setToken(user.token)
   //
   //     await this.props.initializeEvents()
-  //     await this.props.initializeDives()
+  //     //await this.props.initializeDives()
   //     await this.props.getAll()
   //   } else {
   //     // notify user of wrong username/pw

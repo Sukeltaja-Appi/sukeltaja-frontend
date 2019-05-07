@@ -2,10 +2,15 @@ import diveService from '../services/dives'
 import { standardQueuing } from '../utils/offlineThunkHandler'
 import { userToID } from '../utils/userHandler'
 
+// Does not store anything yet, but could be used
+// to list users individual dives.
+// Code commented to save space since users individual dives are not yet displayed
+// independently of an event anywhere.
 export const diveReducer = (state = [], action) => {
   switch (action.type) {
     case 'NEW_DIVE':
-      return [ ...state, action.newDive ]
+      return state //Replace with below line to use this reducer
+      //return [ ...state, action.newDive ]
     case 'UPDATE_DIVE': {
       const id = action.updatedDive._id
 
@@ -14,7 +19,8 @@ export const diveReducer = (state = [], action) => {
     case 'DELETE_DIVE':
       return state.filter(d => d._id !== action.dive._id)
     case 'INIT_DIVES':
-      return action.dives
+      return state //Replace with below line to use this reducer
+      // return action.dives
     default:
       return state
   }

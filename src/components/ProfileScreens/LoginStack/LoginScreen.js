@@ -58,7 +58,8 @@ class LoginScreen extends React.Component {
   navigate = (value) => this.props.navigation.navigate(value)
 
   login = async () => {
-    const { login, initializeEvents, initializeDives, getAll } = this.props
+    //const { login, initializeEvents, initializeDives, getAll } = this.props
+    const { login, initializeEvents, getAll } = this.props
 
     await login(this.state.credentials)
     const { user } = this.props
@@ -67,7 +68,7 @@ class LoginScreen extends React.Component {
       userService.setToken(user.token)
 
       await initializeEvents()
-      await initializeDives()
+      //await initializeDives()
       await getAll()
 
       const serverListener = getServerListener()

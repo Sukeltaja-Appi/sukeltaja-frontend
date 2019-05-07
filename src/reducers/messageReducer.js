@@ -2,6 +2,13 @@ import messageService from '../services/messages'
 import { standardQueuing } from '../utils/offlineThunkHandler'
 import { messageToID } from '../utils/utilityFunctions'
 
+// Messages are forwarded by the server to the receivers through the websocket.
+// Each Message has attribute string called type that signals its function.
+// Messages also carry a data object + basic metadata
+// Message types that exist:
+// - 'invitation_participant'
+// - 'invitation_admin'
+
 export const messageReducer = (state = [], action) => {
   switch(action.type) {
     case 'NEW_MESSAGE':
@@ -15,10 +22,12 @@ export const messageReducer = (state = [], action) => {
   }
 }
 
+// Does not do anything yet, could be used if client needs to store
+// the fact that a message was sent.
 export const sentMessageReducer = (state = [], action) => {
   switch(action.type) {
     case 'SEND_MESSAGE':
-      return state
+      return state //replace with below line to use.
       //return [ ...state, action.message ]
     case 'SET_SENT_MESSAGES':
       return action.messages

@@ -14,6 +14,7 @@ ignoredWarnings[0] = 'Unrecognized WebSocket connection option(s) `agent`, `perM
 
 YellowBox.ignoreWarnings(ignoredWarnings)
 
+// Project root component.
 const ProviderPackedApp = () => {
   return (
     <Provider store={store}>
