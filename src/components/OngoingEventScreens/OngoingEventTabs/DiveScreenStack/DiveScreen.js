@@ -51,9 +51,6 @@ const style = {
   }
 }
 
-const magic1 = 0.0
-const magic2 = 0.0
-
 class DiveScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -109,8 +106,8 @@ class DiveScreen extends React.Component {
 
       let { ongoingEvent, startDives, user } = this.props
 
-      let latitude = magic1 // + Math.random()
-      let longitude = magic2 // + Math.random()
+      let latitude = 0
+      let longitude = 0
 
       try {
         const location = await locationService.getLocationAsync()
@@ -119,15 +116,12 @@ class DiveScreen extends React.Component {
         longitude = location.coords.longitude
       } catch(err) { console.log('Geolocation unavailable.') }
 
-      const event = eventToID(ongoingEvent)
-      const startdate = new Date()
-
       let dives = []
 
       selectedUsers.forEach(u => {
         dives.push({
-          event,
-          startdate,
+          event: ongoingEvent._id,
+          startdate: new Date(),
           user: u._id,
           latitude,
           longitude

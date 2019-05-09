@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 
 import { joinOngoingEvent } from '../../../reducers/eventReducer'
 import { checkMessage } from '../../../reducers/messageReducer'
-import { usernameOrId } from '../../../utils/userHandler'
 import { formatDate } from '../../../utils/dates'
 import styles from '../../../styles/global'
 import colors from '../../../styles/colors'
@@ -59,7 +58,7 @@ const Invite = (props) => {
 
   return (
     <View style={styles.noPadding}>
-      <Text style={style.h5}>Lähettäjä: {usernameOrId(message.sender)}</Text>
+      <Text style={style.h5}>Lähettäjä: {message.sender.username}</Text>
       <Text style={style.h5}>Lähetetty: {formatDate(message.created)}</Text>
       <Text style={style.h5}>{invitationTypeDisplay(message.sender)}</Text>
       <Text style={style.h3}>{title}</Text>
