@@ -21,6 +21,11 @@ export const getServerListener = () => {
 // ServerListener:
 // Is a Renderless component that receives updates from the
 // server and keeps the clients data in the reducers upp to date.
+
+// Currently updates:
+// Events which user participates in.
+// Messages, that the user receives. (invitations)
+
 class ServerListener extends React.Component {
   constructor(props) {
     super(props)

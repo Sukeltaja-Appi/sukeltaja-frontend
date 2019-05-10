@@ -4,7 +4,7 @@ import { messageToID } from '../utils/utilityFunctions'
 
 // Messages are forwarded by the server to the receivers through the websocket.
 // Each Message has attribute string called type that signals its function.
-// Messages also carry a data object + basic metadata
+// Messages also carry a data object.
 // Message types that exist:
 // - 'invitation_participant'
 // - 'invitation_admin'

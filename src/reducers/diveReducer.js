@@ -3,7 +3,7 @@ import { standardQueuing } from '../utils/offlineThunkHandler'
 import { userToID } from '../utils/userHandler'
 
 // Does not store anything yet, but could be used
-// to list users individual dives.
+// to list all users individual dives.
 // Code commented to save space since users individual dives are not yet displayed
 // independently of an event anywhere.
 export const diveReducer = (state = [], action) => {
@@ -26,6 +26,8 @@ export const diveReducer = (state = [], action) => {
   }
 }
 
+// Holds dives that user has started that are still ongoing.
+// Can contain dives of other users aswell.
 export const ongoingDivesReducer = (state = [], action) => {
   switch (action.type) {
     case 'NEW_ONGOING_DIVE' :
@@ -37,6 +39,7 @@ export const ongoingDivesReducer = (state = [], action) => {
   }
 }
 
+// Gets all users own dives.
 export const initializeDives = () => {
   return async (dispatch) => {
     const dives = await diveService.getAll()
@@ -62,6 +65,9 @@ export const setOngoingDives = (dives) => {
   }
 }
 
+// Posts one or mode dives. If one of the dives belongs
+// to the app user it is saved to diveReducer.
+// userID: logged in users id
 export const startDives = (dives, userID) => {
 
   return async (dispatch) => {
@@ -79,6 +85,7 @@ export const startDives = (dives, userID) => {
   }
 }
 
+// Ends started dives. Updates users own dive, if one exists in parameter dives.
 export const endDives = (dives, userID) => {
   async function thunk (dispatch) {
     dives.forEach(async (dive) => {

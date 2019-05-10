@@ -85,6 +85,8 @@ class EditDiveScreen extends React.Component {
     this.props.navigation.dispatch(resetAction)
   }
 
+  // User can only edit dives in which they are the diver
+  // or any dives in the event if they have admin/creator status.
   updateButton = async () => {
     const validated = this.ref.current.getValue()
     const { dive } = this.state

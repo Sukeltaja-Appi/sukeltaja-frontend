@@ -2,6 +2,7 @@ import eventService from '../services/events'
 import { standardQueuing } from '../utils/offlineThunkHandler'
 import { eventToID } from '../utils/eventHandler'
 
+// Holds events that the user has created or joined and hasn't removed from their list.
 export const eventReducer = (state = [], action) => {
   switch (action.type) {
     case 'NEW_EVENT':
@@ -20,6 +21,7 @@ export const eventReducer = (state = [], action) => {
   }
 }
 
+// Holds the selected event.
 export const ongoingEventReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_ONGOING_EVENT': {

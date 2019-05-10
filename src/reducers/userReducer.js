@@ -1,6 +1,7 @@
 import loginService from '../services/login'
 import userService from '../services/users'
 
+// Holds the user that logs in to the app.
 export const userReducer = (state = null, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
@@ -12,6 +13,8 @@ export const userReducer = (state = null, action) => {
   }
 }
 
+// Holds users that user gets from the server when searching for people
+// to invite to an event. { username, _id }
 export const usersReducer = (state = [], action) => {
   switch (action.type) {
     case 'LOAD_USERS':
