@@ -1,6 +1,8 @@
 import eventService from '../services/events'
+import { standardQueuing } from '../utils/offlineThunkHandler'
 import { eventToID } from '../utils/eventHandler'
 
+// Holds events that the user has created or joined and hasn't removed from their list.
 export const eventReducer = (state = [], action) => {
   switch (action.type) {
     case 'NEW_EVENT':
@@ -10,6 +12,8 @@ export const eventReducer = (state = [], action) => {
 
       return state.map(event => event._id !== id ? event : action.updatedEvent)
     }
+    case 'DELETE_EVENT':
+      return state.filter(e => e._id !== action.event._id)
     case 'INIT_EVENTS':
       return action.events
     default:
@@ -17,6 +21,7 @@ export const eventReducer = (state = [], action) => {
   }
 }
 
+// Holds the selected event.
 export const ongoingEventReducer = (state = null, action) => {
   switch (action.type) {
     case 'SET_ONGOING_EVENT': {
@@ -44,7 +49,7 @@ export const initializeEvents = () => {
 }
 
 export const startEvent = (event) => {
-  return async (dispatch) => {
+  async function thunk (dispatch) {
     const newEvent = await eventService.create(event)
 
     dispatch({
@@ -54,35 +59,37 @@ export const startEvent = (event) => {
 
     dispatch(setOngoingEvent(newEvent))
   }
-}
 
-export const endEvent = (event) => {
-  event.enddate = new Date()
-
-  return async (dispatch) => {
-    const updatedEvent = await eventService.update(event._id, event)
-
-    dispatch({
-      type: 'UPDATE_EVENT',
-      updatedEvent
-    }),
-
-    dispatch(setOngoingEvent(null))
-  }
+  return standardQueuing(thunk)
 }
 
 export const createEvent = (event) => {
 
-  return async (dispatch) => {
+  async function thunk (dispatch) {
     const newEvent = await eventService.create(event)
 
     dispatch({
       type: 'NEW_EVENT',
       newEvent
     })
-
-    return newEvent
   }
+
+  return standardQueuing(thunk)
+}
+
+export const deleteEvent = (event, ongoingEvent) => {
+
+  async function thunk (dispatch) {
+    await eventService.deleteReference(event._id)
+    if(ongoingEvent && event._id === ongoingEvent._id) dispatch(setOngoingEvent(null))
+
+    dispatch({
+      type: 'DELETE_EVENT',
+      event
+    })
+  }
+
+  return standardQueuing(thunk)
 }
 
 export const updateEvent = (event) => {
@@ -92,6 +99,10 @@ export const updateEvent = (event) => {
     dispatch({
       type: 'UPDATE_EVENT',
       updatedEvent
+    })
+    dispatch({
+      type: 'UPDATE_IF_ONGOING',
+      event: updatedEvent
     })
 
     return updatedEvent
@@ -108,6 +119,16 @@ export const updateLocalEvent = (event) => {
       type: 'UPDATE_IF_ONGOING',
       event
     })
+  }
+}
+
+export const updateOngoingEventLocally = (event) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'UPDATE_EVENT',
+      updatedEvent: event
+    })
+    dispatch(setOngoingEvent(event))
   }
 }
 
@@ -134,14 +155,19 @@ export const joinOngoingEvent = (event) => {
 
 export const getOngoingEvent = (event) => {
 
-  return async (dispatch) => {
+  async function thunk (dispatch) {
     const ongoingEvent = await eventService.get(eventToID(event))
 
     dispatch({
       type: 'UPDATE_EVENT',
-      updatedEvent: ongoingEvent
+      updatedEvent: ongoingEvent,
+      meta: {
+        retry: true
+      }
     })
 
     dispatch(setOngoingEvent(ongoingEvent))
   }
+
+  return standardQueuing(thunk)
 }

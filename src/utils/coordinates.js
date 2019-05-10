@@ -1,3 +1,4 @@
+// Convert coordinates from decimal degrees to degrees, minutes and seconds.
 const decimalToDMS = (coordinate) => {
   const mul = 60
   const precision = 4

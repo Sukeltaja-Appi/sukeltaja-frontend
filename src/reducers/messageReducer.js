@@ -1,5 +1,13 @@
 import messageService from '../services/messages'
+import { standardQueuing } from '../utils/offlineThunkHandler'
 import { messageToID } from '../utils/utilityFunctions'
+
+// Messages are forwarded by the server to the receivers through the websocket.
+// Each Message has attribute string called type that signals its function.
+// Messages also carry a data object.
+// Message types that exist:
+// - 'invitation_participant'
+// - 'invitation_admin'
 
 export const messageReducer = (state = [], action) => {
   switch(action.type) {
@@ -14,10 +22,13 @@ export const messageReducer = (state = [], action) => {
   }
 }
 
+// Does not do anything yet, could be used if client needs to store
+// the fact that a message was sent.
 export const sentMessageReducer = (state = [], action) => {
   switch(action.type) {
     case 'SEND_MESSAGE':
-      return [ ...state, action.message ]
+      return state //replace with below line to use.
+      //return [ ...state, action.message ]
     case 'SET_SENT_MESSAGES':
       return action.messages
     default:
@@ -26,7 +37,7 @@ export const sentMessageReducer = (state = [], action) => {
 }
 
 export const getMessages = () => {
-  return async (dispatch) => {
+  async function thunk (dispatch) {
     const messages = await messageService.getAll()
 
     dispatch ({
@@ -34,18 +45,24 @@ export const getMessages = () => {
       messages
     })
   }
+
+  return standardQueuing(thunk)
 }
 
 export const checkMessage = (message, status) => {
-
-  return async (dispatch) => {
+  async function thunk (dispatch) {
     await messageService.checkMessage(messageToID(message), status)
 
     dispatch ({
       type: 'REMOVE_MESSAGE',
-      id: messageToID(message)
+      id: messageToID(message),
+      meta: {
+        retry: true
+      }
     })
   }
+
+  return standardQueuing(thunk)
 }
 
 export const sendMessage = (type, data, sender, receivers) => {
@@ -62,14 +79,19 @@ export const sendMessage = (type, data, sender, receivers) => {
     data
   }
 
-  return async (dispatch) => {
+  async function thunk (dispatch) {
     message = await messageService.create(message)
 
     dispatch ({
       type: 'SEND_MESSAGE',
-      message
+      message,
+      meta: {
+        retry: true
+      }
     })
   }
+
+  return standardQueuing(thunk)
 }
 
 export const receiveMessage = (message) => {

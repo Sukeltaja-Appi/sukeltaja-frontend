@@ -32,4 +32,10 @@ const update = async (id, updatedObject) => {
   return response.data
 }
 
-export default { getAll, create, update }
+const del = async (id) => {
+  const response = await axios.delete(`${url}/${id}`, config())
+
+  return response.data
+}
+
+export default { getAll, create, update, del }

@@ -1,11 +1,16 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 
-import { diveReducer, ongoingDiveReducer } from './reducers/diveReducer'
+import { diveReducer, ongoingDivesReducer } from './reducers/diveReducer'
 import { eventReducer, ongoingEventReducer } from './reducers/eventReducer'
 import { targetReducer } from './reducers/targetReducer'
 import { userReducer, usersReducer } from './reducers/userReducer'
 import { messageReducer }from './reducers/messageReducer'
+import { reducer as network, createNetworkMiddleware } from 'react-native-offline'
+
+const networkMiddleware = createNetworkMiddleware({
+  queueReleaseThrottle: 100
+})
 
 const appReducer = combineReducers({
   user: userReducer,
@@ -13,14 +18,16 @@ const appReducer = combineReducers({
   messages: messageReducer,
   ongoingEvent: ongoingEventReducer,
   events: eventReducer,
-  ongoingDive: ongoingDiveReducer,
+  ongoingDives: ongoingDivesReducer,
   dives: diveReducer,
   targets: targetReducer,
+  network
 })
 
 const rootReducer = (state, action) => {
+  // When user logs out, clear all app state. Leave only fetched targets.
   if (action.type === 'CLEAR_STATE') {
-    state = undefined
+    state = { targets: state.targets }
   }
 
   return appReducer(state, action)
@@ -32,7 +39,7 @@ export const logout = () => {
 
 const store = createStore(
   rootReducer,
-  applyMiddleware(thunk)
+  applyMiddleware(networkMiddleware, thunk)
 )
 
 export default store

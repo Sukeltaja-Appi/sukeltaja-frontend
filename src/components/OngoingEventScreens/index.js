@@ -1,18 +1,27 @@
 import React from 'react'
 import { createMaterialTopTabNavigator, createStackNavigator, MaterialTopTabBar } from 'react-navigation'
-import OngoingEvent from './OngoingEvent'
-import InviteScreen from './InviteScreen'
-import DiveScreen from './DiveScreen'
-import TargetScreen from './TargetScreen'
-import Target from '../simple/Target'
 import { Icon } from 'react-native-elements'
+
+import ChatScreen from './OngoingEventTabs/ChatScreen'
+import ChatMessage from './OngoingEventTabs/ChatMessage'
+import DiveScreen from './OngoingEventTabs/DiveScreenStack/DiveScreen'
+import DiveListScreen from './OngoingEventTabs/DiveScreenStack/DiveListScreen'
+import CreateDiveScreen from './OngoingEventTabs/DiveScreenStack/CreateDiveScreen'
+import Dive from './OngoingEventTabs/DiveScreenStack/Dive'
+import EditDiveScreen from './OngoingEventTabs/DiveScreenStack/EditDiveScreen'
+import EventScreen from './OngoingEventTabs/EventScreen'
+import InviteScreen from './OngoingEventTabs/InviteScreen'
+import TargetScreen from './OngoingEventTabs/TargetScreen'
+
+import Target from '../common/Target'
+
 import colors from '../../styles/colors'
 
 const style = {
   activeTintColor: '#fff',
   labelStyle: {
     fontWeight: 'bold',
-    fontSize: 10
+    fontSize: 9
   },
   showIcon: true
 }
@@ -20,8 +29,21 @@ const style = {
 const TabBarComponent = (props) => (<MaterialTopTabBar {...props} />)
 
 const EventScreenStack = createStackNavigator({
-  OngoingEvent,
+  EventScreen,
   InviteScreen
+}, { headerMode: 'none' })
+
+const ChatScreenStack = createStackNavigator({
+  ChatScreen,
+  ChatMessage
+}, { headerMode: 'none' })
+
+const DiveScreenStack = createStackNavigator({
+  DiveScreen,
+  DiveListScreen,
+  CreateDiveScreen,
+  Dive,
+  EditDiveScreen
 }, { headerMode: 'none' })
 
 const TargetScreenStack = createStackNavigator({
@@ -29,7 +51,7 @@ const TargetScreenStack = createStackNavigator({
   Target
 }, { headerMode: 'none' })
 
-export default createMaterialTopTabNavigator({
+const OngoingEventTabs = createMaterialTopTabNavigator({
   TargetScreen: {
     screen: TargetScreenStack,
     navigationOptions: {
@@ -42,12 +64,22 @@ export default createMaterialTopTabNavigator({
     }
   },
   DiveScreen: {
-    screen: DiveScreen,
+    screen: DiveScreenStack,
     navigationOptions: {
       tabBarLabel: 'SUKELLUKSET',
       tabBarOptions: style,
       tabBarIcon: ({ tintColor }) => (
-        <Icon name='sunset' type='feather' color={tintColor} />
+        <Icon name='anchor' type='feather' color={tintColor} />
+      )
+    }
+  },
+  ChatScreen: {
+    screen: ChatScreenStack,
+    navigationOptions: {
+      tabBarLabel: 'KESKUSTELU',
+      tabBarOptions: style,
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name='message-circle' type='feather' color={tintColor} />
       )
     }
   },
@@ -74,3 +106,5 @@ export default createMaterialTopTabNavigator({
     )
   }
 })
+
+export default OngoingEventTabs

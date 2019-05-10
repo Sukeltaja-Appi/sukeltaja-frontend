@@ -1,4 +1,5 @@
 import targetService from '../services/targets'
+import { standardQueuing } from '../utils/offlineThunkHandler'
 
 export const targetReducer = (state = [], action) => {
   switch (action.type) {
@@ -10,7 +11,8 @@ export const targetReducer = (state = [], action) => {
 }
 
 export const getAll = () => {
-  return async (dispatch) => {
+
+  async function thunk (dispatch) {
     const targets = await targetService.getAll()
 
     dispatch({
@@ -18,4 +20,6 @@ export const getAll = () => {
       targets
     })
   }
+
+  return standardQueuing(thunk)
 }

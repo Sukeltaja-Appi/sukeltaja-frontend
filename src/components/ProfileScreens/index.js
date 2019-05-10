@@ -1,23 +1,25 @@
 import React from 'react'
 import {
-  createSwitchNavigator,
-  MaterialTopTabBar,
   createMaterialTopTabNavigator,
-  createStackNavigator
+  createStackNavigator,
+  createSwitchNavigator,
+  MaterialTopTabBar
 } from 'react-navigation'
-
-import ProfileMainScreen from './ProfileMainScreen'
-import InvitesScreen from './InvitesScreen'
-import Invite from './Invite'
-import FriendsScreen from './FriendsScreen'
-import UserSettingsScreen from './UserSettingsScreen'
-import LoginScreen from './LoginScreen'
-
 import { Icon } from 'react-native-elements'
+
+import Invite from './ProfileTabs/Invite'
+import InvitesScreen from './ProfileTabs/InvitesScreen'
+import LicenseScreen from './ProfileTabs/LicenseScreen'
+import ProfileScreen from './ProfileTabs/ProfileScreen'
+import SettingsScreen from './ProfileTabs/SettingsScreen'
+
+import LoginScreen from './LoginStack/LoginScreen'
+import RegisterScreen from './LoginStack/RegisterScreen'
+import ResetScreen from './LoginStack/ResetScreen'
 
 import colors from '../../styles/colors'
 
-const TabBarComponent = (props) => (<MaterialTopTabBar { ...props } />)
+const TabBarComponent = (props) => <MaterialTopTabBar { ...props } />
 
 const style = {
   activeTintColor: '#fff',
@@ -39,9 +41,20 @@ const MessageStack = createStackNavigator({
   headerMode: 'none'
 })
 
-const UserTab = createMaterialTopTabNavigator({
-  ProfileMain : {
-    screen: ProfileMainScreen,
+const SettingsStack = createStackNavigator({
+  SettingsScreen: {
+    screen: SettingsScreen
+  },
+  LicenseScreen: {
+    screen: LicenseScreen
+  }
+}, {
+  headerMode: 'none'
+})
+
+const ProfileTabs = createMaterialTopTabNavigator({
+  Profile : {
+    screen: ProfileScreen,
     navigationOptions: {
       tabBarLabel: 'PROFIILI',
       tabBarOptions: style,
@@ -61,18 +74,8 @@ const UserTab = createMaterialTopTabNavigator({
       )
     }
   },
-  Friends : {
-    screen: FriendsScreen,
-    navigationOptions: {
-      tabBarLabel: 'KAVERIT',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='users' type='feather' color={tintColor} />
-      )
-    }
-  },
   Settings : {
-    screen: UserSettingsScreen,
+    screen: SettingsStack,
     navigationOptions: {
       tabBarLabel: 'ASETUKSET',
       tabBarOptions: style,
@@ -95,20 +98,22 @@ const UserTab = createMaterialTopTabNavigator({
   }
 })
 
-export default createSwitchNavigator({
-  UserTab: {
-    screen: UserTab
+const LoginStack = createSwitchNavigator({
+  ProfileTabs: {
+    screen: ProfileTabs
   },
   LoginScreen: {
     screen: LoginScreen
+  },
+  ResetScreen: {
+    screen: ResetScreen
+  },
+  RegisterScreen: {
+    screen: RegisterScreen
   }
 }, {
-  headerMode: 'none'
+  headerMode: 'none',
+  initialRouteName: 'LoginScreen'
 })
 
-// export default createStackNavigator({
-//   UserTab,
-//   LoginScreen
-// }, {
-//   headerMode: 'none',
-//   initialRouteName: "UserTab" })
+export default LoginStack
