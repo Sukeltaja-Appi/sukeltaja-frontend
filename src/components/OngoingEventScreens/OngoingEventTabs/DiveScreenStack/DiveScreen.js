@@ -11,7 +11,6 @@ import { paddingSides } from '../../../../styles/global'
 import locationService from '../../../../services/location'
 import { startDives, endDives } from '../../../../reducers/diveReducer'
 import { getOngoingEvent } from '../../../../reducers/eventReducer'
-import { eventToID } from '../../../../utils/eventHandler'
 
 const style = {
   headline: {
