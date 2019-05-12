@@ -181,7 +181,8 @@ const style = StyleSheet.create({
   },
   overlay: {
     position: 'absolute',
-    bottom: 0
+    bottom: 0,
+    padding: 0
   },
   searchContainer: {
     backgroundColor: 'transparent',

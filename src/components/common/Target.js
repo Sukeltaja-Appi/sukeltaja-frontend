@@ -62,7 +62,7 @@ const Target = (props) => {
   }
 
   return (
-    <View>
+    <View style={{ padding: 10 }}>
       <Text h4 style={{ fontWeight: 'bold' }}>{name}</Text>
 
       { type && <Text style={style.h5}>{`Tyyppi: ${type}`}</Text> }
