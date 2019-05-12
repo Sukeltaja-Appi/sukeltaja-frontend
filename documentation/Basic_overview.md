@@ -8,7 +8,7 @@
 ## Navigation
 
 Rest of the React components are in the navigation tree,
-or generally used by components in it. [React Navigation](https://reactnavigation
+or generally used by components in it. [React Navigation](https://reactnavigation.com)
 - Navigator components are screens in the app
 - Navigator components always receive the prop: navigation
 
@@ -67,7 +67,7 @@ Server sends updates through the websocket connection. Currently sends:
 - Updated events. When someone updates an event the user participates in.
 
 
-#### Other libraries you may need to get accuinted to:
+#### Other libraries you may need to get acquainted to:
 - react-native
 - react-native-elements
 - react-native-maps-super-cluster
