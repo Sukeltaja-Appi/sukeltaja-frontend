@@ -2,7 +2,7 @@ const { defaults } = require('jest-config')
 
 module.exports = {
   'preset': 'jest-expo',
-  'setupTestFrameworkScriptFile': '<rootDir>/setup-tests.config.js',
+  'setupFilesAfterEnv': ['<rootDir>/setup-tests.config.js'],
   'transform': {
     /*
      * Stop jest from falling over on its face.
