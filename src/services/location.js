@@ -1,4 +1,5 @@
-import { Location, Permissions } from 'expo'
+import * as Permissions from 'expo-permissions'
+import * as Location from 'expo-location'
 import { Alert } from 'react-native'
 
 const standardAlert = () => {
