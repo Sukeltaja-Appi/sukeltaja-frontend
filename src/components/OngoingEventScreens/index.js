@@ -1,6 +1,8 @@
 import React from 'react'
-import { createMaterialTopTabNavigator, createStackNavigator, MaterialTopTabBar } from 'react-navigation'
+import { createMaterialTopTabNavigator, MaterialTopTabBar } from 'react-navigation-tabs'
+import { createStackNavigator } from 'react-navigation-stack'
 import { Icon } from 'react-native-elements'
+
 
 import ChatScreen from './OngoingEventTabs/ChatScreen'
 import ChatMessage from './OngoingEventTabs/ChatMessage'

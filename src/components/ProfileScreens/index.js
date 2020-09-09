@@ -1,10 +1,8 @@
 import React from 'react'
-import {
-  createMaterialTopTabNavigator,
-  createStackNavigator,
-  createSwitchNavigator,
-  MaterialTopTabBar
-} from 'react-navigation'
+import { createSwitchNavigator } from 'react-navigation'
+import { MaterialTopTabBar } from 'react-navigation-tabs'
+import { createStackNavigator } from 'react-navigation-stack'
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs'
 import { Icon } from 'react-native-elements'
 
 import Invite from './ProfileTabs/Invite'
@@ -19,7 +17,7 @@ import ResetScreen from './LoginStack/ResetScreen'
 
 import colors from '../../styles/colors'
 
-const TabBarComponent = (props) => <MaterialTopTabBar { ...props } />
+const TabBarComponent = (props) => <MaterialTopTabBar {...props} />
 
 const style = {
   activeTintColor: '#fff',
@@ -53,7 +51,7 @@ const SettingsStack = createStackNavigator({
 })
 
 const ProfileTabs = createMaterialTopTabNavigator({
-  Profile : {
+  Profile: {
     screen: ProfileScreen,
     navigationOptions: {
       tabBarLabel: 'PROFIILI',
@@ -64,7 +62,7 @@ const ProfileTabs = createMaterialTopTabNavigator({
       )
     }
   },
-  Conversations : {
+  Conversations: {
     screen: MessageStack,
     navigationOptions: {
       tabBarLabel: 'KUTSUT',
@@ -74,7 +72,7 @@ const ProfileTabs = createMaterialTopTabNavigator({
       )
     }
   },
-  Settings : {
+  Settings: {
     screen: SettingsStack,
     navigationOptions: {
       tabBarLabel: 'ASETUKSET',
@@ -86,7 +84,7 @@ const ProfileTabs = createMaterialTopTabNavigator({
   }
 }, {
   tabBarComponent: props => {
-    return(
+    return (
       <TabBarComponent
         {...props}
         style={{

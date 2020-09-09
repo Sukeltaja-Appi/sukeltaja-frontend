@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, FlatList, Linking } from 'react-native'
 import { ListItem, Icon } from 'react-native-elements'
-import { SERVICE_EMAIL } from 'react-native-dotenv'
+import { SERVICE_EMAIL } from '@env'
 
 import styles from '../../../styles/global'
 

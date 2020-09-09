@@ -4,7 +4,7 @@ import { View, Linking } from 'react-native'
 import { Button, Text } from 'react-native-elements'
 import decimalToDMS from '../../utils/coordinates'
 
-import { KYPPI_URL } from 'react-native-dotenv'
+import { KYPPI_URL } from '@env'
 import colors from '../../styles/colors'
 
 import { updateEvent, setOngoingEvent } from '../../reducers/eventReducer'

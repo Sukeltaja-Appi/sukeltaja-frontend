@@ -31,7 +31,8 @@ class InvitesScreen extends React.Component {
     this.updateInvites()
   }
 
-  componentWillReceiveProps(nextProps) {
+  // FIXME
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { messages } = nextProps
 
     this.setState({ invites: messages.filter(msg => msg.type.startsWith('invitation_')) })

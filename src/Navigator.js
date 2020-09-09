@@ -1,6 +1,6 @@
 import React from 'react'
-import { createBottomTabNavigator, BottomTabBar, createAppContainer } from 'react-navigation'
-
+import { createAppContainer } from 'react-navigation'
+import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs'
 import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
 import MapScreen from './components/MapScreens/MapScreen'
 import EventEntry from './components/EventScreens/EventEntry'
@@ -10,7 +10,7 @@ import { Icon } from 'react-native-elements'
 
 import colors from './styles/colors'
 
-const TabBarComponent = (props) => (<BottomTabBar { ...props } />)
+const TabBarComponent = (props) => (<BottomTabBar {...props} />)
 
 const style = {
   activeTintColor: '#fff',
@@ -20,7 +20,7 @@ const style = {
 }
 
 export const MainTabNavigator = createBottomTabNavigator({
-  OngoingEvent : {
+  OngoingEvent: {
     screen: OngoingEventEntry,
     navigationOptions: {
       tabBarLabel: 'SUKELLUS',
@@ -30,7 +30,7 @@ export const MainTabNavigator = createBottomTabNavigator({
       )
     }
   },
-  Map : {
+  Map: {
     screen: MapScreen,
     navigationOptions: {
       tabBarLabel: 'KARTTA',
@@ -40,7 +40,7 @@ export const MainTabNavigator = createBottomTabNavigator({
       )
     }
   },
-  EventList : {
+  EventList: {
     screen: EventEntry,
     navigationOptions: {
       tabBarLabel: 'TAPAHTUMAT',
@@ -50,7 +50,7 @@ export const MainTabNavigator = createBottomTabNavigator({
       )
     }
   },
-  Profile : {
+  Profile: {
     screen: ProfileScreens,
     navigationOptions: {
       tabBarLabel: 'KÄYTTÄJÄ',
@@ -62,7 +62,7 @@ export const MainTabNavigator = createBottomTabNavigator({
   }
 }, {
   tabBarComponent: props => {
-    return(
+    return (
       <TabBarComponent
         {...props}
         style={{ backgroundColor: colors.primary }}
