@@ -26,18 +26,22 @@ const SettingsScreen = (props) => {
     <View style={styles.noPadding}>
       <FlatList
         data={data}
-        renderItem={ ({ item }) => {
+        renderItem={({ item }) => {
           const { title, leftIcon, onPress } = item
 
           return (
             <ListItem
-              title={title}
-              leftIcon={leftIcon}
               onPress={onPress}
               bottomDivider
-              chevron
-            />
-          )}
+            >
+              {leftIcon()}
+              <ListItem.Content>
+                <ListItem.Title>{title}</ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+          )
+        }
         }
         keyExtractor={item => item.title}
       />

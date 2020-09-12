@@ -50,7 +50,7 @@ class InvitesScreen extends React.Component {
   }
 
   selectMessage = (message) => {
-    if(message.type === 'invitation_admin' || message.type === 'invitation_participant') {
+    if (message.type === 'invitation_admin' || message.type === 'invitation_participant') {
       this.props.navigation.navigate('Invite', {
         invProps: {
           message: message,
@@ -77,7 +77,7 @@ class InvitesScreen extends React.Component {
       )
     }
 
-    return(
+    return (
       <View style={styles.noPadding}>
         <FlatList
           data={this.InvitesSortedByDate()}
@@ -86,14 +86,17 @@ class InvitesScreen extends React.Component {
 
             return (
               <ListItem
-                title={sender.username}
-                subtitle={formatDate(created)}
                 onPress={() => this.selectMessage(item)}
-                subtitleStyle={style.subtitle}
                 bottomDivider
-                chevron
-              />
-            )}
+              >
+                <ListItem.Content>
+                  <ListItem.Title>{sender.username}</ListItem.Title>
+                  <ListItem.Subtitle style={style.subtitle}>{formatDate(created)}</ListItem.Subtitle>
+                </ListItem.Content>
+                <ListItem.Chevron />
+              </ListItem>
+            )
+          }
           }
           keyExtractor={item => item._id}
         />
@@ -101,7 +104,7 @@ class InvitesScreen extends React.Component {
           title="Hae kutsut"
           onPress={this.loadMessages}
         />
-        <View style={style.divider}/>
+        <View style={style.divider} />
       </View>
     )
   }

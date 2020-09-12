@@ -73,32 +73,37 @@ class DiveListScreen extends React.Component {
 
               return (
                 <ListItem
-                  title={'Sukeltaja: ' + user.username}
-                  subtitle={
-                    'Alkoi: ' + formatDate(startdate) + '\n'
-                    + this.displayEndDate(item)
-                    + '\nKoordinaatit: L:'
-                    + parseFloat(latitude).toFixed(n6) + '; P:'
-                    + parseFloat(longitude).toFixed(n6)}
                   onPress={() => this.navigateToDive(item)}
-                  subtitleStyle={style.subtitle}
                   bottomDivider
-                  chevron
-                />
-              )}
+                >
+                  <ListItem.Content>
+                    <ListItem.Title>{'Sukeltaja: ' + user.username}</ListItem.Title>
+                    <ListItem.Subtitle style={style.subtitle}>
+                      {
+                        'Alkoi: ' + formatDate(startdate) + '\n'
+                        + this.displayEndDate(item)
+                        + '\nKoordinaatit: L:'
+                        + parseFloat(latitude).toFixed(n6) + '; P:'
+                        + parseFloat(longitude).toFixed(n6)}
+                    </ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              )
+            }
             }
             keyExtractor={item => item._id}
           />
         </View>
         <View style={style.bottom}>
-          <View style={style.divider}/>
+          <View style={style.divider} />
           <Button
             title='Luo uusi sukellus ->'
             buttonStyle={style.buttonCreate}
             onPress={() => this.navigate('CreateDiveScreen')}
             raised
           />
-          <View style={style.divider}/>
+          <View style={style.divider} />
           <Button
             title='Aloita sukelluksia ->'
             onPress={() => this.navigate('DiveScreen')}

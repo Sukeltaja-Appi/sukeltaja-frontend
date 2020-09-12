@@ -31,7 +31,7 @@ const MenuScreen = (props) => {
     <View style={styles.noPadding}>
       <FlatList
         data={data}
-        renderItem={ ({ item }) => {
+        renderItem={({ item }) => {
           const {
             title,
             subtitle,
@@ -41,14 +41,18 @@ const MenuScreen = (props) => {
 
           return (
             <ListItem
-              title={title}
-              subtitle={subtitle}
-              leftIcon={leftIcon}
               onPress={() => navigate(destination)}
               bottomDivider
-              chevron
-            />
-          )}
+            >
+              {leftIcon()}
+              <ListItem.Content>
+                <ListItem.Title>{title}</ListItem.Title>
+                {subtitle ? <ListItem.Subtitle>{subtitle}</ListItem.Subtitle> : null}
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+          )
+        }
         }
         keyExtractor={item => item.title}
       />

@@ -18,19 +18,22 @@ const LicenseScreen = () => {
     <View style={styles.noPadding}>
       <FlatList
         data={data}
-        renderItem={ ({ item }) => {
+        renderItem={({ item }) => {
           const { title, url, license } = item
 
           return (
             <ListItem
-              title={title}
-              subtitle={license || 'MIT'}
               onPress={() => Linking.openURL(url)}
-              subtitleStyle={style.subtitle}
               bottomDivider
-              chevron
-            />
-          )}
+            >
+              <ListItem.Content>
+                <ListItem.Title>{title}</ListItem.Title>
+                <ListItem.Subtitle style={style.subtitle}>{license || 'MIT'}</ListItem.Subtitle>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+          )
+        }
         }
         keyExtractor={item => item.title}
       />

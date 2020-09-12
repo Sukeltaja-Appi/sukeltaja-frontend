@@ -63,18 +63,22 @@ const List = (props) => {
 
           return (
             <ListItem
-              title={title}
-              subtitle={formatDate(startdate)}
               onPress={() => navigate(item)}
-              subtitleStyle={style.subtitle}
-              contentContainerStyle={{ paddingVertical: 14 }}
               containerStyle={eventStyle(item)}
               bottomDivider
-              leftElement={renderCheckBox(item)}
-              chevron
               pad={0}
-            />
-          )}
+            >
+              {renderCheckBox(item)}
+              <ListItem.Content>
+                <ListItem.Title>{title}</ListItem.Title>
+                <ListItem.Subtitle style={style.subtitle}>
+                  {formatDate(startdate)}
+                </ListItem.Subtitle>
+              </ListItem.Content>
+              <ListItem.Chevron />
+            </ListItem>
+          )
+        }
         }
         keyExtractor={item => item._id}
       />

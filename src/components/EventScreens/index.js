@@ -38,11 +38,11 @@ const EventMenuStack = createStackNavigator({
     }
   }
 }, {
-  headerBackTitleVisible: false,
   defaultNavigationOptions: {
     headerTitleStyle: {
       flexBasis: '100%'
-    }
+    },
+    headerBackTitleVisible: false,
   }
 })
 
