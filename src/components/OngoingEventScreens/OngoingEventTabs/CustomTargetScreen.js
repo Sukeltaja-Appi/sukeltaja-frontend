@@ -103,7 +103,7 @@ class CustomTargetScreen extends React.Component {
     return query ? targets.filter(t => t.name.toLowerCase().startsWith(query)) : targets
   }
 
-  navigate = (value, target) => this.props.navigation.navigate(value, { target })
+  navigate = (value, target, custom) => this.props.navigation.navigate(value, { target, custom })
 
   render() {
     const { region } = this.state
@@ -136,7 +136,7 @@ class CustomTargetScreen extends React.Component {
         <View style={style.bottom}>
           <Button
             title='Valitse kohde'
-            onPress={() => this.navigate('Target', region)}
+            onPress={() => this.navigate('Target', region, true)}
           />
         </View>
 
