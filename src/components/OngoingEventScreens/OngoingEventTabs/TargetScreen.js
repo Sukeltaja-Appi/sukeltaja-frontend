@@ -44,7 +44,7 @@ class ClosestTargets extends React.Component {
     }
   }
 
-  formattedDistance = (distance) => distance > 1000 ? `${(distance/1000).toFixed(1)} km` : `${distance} m`
+  formattedDistance = (distance) => distance > 1000 ? `${(distance / 1000).toFixed(1)} km` : `${distance} m`
 
   updateLocation = async () => {
     const location = await locationService.getLocationAsync()
@@ -91,13 +91,21 @@ class ClosestTargets extends React.Component {
 
             return (
               <ListItem
-                title={<Text style={style.title}>{name}</Text>}
-                subtitle={`Etäisyys: ${this.formattedDistance(distance)}`}
                 onPress={() => this.navigate('Target', item)}
-                chevron
                 bottomDivider
-              />
-            )}
+              >
+                <ListItem.Content>
+                  <ListItem.Title>
+                    <Text style={style.title}>{name}</Text>
+                  </ListItem.Title>
+                  <ListItem.Subtitle>
+                    {`Etäisyys: ${this.formattedDistance(distance)}`}
+                  </ListItem.Subtitle>
+                </ListItem.Content>
+                <ListItem.Chevron />
+              </ListItem>
+            )
+          }
           }
           keyExtractor={item => item._id}
         />

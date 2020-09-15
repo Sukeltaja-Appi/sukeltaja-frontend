@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-//import { USERNAME, PASSWORD } from 'react-native-dotenv'
+//import { USERNAME, PASSWORD } from '@env'
 //import userService from './services/users'
 import Navigator from './Navigator'
 import { login } from './reducers/userReducer'

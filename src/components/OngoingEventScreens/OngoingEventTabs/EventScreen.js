@@ -79,7 +79,7 @@ class EventScreen extends React.Component {
     const { user } = this.props
     const { userIsCreator, userIsAdmin } = this
 
-    if(!userIsCreator(user) && !userIsAdmin(user)) return true
+    if (!userIsCreator(user) && !userIsAdmin(user)) return true
 
     return false
   }
@@ -90,13 +90,13 @@ class EventScreen extends React.Component {
   }
   /*eslint-enable */
 
-  render () {
+  render() {
     const { ongoingEvent } = this.props
     const { admins, participants, creator, title, description } = ongoingEvent
 
     // This should eventually be replaced by enforcing unique roles
     // in the backend.
-    const users = [ creator, ...admins, ...participants ]
+    const users = [creator, ...admins, ...participants]
 
     return (
       <View style={styles.noPadding}>
@@ -119,14 +119,14 @@ class EventScreen extends React.Component {
               disabled={this.userIsNotAdmin()}
               raised
             />
-            <View style={style.buttonDivider}/>
+            <View style={style.buttonDivider} />
             <Button
               title='Muokkaa tapahtumaa'
               onPress={this.toEditing}
               disabled={this.userIsNotAdmin()}
               raised
             />
-            <View style={style.buttonDivider}/>
+            <View style={style.buttonDivider} />
             <Button
               title='Poistu'
               onPress={this.leaveEventButton}
@@ -145,11 +145,15 @@ class EventScreen extends React.Component {
               renderItem={({ item }) => {
                 return (
                   <ListItem
-                    title={item.username}
                     onPress={this.pressUser(item)}
                     bottomDivider
-                  />
-                )}
+                  >
+                    <ListItem.Content>
+                      <ListItem.Title>{item.usename}</ListItem.Title>
+                    </ListItem.Content>
+                  </ListItem>
+                )
+              }
               }
               keyExtractor={item => item._id}
             />

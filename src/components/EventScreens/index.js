@@ -1,4 +1,4 @@
-import { createStackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
 
 import CreateEventScreen from './EventMenuStack/CreateEventScreen'
 import EditEventScreen from './EventMenuStack/EditEventScreen'
@@ -38,11 +38,11 @@ const EventMenuStack = createStackNavigator({
     }
   }
 }, {
-  headerBackTitleVisible: false,
   defaultNavigationOptions: {
     headerTitleStyle: {
       flexBasis: '100%'
-    }
+    },
+    headerBackTitleVisible: false,
   }
 })
 

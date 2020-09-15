@@ -41,7 +41,7 @@ class ChatScreen extends React.Component {
       )
     }
 
-    return(
+    return (
       <FlatList
         data={this.invitesSortedByDate()}
         renderItem={({ item }) => {
@@ -49,13 +49,18 @@ class ChatScreen extends React.Component {
 
           return (
             <ListItem
-              title={text}
-              subtitle={user.username + ', ' + formatDate(created)}
               onPress={() => this.selectMessage(item)}
-              subtitleStyle={style.subtitle}
               bottomDivider
-            />
-          )}
+            >
+              <ListItem.Content>
+                <ListItem.Title>{text}</ListItem.Title>
+                <ListItem.Subtitle style={style.subtitle}>
+                  {user.username + ', ' + formatDate(created)}
+                </ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
+          )
+        }
         }
         keyExtractor={item => item._id}
       />
@@ -86,7 +91,7 @@ class ChatScreen extends React.Component {
           <Input
             value={this.state.message}
             onChangeText={message => this.setState({ message })}
-            rightIcon={() => <Icon name='message-circle' type='feather' color={colors.lightgray}/>}
+            rightIcon={() => <Icon name='message-circle' type='feather' color={colors.lightgray} />}
             placeholder='Kirjoita viesti'
             containerStyle={{ backgroundColor: 'white', marginBottom: 10 }}
             inputContainerStyle={{ borderBottomWidth: 0 }}
