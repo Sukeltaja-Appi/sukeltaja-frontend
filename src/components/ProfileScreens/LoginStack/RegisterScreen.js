@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
 
@@ -129,47 +129,49 @@ class RegisterScreen extends React.Component {
 
     return (
       <View>
-        <Header
-          placement="center"
-          centerComponent={{ text: 'REKISTERÖITYMINEN', style: style.title }}
-          containerStyle={{
-            backgroundColor: '#1a237e',
-            justifyContent: 'space-around',
-          }}
-        />
-        <View style={style.container}>
-          {!passwordMatch &&
-            <Text style={{ fontSize: 16, color: 'red' }}>
-              Salasana ja vahvistus eivät täsmää
+        <ScrollView>
+          <Header
+            placement="center"
+            centerComponent={{ text: 'REKISTERÖITYMINEN', style: style.title }}
+            containerStyle={{
+              backgroundColor: '#1a237e',
+              justifyContent: 'space-around',
+            }}
+          />
+          <View style={style.container}>
+            {!passwordMatch &&
+              <Text style={{ fontSize: 16, color: 'red' }}>
+                Salasana ja vahvistus eivät täsmää
             </Text>
-          }
-          {usernameInUse &&
-            <Text style={{ fontSize: 16, color: 'red' }}>
-              Rekisteröinti epäonnistui, käyttäjätunnus on jo olemassa
+            }
+            {usernameInUse &&
+              <Text style={{ fontSize: 16, color: 'red' }}>
+                Rekisteröinti epäonnistui, käyttäjätunnus on jo olemassa
             </Text>
-          }
+            }
 
-          <Form
-            ref={reference}
-            type={User}
-            options={options}
-            value={credentials}
-            onChange={(credentials) => this.setState({ credentials })}
-          />
+            <Form
+              ref={reference}
+              type={User}
+              options={options}
+              value={credentials}
+              onChange={(credentials) => this.setState({ credentials })}
+            />
 
-          <Button
-            onPress={this.register}
-            title="Rekisteröidy"
-          />
+            <Button
+              onPress={this.register}
+              title="Rekisteröidy"
+            />
 
-          <View style={style.buttonDivider} />
-          <View style={style.buttonDivider} />
+            <View style={style.buttonDivider} />
+            <View style={style.buttonDivider} />
 
-          <Button
-            onPress={() => this.navigate('LoginScreen')}
-            title="Palaa"
-          />
-        </View>
+            <Button
+              onPress={() => this.navigate('LoginScreen')}
+              title="Palaa"
+            />
+          </View>
+        </ScrollView>
       </View>
     )
   }
