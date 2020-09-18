@@ -23,10 +23,10 @@ const setToken = (newToken) => {
 const create = async (newObject) => {
   try{
     const response = await axios.post(url, newObject)
+    return response.data
   } catch (e){
     return null
   }
-  return response.data
 }
 
 const getAll = async () => {
