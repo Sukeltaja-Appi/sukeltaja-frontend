@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View } from 'react-native'
+import { View, Text } from 'react-native'
 import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
 
@@ -51,39 +51,45 @@ class LoginScreen extends React.Component {
       credentials: {
         username: '',
         password: ''
-      }
+      },
+      validLogin: true
     }
   }
 
   navigate = (value) => this.props.navigation.navigate(value)
 
   login = async () => {
-    //const { login, initializeEvents, initializeDives, getAll } = this.props
-    const { login, initializeEvents, getAll } = this.props
+    if (this.refs.form.getValue()) {
+      //const { login, initializeEvents, initializeDives, getAll } = this.props
+      this.setState({ validLogin: true })
+      const { login, initializeEvents, getAll } = this.props
 
-    await login(this.state.credentials)
-    const { user } = this.props
+      await login(this.state.credentials)
+      const { user } = this.props
 
-    if (user) {
-      userService.setToken(user.token)
+      if (user) {
+        userService.setToken(user.token)
 
-      await initializeEvents()
-      //await initializeDives()
-      await getAll()
+        await initializeEvents()
+        //await initializeDives()
+        await getAll()
 
-      const serverListener = getServerListener()
+        const serverListener = getServerListener()
 
-      serverListener.setupCommunication()
+        serverListener.setupCommunication()
 
-      this.navigate('ProfileTabs')
-    } else {
-      console.log('Wrong username or password')
+        this.navigate('ProfileTabs')
+      } else {
+        console.log('Wrong username or password')
+        this.setState({ validLogin: false })
+      }
     }
   }
 
   render() {
     const { credentials } = this.state
-    const reference = 'form'
+    const { validLogin } = this.state
+    const reference = "form"
 
     const User = t.struct({
       username: t.String,
@@ -101,6 +107,11 @@ class LoginScreen extends React.Component {
           }}
         />
         <View style={style.container}>
+          {!validLogin &&
+            <Text style={{fontSize: 16, color: 'red'}}>
+              Väärä käyttäjätunnus tai salasana
+            </Text>
+          }
           <Form
             ref={reference}
             type={User}

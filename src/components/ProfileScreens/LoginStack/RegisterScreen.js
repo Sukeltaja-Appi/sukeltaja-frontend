@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
 
@@ -44,6 +44,11 @@ const options = {
       label: 'Salasana:',
       error: 'Salasana ei saa olla tyhjä.',
       secureTextEntry: true
+    },
+    passwordVerification: {
+      label: 'Salasanan vahvistus:',
+      error: 'Vahvistus ei saa olla tyhjä.',
+      secureTextEntry: true
     }
   }
 }
@@ -54,24 +59,38 @@ class RegisterScreen extends React.Component {
     this.state = {
       credentials: {
         username: '',
-        password: ''
-      }
+        password: '',
+        email: '',
+        passwordVerification: '',
+      },
+      passwordMatch: true,
+      usernameInUse: false
     }
   }
 
   navigate = (value) => this.props.navigation.navigate(value)
 
   register = async () => {
-    const response = await userService.create(this.state.credentials)
+    this.setState({ passwordMatch: true })
+    this.setState({ usernameInUse: false })
+    if (this.refs.form.getValue()) {
+      if (this.state.credentials.password == this.state.credentials.passwordVerification) {
+        const response = await userService.create(this.state.credentials)
 
-    if (response) {
-      await this.login()
-    } else {
-      console.log('Registration failed!')
+        if (response) {
+          await this.login()
+        } else {
+          console.log('Registration failed!')
+          this.setState({ usernameInUse: true })
+        }
+      } else {
+        this.setState({ passwordMatch: false })
+      }
     }
   }
 
   login = async () => {
+
     const { login, initializeEvents, initializeDives, getAll } = this.props
 
     await login(this.state.credentials)
@@ -92,50 +111,67 @@ class RegisterScreen extends React.Component {
     } else {
       console.log('Wrong username or password')
     }
+
   }
 
   render() {
     const { credentials } = this.state
     const reference = 'form'
+    const { passwordMatch } = this.state
+    const { usernameInUse } = this.state
 
     const User = t.struct({
       email: t.String,
       username: t.String,
-      password: t.String
+      password: t.String,
+      passwordVerification: t.String
     })
 
     return (
       <View>
-        <Header
-          placement="center"
-          centerComponent={{ text: 'REKISTERÖITYMINEN', style: style.title }}
-          containerStyle={{
-            backgroundColor: '#1a237e',
-            justifyContent: 'space-around',
-          }}
-        />
-        <View style={style.container}>
-          <Form
-            ref={reference}
-            type={User}
-            options={options}
-            value={credentials}
-            onChange={(credentials) => this.setState({ credentials })}
+        <ScrollView>
+          <Header
+            placement="center"
+            centerComponent={{ text: 'REKISTERÖITYMINEN', style: style.title }}
+            containerStyle={{
+              backgroundColor: '#1a237e',
+              justifyContent: 'space-around',
+            }}
           />
+          <View style={style.container}>
+            {!passwordMatch &&
+              <Text style={{ fontSize: 16, color: 'red' }}>
+                Salasana ja vahvistus eivät täsmää
+            </Text>
+            }
+            {usernameInUse &&
+              <Text style={{ fontSize: 16, color: 'red' }}>
+                Rekisteröinti epäonnistui, käyttäjätunnus on jo olemassa
+            </Text>
+            }
 
-          <Button
-            onPress={this.register}
-            title="Rekisteröidy"
-          />
+            <Form
+              ref={reference}
+              type={User}
+              options={options}
+              value={credentials}
+              onChange={(credentials) => this.setState({ credentials })}
+            />
 
-          <View style={style.buttonDivider} />
-          <View style={style.buttonDivider} />
+            <Button
+              onPress={this.register}
+              title="Rekisteröidy"
+            />
 
-          <Button
-            onPress={() => this.navigate('LoginScreen')}
-            title="Palaa"
-          />
-        </View>
+            <View style={style.buttonDivider} />
+            <View style={style.buttonDivider} />
+
+            <Button
+              onPress={() => this.navigate('LoginScreen')}
+              title="Palaa"
+            />
+          </View>
+        </ScrollView>
       </View>
     )
   }

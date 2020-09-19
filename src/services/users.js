@@ -21,9 +21,12 @@ const setToken = (newToken) => {
 }
 
 const create = async (newObject) => {
-  const response = await axios.post(url, newObject)
-
-  return response.data
+  try{
+    const response = await axios.post(url, newObject)
+    return response.data
+  } catch (e){
+    return null
+  }
 }
 
 const getAll = async () => {
