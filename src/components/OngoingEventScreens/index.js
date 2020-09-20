@@ -3,7 +3,7 @@ import { createMaterialTopTabNavigator, MaterialTopTabBar } from 'react-navigati
 import { createStackNavigator } from 'react-navigation-stack'
 import { Icon } from 'react-native-elements'
 
-
+import CustomTargetScreen from './OngoingEventTabs/CustomTargetScreen'
 import ChatScreen from './OngoingEventTabs/ChatScreen'
 import ChatMessage from './OngoingEventTabs/ChatMessage'
 import DiveScreen from './OngoingEventTabs/DiveScreenStack/DiveScreen'
@@ -50,7 +50,8 @@ const DiveScreenStack = createStackNavigator({
 
 const TargetScreenStack = createStackNavigator({
   TargetScreen,
-  Target
+  Target,
+  CustomTargetScreen
 }, { headerMode: 'none' })
 
 const OngoingEventTabs = createMaterialTopTabNavigator({
@@ -62,7 +63,7 @@ const OngoingEventTabs = createMaterialTopTabNavigator({
       showIcon: true,
       tabBarIcon: ({ tintColor }) => (
         <Icon name='map-pin' type='feather' color={tintColor} />
-      )
+      ),
     }
   },
   DiveScreen: {

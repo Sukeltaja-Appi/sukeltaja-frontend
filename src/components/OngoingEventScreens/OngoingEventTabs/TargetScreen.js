@@ -8,6 +8,7 @@ import locationService from '../../../services/location'
 import { getAll } from '../../../reducers/targetReducer'
 import haversine from '../../../utils/haversine'
 import Target from '../../common/Target'
+import CustomTargetScreen from './CustomTargetScreen'
 
 const style = {
   title: {
@@ -79,11 +80,14 @@ class ClosestTargets extends React.Component {
     return (
       <View style={styles.noPadding}>
         <Button
+          title='Valitse kohde kartalta'
+          onPress={() => this.props.navigation.navigate('CustomTargetScreen')}
+        />
+        <Button
           title='Päivitä lähimmät kohteet'
           onPress={() => this.getClosestTargets(numberOfTargets)}
           buttonStyle={{ backgroundColor: colors.success }}
         />
-
         <FlatList
           data={this.state.closestTargets}
           renderItem={({ item }) => {
