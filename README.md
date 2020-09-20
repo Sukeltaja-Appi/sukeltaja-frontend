@@ -16,9 +16,9 @@ Installation will be through App Store (iOS) or Play Store (Android). Links to b
 
 ## Documentation
 
-Product backlog can be found on these [Google Sheets](https://docs.google.com/spreadsheets/d/1u03KFYHHtcJAUbRn-JUiW5gUus9soZLCMObtdGLhcyA/)   
+Product backlog can be found on these [Google Sheets](https://docs.google.com/spreadsheets/d/12R7Eyg8GfjwaTioiXE2EIYMrVciJc61XiFn1YNzCHeo/)   
 
-Folder containing all the documentation and logs can be found on this [Google Drive](https://drive.google.com/drive/folders/1uOuPRkYjwMznLqBzBnsY3kqNimeE84Uz) folder.
+Folder containing documentation and logs can be found on this [Google Drive](https://drive.google.com/drive/folders/1qjhxyoQXK3AdszzGWidufNLbTf9tiPbt) folder. Older documentation can be found [here](https://drive.google.com/drive/folders/1uOuPRkYjwMznLqBzBnsY3kqNimeE84Uz)
 
 ## Definition of Done
 ### User Story is considered done, when it is
