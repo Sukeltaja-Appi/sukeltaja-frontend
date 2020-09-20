@@ -6,7 +6,6 @@ import ClusteredMapView from 'react-native-maps-super-cluster'
 import { Marker, Callout } from 'react-native-maps'
 import colors from '../../../styles/colors'
 import decimalToDMS from '../../../utils/coordinates'
-import marker from '../../../pictures/flag-blue.png'
 import { paddingSides } from '../../../styles/global'
 
 import { getAll } from '../../../reducers/targetReducer'
@@ -23,17 +22,18 @@ class CustomTargetScreen extends React.Component {
         latitudeDelta: 12,
         longitudeDelta: 12
       },
-      overlay: false,
       query: '',
-      target: null
+      target: null,
     }
   }
 
-  onRegionChangeComplete = region => {
-    console.log('latitude: ' + region.latitude + ' longtitude: ' + region.longitude)
+  onPress = evt => {
+    const coord = evt.nativeEvent.coordinate;
+
+    console.log(coord)
 
     this.setState({
-      region
+      target: { ...coord }
     })
   }
 
@@ -70,10 +70,9 @@ class CustomTargetScreen extends React.Component {
     return (
       <Marker
         identifier={`pin-${_id}`}
-        key={_id}
+        key={_id || 'customLocation'}
         coordinate={location}
         pinColor={this.renderPinColor(rest)}
-        onCalloutPress={() => this.setState({ overlay: true })}
       >
         <Callout>
           <Text style={{ fontWeight: 'bold' }}>{name}</Text>
@@ -85,32 +84,23 @@ class CustomTargetScreen extends React.Component {
     )
   }
 
-  onMarkerPress = (event) => {
-    const { latitude, longitude } = event.nativeEvent.coordinate
-    const target = this.props.targets.find(
-      m => m.latitude === latitude && m.longitude === longitude
-    )
+  navigate = (value, target) => this.props.navigation.navigate(value, { target, custom: true })
 
-    if (target) {
-      this.setState({ target })
-    }
+  selectTarget = () => {
+    this.navigate('Target', this.state.target)
   }
-
-  filteredTargets = () => {
-    const query = this.state.query.trim().toLowerCase()
-    const { targets } = this.props
-
-    return query ? targets.filter(t => t.name.toLowerCase().startsWith(query)) : targets
-  }
-
-  navigate = (value, target, custom) => this.props.navigation.navigate(value, { target, custom })
 
   render() {
-    const { region } = this.state
     const { initialRegion, target, overlay, query } = this.state
-    const { targets } = this.props
 
-    targets.map(t => t.location = { longitude: t.longitude, latitude: t.latitude })
+    // Map needs coordinates in target.location
+    const mapTarget = target ? {
+      ...this.state.target,
+      location: {
+        longitude: this.state.target.longitude,
+        latitude: this.state.target.latitude,
+      }
+    } : null;
 
     return (
       <View style={style.container}>
@@ -120,41 +110,22 @@ class CustomTargetScreen extends React.Component {
           mapPadding={{ bottom: 160, left: 68, right: 50 }}
           style={style.map}
           radius={42}
-          data={this.filteredTargets()}
+          data={mapTarget ? [mapTarget] : []}
           initialRegion={initialRegion}
           onMarkerPress={this.onMarkerPress}
           renderMarker={this.renderMarker}
           renderCluster={this.renderCluster}
           showsUserLocation={true}
           userLocationAnnotationTitle=''
-          onRegionChangeComplete={this.onRegionChangeComplete}
+          onPress={this.onPress}
         />
 
-        <View style={style.markerFixed}>
-          <Image style={style.marker} source={marker} />
-        </View>
         <View style={style.bottom}>
           <Button
             title='Valitse kohde'
-            onPress={() => this.navigate('Target', region, true)}
+            onPress={() => this.selectTarget()}
           />
         </View>
-
-        { overlay
-          && (
-            <Overlay
-              isVisible={this.state.overlay}
-              onBackdropPress={() => this.setState({ overlay: false })}
-              width='100%'
-              height='auto'
-              overlayStyle={style.overlay}
-              animationType='fade'
-            >
-              <Target {...this.props} target={target} />
-            </Overlay>
-          )
-        }
-
       </View>
     )
   }
@@ -179,18 +150,6 @@ const style = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject
   },
-  overlay: {
-    position: 'absolute',
-    bottom: 0,
-    padding: 0
-  },
-  markerFixed: {
-    left: '50%',
-    marginLeft: -24,
-    marginTop: -48,
-    position: 'absolute',
-    top: '50%'
-  },
   marker: {
     height: 50,
     width: 50
@@ -205,10 +164,10 @@ const style = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   currentTarget: state.ongoingEvent && state.ongoingEvent.target ? state.ongoingEvent.target : null,
-  targets: state.targets
+  targets: state.targets,
 })
 
 export default connect(
   mapStateToProps,
   { getAll }
-) (CustomTargetScreen)
+)(CustomTargetScreen)
