@@ -64,14 +64,17 @@ const StackLogin = createStackNavigator();
 
 function LoginStack() {
   return (
-    <StackLogin.Navigator initialRouteName="Login" screenOptions={{ headerShown: false}}>
-      <StackLogin.Screen name="Login" component={LoginScreen}/>
-      <StackLogin.Screen name="Reset" component={ResetScreen}/>
-      <StackLogin.Screen name="Opening" component={OpeningScreen}/>
-      <StackLogin.Screen name="Register" component={RegisterScreen}/>
+    <StackLogin.Navigator initialRouteName="Login" screenOptions={{ headerShown: false}} >
+      <StackLogin.Screen name="LoginScreen" component={LoginScreen}/>
+      <StackLogin.Screen name="ResetScreen" component={ResetScreen}/>
+      <StackLogin.Screen name="RegisterScreen" component={RegisterScreen}/>
       <StackLogin.Screen name="ProfileTabs" component={ProfileTabs}/>
+      <StackLogin.Screen name="Opening" component={OpeningScreen}/>
     </StackLogin.Navigator>
   )
 }
 
 export default LoginStack
+
+// ?? navigationOptions= {{tabBarVisible: false}}
+

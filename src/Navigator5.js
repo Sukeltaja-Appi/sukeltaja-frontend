@@ -18,14 +18,17 @@ const Tab = createBottomTabNavigator();
 function Navigator() {
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName="Profiili">
+      <Tab.Navigator name="Alku" initialRouteName="Profiili" >
         <Tab.Screen name="Kartta" component={MapScreen} />
         <Tab.Screen name="Tapahtuma" component={EventEntry} />
         <Tab.Screen name="Tapahtumat" component={OngoingEventEntry} />
-        <Tab.Screen name="Profiili" component={ProfileScreens} />
+        <Tab.Screen name="Profiili" component={ProfileScreens}  />
       </Tab.Navigator>
     </NavigationContainer>
   );
 }
 
 export default Navigator
+
+
+// ?? screenOptions={{ tabBarVisible: false }}

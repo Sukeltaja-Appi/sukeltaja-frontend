@@ -97,7 +97,7 @@ class LoginScreen extends React.Component {
     })
 
     return (
-      <View>
+      <View >
         <Header
           placement="center"
           centerComponent={{ text: 'KIRJAUTUMINEN', style: style.title }}
@@ -108,7 +108,7 @@ class LoginScreen extends React.Component {
         />
         <View style={style.container}>
           {!validLogin &&
-            <Text style={{fontSize: 16, color: 'red'}}>
+            <Text style={{ fontSize: 16, color: 'red' }}>
               Väärä käyttäjätunnus tai salasana
             </Text>
           }
@@ -128,7 +128,7 @@ class LoginScreen extends React.Component {
           <View style={style.buttonDivider} />
 
           <Button
-            onPress={() => navigation.navigate('Register', { screen: 'RegisterScreen' })}
+            onPress={() => this.navigate('RegisterScreen')}
             title="Rekisteröidy"
           />
 
@@ -136,7 +136,7 @@ class LoginScreen extends React.Component {
           <View style={style.buttonDivider} />
 
           <Button
-            onPress={() => navigation.navigate('ResetScreen')}
+            onPress={() => this.navigate('ResetScreen')}
             title="Unohtuiko salasana?"
           />
 
