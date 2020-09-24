@@ -128,7 +128,7 @@ class LoginScreen extends React.Component {
           <View style={style.buttonDivider} />
 
           <Button
-            onPress={() => this.navigate('RegisterScreen')}
+            onPress={() => navigation.navigate('Register', { screen: 'RegisterScreen' })}
             title="Rekisteröidy"
           />
 
@@ -136,7 +136,7 @@ class LoginScreen extends React.Component {
           <View style={style.buttonDivider} />
 
           <Button
-            onPress={() => this.navigate('ResetScreen')}
+            onPress={() => navigation.navigate('ResetScreen')}
             title="Unohtuiko salasana?"
           />
 
