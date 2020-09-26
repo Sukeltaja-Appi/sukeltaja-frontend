@@ -1,3 +1,5 @@
+// Have to disable this because of tcomb form
+/* eslint-disable react/no-string-refs */
 import React from 'react'
 import { connect } from 'react-redux'
 import { View, Text, ScrollView } from 'react-native'
@@ -74,7 +76,7 @@ class RegisterScreen extends React.Component {
     this.setState({ passwordMatch: true })
     this.setState({ usernameInUse: false })
     if (this.refs.form.getValue()) {
-      if (this.state.credentials.password == this.state.credentials.passwordVerification) {
+      if (this.state.credentials.password === this.state.credentials.passwordVerification) {
         const response = await userService.create(this.state.credentials)
 
         if (response) {
@@ -139,15 +141,15 @@ class RegisterScreen extends React.Component {
             }}
           />
           <View style={style.container}>
-            {!passwordMatch &&
-              <Text style={{ fontSize: 16, color: 'red' }}>
+            {!passwordMatch
+              && <Text style={{ fontSize: 16, color: 'red' }}>
                 Salasana ja vahvistus eivät täsmää
-            </Text>
+              </Text>
             }
-            {usernameInUse &&
-              <Text style={{ fontSize: 16, color: 'red' }}>
+            {usernameInUse
+              && <Text style={{ fontSize: 16, color: 'red' }}>
                 Rekisteröinti epäonnistui, käyttäjätunnus on jo olemassa
-            </Text>
+              </Text>
             }
 
             <Form
