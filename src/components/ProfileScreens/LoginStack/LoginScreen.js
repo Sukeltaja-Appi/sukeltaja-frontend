@@ -1,3 +1,5 @@
+// Have to disable this because of tcomb form
+/* eslint-disable react/no-string-refs */
 import React from 'react'
 import { connect } from 'react-redux'
 import { View, Text } from 'react-native'
@@ -89,7 +91,7 @@ class LoginScreen extends React.Component {
   render() {
     const { credentials } = this.state
     const { validLogin } = this.state
-    const reference = "form"
+    const reference = 'form'
 
     const User = t.struct({
       username: t.String,
@@ -107,8 +109,8 @@ class LoginScreen extends React.Component {
           }}
         />
         <View style={style.container}>
-          {!validLogin &&
-            <Text style={{fontSize: 16, color: 'red'}}>
+          {!validLogin
+            && <Text style={{ fontSize: 16, color: 'red' }}>
               Väärä käyttäjätunnus tai salasana
             </Text>
           }
