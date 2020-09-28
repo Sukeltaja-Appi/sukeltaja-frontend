@@ -1,8 +1,7 @@
 import React from 'react'
 import { createSwitchNavigator } from 'react-navigation'
-import { MaterialTopTabBar } from 'react-navigation-tabs'
-import { createStackNavigator } from 'react-navigation-stack'
-import { createMaterialTopTabNavigator } from 'react-navigation-tabs'
+import { createStackNavigator } from '@react-navigation/stack'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { Icon } from 'react-native-elements'
 
 import Invite from './ProfileTabs/Invite'
@@ -14,10 +13,9 @@ import SettingsScreen from './ProfileTabs/SettingsScreen'
 import LoginScreen from './LoginStack/LoginScreen'
 import RegisterScreen from './LoginStack/RegisterScreen'
 import ResetScreen from './LoginStack/ResetScreen'
+import OpeningScreen from './LoginStack/OpeningScreen'
 
 import colors from '../../styles/colors'
-
-const TabBarComponent = (props) => <MaterialTopTabBar {...props} />
 
 const style = {
   activeTintColor: '#fff',
@@ -28,90 +26,55 @@ const style = {
   showIcon: true
 }
 
-const MessageStack = createStackNavigator({
-  InvitesScreen: {
-    screen: InvitesScreen
-  },
-  Invite: {
-    screen: Invite
-  }
-}, {
-  headerMode: 'none'
-})
+const StackMessage = createStackNavigator();
 
-const SettingsStack = createStackNavigator({
-  SettingsScreen: {
-    screen: SettingsScreen
-  },
-  LicenseScreen: {
-    screen: LicenseScreen
-  }
-}, {
-  headerMode: 'none'
-})
+function MessageStack() {
+  return (
+    <StackMessage.Navigator>
+      <StackMessage.Screen name="Kutsut" component={InvitesScreen}/>
+      <StackMessage.Screen name="Kutsu" component={Invite}/>
+    </StackMessage.Navigator>
+  )
+}
 
-const ProfileTabs = createMaterialTopTabNavigator({
-  Profile: {
-    screen: ProfileScreen,
-    navigationOptions: {
-      tabBarLabel: 'PROFIILI',
-      tabBarOptions: style,
-      showIcon: true,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='home' type='feather' color={tintColor} />
-      )
-    }
-  },
-  Conversations: {
-    screen: MessageStack,
-    navigationOptions: {
-      tabBarLabel: 'KUTSUT',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='inbox' type='feather' color={tintColor} />
-      )
-    }
-  },
-  Settings: {
-    screen: SettingsStack,
-    navigationOptions: {
-      tabBarLabel: 'ASETUKSET',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='settings' type='feather' color={tintColor} />
-      )
-    }
-  }
-}, {
-  tabBarComponent: props => {
-    return (
-      <TabBarComponent
-        {...props}
-        style={{
-          backgroundColor: colors.primary_light,
-          paddingTop: 10
-        }}
-      />
-    )
-  }
-})
+const StackSettings = createStackNavigator();
 
-const LoginStack = createSwitchNavigator({
-  ProfileTabs: {
-    screen: ProfileTabs
-  },
-  LoginScreen: {
-    screen: LoginScreen
-  },
-  ResetScreen: {
-    screen: ResetScreen
-  },
-  RegisterScreen: {
-    screen: RegisterScreen
-  }
-}, {
-  headerMode: 'none',
-  initialRouteName: 'LoginScreen'
-})
+function SettingsStack() {
+  return (
+    <StackSettings.Navigator>
+      <StackSettings.Screen name="Asetukset" component={SettingsScreen}/>
+      <StackSettings.Screen name="Lisenssi" component={LicenseScreen}/>
+    </StackSettings.Navigator>
+  )
+}
+
+const StackProfile = createMaterialTopTabNavigator();
+
+function ProfileTabs() {
+  return (
+    <StackProfile.Navigator>
+      <StackProfile.Screen name="Profiili" component={ProfileScreen}/>
+      <StackProfile.Screen name="Kutsut" component={MessageStack}/>
+      <StackProfile.Screen name="Asetukset" component={SettingsStack}/>
+    </StackProfile.Navigator>
+  )
+}
+
+const StackLogin = createStackNavigator();
+
+function LoginStack() {
+  return (
+    <StackLogin.Navigator initialRouteName="Login" screenOptions={{ headerShown: false}} >
+      <StackLogin.Screen name="LoginScreen" component={LoginScreen}/>
+      <StackLogin.Screen name="ResetScreen" component={ResetScreen}/>
+      <StackLogin.Screen name="RegisterScreen" component={RegisterScreen}/>
+      <StackLogin.Screen name="ProfileTabs" component={ProfileTabs}/>
+      <StackLogin.Screen name="Opening" component={OpeningScreen}/>
+    </StackLogin.Navigator>
+  )
+}
 
 export default LoginStack
+
+// ?? navigationOptions= {{tabBarVisible: false}}
+

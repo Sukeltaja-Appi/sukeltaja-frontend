@@ -1,5 +1,3 @@
-// Have to disable this because of tcomb form
-/* eslint-disable react/no-string-refs */
 import React from 'react'
 import { connect } from 'react-redux'
 import { View, Text } from 'react-native'
@@ -32,20 +30,6 @@ const style = {
   }
 }
 
-const options = {
-  fields: {
-    username: {
-      label: 'Käyttäjätunnus:',
-      error: 'Käyttäjätunnus ei saa olla tyhjä.'
-    },
-    password: {
-      label: 'Salasana:',
-      error: 'Salasana ei saa olla tyhjä.',
-      secureTextEntry: true
-    }
-  }
-}
-
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -60,38 +44,10 @@ class LoginScreen extends React.Component {
 
   navigate = (value) => this.props.navigation.navigate(value)
 
-  login = async () => {
-    if (this.refs.form.getValue()) {
-      //const { login, initializeEvents, initializeDives, getAll } = this.props
-      this.setState({ validLogin: true })
-      const { login, initializeEvents, getAll } = this.props
-
-      await login(this.state.credentials)
-      const { user } = this.props
-
-      if (user) {
-        userService.setToken(user.token)
-
-        await initializeEvents()
-        //await initializeDives()
-        await getAll()
-
-        const serverListener = getServerListener()
-
-        serverListener.setupCommunication()
-
-        this.navigate('ProfileTabs')
-      } else {
-        console.log('Wrong username or password')
-        this.setState({ validLogin: false })
-      }
-    }
-  }
-
   render() {
     const { credentials } = this.state
     const { validLogin } = this.state
-    const reference = 'form'
+    const reference = "form"
 
     const User = t.struct({
       username: t.String,
@@ -99,31 +55,18 @@ class LoginScreen extends React.Component {
     })
 
     return (
-      <View >
+      <View>
         <Header
           placement="center"
-          centerComponent={{ text: 'KIRJAUTUMINEN', style: style.title }}
+          centerComponent={{ text: 'h', style: style.title }}
           containerStyle={{
             backgroundColor: '#1a237e',
             justifyContent: 'space-around',
           }}
         />
         <View style={style.container}>
-          {!validLogin &&
-            <Text style={{ fontSize: 16, color: 'red' }}>
-              Väärä käyttäjätunnus tai salasana
-            </Text>
-          }
-          <Form
-            ref={reference}
-            type={User}
-            options={options}
-            value={credentials}
-            onChange={(credentials) => this.setState({ credentials })}
-          />
-
           <Button
-            onPress={this.login}
+            onPress={() => this.navigate('LoginScreen')}
             title="Kirjaudu"
           />
 
@@ -133,15 +76,6 @@ class LoginScreen extends React.Component {
             onPress={() => this.navigate('RegisterScreen')}
             title="Rekisteröidy"
           />
-
-          <View style={style.buttonDivider} />
-          <View style={style.buttonDivider} />
-
-          <Button
-            onPress={() => this.navigate('ResetScreen')}
-            title="Unohtuiko salasana?"
-          />
-
         </View>
       </View>
     )

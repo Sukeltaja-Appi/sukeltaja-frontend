@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 //import { USERNAME, PASSWORD } from '@env'
 //import userService from './services/users'
 import Navigator from './Navigator'
+import Navigator5 from './Navigator5'
 import { login } from './reducers/userReducer'
 import { initializeEvents } from './reducers/eventReducer'
 import { initializeDives } from './reducers/diveReducer'
@@ -48,7 +49,7 @@ class AppEntry extends React.Component {
     return (
       <React.Fragment>
         <OfflineNotifier />
-        <Navigator />
+        <Navigator5 />
         <ServerListener />
       </React.Fragment>
     )
