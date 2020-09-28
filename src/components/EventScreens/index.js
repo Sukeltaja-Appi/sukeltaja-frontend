@@ -5,6 +5,7 @@ import EditEventScreen from './EventMenuStack/EditEventScreen'
 import Event from './EventMenuStack/Event'
 import EventListScreen from './EventMenuStack/EventListScreen'
 import EventMenuScreen from './EventMenuStack/EventMenuScreen'
+import EventInfoScreen from './EventMenuStack/EventInfoScreen'
 
 const EventMenuStack = createStackNavigator({
   EventMenuScreen: {
@@ -36,7 +37,13 @@ const EventMenuStack = createStackNavigator({
     navigationOptions: {
       headerTitle: 'Luo tapahtuma'
     }
-  }
+  },
+  EventInfoScreen: {
+    screen: EventInfoScreen,
+    navigationOptions: {
+      headerTitle: 'Uusi tapahtuma'
+    }
+  },
 }, {
   defaultNavigationOptions: {
     headerTitleStyle: {

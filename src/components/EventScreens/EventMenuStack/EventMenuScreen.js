@@ -12,7 +12,7 @@ const MenuScreen = (props) => {
     {
       title: 'Luo uusi sukellustapahtuma',
       leftIcon: () => <Icon name='edit-2' type='feather' />,
-      destination: 'CreateEventScreen'
+      destination: 'EventInfoScreen'
     },
     {
       title: 'Selaa omia sukellustapahtumia',
