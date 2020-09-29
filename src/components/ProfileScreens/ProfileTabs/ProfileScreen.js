@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { View, ScrollView, StyleSheet, FlatList } from 'react-native'
+import { View, ScrollView, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import { Icon, Text, ListItem } from 'react-native-elements'
 
 import { logout } from '../../../store'
@@ -8,7 +8,6 @@ import { getMessages } from '../../../reducers/messageReducer'
 import { getServerListener } from '../../../ServerListener'
 import userService from '../../../services/users'
 import styles from '../../../styles/global'
-import colors from '../../../styles/colors'
 
 export const ProfileScreen = (props) => {
 
@@ -27,8 +26,9 @@ export const ProfileScreen = (props) => {
     setInvites(newInvites)
   }, [props.messages])
 
-
-  const navigate = (value) => props.navigation.navigate(value)
+  const navigate = (value) => {
+    props.navigation.navigate(value)
+  }
 
   const logoutButton = () => {
     const { logout } = props
@@ -73,9 +73,10 @@ export const ProfileScreen = (props) => {
     <View style={styles.noPadding}>
       <ScrollView>
         <View style={{ backgroundColor: '#118BFC', alignItems: 'center' }}>
+
           <View style={{
             backgroundColor: 'rgba(0, 0, 0, 0.3)', width: '80%',
-            marginTop: 40, marginHorizontal: 40, marginBottom: 20, padding: 30, borderRadius: 50
+            marginTop: 40, marginHorizontal: 40, marginBottom: 10, padding: 30, borderRadius: 50
           }}>
             <Icon
               size={100}
@@ -86,9 +87,9 @@ export const ProfileScreen = (props) => {
 
           {
             invites.length > 0 &&
-            <View style={style.notificationStyle}>
+            <TouchableOpacity style={style.notificationStyle} onPress={() => navigate('InvitesScreen')}>
               <Text style={{ color: 'white' }}>{invites.length} kutsua odottaa hyväksymistä</Text>
-            </View>
+            </TouchableOpacity>
           }
         </View>
 
@@ -114,7 +115,6 @@ export const ProfileScreen = (props) => {
           keyExtractor={item => item.title}
         />
 
-
       </ScrollView>
     </View>
   )
@@ -136,7 +136,7 @@ const style = StyleSheet.create({
   }
 })
 
-const mapStateToProps = (state) => ({ username: state.user.username })
+const mapStateToProps = (state) => ({ username: state.user.username, messages: state.messages })
 
 export default connect(
   mapStateToProps,
