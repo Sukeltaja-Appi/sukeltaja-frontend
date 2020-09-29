@@ -2,10 +2,10 @@
 /* eslint-disable react/no-string-refs */
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, Text } from 'react-native'
+import { ImageBackground, View, Text, Image } from 'react-native'
 import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
-
+import _ from 'lodash'
 import { getServerListener } from '../../../ServerListener'
 import userService from '../../../services/users'
 import { initializeEvents } from '../../../reducers/eventReducer'
@@ -14,14 +14,19 @@ import { getAll } from '../../../reducers/targetReducer'
 import { login } from '../../../reducers/userReducer'
 import { paddingSides } from '../../../styles/global'
 
+const image = require('../../../pictures/tausta.png')
+
 const { Form } = t.form
 
 const style = {
   container: {
     width: '100%',
-    backgroundColor: 'white',
-    padding: paddingSides,
-    paddingBottom: 50
+    backgroundColor: 'transparent',
+    padding: 50,
+  },
+  button: {
+    background: '#00A3FF',
+    border: '3px solid #118BFC',
   },
   buttonDivider: {
     height: 20
@@ -31,14 +36,20 @@ const style = {
     fontSize: 22,
   }
 }
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+// overriding the background color
+stylesheet.textbox.normal.backgroundColor = 'white';
+stylesheet.controlLabel.normal.color = 'white';
 
 const options = {
   fields: {
     username: {
+      stylesheet: stylesheet,
       label: 'Käyttäjätunnus:',
-      error: 'Käyttäjätunnus ei saa olla tyhjä.'
+      error: 'Käyttäjätunnus ei saa olla tyhjä.',
     },
     password: {
+      stylesheet: stylesheet,
       label: 'Salasana:',
       error: 'Salasana ei saa olla tyhjä.',
       secureTextEntry: true
@@ -100,14 +111,10 @@ class LoginScreen extends React.Component {
 
     return (
       <View >
-        <Header
-          placement="center"
-          centerComponent={{ text: 'KIRJAUTUMINEN', style: style.title }}
-          containerStyle={{
-            backgroundColor: '#1a237e',
-            justifyContent: 'space-around',
-          }}
-        />
+        <ImageBackground source={image} style={{ width: '100%', height: '100%', position: 'relative'}}>
+        <Text style={{textAlign: 'center', color: 'white', fontSize: 34, marginTop: 50}}>
+          Kirjaudu sisään
+        </Text>
         <View style={style.container}>
           {!validLogin &&
             <Text style={{ fontSize: 16, color: 'red' }}>
@@ -121,28 +128,19 @@ class LoginScreen extends React.Component {
             value={credentials}
             onChange={(credentials) => this.setState({ credentials })}
           />
-
-          <Button
+          <Button style={style.button}
             onPress={this.login}
-            title="Kirjaudu"
+            title="Kirjaudu" 
           />
 
           <View style={style.buttonDivider} />
 
-          <Button
-            onPress={() => this.navigate('RegisterScreen')}
-            title="Rekisteröidy"
-          />
-
-          <View style={style.buttonDivider} />
-          <View style={style.buttonDivider} />
-
-          <Button
+          <Button style={style.button}
             onPress={() => this.navigate('ResetScreen')}
             title="Unohtuiko salasana?"
-          />
-
+          />    
         </View>
+        </ImageBackground>
       </View>
     )
   }

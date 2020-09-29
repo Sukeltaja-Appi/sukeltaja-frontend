@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, Text } from 'react-native'
+import { ImageBackground, View, Text, Image } from 'react-native'
 import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
 
@@ -14,19 +14,30 @@ import { paddingSides } from '../../../styles/global'
 
 const { Form } = t.form
 
+const image = require('../../../pictures/tausta.png')
+
+
 const style = {
   container: {
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     padding: paddingSides,
     paddingBottom: 50
   },
   buttonDivider: {
-    height: 20
+    height: 40
+  },
+  emptyDivider: {
+    height: 250
   },
   title: {
     color: 'white',
     fontSize: 22,
+  },
+  backgroundImage: {
+    flex: 1,
+    alignSelf: 'stretch',
+    width: null, 
   }
 }
 
@@ -45,25 +56,18 @@ class LoginScreen extends React.Component {
   navigate = (value) => this.props.navigation.navigate(value)
 
   render() {
-    const { credentials } = this.state
-    const { validLogin } = this.state
-    const reference = "form"
-
-    const User = t.struct({
-      username: t.String,
-      password: t.String,
-    })
-
     return (
       <View>
+        <ImageBackground source={image} style={{ width: '100%', height: '100%' }}>
         <Header
           placement="center"
-          centerComponent={{ text: 'h', style: style.title }}
+          centerComponent={{ text: 'SUKELTAJA-APP', style: style.title }}
           containerStyle={{
             backgroundColor: '#1a237e',
             justifyContent: 'space-around',
           }}
         />
+        <View style={style.emptyDivider} />
         <View style={style.container}>
           <Button
             onPress={() => this.navigate('LoginScreen')}
@@ -76,7 +80,9 @@ class LoginScreen extends React.Component {
             onPress={() => this.navigate('RegisterScreen')}
             title="Rekisteröidy"
           />
+          
         </View>
+        </ImageBackground>
       </View>
     )
   }
