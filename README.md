@@ -7,7 +7,7 @@
 
 Mobile app for divers diving in Finland.
 
-This repository contains the frontend, backend can be found [here](https://github.com/Sukeltaja-App/sukeltaja-backend)
+This repository contains the frontend, backend can be found [here](https://github.com/Sukeltaja-Appi/sukeltaja-backend)
 
 ## Installation
 
