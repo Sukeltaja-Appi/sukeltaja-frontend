@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { ImageBackground, View, Text, Image } from 'react-native'
+import { TouchableOpacity, ImageBackground, View, Text, Image } from 'react-native'
 import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
 
@@ -14,7 +14,10 @@ import { paddingSides } from '../../../styles/global'
 
 const { Form } = t.form
 
-const image = require('../../../pictures/tausta.png')
+const backgroundImage = require('../../../pictures/tausta.png')
+const logo = require('../../../pictures/mobiililogot_vaaka.png')
+
+
 
 
 const style = {
@@ -22,8 +25,9 @@ const style = {
     width: '100%',
     backgroundColor: 'transparent',
     padding: paddingSides,
-    paddingBottom: 50
-  },
+    paddingBottom: 70,
+    marginTop: 40
+  }, 
   buttonDivider: {
     height: 40
   },
@@ -33,13 +37,35 @@ const style = {
   title: {
     color: 'white',
     fontSize: 22,
+    font: "Nunito"
   },
   backgroundImage: {
     flex: 1,
     alignSelf: 'stretch',
     width: null, 
-  }
+  },
+  appButtonContainer: {
+    elevation: 8,
+    backgroundColor: "#00A3FF",
+    borderRadius: 25,
+    paddingVertical: 20,
+    paddingHorizontal: 15
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase",
+    font: "Nunito"
+  }    
 }
+
+const AppButton = ({ onPress, title }) => (
+  <TouchableOpacity onPress={onPress} style={style.appButtonContainer}>
+    <Text style={style.appButtonText}>{title}</Text>
+  </TouchableOpacity>
+);
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -58,28 +84,18 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <View>
-        <ImageBackground source={image} style={{ width: '100%', height: '100%' }}>
-        <Header
-          placement="center"
-          centerComponent={{ text: 'SUKELTAJA-APP', style: style.title }}
-          containerStyle={{
-            backgroundColor: '#1a237e',
-            justifyContent: 'space-around',
-          }}
-        />
-        <View style={style.emptyDivider} />
+        
+        <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
+        
         <View style={style.container}>
-          <Button
-            onPress={() => this.navigate('LoginScreen')}
-            title="Kirjaudu"
-          />
-
+          <Image source={logo} style={{ width: 360, height: 120, alignSelf: "center"}}></Image>
+          <Text style={{textAlign: 'center', color: 'white', fontSize: 50, marginTop: 0}}>Sukeltaja-app</Text>
+        </View>
+        
+        <View style={style.container}>
+          <AppButton title="Kirjaudu" onPress={() => this.navigate('LoginScreen')}/>
           <View style={style.buttonDivider} />
-
-          <Button
-            onPress={() => this.navigate('RegisterScreen')}
-            title="Rekisteröidy"
-          />
+          <AppButton title="Rekisteröidy" onPress={() => this.navigate('RegisterScreen')}/>
           
         </View>
         </ImageBackground>
