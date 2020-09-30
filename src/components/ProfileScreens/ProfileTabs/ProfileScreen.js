@@ -8,6 +8,7 @@ import { getMessages } from '../../../reducers/messageReducer'
 import { getServerListener } from '../../../ServerListener'
 import userService from '../../../services/users'
 import styles from '../../../styles/global'
+import BackgroundImage from '../../../pictures/BackgroundImage'
 
 export const ProfileScreen = (props) => {
 
@@ -72,26 +73,27 @@ export const ProfileScreen = (props) => {
   return (
     <View style={styles.noPadding}>
       <ScrollView>
-        <View style={{ backgroundColor: '#118BFC', alignItems: 'center' }}>
-
-          <View style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.3)', width: '80%',
-            marginTop: 40, marginHorizontal: 40, marginBottom: 10, padding: 30, borderRadius: 50
-          }}>
-            <Icon
-              size={100}
-              name='user' type='feather'
-            />
-            <Text h2 style={{ textAlign: 'center', color: 'white' }}>{props.username}</Text>
+        <BackgroundImage>
+          <View style={{ alignItems: 'center' }}>
+            <View style={{
+              backgroundColor: 'rgba(0, 0, 0, 0.3)', width: '80%',
+              marginTop: 40, marginHorizontal: 40, marginBottom: 10, padding: 30, borderRadius: 50
+            }}>
+              <Icon
+                size={100}
+                name='user' type='feather'
+              />
+              <Text h2 style={{ textAlign: 'center', color: 'white' }}>{props.username}</Text>
+            </View>
+            {
+              invites.length > 0 &&
+              <TouchableOpacity style={style.notificationStyle} onPress={() => navigate('InvitesScreen')}>
+                <Text style={{ color: 'white' }}>{invites.length} kutsua odottaa hyväksymistä</Text>
+              </TouchableOpacity>
+            }
           </View>
+        </BackgroundImage>
 
-          {
-            invites.length > 0 &&
-            <TouchableOpacity style={style.notificationStyle} onPress={() => navigate('InvitesScreen')}>
-              <Text style={{ color: 'white' }}>{invites.length} kutsua odottaa hyväksymistä</Text>
-            </TouchableOpacity>
-          }
-        </View>
 
         <FlatList
           data={menuData}
