@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { View, ScrollView, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { View, ScrollView, StyleSheet, FlatList, TouchableOpacity, Linking } from 'react-native'
 import { Icon, Text, ListItem } from 'react-native-elements'
 
 import { logout } from '../../../store'
@@ -9,6 +9,7 @@ import { getServerListener } from '../../../ServerListener'
 import userService from '../../../services/users'
 import styles from '../../../styles/global'
 import BackgroundImage from '../../../pictures/BackgroundImage'
+import { SERVICE_EMAIL } from '@env'
 
 export const ProfileScreen = (props) => {
 
@@ -61,7 +62,7 @@ export const ProfileScreen = (props) => {
     {
       title: 'Palaute',
       leftIcon: () => <Icon name='feedback' type='material' />,
-      onPress: () => navigate('')
+      onPress: () => Linking.openURL(`mailto:${SERVICE_EMAIL}`)
     },
     {
       title: 'Kirjaudu ulos',
@@ -93,7 +94,6 @@ export const ProfileScreen = (props) => {
             }
           </View>
         </BackgroundImage>
-
 
         <FlatList
           data={menuData}
