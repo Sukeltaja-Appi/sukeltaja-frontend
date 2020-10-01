@@ -2,10 +2,9 @@
 /* eslint-disable react/no-string-refs */
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, Text, ScrollView } from 'react-native'
-import { Button, Header } from 'react-native-elements'
+import { ImageBackground, View, Text, ScrollView } from 'react-native'
 import t from 'tcomb-form-native'
-
+import _ from 'lodash'
 import { getServerListener } from '../../../ServerListener'
 import userService from '../../../services/users'
 import { initializeEvents } from '../../../reducers/eventReducer'
@@ -13,15 +12,17 @@ import { initializeDives } from '../../../reducers/diveReducer'
 import { getAll } from '../../../reducers/targetReducer'
 import { login } from '../../../reducers/userReducer'
 import { paddingSides } from '../../../styles/global'
+import AppButton from '../../common/AppButton'
 
 const { Form } = t.form
+
+const backgroundImage = require('../../../pictures/tausta.png')
 
 const style = {
   container: {
     width: '100%',
-    backgroundColor: 'white',
-    padding: paddingSides,
-    paddingBottom: 50
+    backgroundColor: 'transparent',
+    padding: 50,
   },
   buttonDivider: {
     height: 20
@@ -32,22 +33,31 @@ const style = {
   }
 }
 
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet)
+// overriding the background color
+stylesheet.textbox.normal.backgroundColor = 'white';
+stylesheet.controlLabel.normal.color = 'white';
+
 const options = {
   fields: {
     email: {
+      stylesheet: stylesheet,
       label: 'Sähköpostiosoite:',
       error: 'Anna validi sähköpostiosoite.'
     },
     username: {
+      stylesheet: stylesheet,
       label: 'Käyttäjätunnus:',
       error: 'Käyttäjätunnus ei saa olla tyhjä.'
     },
     password: {
+      stylesheet: stylesheet,
       label: 'Salasana:',
       error: 'Salasana ei saa olla tyhjä.',
       secureTextEntry: true
     },
     passwordVerification: {
+      stylesheet: stylesheet,
       label: 'Salasanan vahvistus:',
       error: 'Vahvistus ei saa olla tyhjä.',
       secureTextEntry: true
@@ -131,15 +141,12 @@ class RegisterScreen extends React.Component {
 
     return (
       <View>
+        <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
         <ScrollView>
-          <Header
-            placement="center"
-            centerComponent={{ text: 'REKISTERÖITYMINEN', style: style.title }}
-            containerStyle={{
-              backgroundColor: '#1a237e',
-              justifyContent: 'space-around',
-            }}
-          />
+          <Text style={{textAlign: 'center', color: 'white', fontSize: 34, marginTop: 50}}>
+            Rekisteröidy
+          </Text>
+
           <View style={style.container}>
             {!passwordMatch
               && <Text style={{ fontSize: 16, color: 'red' }}>
@@ -160,7 +167,7 @@ class RegisterScreen extends React.Component {
               onChange={(credentials) => this.setState({ credentials })}
             />
 
-            <Button
+            <AppButton
               onPress={this.register}
               title="Rekisteröidy"
             />
@@ -168,12 +175,13 @@ class RegisterScreen extends React.Component {
             <View style={style.buttonDivider} />
             <View style={style.buttonDivider} />
 
-            <Button
-              onPress={() => this.navigate('LoginScreen')}
+            <AppButton
+              onPress={() => this.navigate('Opening')}
               title="Palaa"
             />
           </View>
         </ScrollView>
+        </ImageBackground>
       </View>
     )
   }

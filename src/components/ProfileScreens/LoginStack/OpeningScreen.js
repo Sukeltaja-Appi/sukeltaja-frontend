@@ -1,18 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { TouchableOpacity, ImageBackground, View, Text, Image } from 'react-native'
-import { Button, Header } from 'react-native-elements'
+import { ImageBackground, View, Text, Image } from 'react-native'
 import t from 'tcomb-form-native'
-import { getServerListener } from '../../../ServerListener'
-import userService from '../../../services/users'
+
 import { initializeEvents } from '../../../reducers/eventReducer'
 import { initializeDives } from '../../../reducers/diveReducer'
 import { getAll } from '../../../reducers/targetReducer'
 import { login } from '../../../reducers/userReducer'
-import { paddingSides } from '../../../styles/global'
 import AppButton from '../../common/AppButton'
-
-const { Form } = t.form
 
 const backgroundImage = require('../../../pictures/tausta.png')
 const logo = require('../../../pictures/mobiililogot_vaaka.png')
@@ -21,9 +16,7 @@ const style = {
   container: {
     width: '100%',
     backgroundColor: 'transparent',
-    padding: paddingSides,
-    paddingBottom: 70,
-    marginTop: 40
+    padding: 50,
   },
   buttonDivider: {
     height: 40
