@@ -8,7 +8,7 @@ import { getMessages } from '../../../reducers/messageReducer'
 import { getServerListener } from '../../../ServerListener'
 import userService from '../../../services/users'
 import styles from '../../../styles/global'
-import BackgroundImage from '../../../pictures/BackgroundImage'
+import BackgroundImage from '../../common/BackgroundImage'
 import { SERVICE_EMAIL } from '@env'
 
 export const ProfileScreen = (props) => {
@@ -132,8 +132,9 @@ const style = StyleSheet.create({
     marginHorizontal: 20,
     backgroundColor: '#00A3FF',
     paddingHorizontal: 30,
-    paddingVertical: 10,
+    paddingVertical: 7,
     borderColor: '#118BFC',
+    borderWidth: 3,
     borderRadius: 10,
   }
 })
