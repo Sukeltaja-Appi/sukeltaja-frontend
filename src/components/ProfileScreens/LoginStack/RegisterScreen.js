@@ -35,8 +35,15 @@ const style = {
 
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet)
 // overriding the background color
+
 stylesheet.textbox.normal.backgroundColor = 'white';
 stylesheet.controlLabel.normal.color = 'white';
+stylesheet.controlLabel.normal.marginLeft = 15;
+stylesheet.textbox.normal.borderRadius = 15;
+stylesheet.textbox.error.backgroundColor = 'white';
+stylesheet.controlLabel.error.color = 'white';
+stylesheet.controlLabel.error.marginLeft = 15;
+stylesheet.textbox.error.borderRadius = 20;
 
 const options = {
   fields: {
@@ -175,10 +182,11 @@ class RegisterScreen extends React.Component {
             <View style={style.buttonDivider} />
             <View style={style.buttonDivider} />
 
-            <AppButton
-              onPress={() => this.navigate('Opening')}
-              title="Palaa"
-            />
+          <Text style={{ fontSize: 22, color: '#fff', textAlign: 'center', textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 5,
+    textShadowColor: '#424242'}} onPress={() => this.navigate('Opening')}>
+            Peruuta
+          </Text>
           </View>
         </ScrollView>
         </ImageBackground>
