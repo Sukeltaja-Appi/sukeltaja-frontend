@@ -25,10 +25,6 @@ module.exports = {
       0, { 'ignoreTranspilerName': true }
     ],
     'comma-dangle': 'off',
-    'linebreak-style': [
-      'error',
-      'unix'
-    ],
     'quotes': [
       'error', 'single', { 'avoidEscape': true }
     ],
