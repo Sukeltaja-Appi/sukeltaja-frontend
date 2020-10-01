@@ -6,6 +6,8 @@ import Event from './EventMenuStack/Event'
 import EventListScreen from './EventMenuStack/EventListScreen'
 import EventMenuScreen from './EventMenuStack/EventMenuScreen'
 import EventInfoScreen from './EventMenuStack/EventInfoScreen'
+import CustomTargetScreen from '../OngoingEventScreens/OngoingEventTabs/CustomTargetScreen'
+import InviteScreen from './../OngoingEventScreens/OngoingEventTabs/InviteScreen'
 
 const EventMenuStack = createStackNavigator({
   EventMenuScreen: {
@@ -44,6 +46,18 @@ const EventMenuStack = createStackNavigator({
       headerTitle: 'Uusi tapahtuma'
     }
   },
+  CustomTargetScreen: {
+    screen: CustomTargetScreen,
+    navigationOptions: {
+      headerTitle: 'Valitse sijainti'
+    }
+  },
+  InviteScreen: {
+    screen: InviteScreen,
+    navigationOptions: {
+      headerTitle: 'Kutsu osallistujia'
+    }
+  }
 }, {
   defaultNavigationOptions: {
     headerTitleStyle: {

@@ -23,6 +23,10 @@ class EventInfoScreen extends React.Component {
     }
   }
 
+  onButtonPress = () => {
+    this.props.navigation.navigate('CustomTargetScreen')
+  }
+
   render() {
     const { event } = this.state
 
@@ -30,7 +34,8 @@ class EventInfoScreen extends React.Component {
       <View style={styles.noPadding}>
         <EventInfoForm
           event = {event}
-          onFormChange={(event) => this.setState({ event })}        
+          onFormChange={(event) => this.setState({ event })}   
+          onButtonPress={this.onButtonPress}     
         />
       </View>
     )

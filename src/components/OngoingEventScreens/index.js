@@ -32,7 +32,8 @@ const TabBarComponent = (props) => (<MaterialTopTabBar {...props} />)
 
 const EventScreenStack = createStackNavigator({
   EventScreen,
-  InviteScreen
+  InviteScreen,
+  CustomTargetScreen
 }, { headerMode: 'none' })
 
 const ChatScreenStack = createStackNavigator({
