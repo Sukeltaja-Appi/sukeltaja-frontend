@@ -26,7 +26,7 @@ const style = {
   showIcon: true
 }
 
-const StackMessage = createStackNavigator();
+const StackMessage = createStackNavigator()
 
 function MessageStack() {
   return (
@@ -37,7 +37,7 @@ function MessageStack() {
   )
 }
 
-const StackSettings = createStackNavigator();
+const StackSettings = createStackNavigator()
 
 function SettingsStack() {
   return (
@@ -48,7 +48,7 @@ function SettingsStack() {
   )
 }
 
-const StackProfile = createMaterialTopTabNavigator();
+const StackProfile = createMaterialTopTabNavigator()
 
 function ProfileTabs() {
   return (
@@ -60,11 +60,11 @@ function ProfileTabs() {
   )
 }
 
-const StackLogin = createStackNavigator();
+const StackLogin = createStackNavigator()
 
 function LoginStack() {
   return (
-    <StackLogin.Navigator initialRouteName="Opening" screenOptions={{ headerShown: false}} >
+    <StackLogin.Navigator initialRouteName="Opening" screenOptions={{ headerShown: false }} >
       <StackLogin.Screen name="LoginScreen" component={LoginScreen}/>
       <StackLogin.Screen name="ResetScreen" component={ResetScreen}/>
       <StackLogin.Screen name="RegisterScreen" component={RegisterScreen}/>

@@ -12,7 +12,7 @@ import { initializeEvents } from '../../../reducers/eventReducer'
 import { initializeDives } from '../../../reducers/diveReducer'
 import { getAll } from '../../../reducers/targetReducer'
 import { login } from '../../../reducers/userReducer'
-import { paddingSides } from '../../../styles/global'
+import AppButton from '../../common/AppButton'
 
 const image = require('../../../pictures/tausta.png')
 
@@ -128,17 +128,14 @@ class LoginScreen extends React.Component {
             value={credentials}
             onChange={(credentials) => this.setState({ credentials })}
           />
-          <Button style={style.button}
-            onPress={this.login}
-            title="Kirjaudu" 
-          />
+           <AppButton title="Kirjaudu"  onPress={this.login}/>
 
           <View style={style.buttonDivider} />
-
-          <Button style={style.button}
-            onPress={() => this.navigate('ResetScreen')}
-            title="Unohtuiko salasana?"
-          />    
+          <Text style={{ fontSize: 22, color: '#fff', textAlign: 'center', textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 5,
+    textShadowColor: '#424242'}} onPress={() => this.navigate('ResetScreen')}>
+            Unohtuiko salasana?
+          </Text>
         </View>
         </ImageBackground>
       </View>
