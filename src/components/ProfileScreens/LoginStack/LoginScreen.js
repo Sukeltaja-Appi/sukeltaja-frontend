@@ -38,8 +38,16 @@ const style = {
 }
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
 // overriding the background color
+
 stylesheet.textbox.normal.backgroundColor = 'white';
 stylesheet.controlLabel.normal.color = 'white';
+stylesheet.controlLabel.normal.marginLeft = 15;
+stylesheet.textbox.normal.borderRadius = 15;
+stylesheet.textbox.error.backgroundColor = 'white';
+stylesheet.controlLabel.error.color = 'white';
+stylesheet.controlLabel.error.marginLeft = 15;
+stylesheet.textbox.error.borderRadius = 20;
+
 
 const options = {
   fields: {
@@ -112,7 +120,7 @@ class LoginScreen extends React.Component {
     return (
       <View >
         <ImageBackground source={image} style={{ width: '100%', height: '100%', position: 'relative'}}>
-        <Text style={{textAlign: 'center', color: 'white', fontSize: 34, marginTop: 50}}>
+        <Text style={{textAlign: 'center', color: 'white', fontSize: 34, marginTop: 100}}>
           Kirjaudu sisään
         </Text>
         <View style={style.container}>
