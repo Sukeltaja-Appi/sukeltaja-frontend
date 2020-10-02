@@ -11,20 +11,14 @@ import colors from '../../../styles/colors'
 
 export const ProfileScreen = (props) => {
   const uri = require('../../../pictures/mobiililogot_kolmio.png')
-
   const navigate = (value) => props.navigation.navigate(value)
-
+  
   const logoutButton = () => {
     const { logout } = props
 
-    const serverListener = getServerListener()
 
-    serverListener.disconnect()
 
-    logout()
-    userService.setToken(null)
-
-    navigate('LoginScreen')
+    navigate('OpeningScreen')
   }
 
   return (

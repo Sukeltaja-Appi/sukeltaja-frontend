@@ -10,11 +10,6 @@ import LicenseScreen from './ProfileTabs/LicenseScreen'
 import ProfileScreen from './ProfileTabs/ProfileScreen'
 import SettingsScreen from './ProfileTabs/SettingsScreen'
 
-import LoginScreen from './LoginStack/LoginScreen'
-import RegisterScreen from './LoginStack/RegisterScreen'
-import ResetScreen from './LoginStack/ResetScreen'
-import OpeningScreen from './LoginStack/OpeningScreen'
-
 import colors from '../../styles/colors'
 
 const style = {
@@ -52,7 +47,7 @@ const StackProfile = createMaterialTopTabNavigator()
 
 function ProfileTabs() {
   return (
-    <StackProfile.Navigator>
+    <StackProfile.Navigator initialRouteName="Profiili">
       <StackProfile.Screen name="Profiili" component={ProfileScreen}/>
       <StackProfile.Screen name="Kutsut" component={MessageStack}/>
       <StackProfile.Screen name="Asetukset" component={SettingsStack}/>
@@ -60,21 +55,17 @@ function ProfileTabs() {
   )
 }
 
-const StackLogin = createStackNavigator()
+const Profile = createStackNavigator()
 
-function LoginStack() {
+function ProfileStack() {
   return (
-    <StackLogin.Navigator initialRouteName="Opening" screenOptions={{ headerShown: false }} >
-      <StackLogin.Screen name="LoginScreen" component={LoginScreen}/>
-      <StackLogin.Screen name="ResetScreen" component={ResetScreen}/>
-      <StackLogin.Screen name="RegisterScreen" component={RegisterScreen}/>
-      <StackLogin.Screen name="ProfileTabs" component={ProfileTabs}/>
-      <StackLogin.Screen name="Opening" component={OpeningScreen}/>
-    </StackLogin.Navigator>
+    <Profile.Navigator initialRouteName="ProfileTabs" screenOptions={{ headerShown: false }} >
+      <Profile.Screen name="ProfileTabs" component={ProfileTabs}/>
+    </Profile.Navigator>
   )
 }
 
-export default LoginStack
+export default ProfileStack
 
 // ?? navigationOptions= {{tabBarVisible: false}}
 
