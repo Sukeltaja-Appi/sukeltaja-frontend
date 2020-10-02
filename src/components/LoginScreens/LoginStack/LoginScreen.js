@@ -36,18 +36,17 @@ const style = {
     fontSize: 22,
   }
 }
-const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet)
 // overriding the background color
 
-stylesheet.textbox.normal.backgroundColor = 'white';
-stylesheet.controlLabel.normal.color = 'white';
-stylesheet.controlLabel.normal.marginLeft = 15;
-stylesheet.textbox.normal.borderRadius = 15;
-stylesheet.textbox.error.backgroundColor = 'white';
-stylesheet.controlLabel.error.color = 'white';
-stylesheet.controlLabel.error.marginLeft = 15;
-stylesheet.textbox.error.borderRadius = 20;
-
+stylesheet.textbox.normal.backgroundColor = 'white'
+stylesheet.controlLabel.normal.color = 'white'
+stylesheet.controlLabel.normal.marginLeft = 15
+stylesheet.textbox.normal.borderRadius = 15
+stylesheet.textbox.error.backgroundColor = 'white'
+stylesheet.controlLabel.error.color = 'white'
+stylesheet.controlLabel.error.marginLeft = 15
+stylesheet.textbox.error.borderRadius = 20
 
 const options = {
   fields: {
@@ -119,32 +118,32 @@ class LoginScreen extends React.Component {
 
     return (
       <View >
-        <ImageBackground source={image} style={{ width: '100%', height: '100%', position: 'relative'}}>
-        <Text style={{textAlign: 'center', color: 'white', fontSize: 34, marginTop: 100}}>
+        <ImageBackground source={image} style={{ width: '100%', height: '100%', position: 'relative' }}>
+          <Text style={{ textAlign: 'center', color: 'white', fontSize: 34, marginTop: 100 }}>
           Kirjaudu sisään
-        </Text>
-        <View style={style.container}>
-          {!validLogin &&
-            <Text style={{ fontSize: 16, color: 'red' }}>
+          </Text>
+          <View style={style.container}>
+            {!validLogin
+            && <Text style={{ fontSize: 16, color: 'red' }}>
               Väärä käyttäjätunnus tai salasana
             </Text>
-          }
-          <Form
-            ref={reference}
-            type={User}
-            options={options}
-            value={credentials}
-            onChange={(credentials) => this.setState({ credentials })}
-          />
-           <AppButton title="Kirjaudu"  onPress={this.login}/>
+            }
+            <Form
+              ref={reference}
+              type={User}
+              options={options}
+              value={credentials}
+              onChange={(credentials) => this.setState({ credentials })}
+            />
+            <AppButton title="Kirjaudu" onPress={this.login}/>
 
-          <View style={style.buttonDivider} />
-          <Text style={{ fontSize: 22, color: '#fff', textAlign: 'center', textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 5,
-    textShadowColor: '#424242'}} onPress={() => this.navigate('ResetScreen')}>
+            <View style={style.buttonDivider} />
+            <Text style={{ fontSize: 22, color: '#fff', textAlign: 'center', textShadowOffset: { width: 2, height: 2 },
+              textShadowRadius: 5,
+              textShadowColor: '#424242' }} onPress={() => this.navigate('ResetScreen')}>
             Unohtuiko salasana?
-          </Text>
-        </View>
+            </Text>
+          </View>
         </ImageBackground>
       </View>
     )

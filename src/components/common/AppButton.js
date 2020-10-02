@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 import {
   TouchableOpacity,
   ImageBackground,
   View,
   Text,
   Image,
-} from "react-native";
+} from 'react-native'
 
 const style = {
   appButtonContainer: {
@@ -25,10 +25,10 @@ const style = {
   }
 }
 
-const AppButton = ({ onPress, title}) => (
+const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={style.appButtonContainer}>
     <Text style={style.appButtonText}>{title}</Text>
   </TouchableOpacity>
-);
+)
 
 export default AppButton

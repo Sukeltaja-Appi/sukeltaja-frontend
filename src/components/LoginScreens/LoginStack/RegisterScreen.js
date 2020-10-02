@@ -35,14 +35,14 @@ const style = {
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet)
 // overriding the background color
 
-stylesheet.textbox.normal.backgroundColor = 'white';
-stylesheet.controlLabel.normal.color = 'white';
-stylesheet.controlLabel.normal.marginLeft = 15;
-stylesheet.textbox.normal.borderRadius = 15;
-stylesheet.textbox.error.backgroundColor = 'white';
-stylesheet.controlLabel.error.color = 'white';
-stylesheet.controlLabel.error.marginLeft = 15;
-stylesheet.textbox.error.borderRadius = 20;
+stylesheet.textbox.normal.backgroundColor = 'white'
+stylesheet.controlLabel.normal.color = 'white'
+stylesheet.controlLabel.normal.marginLeft = 15
+stylesheet.textbox.normal.borderRadius = 15
+stylesheet.textbox.error.backgroundColor = 'white'
+stylesheet.controlLabel.error.color = 'white'
+stylesheet.controlLabel.error.marginLeft = 15
+stylesheet.textbox.error.borderRadius = 20
 
 const options = {
   fields: {
@@ -148,46 +148,46 @@ class RegisterScreen extends React.Component {
     return (
       <View>
         <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
-        <ScrollView>
-          <Text style={{textAlign: 'center', color: 'white', fontSize: 34, marginTop: 50}}>
+          <ScrollView>
+            <Text style={{ textAlign: 'center', color: 'white', fontSize: 34, marginTop: 50 }}>
             Rekisteröidy
-          </Text>
+            </Text>
 
-          <View style={style.container}>
-            {!passwordMatch
+            <View style={style.container}>
+              {!passwordMatch
               && <Text style={{ fontSize: 16, color: 'red' }}>
                 Salasana ja vahvistus eivät täsmää
               </Text>
-            }
-            {usernameInUse
+              }
+              {usernameInUse
               && <Text style={{ fontSize: 16, color: 'red' }}>
                 Rekisteröinti epäonnistui, käyttäjätunnus on jo olemassa
               </Text>
-            }
+              }
 
-            <Form
-              ref={reference}
-              type={User}
-              options={options}
-              value={credentials}
-              onChange={(credentials) => this.setState({ credentials })}
-            />
+              <Form
+                ref={reference}
+                type={User}
+                options={options}
+                value={credentials}
+                onChange={(credentials) => this.setState({ credentials })}
+              />
 
-            <AppButton
-              onPress={this.register}
-              title="Rekisteröidy"
-            />
+              <AppButton
+                onPress={this.register}
+                title="Rekisteröidy"
+              />
 
-            <View style={style.buttonDivider} />
-            <View style={style.buttonDivider} />
+              <View style={style.buttonDivider} />
+              <View style={style.buttonDivider} />
 
-          <Text style={{ fontSize: 22, color: '#fff', textAlign: 'center', textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 5,
-    textShadowColor: '#424242'}} onPress={() => this.navigate('Opening')}>
+              <Text style={{ fontSize: 22, color: '#fff', textAlign: 'center', textShadowOffset: { width: 2, height: 2 },
+                textShadowRadius: 5,
+                textShadowColor: '#424242' }} onPress={() => this.navigate('Opening')}>
             Peruuta
-          </Text>
-          </View>
-        </ScrollView>
+              </Text>
+            </View>
+          </ScrollView>
         </ImageBackground>
       </View>
     )

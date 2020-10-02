@@ -1,29 +1,29 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { connect } from "react-redux";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import OngoingEventEntry from "./components/OngoingEventScreens/OngoingEventEntry";
-import MapScreen from "./components/MapScreens/MapScreen";
-import EventEntry from "./components/EventScreens/EventEntry";
-import ProfileScreens from "./components/ProfileScreens";
-import { login } from "./reducers/userReducer";
-import { initializeEvents } from "./reducers/eventReducer";
-import { initializeDives } from "./reducers/diveReducer";
-import { getAll } from "./reducers/targetReducer";
-import { Icon } from "react-native-elements";
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { connect } from 'react-redux'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
+import MapScreen from './components/MapScreens/MapScreen'
+import EventEntry from './components/EventScreens/EventEntry'
+import ProfileScreens from './components/ProfileScreens'
+import { login } from './reducers/userReducer'
+import { initializeEvents } from './reducers/eventReducer'
+import { initializeDives } from './reducers/diveReducer'
+import { getAll } from './reducers/targetReducer'
+import { Icon } from 'react-native-elements'
 
-import colors from "./styles/colors";
-import LoginScreens from "./components/LoginScreens";
+import colors from './styles/colors'
+import LoginScreens from './components/LoginScreens'
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator()
 
 class Navigator extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
   }
   render() {
 
-    const { user } = this.props;
+    const { user } = this.props
 
     return (
       <NavigationContainer>
@@ -40,17 +40,17 @@ class Navigator extends React.Component {
           )}
         </Tab.Navigator>
       </NavigationContainer>
-    );
+    )
   }
 }
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ user: state.user })
 
 export default connect(mapStateToProps, {
   login,
   initializeEvents,
   initializeDives,
   getAll,
-})(Navigator);
+})(Navigator)
 
 // ?? screenOptions={{ tabBarVisible: false }}
