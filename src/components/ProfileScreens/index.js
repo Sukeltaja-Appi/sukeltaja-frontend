@@ -10,6 +10,11 @@ import LicenseScreen from './ProfileTabs/LicenseScreen'
 import ProfileScreen from './ProfileTabs/ProfileScreen'
 import SettingsScreen from './ProfileTabs/SettingsScreen'
 
+import LoginScreen from './LoginStack/LoginScreen'
+import ResetScreen from './LoginStack/ResetScreen'
+import RegisterScreen from './LoginStack/RegisterScreen'
+import OpeningScreen from './LoginStack/OpeningScreen'
+
 import colors from '../../styles/colors'
 
 const style = {
@@ -59,11 +64,16 @@ const Profile = createStackNavigator()
 
 function ProfileStack() {
   return (
-    <Profile.Navigator initialRouteName="ProfileTabs" screenOptions={{ headerShown: false }} >
+    <Profile.Navigator initialRouteName="Opening" screenOptions={{ headerShown: false }} >
+      <Profile.Screen name="LoginScreen" component={LoginScreen}/>
+      <Profile.Screen name="ResetScreen" component={ResetScreen}/>
+      <Profile.Screen name="RegisterScreen" component={RegisterScreen}/>
+      <Profile.Screen name="Opening" component={OpeningScreen}/>
       <Profile.Screen name="ProfileTabs" component={ProfileTabs}/>
     </Profile.Navigator>
   )
 }
+
 
 export default ProfileStack
 

@@ -86,7 +86,7 @@ class LoginScreen extends React.Component {
 
       await login(this.state.credentials)
       const { user } = this.props
-
+      
       if (user) {
         userService.setToken(user.token)
 
@@ -97,10 +97,9 @@ class LoginScreen extends React.Component {
         const serverListener = getServerListener()
 
         serverListener.setupCommunication()
-
         this.navigate('ProfileTabs')
       } else {
-        console.log('Wrong username or password')
+        console.log('Wrong username or pasaaaasword')
         this.setState({ validLogin: false })
       }
     }
