@@ -6,7 +6,6 @@ import decimalToDMS from '../../utils/coordinates'
 
 import { KYPPI_URL } from '@env'
 import colors from '../../styles/colors'
-import CustomTargetScreen from '../OngoingEventScreens/OngoingEventTabs/CustomTargetScreen'
 import targetService from '../../services/targets'
 
 import { updateEvent, setOngoingEvent } from '../../reducers/eventReducer'
@@ -23,7 +22,7 @@ const Target = (props) => {
   let target = props.target ? props.target : props.navigation.getParam('target')
   const { name, type, material, latitude, longitude, mj_id } = target
 
-  const [customName, setCustomName] = useState('');
+  const [customName, setCustomName] = useState('')
 
   const customLocation = props.navigation.getParam('custom')
 
@@ -34,7 +33,8 @@ const Target = (props) => {
         name: customName,
         user_created: true
       })
-      target = result;
+
+      target = result
     }
     if (ongoingEvent) {
       const event = ongoingEvent
@@ -136,7 +136,6 @@ const Target = (props) => {
       { selectTargetButton()}
 
       { mjRegisterButton()}
-
 
     </View>
   )
