@@ -11,7 +11,6 @@ import { initializeEvents } from '../../../reducers/eventReducer'
 import { initializeDives } from '../../../reducers/diveReducer'
 import { getAll } from '../../../reducers/targetReducer'
 import { login } from '../../../reducers/userReducer'
-import { paddingSides } from '../../../styles/global'
 import AppButton from '../../common/AppButton'
 
 const { Form } = t.form

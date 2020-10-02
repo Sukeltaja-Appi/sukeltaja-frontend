@@ -51,7 +51,7 @@ const style = {
   }
 }
 
-class LoginScreen extends React.Component {
+class OpeningScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -92,4 +92,4 @@ const mapStateToProps = (state) => ({ user: state.user })
 export default connect(
   mapStateToProps,
   { login, initializeEvents, initializeDives, getAll }
-)(LoginScreen)
+)(OpeningScreen)
