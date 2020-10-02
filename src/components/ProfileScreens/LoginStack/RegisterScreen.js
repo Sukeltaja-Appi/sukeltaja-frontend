@@ -78,10 +78,6 @@ class RegisterScreen extends React.Component {
     if (this.refs.form.getValue()) {
       if (this.state.credentials.password === this.state.credentials.passwordVerification) {
         const response = await userService.create(this.state.credentials)
-        console.log('Register response: ', response)
-        console.log('Reg, err: ', response["error"])
-        console.log('Reg, usr: ', response["username"])
-
         if (response["username"] !== undefined) {
           await this.login()
         } else if (response["error"] !== undefined && response["error"].includes('unique')) {
