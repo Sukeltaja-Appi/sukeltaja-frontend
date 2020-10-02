@@ -80,12 +80,13 @@ class RegisterScreen extends React.Component {
     if (this.refs.form.getValue()) {
       if (this.state.credentials.password === this.state.credentials.passwordVerification) {
         const response = await userService.create(this.state.credentials)
-        if (response["username"] !== undefined) {
+
+        if (response['username'] !== undefined) {
           await this.login()
-        } else if (response["error"] !== undefined && response["error"].includes('unique')) {
+        } else if (response['error'] !== undefined && response['error'].includes('unique')) {
           console.log('Registration failed, username not unique!')
           this.setState({ usernameInUse: true })
-        } else if (response["error"] !== undefined && response["error"].includes('validation')) {
+        } else if (response['error'] !== undefined && response['error'].includes('validation')) {
           console.log('Validation failed!')
           this.setState({ validationFail: true })
         }
@@ -156,10 +157,10 @@ class RegisterScreen extends React.Component {
                 Rekisteröinti epäonnistui, käyttäjätunnus on jo olemassa
               </Text>
             }
-            {validationFail &&
-              <Text style={{ fontSize: 16, color: 'red' }}>
+            {validationFail
+              && <Text style={{ fontSize: 16, color: 'red' }}>
                 Käyttäjätunnus min 3 merkkiä, salasana min 6 merkkiä, sposti muotoa x@x.x
-            </Text>
+              </Text>
             }
             <Form
               ref={reference}

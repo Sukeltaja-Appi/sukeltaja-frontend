@@ -27,6 +27,7 @@ const create = async (newObject) => {
     return response.data
   } catch (e) {
     console.log('users create error, response.data: ', e.response.data)
+
     return e.response.data
   }
 }
