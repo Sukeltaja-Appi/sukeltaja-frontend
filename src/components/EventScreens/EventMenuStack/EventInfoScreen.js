@@ -6,7 +6,7 @@ import EventInfoForm from '../../common/EventInfoForm'
 import { setOngoingEvent, getOngoingEvent } from '../../../reducers/eventReducer'
 import { endDives } from '../../../reducers/diveReducer'
 import styles from '../../../styles/global'
-import { now, inTenMinutes } from '../../../utils/dates'
+import { now, inOneHour } from '../../../utils/dates'
 
 class EventInfoScreen extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class EventInfoScreen extends React.Component {
         title: '',
         description: '',
         startdate: now(),
-        enddate: inTenMinutes(),
+        enddate: inOneHour(),
       }
     }
   }

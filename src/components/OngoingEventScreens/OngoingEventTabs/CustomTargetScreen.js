@@ -17,10 +17,10 @@ class CustomTargetScreen extends React.Component {
     super(props)
     this.state = {
       initialRegion: {
-        latitude: 63.5,
+        latitude: 65.5,
         longitude: 26.5,
-        latitudeDelta: 12,
-        longitudeDelta: 12
+        latitudeDelta: 0,
+        longitudeDelta: 0.6
       },
       query: '',
       target: null,
@@ -104,22 +104,25 @@ class CustomTargetScreen extends React.Component {
 
     return (
       <View style={style.container}>
-        <ClusteredMapView
-          ref={(r) => { this.map = r }}
-          maxZoom={12}
-          mapPadding={{ bottom: 160, left: 68, right: 50 }}
-          style={style.map}
-          radius={42}
-          data={mapTarget ? [mapTarget] : []}
-          initialRegion={initialRegion}
-          onMarkerPress={this.onMarkerPress}
-          renderMarker={this.renderMarker}
-          renderCluster={this.renderCluster}
-          showsUserLocation={true}
-          userLocationAnnotationTitle=''
-          onPress={this.onPress}
-        />
-
+          <View style={style.mapContainer}>
+            <ClusteredMapView
+              style={{ width: 10, height: 10 }}
+              ref={(r) => { this.map = r }}
+              maxZoom={12}
+              mapPadding={{ bottom: 10, left: 68, right: 50 }}
+              radius={42}
+              data={mapTarget ? [mapTarget] : []}
+              initialRegion={initialRegion}
+              onMarkerPress={this.onMarkerPress}
+              renderMarker={this.renderMarker}
+              renderCluster={this.renderCluster}
+              showsUserLocation={true}
+              userLocationAnnotationTitle=''
+              onPress={this.onPress}
+              width={360}
+              height={450}
+            />
+          </View>
         <View style={style.bottom}>
           <Button
             buttonStyle={style.button}
@@ -149,7 +152,7 @@ const style = StyleSheet.create({
     alignItems: 'center'
   },
   map: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   marker: {
     height: 50,
@@ -159,8 +162,7 @@ const style = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     width: '100%',
-    padding: paddingSides,
-    bottom: 30
+    padding: paddingSides
   },
   button: {
     marginBottom: 10,
@@ -171,6 +173,13 @@ const style = StyleSheet.create({
     borderColor: '#118BFC',
     borderWidth: 3,
     borderRadius: 40,
+  },
+  mapContainer: {
+    top: '6%',
+    overflow: 'hidden',
+    borderRadius: 10,
+    borderColor: '#118BFC',
+    borderWidth: 3
   }
 })
 

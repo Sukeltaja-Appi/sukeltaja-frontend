@@ -4,6 +4,7 @@ import { formatDate } from '../../utils/dates'
 import { Button } from 'react-native-elements'
 import { View } from 'react-native'
 import { paddingSides } from '../../styles/global'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const { Form } = t.form
 
@@ -17,11 +18,11 @@ const style = {
     justifyContent: 'flex-end',
     width: '100%',
     padding: paddingSides,
-    bottom: 30
+    bottom: 20,
   },
   button: {
     marginBottom: 10,
-    marginHorizontal: 60,
+    marginHorizontal: 40,
     backgroundColor: '#00A3FF',
     paddingHorizontal: 30,
     paddingVertical: 15,
@@ -95,23 +96,25 @@ const EventInfoForm = React.forwardRef((props, ref) => {
 
   return (
     <View style={style.noPadding}>
-      <View style={style.container}>
-        <Form
-          ref={ref}
-          type={Event}
-          options={options}
-          value={event}
-          onChange={onFormChange}
-          style={style.container}
-        />
-      </View>
-      <View style={style.bottom}>
-        <Button
-          buttonStyle={style.button}
-          onPress={onButtonPress}
-          title='Seuraava'
-        />
-      </View>
+      <ScrollView>
+        <View style={style.container}>
+          <Form
+            ref={ref}
+            type={Event}
+            options={options}
+            value={event}
+            onChange={onFormChange}
+            style={style.container}
+          />
+          <View style={style.bottom}>
+            <Button
+              buttonStyle={style.button}
+              onPress={onButtonPress}
+              title='Seuraava'
+            />
+          </View>
+        </View>
+      </ScrollView>
     </View>
   )
 }
