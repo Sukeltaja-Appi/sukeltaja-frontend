@@ -25,6 +25,7 @@ class EventInfoScreen extends React.Component {
 
   onButtonPress = () => {
     this.props.navigation.navigate('CustomTargetScreen')
+    console.log(this.state)
   }
 
   render() {

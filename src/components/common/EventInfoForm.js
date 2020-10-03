@@ -8,17 +8,28 @@ import { paddingSides } from '../../styles/global'
 const { Form } = t.form
 
 const style = {
-    container: {
-      width: '100%',
-      padding: paddingSides,
-      paddingBottom: 50
-    },
-    button: {
-      alignSelf: 'center',
-      width: '70%',
-      padding: 20
-    }
+  container: {
+    width: '100%',
+    padding: paddingSides,
+    paddingBottom: 50
+  },
+  bottom: {
+    justifyContent: 'flex-end',
+    width: '100%',
+    padding: paddingSides,
+    bottom: 30
+  },
+  button: {
+    marginBottom: 10,
+    marginHorizontal: 60,
+    backgroundColor: '#00A3FF',
+    paddingHorizontal: 30,
+    paddingVertical: 15,
+    borderColor: '#118BFC',
+    borderWidth: 3,
+    borderRadius: 40,
   }
+}
 
 const options = {
   i18n: {
@@ -33,17 +44,17 @@ const options = {
     description: {
       label: 'Kuvaus',
       multiline: true,
-        stylesheet: {
-          ...Form.stylesheet,
-          textbox: {
-            ...Form.stylesheet.textbox,
-            normal: {
-              ...Form.stylesheet.textbox.normal,
-              height: 120
-            },
-            error: {
-              ...Form.stylesheet.textbox.error,
-              height: 120
+      stylesheet: {
+        ...Form.stylesheet,
+        textbox: {
+          ...Form.stylesheet.textbox,
+          normal: {
+            ...Form.stylesheet.textbox.normal,
+            height: 120
+          },
+          error: {
+            ...Form.stylesheet.textbox.error,
+            height: 120
           }
         }
       }
@@ -83,23 +94,27 @@ const EventInfoForm = React.forwardRef((props, ref) => {
   })
 
   return (
-    <View style={style.container}>
-      <Form
-        ref={ref}
-        type={Event}
-        options={options}
-        value={event}
-        onChange={onFormChange}
-        style={style.container}
-      />
-
-      <Button
-        buttonStyle={style.button}
-        onPress={onButtonPress}
-        title='Seuraava'
-      />
+    <View style={style.noPadding}>
+      <View style={style.container}>
+        <Form
+          ref={ref}
+          type={Event}
+          options={options}
+          value={event}
+          onChange={onFormChange}
+          style={style.container}
+        />
+      </View>
+      <View style={style.bottom}>
+        <Button
+          buttonStyle={style.button}
+          onPress={onButtonPress}
+          title='Seuraava'
+        />
+      </View>
     </View>
-  )}
+  )
+}
 )
 
 export default EventInfoForm

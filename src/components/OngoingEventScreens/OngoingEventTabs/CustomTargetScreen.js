@@ -122,7 +122,8 @@ class CustomTargetScreen extends React.Component {
 
         <View style={style.bottom}>
           <Button
-            title='Valitse kohde'
+            buttonStyle={style.button}
+            title='Seuraava'
             onPress={() => this.selectTarget()}
           />
         </View>
@@ -159,6 +160,17 @@ const style = StyleSheet.create({
     justifyContent: 'flex-end',
     width: '100%',
     padding: paddingSides,
+    bottom: 30
+  },
+  button: {
+    marginBottom: 10,
+    marginHorizontal: 60,
+    backgroundColor: '#00A3FF',
+    paddingHorizontal: 30,
+    paddingVertical: 15,
+    borderColor: '#118BFC',
+    borderWidth: 3,
+    borderRadius: 40,
   }
 })
 
