@@ -52,7 +52,7 @@ export const ProfileScreen = (props) => {
     {
       title: 'Sukellushistoria',
       leftIcon: () => <Icon name='history' type='material' />,
-      onPress: () => navigate('EventListScreen')
+      onPress: () => navigate('EventListScreen2')
     },
     {
       title: 'Asetukset',

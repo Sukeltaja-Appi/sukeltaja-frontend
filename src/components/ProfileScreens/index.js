@@ -15,6 +15,8 @@ import LoginScreen from './LoginStack/LoginScreen'
 import RegisterScreen from './LoginStack/RegisterScreen'
 import ResetScreen from './LoginStack/ResetScreen'
 
+import EventListScreen from '../EventScreens/EventMenuStack/EventListScreen'
+
 import colors from '../../styles/colors'
 
 const TabBarComponent = (props) => <MaterialTopTabBar {...props} />
@@ -50,49 +52,31 @@ const SettingsStack = createStackNavigator({
   headerMode: 'none'
 })
 
-const ProfileTabs = createMaterialTopTabNavigator({
+const ProfileTabs = createStackNavigator({
   Profile: {
     screen: ProfileScreen,
     navigationOptions: {
-      tabBarLabel: 'PROFIILI',
-      tabBarOptions: style,
-      showIcon: true,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='home' type='feather' color={tintColor} />
-      )
+      headerShown: false,
     }
   },
   Conversations: {
     screen: MessageStack,
     navigationOptions: {
-      tabBarLabel: 'KUTSUT',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='inbox' type='feather' color={tintColor} />
-      )
+      headerTitle: 'Kutsut',
     }
   },
   Settings: {
     screen: SettingsStack,
     navigationOptions: {
-      tabBarLabel: 'ASETUKSET',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='settings' type='feather' color={tintColor} />
-      )
+      headerTitle: 'Asetukset',
     }
-  }
-}, {
-  tabBarComponent: props => {
-    return (
-      <TabBarComponent
-        {...props}
-        style={{
-          backgroundColor: colors.primary_light,
-          paddingTop: 10
-        }}
-      />
-    )
+  },
+  EventListScreen2: {
+    path: 'EventListScreen2',
+    screen: EventListScreen,
+    navigationOptions: {
+      headerTitle: 'Omat tapahtumat',
+    }
   }
 })
 
