@@ -45,11 +45,6 @@ export const ProfileScreen = (props) => {
 
   const menuData = [
     {
-      title: 'Arvostele sukelluksia (TODO)',
-      leftIcon: () => <Icon name='waves' type='material' />,
-      onPress: () => navigate('')
-    },
-    {
       title: 'Sukellushistoria',
       leftIcon: () => <Icon name='history' type='material' />,
       onPress: () => navigate('EventListScreen2')
