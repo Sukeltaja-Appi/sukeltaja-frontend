@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  ImageBackground,
+  Dimensions,
   View,
   Text,
   ScrollView,
@@ -11,10 +11,10 @@ import t from 'tcomb-form-native'
 import AppButton from '../../common/AppButton'
 import resetService from '../../../services/reset'
 import _ from 'lodash'
+import BackgroundImage from '../../common/BackgroundImage'
 
 const { Form } = t.form
 
-const backgroundImage = require('../../../pictures/tausta.png')
 
 const style = {
   container: {
@@ -103,7 +103,7 @@ Varmista että olet kirjoittanut pienet ja suuret kirjaimet oikein.`,
 
     return (
       <View>
-        <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
+        <BackgroundImage height={Dimensions.get('screen').height}>
           <ScrollView>
             <Text style={{ textAlign: 'center', color: 'white', fontSize: 34, marginTop: 50 }}>
               Salasanan vaihtaminen
@@ -132,7 +132,7 @@ Varmista että olet kirjoittanut pienet ja suuret kirjaimet oikein.`,
               </Text>
             </View>
           </ScrollView>
-        </ImageBackground>
+        </BackgroundImage>
       </View>
     )
   }

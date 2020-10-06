@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { ImageBackground, View, Text, Image } from 'react-native'
+import { Dimensions, View, Text, Image } from 'react-native'
 
 import { initializeEvents } from '../../../reducers/eventReducer'
 import { initializeDives } from '../../../reducers/diveReducer'
 import { getAll } from '../../../reducers/targetReducer'
 import { login } from '../../../reducers/userReducer'
 import AppButton from '../../common/AppButton'
+import BackgroundImage from '../../common/BackgroundImage'
 
-const backgroundImage = require('../../../pictures/tausta.png')
 const logo = require('../../../pictures/mobiililogot_vaaka.png')
 
 const style = {
@@ -68,7 +68,7 @@ class OpeningScreen extends React.Component {
     return (
       <View>
 
-        <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
+        <BackgroundImage height={Dimensions.get('screen').height}>
 
           <View style={style.container}>
             <Image source={logo} style={{ width: 360, height: 120, alignSelf: 'center' }}></Image>
@@ -80,7 +80,7 @@ class OpeningScreen extends React.Component {
             <View style={style.buttonDivider} />
             <AppButton title="Rekisteröidy" onPress={() => this.navigate('RegisterScreen')}/>
           </View>
-        </ImageBackground>
+        </BackgroundImage>
       </View>
     )
   }

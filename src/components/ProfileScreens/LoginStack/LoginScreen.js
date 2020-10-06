@@ -2,7 +2,7 @@
 /* eslint-disable react/no-string-refs */
 import React from 'react'
 import { connect } from 'react-redux'
-import { ImageBackground, View, Text } from 'react-native'
+import { Dimensions, View, Text } from 'react-native'
 import t from 'tcomb-form-native'
 import _ from 'lodash'
 import { getServerListener } from '../../../ServerListener'
@@ -12,8 +12,7 @@ import { initializeDives } from '../../../reducers/diveReducer'
 import { getAll } from '../../../reducers/targetReducer'
 import { login } from '../../../reducers/userReducer'
 import AppButton from '../../common/AppButton'
-
-const image = require('../../../pictures/tausta.png')
+import BackgroundImage from '../../common/BackgroundImage'
 
 const { Form } = t.form
 
@@ -109,8 +108,8 @@ class LoginScreen extends React.Component {
     })
 
     return (
-      <View >
-        <ImageBackground source={image} style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <View>
+        <BackgroundImage height={Dimensions.get('screen').height} >
           <Text style={{ textAlign: 'center', color: 'white', fontSize: 34, marginTop: 100 }}>
             Kirjaudu sisään
           </Text>
@@ -138,7 +137,7 @@ class LoginScreen extends React.Component {
               Unohtuiko salasana?
             </Text>
           </View>
-        </ImageBackground>
+        </BackgroundImage>
       </View>
     )
   }

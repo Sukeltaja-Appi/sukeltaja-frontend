@@ -3,7 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
-  ImageBackground,
+  Dimensions,
   View,
   Text,
   ScrollView,
@@ -17,10 +17,9 @@ import { initializeDives } from '../../../reducers/diveReducer'
 import { getAll } from '../../../reducers/targetReducer'
 import { login } from '../../../reducers/userReducer'
 import AppButton from '../../common/AppButton'
+import BackgroundImage from '../../common/BackgroundImage'
 
 const { Form } = t.form
-
-const backgroundImage = require('../../../pictures/tausta.png')
 
 const style = {
   container: {
@@ -147,7 +146,7 @@ class RegisterScreen extends React.Component {
 
     return (
       <View>
-        <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
+        <BackgroundImage height={Dimensions.get('screen').height}>
           <ScrollView>
             <Text style={{ textAlign: 'center', color: 'white', fontSize: 34, marginTop: 50 }}>
               Rekisteröidy
@@ -190,7 +189,7 @@ class RegisterScreen extends React.Component {
               </Text>
             </View>
           </ScrollView>
-        </ImageBackground>
+        </BackgroundImage>
       </View>
     )
   }
