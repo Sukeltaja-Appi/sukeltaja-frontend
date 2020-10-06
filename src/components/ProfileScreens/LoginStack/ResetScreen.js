@@ -15,7 +15,6 @@ import BackgroundImage from '../../common/BackgroundImage'
 
 const { Form } = t.form
 
-
 const style = {
   container: {
     width: '100%',
