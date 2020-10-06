@@ -3,10 +3,16 @@ import Svg, { Rect, Path, G } from 'react-native-svg'
 import { View } from 'react-native'
 
 const BackgroundImage = (props) => {
+
+  const extraStyles = props.style ? props.style : {}
+  const extraProps = { ...props, style: undefined }
+
+  delete extraProps.style
+
   return (
-    <View>
+    <View height='100%' width='100%'>
       <Svg height='100%' width='100%' viewBox='0 0 100 100'
-        style={{ position: 'absolute' }} preserveAspectRatio="none">
+        style={{ height: '100%', position: 'absolute', ...extraStyles }} preserveAspectRatio="none" {...extraProps}>
         <G transform="translate(-6.696377,-194.83924)">
           <G transform="translate(-43.845242,105.07738)">
             <G transform="translate(50.541619,-107.238)">
