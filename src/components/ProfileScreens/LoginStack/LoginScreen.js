@@ -86,8 +86,6 @@ class LoginScreen extends React.Component {
       const user = await login(this.state.credentials)
 
       if (user) {
-        userService.setToken(user.token)
-
         await initializeEvents()
         //await initializeDives()
         await getAll()

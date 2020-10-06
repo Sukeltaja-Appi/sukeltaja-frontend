@@ -120,8 +120,6 @@ class RegisterScreen extends React.Component {
     const { user } = this.props
 
     if (user) {
-      userService.setToken(user.token)
-
       await initializeEvents()
       await initializeDives()
       await getAll()
