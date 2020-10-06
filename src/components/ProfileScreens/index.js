@@ -50,29 +50,15 @@ function SettingsStack() {
   )
 }
 
-const StackProfile = createStackNavigator()
-
-function ProfileTabs() {
-  return (
-    <StackProfile.Navigator initialRouteName="Profiili" screenOptions={{ headerShown: false }} >
-      <StackProfile.Screen name="Profiili" component={ProfileScreen} />
-      <StackProfile.Screen name="Kutsut" component={MessageStack} />
-      <StackProfile.Screen name="Asetukset" component={SettingsStack} />
-      <StackProfile.Screen name="Omat tapahtumat" component={EventListScreen} />
-    </StackProfile.Navigator>
-  )
-}
-
 const Profile = createStackNavigator()
 
 function ProfileStack() {
   return (
-    <Profile.Navigator initialRouteName="Opening" screenOptions={{ headerShown: false }} >
-      <Profile.Screen name="LoginScreen" component={LoginScreen} />
-      <Profile.Screen name="ResetScreen" component={ResetScreen} />
-      <Profile.Screen name="RegisterScreen" component={RegisterScreen} />
-      <Profile.Screen name="Opening" component={OpeningScreen} />
-      <Profile.Screen name="ProfileTabs" component={ProfileTabs} />
+    <Profile.Navigator initialRouteName="Profiili" screenOptions={{ headerShown: false }} >
+      <Profile.Screen name="Profiili" component={ProfileScreen} />
+      <Profile.Screen name="Kutsut" component={MessageStack} />
+      <Profile.Screen name="Asetukset" component={SettingsStack} />
+      <Profile.Screen name="Omat tapahtumat" component={EventListScreen} />
     </Profile.Navigator>
   )
 }
