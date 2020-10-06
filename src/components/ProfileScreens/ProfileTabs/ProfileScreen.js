@@ -27,6 +27,9 @@ export const ProfileScreen = (props) => {
     navigate('Opening')
   }
 
+  if (!props.user)
+    return null
+
   return (
     <View style={styles.noPadding}>
       <ScrollView contentContainerStyle={{ ...styles.centered, paddingTop: 0 }}>
@@ -34,7 +37,7 @@ export const ProfileScreen = (props) => {
           style={{ width: 300, height: 266 }}
           source={uri}
         />
-        <Text h2>{props.username}</Text>
+        <Text h2>{props.user.username}</Text>
         <View style={styles.bottom}>
           <Button
             onPress={() => logoutButton()}
@@ -48,7 +51,7 @@ export const ProfileScreen = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({ username: state.user.username })
+const mapStateToProps = (state) => ({ user: state.user })
 
 export default connect(
   mapStateToProps,
