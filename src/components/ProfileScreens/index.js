@@ -15,6 +15,8 @@ import ResetScreen from './LoginStack/ResetScreen'
 import RegisterScreen from './LoginStack/RegisterScreen'
 import OpeningScreen from './LoginStack/OpeningScreen'
 
+import EventListScreen from '../EventScreens/EventMenuStack/EventListScreen'
+
 import colors from '../../styles/colors'
 
 const style = {
@@ -31,8 +33,8 @@ const StackMessage = createStackNavigator()
 function MessageStack() {
   return (
     <StackMessage.Navigator>
-      <StackMessage.Screen name="Kutsut" component={InvitesScreen}/>
-      <StackMessage.Screen name="Kutsu" component={Invite}/>
+      <StackMessage.Screen name="Kutsut" component={InvitesScreen} />
+      <StackMessage.Screen name="Kutsu" component={Invite} />
     </StackMessage.Navigator>
   )
 }
@@ -42,20 +44,21 @@ const StackSettings = createStackNavigator()
 function SettingsStack() {
   return (
     <StackSettings.Navigator>
-      <StackSettings.Screen name="Asetukset" component={SettingsScreen}/>
-      <StackSettings.Screen name="Lisenssi" component={LicenseScreen}/>
+      <StackSettings.Screen name="Asetukset" component={SettingsScreen} />
+      <StackSettings.Screen name="Lisenssi" component={LicenseScreen} />
     </StackSettings.Navigator>
   )
 }
 
-const StackProfile = createMaterialTopTabNavigator()
+const StackProfile = createStackNavigator()
 
 function ProfileTabs() {
   return (
-    <StackProfile.Navigator initialRouteName="Profiili">
-      <StackProfile.Screen name="Profiili" component={ProfileScreen}/>
-      <StackProfile.Screen name="Kutsut" component={MessageStack}/>
-      <StackProfile.Screen name="Asetukset" component={SettingsStack}/>
+    <StackProfile.Navigator initialRouteName="Profiili" screenOptions={{ headerShown: false }} >
+      <StackProfile.Screen name="Profiili" component={ProfileScreen} />
+      <StackProfile.Screen name="Kutsut" component={MessageStack} />
+      <StackProfile.Screen name="Asetukset" component={SettingsStack} />
+      <StackProfile.Screen name="Omat tapahtumat" component={EventListScreen} />
     </StackProfile.Navigator>
   )
 }
@@ -65,11 +68,11 @@ const Profile = createStackNavigator()
 function ProfileStack() {
   return (
     <Profile.Navigator initialRouteName="Opening" screenOptions={{ headerShown: false }} >
-      <Profile.Screen name="LoginScreen" component={LoginScreen}/>
-      <Profile.Screen name="ResetScreen" component={ResetScreen}/>
-      <Profile.Screen name="RegisterScreen" component={RegisterScreen}/>
-      <Profile.Screen name="Opening" component={OpeningScreen}/>
-      <Profile.Screen name="ProfileTabs" component={ProfileTabs}/>
+      <Profile.Screen name="LoginScreen" component={LoginScreen} />
+      <Profile.Screen name="ResetScreen" component={ResetScreen} />
+      <Profile.Screen name="RegisterScreen" component={RegisterScreen} />
+      <Profile.Screen name="Opening" component={OpeningScreen} />
+      <Profile.Screen name="ProfileTabs" component={ProfileTabs} />
     </Profile.Navigator>
   )
 }

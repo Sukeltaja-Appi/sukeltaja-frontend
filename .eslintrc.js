@@ -25,10 +25,6 @@ module.exports = {
       0, { 'ignoreTranspilerName': true }
     ],
     'comma-dangle': 'off',
-    'linebreak-style': [
-      'error',
-      'unix'
-    ],
     'quotes': [
       'error', 'single', { 'avoidEscape': true }
     ],
@@ -60,10 +56,6 @@ module.exports = {
       { blankLine: 'always', prev: '*', next: 'return' },
       { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
       { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] }
-    ],
-    'operator-linebreak': [
-      'error',
-      'before'
     ],
     'max-len': [
       'error', { 'code': 120 }

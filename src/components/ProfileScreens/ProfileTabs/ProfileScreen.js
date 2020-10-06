@@ -1,59 +1,144 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { View, ScrollView } from 'react-native'
-import { Image, Text, Button } from 'react-native-elements'
+import { View, ScrollView, StyleSheet, FlatList, TouchableOpacity, Linking } from 'react-native'
+import { Icon, Text, ListItem } from 'react-native-elements'
 
 import { logout } from '../../../store'
+import { getMessages } from '../../../reducers/messageReducer'
 import { getServerListener } from '../../../ServerListener'
 import userService from '../../../services/users'
 import styles from '../../../styles/global'
-import colors from '../../../styles/colors'
+import BackgroundImage from '../../common/BackgroundImage'
+import { SERVICE_EMAIL } from '@env'
 
 export const ProfileScreen = (props) => {
-  const uri = require('../../../pictures/mobiililogot_kolmio.png')
 
-  const navigate = (value) => props.navigation.navigate(value)
+  const [invites, setInvites] = useState([])
+
+  useEffect(() => {
+    props.getMessages()
+  }, [])
+  useEffect(() => {
+    const { messages } = props
+
+    if (!messages)
+      return
+    const newInvites = messages.filter(msg => msg.type.startsWith('invitation_'))
+
+    setInvites(newInvites)
+  }, [props.messages])
+
+  const navigate = (value) => {
+    props.navigation.navigate(value)
+  }
 
   const logoutButton = () => {
     const { logout } = props
-
     const serverListener = getServerListener()
 
     serverListener.disconnect()
-
     logout()
     userService.setToken(null)
 
     navigate('Opening')
   }
 
+  const menuData = [
+    {
+      title: 'Sukellushistoria',
+      leftIcon: () => <Icon name='history' type='material' />,
+      onPress: () => navigate('Omat tapahtumat')
+    },
+    {
+      title: 'Asetukset',
+      leftIcon: () => <Icon name='settings' type='material' />,
+      onPress: () => navigate('Asetukset')
+    },
+    {
+      title: 'Palaute',
+      leftIcon: () => <Icon name='feedback' type='material' />,
+      onPress: () => Linking.openURL(`mailto:${SERVICE_EMAIL}`)
+    },
+    {
+      title: 'Kirjaudu ulos',
+      leftIcon: () => <Icon name='log-out' type='feather' />,
+      onPress: () => logoutButton()
+    }
+  ]
+
   if (!props.user)
     return null
 
   return (
     <View style={styles.noPadding}>
-      <ScrollView contentContainerStyle={{ ...styles.centered, paddingTop: 0 }}>
-        <Image
-          style={{ width: 300, height: 266 }}
-          source={uri}
+      <ScrollView>
+        <BackgroundImage>
+          <View style={{ alignItems: 'center' }}>
+            <View style={{
+              backgroundColor: 'rgba(0, 0, 0, 0.3)', width: '80%',
+              marginTop: 40, marginHorizontal: 40, marginBottom: 10, padding: 30, borderRadius: 50
+            }}>
+              <Icon
+                size={100}
+                name='user' type='feather'
+              />
+              <Text h2 style={{ textAlign: 'center', color: 'white' }}>{props.user.username}</Text>
+            </View>
+            {
+              invites.length > 0 &&
+              <TouchableOpacity style={style.notificationStyle} onPress={() => navigate('Kutsut')}>
+                <Text style={{ color: 'white' }}>{invites.length} kutsua odottaa hyväksymistä</Text>
+              </TouchableOpacity>
+            }
+          </View>
+        </BackgroundImage>
+
+        <FlatList
+          data={menuData}
+          renderItem={({ item }) => {
+            const { title, leftIcon, onPress } = item
+
+            return (
+              <ListItem
+                onPress={onPress}
+                bottomDivider
+              >
+                {leftIcon()}
+                <ListItem.Content>
+                  <ListItem.Title>{title}</ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Chevron />
+              </ListItem>
+            )
+          }
+          }
+          keyExtractor={item => item.title}
         />
-        <Text h2>{props.user.username}</Text>
-        <View style={styles.bottom}>
-          <Button
-            onPress={() => logoutButton()}
-            buttonStyle={{ backgroundColor: colors.red }}
-            title="Kirjaudu ulos"
-            raised
-          />
-        </View>
       </ScrollView>
     </View>
   )
 }
 
-const mapStateToProps = (state) => ({ user: state.user })
+const style = StyleSheet.create({
+  profileContainer: {
+    width: '100%',
+    color: '#333'
+  },
+  notificationStyle: {
+    marginBottom: 10,
+    marginHorizontal: 20,
+    backgroundColor: '#00A3FF',
+    paddingHorizontal: 30,
+    paddingVertical: 7,
+    borderColor: '#118BFC',
+    borderWidth: 3,
+    borderRadius: 10,
+  }
+})
+
+const mapStateToProps = (state) => ({ user: state.user, messages: state.messages })
 
 export default connect(
   mapStateToProps,
-  { logout }
+  { logout, getMessages }
 )(ProfileScreen)
