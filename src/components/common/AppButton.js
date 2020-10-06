@@ -1,10 +1,7 @@
 import React from 'react'
 import {
   TouchableOpacity,
-  ImageBackground,
-  View,
   Text,
-  Image,
 } from 'react-native'
 
 const style = {

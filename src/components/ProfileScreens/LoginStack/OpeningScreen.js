@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { ImageBackground, View, Text, Image } from 'react-native'
-import t from 'tcomb-form-native'
 
 import { initializeEvents } from '../../../reducers/eventReducer'
 import { initializeDives } from '../../../reducers/diveReducer'

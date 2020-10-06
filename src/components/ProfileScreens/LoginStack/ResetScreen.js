@@ -7,12 +7,10 @@ import {
   ScrollView,
   Alert,
 } from 'react-native'
-import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
 import AppButton from '../../common/AppButton'
 import resetService from '../../../services/reset'
 import _ from 'lodash'
-import styles, { paddingSides } from '../../../styles/global'
 
 const { Form } = t.form
 
