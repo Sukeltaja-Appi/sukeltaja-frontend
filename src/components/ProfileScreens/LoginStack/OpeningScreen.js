@@ -20,34 +20,6 @@ const style = {
   buttonDivider: {
     height: 40
   },
-  emptyDivider: {
-    height: 250
-  },
-  title: {
-    color: 'white',
-    fontSize: 22,
-    font: 'Nunito'
-  },
-  backgroundImage: {
-    flex: 1,
-    alignSelf: 'stretch',
-    width: null,
-  },
-  appButtonContainer: {
-    elevation: 8,
-    backgroundColor: '#00A3FF',
-    borderRadius: 25,
-    paddingVertical: 20,
-    paddingHorizontal: 15
-  },
-  appButtonText: {
-    fontSize: 18,
-    color: '#fff',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    textTransform: 'uppercase',
-    font: 'Nunito'
-  }
 }
 
 class OpeningScreen extends React.Component {

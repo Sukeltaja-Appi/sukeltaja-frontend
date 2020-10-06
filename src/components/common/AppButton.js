@@ -18,7 +18,6 @@ const style = {
     fontWeight: 'bold',
     alignSelf: 'center',
     textTransform: 'uppercase',
-    font: 'Nunito'
   }
 }
 
