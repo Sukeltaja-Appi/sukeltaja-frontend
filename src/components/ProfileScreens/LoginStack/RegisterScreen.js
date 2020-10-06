@@ -116,8 +116,7 @@ class RegisterScreen extends React.Component {
 
     const { login, initializeEvents, initializeDives, getAll } = this.props
 
-    await login(this.state.credentials)
-    const { user } = this.props
+    const user = await login(this.state.credentials)
 
     if (user) {
       await initializeEvents()
@@ -127,8 +126,6 @@ class RegisterScreen extends React.Component {
       const serverListener = getServerListener()
 
       serverListener.setupCommunication()
-
-      this.navigate('ProfileTabs')
     } else {
       console.log('Wrong username or password')
     }
