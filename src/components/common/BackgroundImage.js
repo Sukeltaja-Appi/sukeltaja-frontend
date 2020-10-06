@@ -1,6 +1,5 @@
 import React from 'react'
 import Svg, { Rect, Path, G } from 'react-native-svg'
-import { View } from 'react-native'
 
 const BackgroundImage = (props) => {
 
@@ -10,7 +9,7 @@ const BackgroundImage = (props) => {
   delete extraProps.style
 
   return (
-    <View height='100%' width='100%'>
+    <React.Fragment>
       <Svg height='100%' width='100%' viewBox='0 0 100 100'
         style={{ height: '100%', position: 'absolute', ...extraStyles }} preserveAspectRatio="none" {...extraProps}>
         <G transform="translate(-6.696377,-194.83924)">
@@ -26,7 +25,7 @@ const BackgroundImage = (props) => {
         </G>
       </Svg>
       {props.children}
-    </View>
+    </React.Fragment>
   )
 }
 
