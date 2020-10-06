@@ -2,7 +2,12 @@
 /* eslint-disable react/no-string-refs */
 import React from 'react'
 import { connect } from 'react-redux'
-import { ImageBackground, View, Text, ScrollView } from 'react-native'
+import {
+  ImageBackground,
+  View,
+  Text,
+  ScrollView,
+} from 'react-native'
 import t from 'tcomb-form-native'
 import _ from 'lodash'
 import { getServerListener } from '../../../ServerListener'
@@ -150,19 +155,19 @@ class RegisterScreen extends React.Component {
         <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
           <ScrollView>
             <Text style={{ textAlign: 'center', color: 'white', fontSize: 34, marginTop: 50 }}>
-            Rekisteröidy
+              Rekisteröidy
             </Text>
 
             <View style={style.container}>
               {!passwordMatch
-              && <Text style={{ fontSize: 16, color: 'red' }}>
-                Salasana ja vahvistus eivät täsmää
-              </Text>
+                && <Text style={{ fontSize: 16, color: 'red' }}>
+                  Salasana ja vahvistus eivät täsmää
+                </Text>
               }
               {usernameInUse
-              && <Text style={{ fontSize: 16, color: 'red' }}>
-                Rekisteröinti epäonnistui, käyttäjätunnus on jo olemassa
-              </Text>
+                && <Text style={{ fontSize: 16, color: 'red' }}>
+                  Rekisteröinti epäonnistui, käyttäjätunnus on jo olemassa
+                </Text>
               }
 
               <Form
@@ -181,10 +186,12 @@ class RegisterScreen extends React.Component {
               <View style={style.buttonDivider} />
               <View style={style.buttonDivider} />
 
-              <Text style={{ fontSize: 22, color: '#fff', textAlign: 'center', textShadowOffset: { width: 2, height: 2 },
+              <Text style={{
+                fontSize: 22, color: '#fff', textAlign: 'center', textShadowOffset: { width: 2, height: 2 },
                 textShadowRadius: 5,
-                textShadowColor: '#424242' }} onPress={() => this.navigate('Opening')}>
-            Peruuta
+                textShadowColor: '#424242'
+              }} onPress={() => this.navigate('Opening')}>
+                Peruuta
               </Text>
             </View>
           </ScrollView>

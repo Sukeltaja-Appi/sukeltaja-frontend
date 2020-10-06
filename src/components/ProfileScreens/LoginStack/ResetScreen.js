@@ -1,6 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { ImageBackground, View, Text, ScrollView, Alert } from 'react-native'
+import {
+  ImageBackground,
+  View,
+  Text,
+  ScrollView,
+  Alert,
+} from 'react-native'
 import { Button, Header } from 'react-native-elements'
 import t from 'tcomb-form-native'
 import AppButton from '../../common/AppButton'
@@ -102,7 +108,7 @@ Varmista että olet kirjoittanut pienet ja suuret kirjaimet oikein.`,
         <ImageBackground source={backgroundImage} style={{ width: '100%', height: '100%' }}>
           <ScrollView>
             <Text style={{ textAlign: 'center', color: 'white', fontSize: 34, marginTop: 50 }}>
-            Salasanan vaihtaminen
+              Salasanan vaihtaminen
             </Text>
 
             <View style={style.container}>
@@ -119,10 +125,12 @@ Varmista että olet kirjoittanut pienet ja suuret kirjaimet oikein.`,
 
               <View style={style.buttonDivider} />
               <View style={style.buttonDivider} />
-              <Text style={{ fontSize: 22, color: '#fff', textAlign: 'center', textShadowOffset: { width: 2, height: 2 },
+              <Text style={{
+                fontSize: 22, color: '#fff', textAlign: 'center', textShadowOffset: { width: 2, height: 2 },
                 textShadowRadius: 5,
-                textShadowColor: '#424242' }} onPress={() => this.navigate('LoginScreen')}>
-            Peruuta
+                textShadowColor: '#424242'
+              }} onPress={() => this.navigate('LoginScreen')}>
+                Peruuta
               </Text>
             </View>
           </ScrollView>
