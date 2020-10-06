@@ -34,10 +34,14 @@ export const login = (credentials) => {
         type: 'LOGIN_SUCCESS',
         user
       })
+
+      return user
     } catch (exception) { // can log failed login attempts here
       dispatch({
         type: 'LOGIN_FAILURE'
       })
+
+      return null
     }
   }
 }

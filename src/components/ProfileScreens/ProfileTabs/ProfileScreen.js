@@ -39,8 +39,6 @@ export const ProfileScreen = (props) => {
     serverListener.disconnect()
     logout()
     userService.setToken(null)
-
-    navigate('Opening')
   }
 
   const menuData = [
