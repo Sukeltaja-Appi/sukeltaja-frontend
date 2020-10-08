@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { StackActions, NavigationActions } from 'react-navigation'
 import { View, ScrollView } from 'react-native'
 import EventForm from '../../common/EventForm'
+import { CommonActions } from '@react-navigation/native';
 
 import { updateEvent } from '../../../reducers/eventReducer'
 import styles from '../../../styles/global'
@@ -20,7 +21,7 @@ class EditEventScreen extends React.Component {
       startdate,
       enddate,
       ...rest
-    } = props.navigation.getParam('item')
+    } = props.route.params.item
 
     this.state = {
       event: {
@@ -48,10 +49,10 @@ class EditEventScreen extends React.Component {
       const { ongoingEvent } = this.props
 
       if (ongoingEvent && ongoingEvent._id === this.state.event._id) {
-        const resetAction = StackActions.reset({
+        const resetAction = CommonActions.reset({
           index: 0,
-          actions: [
-            navigateAction('EventMenuScreen')
+          routes: [
+            {name: 'Tapahtumat'}
           ]
         })
 
@@ -60,15 +61,14 @@ class EditEventScreen extends React.Component {
         this.props.navigation.navigate('OngoingEvent')
 
       } else {
-        const resetAction = StackActions.reset({
+        const resetAction = CommonActions.reset({
           index: 2,
-          actions: [
-            navigateAction('EventMenuScreen'),
-            navigateAction('EventListScreen'),
-            navigateAction('Event', { item: updatedEvent })
+          routes: [
+              {name: 'Tapahtumat'},
+              {name: 'Omat tapahtumat'},
+              {name: 'Tapahtumasivu', params: { item: updatedEvent }}
           ]
         })
-
         this.props.navigation.dispatch(resetAction)
       }
     }
