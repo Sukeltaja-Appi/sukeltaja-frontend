@@ -9,6 +9,8 @@ const style = {
     elevation: 8,
     backgroundColor: '#00A3FF',
     borderRadius: 25,
+    borderWidth: 4,
+    borderColor: '#118BFC',
     paddingVertical: 20,
     paddingHorizontal: 15
   },
