@@ -45,7 +45,7 @@ export const ProfileScreen = (props) => {
     {
       title: 'Sukellushistoria',
       leftIcon: () => <Icon name='history' type='material' />,
-      onPress: () => navigate('Omat tapahtumat')
+      onPress: () => navigate('Sukellushistoria')
     },
     {
       title: 'Asetukset',

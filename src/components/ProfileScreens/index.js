@@ -37,8 +37,6 @@ function ProfileStack() {
     <Profile.Navigator initialRouteName="Profiili" screenOptions={{ headerShown: false }} >
       <Profile.Screen name="Profiili" component={ProfileScreen} />
       <Profile.Screen name="Kutsut" component={MessageStack} />
-      <Profile.Screen name="Asetukset" component={SettingsStack} />
-      <Profile.Screen name="Omat tapahtumat" component={EventListScreen} />
     </Profile.Navigator>
   )
 }
