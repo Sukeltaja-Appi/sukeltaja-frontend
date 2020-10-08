@@ -24,11 +24,12 @@ function TabNavigator() {
     </Tab.Navigator>
   )
 }
+
 function Navigator(props) {
 
   const LoggedInNavigator = (
     <Stack.Navigator initialRouteName="Profiili">
-      <Stack.Screen name="Profiili" component={TabNavigator} options={{headerShown: false}}/>
+      <Stack.Screen name="Profiili" component={TabNavigator} options={{ headerShown: false }}/>
       <Stack.Screen name="Asetukset" component={SettingsScreen} />
       <Stack.Screen name="Sukellushistoria" component={EventListScreen} />
     </Stack.Navigator>

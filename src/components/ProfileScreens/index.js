@@ -1,12 +1,10 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-
 import Invite from './ProfileTabs/Invite'
 import InvitesScreen from './ProfileTabs/InvitesScreen'
 import LicenseScreen from './ProfileTabs/LicenseScreen'
 import ProfileScreen from './ProfileTabs/ProfileScreen'
 import SettingsScreen from './ProfileTabs/SettingsScreen'
-import EventListScreen from '../EventScreens/EventMenuStack/EventListScreen'
 
 const StackMessage = createStackNavigator()
 

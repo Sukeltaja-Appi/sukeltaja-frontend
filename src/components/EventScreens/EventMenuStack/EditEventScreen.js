@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StackActions, NavigationActions } from 'react-navigation'
 import { View, ScrollView } from 'react-native'
 import EventForm from '../../common/EventForm'
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native'
 
 import { updateEvent } from '../../../reducers/eventReducer'
 import styles from '../../../styles/global'
@@ -42,17 +41,13 @@ class EditEventScreen extends React.Component {
     if (validated) {
       const updatedEvent = await this.props.updateEvent({ ...event, ...rest })
 
-      const navigateAction = (routeName, params) => NavigationActions.navigate({
-        routeName, params
-      })
-
       const { ongoingEvent } = this.props
 
       if (ongoingEvent && ongoingEvent._id === this.state.event._id) {
         const resetAction = CommonActions.reset({
           index: 0,
           routes: [
-            {name: 'Tapahtumat'}
+            { name: 'Tapahtumat' }
           ]
         })
 
@@ -64,11 +59,12 @@ class EditEventScreen extends React.Component {
         const resetAction = CommonActions.reset({
           index: 2,
           routes: [
-              {name: 'Tapahtumat'},
-              {name: 'Omat tapahtumat'},
-              {name: 'Tapahtumasivu', params: { item: updatedEvent }}
+            { name: 'Tapahtumat' },
+            { name: 'Omat tapahtumat' },
+            { name: 'Tapahtumasivu', params: { item: updatedEvent } }
           ]
         })
+
         this.props.navigation.dispatch(resetAction)
       }
     }
