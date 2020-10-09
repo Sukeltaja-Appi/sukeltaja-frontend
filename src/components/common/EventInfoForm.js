@@ -1,12 +1,117 @@
-import React from 'react'
+import React, { Component } from 'react'
 import t from 'tcomb-form-native'
+import RNDateTimePicker from '@react-native-community/datetimepicker'
 import { formatDate } from '../../utils/dates'
 import { Button } from 'react-native-elements'
 import { View } from 'react-native'
 import { paddingSides } from '../../styles/global'
 import { ScrollView } from 'react-native-gesture-handler'
+import { createEvent } from '../../reducers/eventReducer'
+import { connect } from 'react-redux'
+import { now, inOneHour } from '../../utils/dates'
 
 const { Form } = t.form
+
+const DateIsAfter = t.refinement(t.Date, (date) => date >= event.startdate)
+
+const Event = t.struct({
+  title: t.String,
+  description: t.String,
+  startdate: t.Date,
+  enddate: DateIsAfter,
+})
+
+class EventInfoForm extends React.Component {
+  constructor(props) {
+    super(props)
+    this.ref = React.createRef()
+
+    this.state = {
+      showDatePicker: false,
+      showTimePicker: false,
+      event: {
+        title: '',
+        description: '',
+        startdate: now(),
+        enddate: inOneHour(),
+      }
+    }
+  }
+
+  onButtonPress = async () => {
+    const { event } = this.state.event
+    const eventToAdd = {
+      title: this.state.event.title,
+      description: this.state.event.description,
+      startdate: this.state.event.startdate,
+      enddate: this.state.event.enddate
+    }
+    console.log(eventToAdd)
+    await this.props.createEvent(eventToAdd)
+
+    this.props.navigation.navigate('CustomTargetScreen')
+  }
+
+  onDateChange = (event, date) => {
+    const stdate = this.state.startdate
+    console.log(date)
+    this.setState({
+      event: { ...event, startdate: date },
+      showTimePicker: true
+    })
+  }
+
+  onTimeChange = (event, time) => {
+    console.log(time)
+  }
+
+  render() {
+    return (
+      <View style={style.noPadding}>
+        <ScrollView>
+          <View style={style.container}>
+            {this.state.showDatePicker &&
+              <RNDateTimePicker
+                mode='date'
+                value={this.state.event.startdate}
+                onChange={this.onDateChange}
+              />
+            }
+            {this.state.showTimePicker &&
+              <RNDateTimePicker
+                mode='time'
+                value={new Date()}
+                onChange={this.onTimeChange}
+              />
+            }
+            <Form
+              ref={this.ref}
+              type={Event}
+              options={options}
+              value={this.state.event}
+              onChange={(event) => this.setState({ event })}
+              style={style.container}
+            />
+            <View style={style.bottom}>
+              <Button buttonStyle={style.button}
+                title='Aloitusaika'
+                onPress={() => this.setState({
+                  showDatePicker: true,
+                  showTimePicker: false
+                })}
+              />
+              <Button
+                buttonStyle={style.button}
+                onPress={this.onButtonPress}
+                title='Seuraava'
+              />
+            </View>
+          </View>
+        </ScrollView>
+      </View>
+    )
+  }
+}
 
 const style = {
   container: {
@@ -78,46 +183,13 @@ const options = {
   }
 }
 
-const EventInfoForm = React.forwardRef((props, ref) => {
-  let {
-    event,
-    onFormChange,
-    onButtonPress,
-  } = props
+const mapStateToProps = (state) => ({
+  ongoingEvent: state.ongoingEvent,
+  ongoingDives: state.ongoingDives,
+  user: state.user
+})
 
-  const DateIsAfter = t.refinement(t.Date, (date) => date >= event.startdate)
-
-  const Event = t.struct({
-    title: t.String,
-    description: t.String,
-    startdate: t.Date,
-    enddate: DateIsAfter,
-  })
-
-  return (
-    <View style={style.noPadding}>
-      <ScrollView>
-        <View style={style.container}>
-          <Form
-            ref={ref}
-            type={Event}
-            options={options}
-            value={event}
-            onChange={onFormChange}
-            style={style.container}
-          />
-          <View style={style.bottom}>
-            <Button
-              buttonStyle={style.button}
-              onPress={onButtonPress}
-              title='Seuraava'
-            />
-          </View>
-        </View>
-      </ScrollView>
-    </View>
-  )
-}
-)
-
-export default EventInfoForm
+export default connect(
+  mapStateToProps,
+  { createEvent }
+)(EventInfoForm)
