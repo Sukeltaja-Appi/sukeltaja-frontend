@@ -24,7 +24,6 @@ const style = {
     marginBottom: 10,
     marginHorizontal: 40,
     backgroundColor: '#00A3FF',
-    paddingHorizontal: 30,
     paddingVertical: 15,
     borderColor: '#118BFC',
     borderWidth: 3,
@@ -51,7 +50,8 @@ const options = {
           ...Form.stylesheet.textbox,
           normal: {
             ...Form.stylesheet.textbox.normal,
-            height: 120
+            height: 120,
+            textAlignVertical: 'top'
           },
           error: {
             ...Form.stylesheet.textbox.error,
