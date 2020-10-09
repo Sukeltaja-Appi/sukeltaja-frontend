@@ -1,17 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {
-  Dimensions,
-  View,
-  Text,
-  ScrollView,
-  Alert,
-} from 'react-native'
+import { Dimensions, View, ScrollView, Alert, TouchableOpacity } from 'react-native'
 import t from 'tcomb-form-native'
 import AppButton from '../../common/AppButton'
 import resetService from '../../../services/reset'
 import _ from 'lodash'
 import BackgroundImage from '../../common/BackgroundImage'
+import AppText from '../../common/AppText'
 
 const { Form } = t.form
 
@@ -26,12 +21,12 @@ const style = {
     border: '3px solid #118BFC',
   },
   buttonDivider: {
-    height: 20
+    height: 20,
   },
   title: {
     color: 'white',
     fontSize: 22,
-  }
+  },
 }
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet)
 // overriding the background color
@@ -40,6 +35,8 @@ stylesheet.textbox.normal.backgroundColor = 'white'
 stylesheet.controlLabel.normal.color = 'white'
 stylesheet.controlLabel.normal.marginLeft = 15
 stylesheet.textbox.normal.borderRadius = 15
+stylesheet.controlLabel.normal.fontFamily = 'nunito-bold'
+stylesheet.controlLabel.error.fontFamily = 'nunito-bold'
 stylesheet.textbox.error.backgroundColor = 'white'
 stylesheet.controlLabel.error.color = 'white'
 stylesheet.controlLabel.error.marginLeft = 15
@@ -104,9 +101,16 @@ Varmista että olet kirjoittanut pienet ja suuret kirjaimet oikein.`,
       <View>
         <BackgroundImage height={Dimensions.get('screen').height}>
           <ScrollView>
-            <Text style={{ textAlign: 'center', color: 'white', fontSize: 34, marginTop: 50 }}>
+            <AppText
+              style={{
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 34,
+                marginTop: 50,
+              }}
+            >
               Salasanan vaihtaminen
-            </Text>
+            </AppText>
 
             <View style={style.container}>
               <Form
@@ -122,13 +126,20 @@ Varmista että olet kirjoittanut pienet ja suuret kirjaimet oikein.`,
 
               <View style={style.buttonDivider} />
               <View style={style.buttonDivider} />
-              <Text style={{
-                fontSize: 22, color: '#fff', textAlign: 'center', textShadowOffset: { width: 2, height: 2 },
-                textShadowRadius: 5,
-                textShadowColor: '#424242'
-              }} onPress={() => this.navigate('LoginScreen')}>
-                Peruuta
-              </Text>
+              <TouchableOpacity onPress={() => this.navigate('LoginScreen')}>
+                <AppText
+                  style={{
+                    fontSize: 22,
+                    color: '#fff',
+                    textAlign: 'center',
+                    textShadowOffset: { width: 2, height: 2 },
+                    textShadowRadius: 5,
+                    textShadowColor: '#424242',
+                  }}
+                >
+                  Peruuta
+                </AppText>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </BackgroundImage>

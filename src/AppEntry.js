@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 //import { USERNAME, PASSWORD } from '@env'
 //import userService from './services/users'
@@ -9,7 +9,8 @@ import { initializeDives } from './reducers/diveReducer'
 import { getAll } from './reducers/targetReducer'
 import ServerListener from './ServerListener'
 import OfflineNotifier from './OfflineNotifier'
-
+import * as Font from 'expo-font'
+import { AppLoading } from 'expo'
 // * AppEntry is the first component where the store is available.
 // * App startup code can be placed here.
 // * Components that need to render outside of the Navigator can be
@@ -17,10 +18,14 @@ import OfflineNotifier from './OfflineNotifier'
 //   - Renderless components, or notification components that need to
 //     always stay active.
 
-class AppEntry extends React.Component {
-  constructor(props) {
-    super(props)
-  }
+function AppEntry() {
+  const getFonts = () =>
+    Font.loadAsync({
+      'nunito-regular': require('../assets/fonts/Nunito-Regular.ttf'),
+      'nunito-bold': require('../assets/fonts/Nunito-Bold.ttf'),
+    })
+
+  const [fontsLoaded, setFontsLoaded] = useState(false)
 
   // //Autologin code to speed up development:
   // componentDidMount = async () => {
@@ -44,7 +49,7 @@ class AppEntry extends React.Component {
   //   }
   // }
 
-  render() {
+  if (fontsLoaded) {
     return (
       <React.Fragment>
         <OfflineNotifier />
@@ -52,12 +57,18 @@ class AppEntry extends React.Component {
         <ServerListener />
       </React.Fragment>
     )
+  } else {
+    return (
+      <AppLoading startAsync={getFonts} onFinish={() => setFontsLoaded(true)} />
+    )
   }
 }
 
 const mapStateToProps = (state) => ({ user: state.user })
 
-export default connect(
-  mapStateToProps,
-  { login, initializeEvents, initializeDives, getAll }
-)(AppEntry)
+export default connect(mapStateToProps, {
+  login,
+  initializeEvents,
+  initializeDives,
+  getAll,
+})(AppEntry)

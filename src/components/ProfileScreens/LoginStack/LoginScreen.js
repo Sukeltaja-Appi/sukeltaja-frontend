@@ -2,7 +2,7 @@
 /* eslint-disable react/no-string-refs */
 import React from 'react'
 import { connect } from 'react-redux'
-import { Dimensions, View, Text } from 'react-native'
+import { Dimensions, View, TouchableOpacity } from 'react-native'
 import t from 'tcomb-form-native'
 import _ from 'lodash'
 import { getServerListener } from '../../../ServerListener'
@@ -12,6 +12,7 @@ import { getAll } from '../../../reducers/targetReducer'
 import { login } from '../../../reducers/userReducer'
 import AppButton from '../../common/AppButton'
 import BackgroundImage from '../../common/BackgroundImage'
+import AppText from '../../common/AppText'
 
 const { Form } = t.form
 
@@ -26,20 +27,21 @@ const style = {
     border: '3px solid #118BFC',
   },
   buttonDivider: {
-    height: 20
+    height: 20,
   },
   title: {
     color: 'white',
     fontSize: 22,
-  }
+  },
 }
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet)
-// overriding the background color
 
 stylesheet.textbox.normal.backgroundColor = 'white'
 stylesheet.controlLabel.normal.color = 'white'
 stylesheet.controlLabel.normal.marginLeft = 15
 stylesheet.textbox.normal.borderRadius = 15
+stylesheet.controlLabel.normal.fontFamily = 'nunito-bold'
+stylesheet.controlLabel.error.fontFamily = 'nunito-bold'
 stylesheet.textbox.error.backgroundColor = 'white'
 stylesheet.controlLabel.error.color = 'white'
 stylesheet.controlLabel.error.marginLeft = 15
@@ -56,9 +58,9 @@ const options = {
       stylesheet: stylesheet,
       label: 'Salasana:',
       error: 'Salasana ei saa olla tyhjä.',
-      secureTextEntry: true
-    }
-  }
+      secureTextEntry: true,
+    },
+  },
 }
 
 class LoginScreen extends React.Component {
@@ -67,13 +69,13 @@ class LoginScreen extends React.Component {
     this.state = {
       credentials: {
         username: '',
-        password: ''
+        password: '',
       },
-      validLogin: true
+      validLogin: true,
     }
   }
 
-  navigate = (value) => this.props.navigation.navigate(value)
+  navigate = (value) => this.props.navigation.navigate(value);
 
   login = async () => {
     if (this.refs.form.getValue()) {
@@ -90,11 +92,11 @@ class LoginScreen extends React.Component {
 
         getServerListener().setupCommunication()
       } else {
-        console.log('Wrong username or pasaaaasword')
+        console.log('Wrong username or password')
         this.setState({ validLogin: false })
       }
     }
-  }
+  };
 
   render() {
     const { credentials } = this.state
@@ -108,16 +110,23 @@ class LoginScreen extends React.Component {
 
     return (
       <View>
-        <BackgroundImage height={Dimensions.get('screen').height} >
-          <Text style={{ textAlign: 'center', color: 'white', fontSize: 34, marginTop: 100 }}>
+        <BackgroundImage height={Dimensions.get('screen').height}>
+          <AppText
+            style={{
+              textAlign: 'center',
+              color: 'white',
+              fontSize: 34,
+              marginTop: 100,
+            }}
+          >
             Kirjaudu sisään
-          </Text>
+          </AppText>
           <View style={style.container}>
-            {!validLogin &&
-              <Text style={{ fontSize: 16, color: 'red' }}>
+            {!validLogin && (
+              <AppText style={{ fontSize: 16, color: 'red' }}>
                 Väärä käyttäjätunnus tai salasana
-              </Text>
-            }
+              </AppText>
+            )}
             <Form
               ref={reference}
               type={User}
@@ -128,13 +137,20 @@ class LoginScreen extends React.Component {
             <AppButton title="Kirjaudu" onPress={this.login} />
 
             <View style={style.buttonDivider} />
-            <Text style={{
-              fontSize: 22, color: '#fff', textAlign: 'center', textShadowOffset: { width: 2, height: 2 },
-              textShadowRadius: 5,
-              textShadowColor: '#424242'
-            }} onPress={() => this.navigate('ResetScreen')}>
-              Unohtuiko salasana?
-            </Text>
+            <TouchableOpacity onPress={() => this.navigate('ResetScreen')}>
+              <AppText
+                style={{
+                  fontSize: 22,
+                  color: '#fff',
+                  textAlign: 'center',
+                  textShadowOffset: { width: 2, height: 2 },
+                  textShadowRadius: 5,
+                  textShadowColor: '#424242',
+                }}
+              >
+                Unohtuiko salasana?
+              </AppText>
+            </TouchableOpacity>
           </View>
         </BackgroundImage>
       </View>
@@ -144,7 +160,9 @@ class LoginScreen extends React.Component {
 
 const mapStateToProps = (state) => ({ user: state.user })
 
-export default connect(
-  mapStateToProps,
-  { login, initializeEvents, initializeDives, getAll }
-)(LoginScreen)
+export default connect(mapStateToProps, {
+  login,
+  initializeEvents,
+  initializeDives,
+  getAll,
+})(LoginScreen)
