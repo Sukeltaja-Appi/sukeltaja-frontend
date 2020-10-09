@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Dimensions, View, Text, Image } from 'react-native'
+import { Dimensions, View, Image } from 'react-native'
 
 import { initializeEvents } from '../../../reducers/eventReducer'
 import { initializeDives } from '../../../reducers/diveReducer'

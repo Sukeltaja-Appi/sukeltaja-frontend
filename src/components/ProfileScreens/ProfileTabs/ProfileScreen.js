@@ -9,7 +9,6 @@ import {
   Linking,
 } from 'react-native'
 import { Icon, Text, ListItem } from 'react-native-elements'
-
 import { logout } from '../../../store'
 import { getMessages } from '../../../reducers/messageReducer'
 import { getServerListener } from '../../../ServerListener'
@@ -93,7 +92,7 @@ export const ProfileScreen = (props) => {
               <Icon size={100} name="user" type="feather" />
               <AppText
                 h2
-                style={{ textAlign: 'center', color: 'white', fontSize: 40 }}
+                style={{ textAlign: 'center', color: 'white', fontSize: 36 }}
               >
                 {props.user.username}
               </AppText>

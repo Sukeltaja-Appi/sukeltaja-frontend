@@ -5,6 +5,7 @@ import InvitesScreen from './ProfileTabs/InvitesScreen'
 import LicenseScreen from './ProfileTabs/LicenseScreen'
 import ProfileScreen from './ProfileTabs/ProfileScreen'
 import SettingsScreen from './ProfileTabs/SettingsScreen'
+import EventListScreen from '../EventScreens/EventMenuStack/EventListScreen'
 
 const StackMessage = createStackNavigator()
 
@@ -32,9 +33,11 @@ const Profile = createStackNavigator()
 
 function ProfileStack() {
   return (
-    <Profile.Navigator initialRouteName="Profiili" screenOptions={{ headerShown: false }} >
-      <Profile.Screen name="Profiili" component={ProfileScreen} />
+    <Profile.Navigator initialRouteName="Profiili" >
+      <Profile.Screen name="Profiili" component={ProfileScreen} options={{ headerShown: false }}/>
       <Profile.Screen name="Kutsut" component={MessageStack} />
+      <Profile.Screen name="Asetukset" component={SettingsStack} />
+      <Profile.Screen name="Sukellushistoria" component={EventListScreen} />
     </Profile.Navigator>
   )
 }
