@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import t from 'tcomb-form-native'
 import RNDateTimePicker from '@react-native-community/datetimepicker'
 import { formatDate } from '../../utils/dates'
@@ -12,118 +12,114 @@ import { now, inOneHour } from '../../utils/dates'
 
 const { Form } = t.form
 
-const DateIsAfter = t.refinement(t.Date, (date) => date >= event.startdate)
+const EventInfoForm = (props) => {
+  const [isShowingDatePicker, setIsShowingDatePicker] = useState(false)
+  const [isShowingTimePicker, setIsShowingTimePicker] = useState(false)
+  const [isModifyingStartDate, setIsModifyingStartDate] = useState(true)
+  const [startDateButtonText, setStartDateButtonText] = useState('Alkaa: ' + formatDate(now()))
+  const [endDateButtonText, setEndDateButtonText] = useState('Loppuu: ' + formatDate(inOneHour()))
+  const [divingEvent, setEvent] = useState({
+    title: '',
+    description: '',
+    startdate: new Date(),
+    enddate: inOneHour()
+  })
 
-const Event = t.struct({
-  title: t.String,
-  description: t.String
-})
+  const Event = t.struct({
+    title: t.String,
+    description: t.String
+  })
 
-class EventInfoForm extends React.Component {
-  constructor(props) {
-    super(props)
-    this.ref = React.createRef()
+  const onButtonPress = async () => {
+    await props.createEvent(divingEvent)
+    props.navigation.navigate('CustomTargetScreen')
+  }
 
-    this.state = {
-      showDatePicker: false,
-      showTimePicker: false,
-      startingDate: 'Aloitusaika',
-      endingDate: '',
-      event: {
-        title: '',
-        description: '',
-        startdate: now(),
-        enddate: inOneHour(),
+  const onDateChange = (event, date) => {
+    if (date !== undefined) {
+      if (isModifyingStartDate === true) {
+        setEvent({...divingEvent, startdate: date})
+      } else {
+        setEvent({...divingEvent, enddate: date})
+      }
+      renderPicker(false)
+    }
+  }
+
+  const onTimeChange = (event, date) => {
+    setIsShowingDatePicker(false)
+    setIsShowingTimePicker(false)
+
+    if (date !== undefined) {
+      const newDate = isModifyingStartDate ? divingEvent.startdate : divingEvent.enddate
+      newDate.setMinutes(date.getMinutes())
+      newDate.setHours(date.getHours())
+
+      if (isModifyingStartDate === true) {
+        setEvent({...divingEvent, startdate: newDate})
+        setStartDateButtonText('Alkaa: ' + formatDate(newDate))
+      } else {
+        setEvent({...divingEvent, endDate: newDate})
+        setEndDateButtonText('Loppuu: ' + formatDate(newDate))
       }
     }
   }
 
-  onButtonPress = async () => {
-    const { event } = this.state.event
-    const eventToAdd = {
-      title: this.state.event.title,
-      description: this.state.event.description,
-      startdate: this.state.event.startdate,
-      enddate: this.state.event.enddate
-    }
-    console.log(eventToAdd)
-    await this.props.createEvent(eventToAdd)
-
-    this.props.navigation.navigate('CustomTargetScreen')
+  const renderPicker = datePicker => {
+    setIsShowingDatePicker(datePicker)
+    setIsShowingTimePicker(!datePicker)
   }
 
-  onDateChange = (event, date) => {
-    if (date !== undefined) {
-      const day = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
-      console.log(day)
-      console.log(date + ' ' + formatDate(date))
-      this.setState({
-        event: { ...event, startdate: date },
-        showTimePicker: true,
-        showDatePicker: false
-      })
-    }
-
-  }
-
-  onTimeChange = (event, time) => {
-    if (time !== undefined) {
-      const date = this.state.event.startdate
-      date.setMinutes(time.getMinutes())
-      date.setHours(time.getHours())
-      console.log(date + ' ' + formatDate(date))
-      this.setState({
-        event: { ...event, startdate: date },
-        startingDate: 'Alkaa: ' + formatDate(date),
-        showTimePicker: false,
-      })
-    }
-  }
-
-  render() {
-    return (
-      <View style={style.noPadding}>
-        <ScrollView>
-          <View style={style.container}>
-            {this.state.showDatePicker &&
-              <RNDateTimePicker
-                mode='date'
-                value={this.state.event.startdate}
-                onChange={this.onDateChange}
-              />
-            }
-            {this.state.showTimePicker &&
-              <RNDateTimePicker
-                mode='time'
-                value={this.state.event.startdate}
-                onChange={this.onTimeChange}
-              />
-            }
-            <Form
-              ref={this.ref}
-              type={Event}
-              options={options}
-              value={this.state.event}
-              onChange={(event) => this.setState({ event })}
-              style={style.container}
+  return (
+    <View style={style.noPadding}>
+      <ScrollView>
+        <View style={style.container}>
+          {isShowingDatePicker &&
+            <RNDateTimePicker
+              mode='date'
+              value={new Date()}  //new Date() toimii
+              onChange={onDateChange}
             />
-            <Button buttonStyle={style.dateButton}
-              title={this.state.startingDate}
-              onPress={() => this.setState({
-                showDatePicker: true,
-                showTimePicker: false
-              })}
+          }
+          {isShowingTimePicker &&
+            <RNDateTimePicker
+              mode='time'
+              value={new Date()}
+              onChange={onTimeChange}
             />
-            <Button
-              buttonStyle={style.button}
-              onPress={this.onButtonPress}
-              title='Seuraava'
-            />
-          </View>
-        </ScrollView>
-      </View>
-    )
-  }
+          }
+          <Form
+            //ref={this.ref}
+            type={Event}
+            options={options}
+            value={divingEvent}
+            onChange={(event) => setEvent(event)}
+            style={style.container}
+          />
+          <Button buttonStyle={style.dateButton}
+            title={startDateButtonText}
+            onPress={(e) => {
+              setIsModifyingStartDate(true)
+              renderPicker(true)
+            }}
+          />
+          <Button buttonStyle={style.dateButton}
+            title={endDateButtonText}
+            onPress={(e) => {
+              console.log('nyt')
+              setIsModifyingStartDate(false)
+              renderPicker(true)
+            }}
+          />
+          <Button
+            buttonStyle={style.button}
+            onPress={onButtonPress}
+            title='Seuraava'
+          />
+        </View>
+      </ScrollView>
+    </View>
+  )
 }
 
 const style = {
@@ -141,10 +137,11 @@ const style = {
   dateButton: {
     width: '100%',
     paddingVertical: 10,
-    marginBottom: 20,
+    marginTop: 30,
     backgroundColor: 'rgba(52, 52, 52, 0.8)'
   },
   button: {
+    marginTop: 40,
     marginBottom: 10,
     marginHorizontal: 40,
     backgroundColor: '#00A3FF',
