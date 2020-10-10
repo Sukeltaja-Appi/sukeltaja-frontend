@@ -16,9 +16,7 @@ const DateIsAfter = t.refinement(t.Date, (date) => date >= event.startdate)
 
 const Event = t.struct({
   title: t.String,
-  description: t.String,
-  startdate: t.Date,
-  enddate: DateIsAfter,
+  description: t.String
 })
 
 class EventInfoForm extends React.Component {
@@ -29,6 +27,8 @@ class EventInfoForm extends React.Component {
     this.state = {
       showDatePicker: false,
       showTimePicker: false,
+      startingDate: 'Aloitusaika',
+      endingDate: '',
       event: {
         title: '',
         description: '',
@@ -53,16 +53,31 @@ class EventInfoForm extends React.Component {
   }
 
   onDateChange = (event, date) => {
-    const stdate = this.state.startdate
-    console.log(date)
-    this.setState({
-      event: { ...event, startdate: date },
-      showTimePicker: true
-    })
+    if (date !== undefined) {
+      const day = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+      console.log(day)
+      console.log(date + ' ' + formatDate(date))
+      this.setState({
+        event: { ...event, startdate: date },
+        showTimePicker: true,
+        showDatePicker: false
+      })
+    }
+
   }
 
   onTimeChange = (event, time) => {
-    console.log(time)
+    if (time !== undefined) {
+      const date = this.state.event.startdate
+      date.setMinutes(time.getMinutes())
+      date.setHours(time.getHours())
+      console.log(date + ' ' + formatDate(date))
+      this.setState({
+        event: { ...event, startdate: date },
+        startingDate: 'Alkaa: ' + formatDate(date),
+        showTimePicker: false,
+      })
+    }
   }
 
   render() {
@@ -80,7 +95,7 @@ class EventInfoForm extends React.Component {
             {this.state.showTimePicker &&
               <RNDateTimePicker
                 mode='time'
-                value={new Date()}
+                value={this.state.event.startdate}
                 onChange={this.onTimeChange}
               />
             }
@@ -92,20 +107,18 @@ class EventInfoForm extends React.Component {
               onChange={(event) => this.setState({ event })}
               style={style.container}
             />
-            <View style={style.bottom}>
-              <Button buttonStyle={style.button}
-                title='Aloitusaika'
-                onPress={() => this.setState({
-                  showDatePicker: true,
-                  showTimePicker: false
-                })}
-              />
-              <Button
-                buttonStyle={style.button}
-                onPress={this.onButtonPress}
-                title='Seuraava'
-              />
-            </View>
+            <Button buttonStyle={style.dateButton}
+              title={this.state.startingDate}
+              onPress={() => this.setState({
+                showDatePicker: true,
+                showTimePicker: false
+              })}
+            />
+            <Button
+              buttonStyle={style.button}
+              onPress={this.onButtonPress}
+              title='Seuraava'
+            />
           </View>
         </ScrollView>
       </View>
@@ -124,6 +137,12 @@ const style = {
     width: '100%',
     padding: paddingSides,
     bottom: 20,
+  },
+  dateButton: {
+    width: '100%',
+    paddingVertical: 10,
+    marginBottom: 20,
+    backgroundColor: 'rgba(52, 52, 52, 0.8)'
   },
   button: {
     marginBottom: 10,
@@ -155,29 +174,14 @@ const options = {
           ...Form.stylesheet.textbox,
           normal: {
             ...Form.stylesheet.textbox.normal,
-            height: 120,
+            height: 140,
             textAlignVertical: 'top'
           },
           error: {
             ...Form.stylesheet.textbox.error,
-            height: 120
+            height: 140
           }
         }
-      }
-    },
-    startdate: {
-      label: 'Aloitusaika',
-      mode: 'datetime',
-      config: {
-        format: (date) => formatDate(date)
-      }
-    },
-    enddate: {
-      label: 'Lopetusaika',
-      mode: 'datetime',
-      error: 'Tapahtuma ei voi loppua ennen alkamisaikaa.',
-      config: {
-        format: (date) => formatDate(date)
       }
     }
   }
