@@ -33,7 +33,7 @@ const style = {
 
 const Invite = (props) => {
   const { joinOngoingEvent, checkMessage, navigation } = props
-  const { message, parent } = navigation.getParam('invProps')
+  const { message, parent } = navigation.params?.invProps
 
   const join = async () => {
     await joinOngoingEvent(message.data)
