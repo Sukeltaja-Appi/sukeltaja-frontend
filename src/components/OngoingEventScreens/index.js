@@ -1,7 +1,7 @@
 import React from 'react'
 import { createMaterialTopTabNavigator, MaterialTopTabBar } from '@react-navigation/material-top-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 import CustomTargetScreen from './OngoingEventTabs/CustomTargetScreen'
 import ChatScreen from './OngoingEventTabs/ChatScreen'
@@ -65,7 +65,7 @@ const SafeAreaMaterialTopTabBar = ({ ...props }) => (
   <SafeAreaView>
     <MaterialTopTabBar {...props} />
   </SafeAreaView>
-);
+)
 
 const OngoingEventTabsNav = createMaterialTopTabNavigator()
 const OngoingEventTabs = () => {
