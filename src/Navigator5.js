@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { connect } from 'react-redux'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MapScreen from './components/MapScreens/MapScreen'
-import EventEntry from './components/EventScreens/EventEntry'
+import EventMenuStack from './components/EventScreens/index'
 import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
 import ProfileScreens from './components/ProfileScreens'
 import LoginStack from './components/ProfileScreens/LoginStack'
@@ -54,7 +54,7 @@ function TabNavigator() {
       />
       <Tab.Screen
         name="Tapahtumat"
-        component={EventEntry}
+        component={EventMenuStack}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="event" size={26} color={color} />
