@@ -22,6 +22,9 @@ const style = {
   title: {
     flex: 5
   },
+  lowerTitle: {
+    fontSize: 25
+  },
   divider: {
     marginVertical: 20
   },
@@ -37,7 +40,7 @@ const Event = (props) => {
   const { navigation, ongoingEvent, deleteEvent } = props
 
   const event = navigation.getParam('item')
-  const { startdate, enddate, title, description } = event
+  const { startdate, enddate, title, description, creator, participants, target } = event
 
   const navigate = (route, params) => navigation.navigate(route, params)
 
@@ -64,13 +67,43 @@ const Event = (props) => {
         </View>
 
         <Divider style={style.divider} />
+        <Text style={style.lowerTitle}>Info</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+          <Icon name='event' type='material' color='grey' size={20} />
+          <Text style={style.text}>{ new Date(startdate).getDate() }.
+          { new Date(startdate).getMonth() } - { new Date(startdate).getDate() }.
+          { new Date(startdate).getMonth() }.{ new Date(startdate).getFullYear() }</Text>
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+          <Icon name='schedule' type='material' color='grey' size={20} />
+          <Text style={style.text}>Lähtö { new Date(startdate).getHours() }:{ new Date(startdate).getMinutes() }</Text>
+        </View>
 
-        <Text style={style.text}>Kuvaus:         {description}</Text>
-        <Text style={style.text}>Aloitusaika:   { formatDate(startdate) }</Text>
-        <Text style={style.text}>Lopetusaika: { formatDate(enddate) }</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+          <Icon name='person' type='material' color='grey' size={20} />
+          <Text style={style.text}>{creator.username}</Text>
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+          <Icon name='group' type='material' color='grey' size={20} />
+          <Text style={style.text}>{participants.length + 1}</Text>
+        </View>
 
         <Divider style={style.divider} />
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+          <Icon name='description' type='material' color='grey' size={30} />
+          <Text style={style.lowerTitle}>Kuvaus</Text>
+        </View>
+        <Text style={style.text}>{description}</Text>
 
+        <Divider style={style.divider} />
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+          <Icon name='location-on' type='material' color='grey' size={30} />
+          <Text style={style.lowerTitle}>Sijainti</Text>
+        </View>
+        <Text style={style.text}>lisätään</Text>
+
+        <Divider style={style.divider} />
         <Button
           title='Poista'
           buttonStyle={style.buttonDelete}
