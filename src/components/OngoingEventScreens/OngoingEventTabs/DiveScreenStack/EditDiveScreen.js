@@ -36,7 +36,7 @@ class EditDiveScreen extends React.Component {
       latitude,
       longitude,
       ...rest
-    } = props.navigation.getParam('item')
+    } = props.route.params.item
 
     this.state = {
       dive: {
@@ -47,7 +47,7 @@ class EditDiveScreen extends React.Component {
         longitude,
         latitude
       },
-      originalDive: props.navigation.getParam('item'),
+      originalDive: props.route.params.item,
       ...rest
     }
   }

@@ -19,12 +19,12 @@ const style = {
 
 const Target = (props) => {
   const { ongoingEvent, updateEvent, currentTarget, setOngoingEvent } = props
-  let target = props.target ? props.target : props.navigation.getParam('target')
+  let target = props.target ? props.target : props.route.params?.target
   const { name, type, material, latitude, longitude, mj_id } = target
 
   const [customName, setCustomName] = useState('')
 
-  const customLocation = props.navigation.getParam('custom')
+  const customLocation = props.route.params?.custom
 
   const selectTarget = async (target) => {
     if (customLocation) {
