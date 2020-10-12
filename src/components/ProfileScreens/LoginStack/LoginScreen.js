@@ -63,6 +63,15 @@ const options = {
   },
 }
 
+const textButtonStyle = {
+  fontSize: 22,
+  color: '#fff',
+  textAlign: 'center',
+  textShadowOffset: { width: 2, height: 2 },
+  textShadowRadius: 5,
+  textShadowColor: '#424242',
+}
+
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -138,17 +147,13 @@ class LoginScreen extends React.Component {
 
             <View style={style.buttonDivider} />
             <TouchableOpacity onPress={() => this.navigate('ResetScreen')}>
-              <AppText
-                style={{
-                  fontSize: 22,
-                  color: '#fff',
-                  textAlign: 'center',
-                  textShadowOffset: { width: 2, height: 2 },
-                  textShadowRadius: 5,
-                  textShadowColor: '#424242',
-                }}
-              >
+              <AppText style={textButtonStyle}>
                 Unohtuiko salasana?
+              </AppText>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.navigate('Opening')}>
+              <AppText style={{ ...textButtonStyle, marginTop: 20, }} >
+                Peruuta
               </AppText>
             </TouchableOpacity>
           </View>
