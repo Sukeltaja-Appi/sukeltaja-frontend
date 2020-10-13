@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StackActions, NavigationActions } from 'react-navigation'
+import { CommonActions } from '@react-navigation/native'
 import { View, ScrollView } from 'react-native'
 import { Button } from 'react-native-elements'
 import DiveForm from '../../../common/DiveForm'
@@ -52,7 +52,7 @@ class EditDiveScreen extends React.Component {
     }
   }
 
-  getLocation = async() => {
+  getLocation = async () => {
     try {
       const location = await locationService.getLocationAsync()
 
@@ -65,21 +65,17 @@ class EditDiveScreen extends React.Component {
       dive.longitude = longitude
 
       this.setState({ dive })
-    } catch(err) { console.log('Geolocation unavailable.') }
+    } catch (err) { console.log('Geolocation unavailable.') }
   }
 
   back = (dive) => {
-    const navigateAction = (routeName, params) => NavigationActions.navigate({
-      routeName, params
-    })
-
-    const resetAction = StackActions.reset({
+    const resetAction = CommonActions.reset({
       index: 2,
-      actions: [
-        navigateAction('DiveScreen'),
-        navigateAction('DiveListScreen'),
-        navigateAction('Dive', { item: dive })
-      ]
+      routes: [
+        { name: 'DiveScreen' },
+        { name: 'DiveListScreen' },
+        { name: 'Dive', params: { item: dive } },
+      ],
     })
 
     this.props.navigation.dispatch(resetAction)
@@ -96,8 +92,8 @@ class EditDiveScreen extends React.Component {
 
       let { creator, admins, participants } = ongoingEvent
 
-      admins = [ creator, ...admins]
-      const allParticipants = [ creator, ...admins, ...participants ]
+      admins = [creator, ...admins]
+      const allParticipants = [creator, ...admins, ...participants]
       let allowed = false
 
       if (user.username === dive.user) {
@@ -106,9 +102,9 @@ class EditDiveScreen extends React.Component {
 
       } else if (admins.map(a => a._id).includes(user._id)) {
 
-        for (let i=0; i < allParticipants.length; i++) {
+        for (let i = 0; i < allParticipants.length; i++) {
 
-          if(allParticipants[i].username === dive.user) {
+          if (allParticipants[i].username === dive.user) {
 
             dive.user = allParticipants[i]._id
             allowed = true
@@ -117,7 +113,7 @@ class EditDiveScreen extends React.Component {
         }
       }
 
-      if(allowed) {
+      if (allowed) {
         dive.event = ongoingEvent._id
         const updatedDive = await updateDive(dive, user._id)
 
@@ -146,7 +142,7 @@ class EditDiveScreen extends React.Component {
               onPress={this.getLocation}
               raised
             />
-            <View style={style.divider}/>
+            <View style={style.divider} />
             <Button
               title='<-- Takaisin'
               onPress={() => this.back(originalDive)}
