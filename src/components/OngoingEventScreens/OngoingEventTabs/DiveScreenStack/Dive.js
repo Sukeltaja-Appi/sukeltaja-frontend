@@ -36,7 +36,7 @@ const style = {
 const Dive = (props) => {
   const { navigation, ongoingDives, ongoingEvent, deleteDive, user } = props
 
-  const dive = navigation.params?.item
+  const dive = props.route.params.item
   const { startdate, enddate, latitude, longitude } = dive
 
   const navigate = (route, params) => navigation.navigate(route, params)
