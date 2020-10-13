@@ -24,7 +24,7 @@ function SettingsStack() {
   return (
     <StackSettings.Navigator>
       <StackSettings.Screen name="Asetukset" component={SettingsScreen} />
-      <StackSettings.Screen name="Lisenssi" component={LicenseScreen} />
+      <StackSettings.Screen name="Lisenssit" component={LicenseScreen} />
     </StackSettings.Navigator>
   )
 }
