@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 //import { USERNAME, PASSWORD } from '@env'
 //import userService from './services/users'
-import Navigator5 from './Navigator5'
+import Navigator from './Navigator'
 import { login } from './reducers/userReducer'
 import { initializeEvents } from './reducers/eventReducer'
 import { initializeDives } from './reducers/diveReducer'
@@ -53,7 +53,7 @@ function AppEntry() {
     return (
       <React.Fragment>
         <OfflineNotifier />
-        <Navigator5 />
+        <Navigator />
         <ServerListener />
       </React.Fragment>
     )
