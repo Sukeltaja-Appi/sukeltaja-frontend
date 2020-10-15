@@ -8,7 +8,7 @@ import { formatDate } from '../../../utils/dates'
 import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import AppButton from '../../common/AppButton'
+import AppButtonRound from '../../common/AppButtonRound'
 
 /*
 const data = [
@@ -30,10 +30,10 @@ const EmptyList = (props) => {
         <Text style={styles.h5}>Ei omia tapahtumia.</Text>
       </View>
       <View style={style.container}>
-      <AppButton
-              title="Luo tapahtuma"
-              onPress={() => navigate('Luo tapahtuma')}
-            />
+        <AppButtonRound
+          title="+"
+          onPress={() => navigate('Luo tapahtuma')}
+        />
       </View>
     </View>
   )
@@ -93,6 +93,12 @@ const List = (props) => {
         }
         keyExtractor={item => item._id}
       />
+      <View style={style.container}>
+        <AppButtonRound
+          title="+"
+          onPress={() => navigate('Luo tapahtuma')}
+        />
+      </View>
     </View>
   )
 }
@@ -100,8 +106,8 @@ const List = (props) => {
 const style = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
-    width: '50%',
-    height: '20%',
+    width: '20%',
+    height: '30%',
     alignSelf: 'flex-end'
   },
   checkBox: {
