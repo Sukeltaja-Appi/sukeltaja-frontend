@@ -178,7 +178,7 @@ class RegisterScreen extends React.Component {
               {validationFail
                 && <AppText style={{ fontSize: 16, color: 'red' }}>
                   Käyttäjätunnus min 3 merkkiä, salasana min 6 merkkiä, sposti muotoa x@x.x
-              </AppText>
+                </AppText>
               }
               <Form
                 ref={reference}
