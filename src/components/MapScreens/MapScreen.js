@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import { SearchBar, Text, Overlay } from 'react-native-elements'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import { Marker, Callout } from 'react-native-maps'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
 import colors from '../../styles/colors'
 import decimalToDMS from '../../utils/coordinates'
-
 import { getAll } from '../../reducers/targetReducer'
 import Target from '../common/Target'
 
@@ -112,7 +113,7 @@ class MainMapScreen extends React.Component {
 
     targets.map(t => t.location = { longitude: t.longitude, latitude: t.latitude })
 
-    return(
+    return (
       <View style={style.container}>
         <ClusteredMapView
           ref={(r) => { this.map = r }}
@@ -129,16 +130,18 @@ class MainMapScreen extends React.Component {
           userLocationAnnotationTitle=''
         />
 
-        <SearchBar
-          placeholder='Etsi kohde'
-          containerStyle={style.searchContainer}
-          inputContainerStyle={style.searchInputContainer}
-          inputStyle={style.searchInput}
-          lightTheme
-          clearIcon={{ name: 'x', type: 'feather', size: 28 }}
-          onChangeText={this.search}
-          value={query}
-        />
+        <SafeAreaView>
+          <SearchBar
+            placeholder='Etsi kohde'
+            containerStyle={style.searchContainer}
+            inputContainerStyle={style.searchInputContainer}
+            inputStyle={style.searchInput}
+            lightTheme
+            clearIcon={{ name: 'x', type: 'feather', size: 28 }}
+            onChangeText={this.search}
+            value={query}
+          />
+        </SafeAreaView>
 
         { overlay
           && (
@@ -186,9 +189,10 @@ const style = StyleSheet.create({
   },
   searchContainer: {
     backgroundColor: 'transparent',
-    width: '95%',
-    position: 'absolute',
-    top: 20,
+    // Probably does not work correctly if we decide to support landscape mode
+    // eslint-disable-next-line no-magic-numbers
+    width: Dimensions.get('window').width * 0.95,
+    position: 'relative',
     borderBottomColor: 'transparent',
     borderTopColor: 'transparent'
   },

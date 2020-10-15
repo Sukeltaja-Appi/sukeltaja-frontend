@@ -1,7 +1,7 @@
 import React from 'react'
-import { createMaterialTopTabNavigator, MaterialTopTabBar } from 'react-navigation-tabs'
-import { createStackNavigator } from 'react-navigation-stack'
-import { Icon } from 'react-native-elements'
+import { createMaterialTopTabNavigator, MaterialTopTabBar } from '@react-navigation/material-top-tabs'
+import { createStackNavigator } from '@react-navigation/stack'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 import CustomTargetScreen from './OngoingEventTabs/CustomTargetScreen'
 import ChatScreen from './OngoingEventTabs/ChatScreen'
@@ -17,97 +17,66 @@ import TargetScreen from './OngoingEventTabs/TargetScreen'
 
 import Target from '../common/Target'
 
-import colors from '../../styles/colors'
-
-const style = {
-  activeTintColor: '#fff',
-  labelStyle: {
-    fontWeight: 'bold',
-    fontSize: 9
-  },
-  showIcon: true
+const EventScreenStackNav = createStackNavigator()
+const EventScreenStack = () => {
+  return (
+    <EventScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
+      <EventScreenStackNav.Screen name="EventScreen" component={EventScreen} />
+      <EventScreenStackNav.Screen name="InviteScreen" component={InviteScreen} />
+    </EventScreenStackNav.Navigator>
+  )
 }
 
-const TabBarComponent = (props) => (<MaterialTopTabBar {...props} />)
+const ChatScreenStackNav = createStackNavigator()
+const ChatScreenStack = () => {
+  return (
+    <ChatScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
+      <ChatScreenStackNav.Screen name="ChatScreen" component={ChatScreen} />
+      <ChatScreenStackNav.Screen name="ChatMessage" component={ChatMessage} />
+    </ChatScreenStackNav.Navigator>
+  )
+}
 
-const EventScreenStack = createStackNavigator({
-  EventScreen,
-  InviteScreen
-}, { headerMode: 'none' })
+const DiveScreenStackNav = createStackNavigator()
+const DiveScreenStack = () => {
+  return (
+    <DiveScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
+      <DiveScreenStackNav.Screen name="DiveScreen" component={DiveScreen} />
+      <DiveScreenStackNav.Screen name="DiveListScreen" component={DiveListScreen} />
+      <DiveScreenStackNav.Screen name="CreateDiveScreen" component={CreateDiveScreen} />
+      <DiveScreenStackNav.Screen name="Dive" component={Dive} />
+      <DiveScreenStackNav.Screen name="EditDiveScreen" component={EditDiveScreen} />
+    </DiveScreenStackNav.Navigator>
+  )
+}
 
-const ChatScreenStack = createStackNavigator({
-  ChatScreen,
-  ChatMessage
-}, { headerMode: 'none' })
+const TargetScreenStackNav = createStackNavigator()
+const TargetScreenStack = () => {
+  return (
+    <TargetScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
+      <TargetScreenStackNav.Screen name="TargetScreen" component={TargetScreen} />
+      <TargetScreenStackNav.Screen name="Target" component={Target} />
+      <TargetScreenStackNav.Screen name="CustomTargetScreen" component={CustomTargetScreen} />
+    </TargetScreenStackNav.Navigator>
+  )
+}
 
-const DiveScreenStack = createStackNavigator({
-  DiveScreen,
-  DiveListScreen,
-  CreateDiveScreen,
-  Dive,
-  EditDiveScreen
-}, { headerMode: 'none' })
+const SafeAreaMaterialTopTabBar = ({ ...props }) => (
+  <SafeAreaView>
+    <MaterialTopTabBar {...props} />
+  </SafeAreaView>
+)
 
-const TargetScreenStack = createStackNavigator({
-  TargetScreen,
-  Target,
-  CustomTargetScreen
-}, { headerMode: 'none' })
-
-const OngoingEventTabs = createMaterialTopTabNavigator({
-  TargetScreen: {
-    screen: TargetScreenStack,
-    navigationOptions: {
-      tabBarLabel: 'KOHDE',
-      tabBarOptions: style,
-      showIcon: true,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='map-pin' type='feather' color={tintColor} />
-      ),
-    }
-  },
-  DiveScreen: {
-    screen: DiveScreenStack,
-    navigationOptions: {
-      tabBarLabel: 'SUKELLUKSET',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='anchor' type='feather' color={tintColor} />
-      )
-    }
-  },
-  ChatScreen: {
-    screen: ChatScreenStack,
-    navigationOptions: {
-      tabBarLabel: 'KESKUSTELU',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='message-circle' type='feather' color={tintColor} />
-      )
-    }
-  },
-  EventScreen: {
-    screen: EventScreenStack,
-    navigationOptions: {
-      tabBarLabel: 'TAPAHTUMA',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='users' type='feather' color={tintColor} />
-      )
-    }
-  },
-}, {
-  tabBarComponent: props => {
-    return (
-      <TabBarComponent
-        {...props}
-        style={{
-          backgroundColor: colors.primary_light,
-          paddingTop: 10
-        }}
-      />
-    )
-  }
-})
+const OngoingEventTabsNav = createMaterialTopTabNavigator()
+const OngoingEventTabs = () => {
+  return (
+    <OngoingEventTabsNav.Navigator tabBar={props => <SafeAreaMaterialTopTabBar {...props} />}>
+      <OngoingEventTabsNav.Screen name="TargetScreen" component={TargetScreenStack} />
+      <OngoingEventTabsNav.Screen name="DiveScreen" component={DiveScreenStack} />
+      <OngoingEventTabsNav.Screen name="ChatScreen" component={ChatScreenStack} />
+      <OngoingEventTabsNav.Screen name="EventScreen" component={EventScreenStack} />
+    </OngoingEventTabsNav.Navigator>
+  )
+}
 
 export default OngoingEventTabs

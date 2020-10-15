@@ -30,14 +30,19 @@ export const login = (credentials) => {
       const { username, password } = credentials
       const user = await loginService.login({ username, password })
 
+      userService.setToken(user.token)
       dispatch({
         type: 'LOGIN_SUCCESS',
         user
       })
+
+      return user
     } catch (exception) { // can log failed login attempts here
       dispatch({
         type: 'LOGIN_FAILURE'
       })
+
+      return null
     }
   }
 }
