@@ -24,16 +24,17 @@ const EventListScreen5 = (props) => props.events.length === 0 ? <EmptyList {...p
 const EmptyList = (props) => {
   const navigate = (value) => { props.navigation.navigate(value) }
   return (
-    <View style={styles.centered}>
-      <Text style={styles.h5}>Ei omia tapahtumia.</Text>
-      <TouchableOpacity
-        style={styles.buttonStyle}
-        onPress={() => navigate('Luo tapahtuma')}
-      >
-        <Text style={{ color: 'white', fontSize: 80 }}>+</Text>
-      </TouchableOpacity>
-
-    </View>
+    <View style={styles.noPadding}>
+      <View style={styles.centered}>
+        <Text style={styles.h5}>Ei omia tapahtumia.</Text>
+      </View>
+        <TouchableOpacity
+          style={style.buttonStyle}
+          onPress={() => navigate('Luo tapahtuma')}
+        >
+          <Text style={style.buttonText}>+</Text>
+        </TouchableOpacity>
+      </View>
   )
 }
 
@@ -97,11 +98,11 @@ const List = (props) => {
 
 const style = StyleSheet.create({
   buttonStyle: {
-    width: 100,
-    height: 100,
-    left: 300,
-    top: 350,
-    backgroundColor: '#0094FF',
+    backgroundColor: '#0094FF'
+  },
+  buttonText: {
+    fontSize: 80,
+    color: 'white'
   },
   checkBox: {
     paddingHorizontal: 0,
