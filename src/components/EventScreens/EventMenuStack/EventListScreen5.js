@@ -8,6 +8,7 @@ import { formatDate } from '../../../utils/dates'
 import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import AppButton from '../../common/AppButton'
 
 /*
 const data = [
@@ -24,17 +25,17 @@ const EventListScreen5 = (props) => props.events.length === 0 ? <EmptyList {...p
 const EmptyList = (props) => {
   const navigate = (value) => { props.navigation.navigate(value) }
   return (
-    <View style={styles.noPadding}>
+    <View>
       <View style={styles.centered}>
         <Text style={styles.h5}>Ei omia tapahtumia.</Text>
       </View>
-        <TouchableOpacity
-          style={style.buttonStyle}
-          onPress={() => navigate('Luo tapahtuma')}
-        >
-          <Text style={style.buttonText}>+</Text>
-        </TouchableOpacity>
+      <View style={style.container}>
+      <AppButton
+              title="Luo tapahtuma"
+              onPress={() => navigate('Luo tapahtuma')}
+            />
       </View>
+    </View>
   )
 }
 
@@ -97,12 +98,11 @@ const List = (props) => {
 }
 
 const style = StyleSheet.create({
-  buttonStyle: {
-    backgroundColor: '#0094FF'
-  },
-  buttonText: {
-    fontSize: 80,
-    color: 'white'
+  container: {
+    backgroundColor: 'transparent',
+    width: '50%',
+    height: '20%',
+    alignSelf: 'flex-end'
   },
   checkBox: {
     paddingHorizontal: 0,
