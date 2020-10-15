@@ -44,7 +44,7 @@ class ServerListener extends React.Component {
   setupCommunication = () => {
     let { socket } = this.state
 
-    if(config().headers.Authorization !== null
+    if (config().headers.Authorization !== null
       && (socket === null || !socket.connected)) {
 
       const { updateLocalEvent, receiveMessage } = this.props
