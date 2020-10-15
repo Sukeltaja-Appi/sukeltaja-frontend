@@ -28,7 +28,7 @@ const style = {
 const ChatMessage = (props) => {
   const { navigation, user, ongoingEvent } = props
   const { admins, creator } = ongoingEvent
-  const chatMessage = navigation.getParam('item')
+  const chatMessage = props.route.params.item
 
   const back = () => navigation.navigate('ChatScreen')
 

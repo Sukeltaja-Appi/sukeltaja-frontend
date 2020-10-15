@@ -9,6 +9,8 @@ import {
   Linking,
 } from 'react-native'
 import { Icon, Text, ListItem } from 'react-native-elements'
+import { SafeAreaView } from 'react-native-safe-area-context'
+
 import { logout } from '../../../store'
 import { getMessages } from '../../../reducers/messageReducer'
 import { getServerListener } from '../../../ServerListener'
@@ -77,37 +79,40 @@ export const ProfileScreen = (props) => {
     <View style={styles.noPadding}>
       <ScrollView>
         <BackgroundImage>
-          <View style={{ alignItems: 'center' }}>
-            <View
-              style={{
-                backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                width: '80%',
-                marginTop: 40,
-                marginHorizontal: 40,
-                marginBottom: 10,
-                padding: 30,
-                borderRadius: 50,
-              }}
-            >
-              <Icon size={100} name="user" type="feather" />
-              <AppText
-                h2
-                style={{ textAlign: 'center', color: 'white', fontSize: 36 }}
+          <SafeAreaView>
+            <View style={{ alignItems: 'center' }}>
+              <View
+                style={{
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  width: '80%',
+                  marginTop: 20,
+                  marginHorizontal: 40,
+                  marginBottom: 10,
+                  padding: 30,
+                  borderRadius: 50,
+                }}
               >
-                {props.user.username}
-              </AppText>
+                <Icon size={100} name="user" type="feather" />
+                <AppText
+                  h2
+                  style={{ textAlign: 'center', color: 'white', fontSize: 36 }}
+                >
+                  {props.user.username}
+                </AppText>
+              </View>
+              {invites.length > 0 && (
+                <TouchableOpacity
+                  style={style.notificationStyle}
+                  onPress={() => navigate('Kutsut')}
+                >
+                  <Text style={{ color: 'white' }}>
+                    {invites.length} kutsua odottaa hyväksymistä
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
-            {invites.length > 0 && (
-              <TouchableOpacity
-                style={style.notificationStyle}
-                onPress={() => navigate('Kutsut')}
-              >
-                <Text style={{ color: 'white' }}>
-                  {invites.length} kutsua odottaa hyväksymistä
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View>
+          </SafeAreaView>
+
         </BackgroundImage>
 
         <FlatList

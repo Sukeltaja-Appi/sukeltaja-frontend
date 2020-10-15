@@ -18,7 +18,7 @@ const SettingsScreen = (props) => {
     {
       title: 'Avoimen lähdekoodin lisenssit',
       leftIcon: () => <Icon name='code' type='feather' />,
-      onPress: () => navigate('LicenseScreen')
+      onPress: () => navigate('Lisenssit')
     }
   ]
 
