@@ -57,7 +57,6 @@ function EventStack() {
   return (
     <EventMenuStack.Navigator>
       <EventMenuStack.Screen name="yläpalkki" component={TopBarTabs} options={{ headerShown: false }} />
-      <EventMenuStack.Screen name="Tapahtuma" component={OngoingEventEntry} />
     </EventMenuStack.Navigator>
   )
 }

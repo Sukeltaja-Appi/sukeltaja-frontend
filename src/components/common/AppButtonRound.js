@@ -11,14 +11,17 @@ const style = {
     borderRadius: 50,
     borderWidth: 4,
     borderColor: '#118BFC',
-    paddingVertical: 20,
-    paddingHorizontal: 15
+    bottom: 10,
+    right: 10,
+    width: 80,
+    height: 80,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   appButtonText: {
-    fontSize: 25,
+    fontSize: 47,
     color: '#fff',
-    fontFamily: 'nunito-bold',
-    alignSelf: 'center',
   }
 }
 

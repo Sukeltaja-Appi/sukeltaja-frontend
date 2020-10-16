@@ -68,13 +68,14 @@ const SafeAreaMaterialTopTabBar = ({ ...props }) => (
 )
 
 const OngoingEventTabsNav = createMaterialTopTabNavigator()
+
 const OngoingEventTabs = () => {
   return (
-    <OngoingEventTabsNav.Navigator tabBar={props => <SafeAreaMaterialTopTabBar {...props} />}>
-      <OngoingEventTabsNav.Screen name="TargetScreen" component={TargetScreenStack} />
-      <OngoingEventTabsNav.Screen name="DiveScreen" component={DiveScreenStack} />
-      <OngoingEventTabsNav.Screen name="ChatScreen" component={ChatScreenStack} />
-      <OngoingEventTabsNav.Screen name="EventScreen" component={EventScreenStack} />
+    <OngoingEventTabsNav.Navigator>
+      <OngoingEventTabsNav.Screen name="Info" component={EventScreenStack} />
+      <OngoingEventTabsNav.Screen name="Sukella" component={DiveScreenStack} />
+      <OngoingEventTabsNav.Screen name="Chat" component={ChatScreenStack} />
+      <OngoingEventTabsNav.Screen name="Kohde" component={TargetScreenStack} />
     </OngoingEventTabsNav.Navigator>
   )
 }
