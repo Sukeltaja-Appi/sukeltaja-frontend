@@ -33,7 +33,7 @@ const style = {
   }
 }
 
-const Event = (props) => {
+const Event5 = (props) => {
   const { route, navigation, ongoingEvent, deleteEvent } = props
 
   const event = route.params.item
@@ -88,4 +88,4 @@ const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent
 })
 
-export default connect(mapStateToProps,{ deleteEvent })(Event5)
+export default connect(mapStateToProps, { deleteEvent })(Event5)

@@ -1,27 +1,27 @@
-import React from "react";
+import React from 'react'
 import {
   View,
   ScrollView,
   FlatList,
   Dimensions,
   TouchableOpacity,
-} from "react-native";
-import { Text, Button, ListItem, Icon } from "react-native-elements";
-import { connect } from "react-redux";
+} from 'react-native'
+import { Text, Button, ListItem, Icon } from 'react-native-elements'
+import { connect } from 'react-redux'
 
 import {
   setOngoingEvent,
   getOngoingEvent,
-} from "../../../reducers/eventReducer";
-import { endDives } from "../../../reducers/diveReducer";
-import colors from "../../../styles/colors";
-import styles from "../../../styles/global";
-import { formatDate } from "../../../utils/dates";
-import { paddingSides } from "../../../styles/global";
-import BackgroundImage from "../../common/BackgroundImage";
-import AppText from "../../common/AppText";
-import { Fab } from "@material-ui/core";
-import { MaterialIcons } from "@expo/vector-icons";
+} from '../../../reducers/eventReducer'
+import { endDives } from '../../../reducers/diveReducer'
+import colors from '../../../styles/colors'
+import styles from '../../../styles/global'
+import { formatDate } from '../../../utils/dates'
+import { paddingSides } from '../../../styles/global'
+import BackgroundImage from '../../common/BackgroundImage'
+import AppText from '../../common/AppText'
+import { Fab } from '@material-ui/core'
+import { MaterialIcons } from '@expo/vector-icons'
 
 const style = {
   buttonEnd: {
@@ -31,20 +31,20 @@ const style = {
     backgroundColor: colors.green,
   },
   top: {
-    justifyContent: "flex-start",
-    width: "100%",
+    justifyContent: 'flex-start',
+    width: '100%',
     padding: paddingSides,
     marginTop: 10,
   },
   middle: {
-    justifyContent: "center",
-    width: "100%",
+    justifyContent: 'center',
+    width: '100%',
     padding: paddingSides,
     marginTop: 10,
   },
   bottom: {
-    justifyContent: "flex-end",
-    width: "100%",
+    justifyContent: 'flex-end',
+    width: '100%',
     padding: paddingSides,
     marginBottom: 10,
   },
@@ -64,46 +64,46 @@ const style = {
   },
   settingsButton: {
     borderWidth: 1,
-    borderColor: "rgba(0,0,0,0.2)",
-    alignItems: "center",
-    justifyContent: "center",
+    borderColor: 'rgba(0,0,0,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 60,
-    position: "absolute",
+    position: 'absolute',
     top: 20,
     right: 20,
     height: 60,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 50,
   },
-};
+}
 
 class EventScreen extends React.Component {
   loadEvent = async () => {
-    const { ongoingEvent, getOngoingEvent } = this.props;
+    const { ongoingEvent, getOngoingEvent } = this.props
 
-    await getOngoingEvent(ongoingEvent);
+    await getOngoingEvent(ongoingEvent)
   };
 
   componentDidMount() {
-    this.loadEvent();
+    this.loadEvent()
   }
 
   navigate = (value, item) => this.props.navigation.navigate(value, { item });
 
   toInvites = () => {
-    this.navigate("InviteScreen", { item: { ongoingComponent: this } });
+    this.navigate('InviteScreen', { item: { ongoingComponent: this } })
   };
 
   toEditing = () => {
-    this.navigate("Muokkaa tapahtumaa", this.props.ongoingEvent);
+    this.navigate('Muokkaa tapahtumaa', this.props.ongoingEvent)
   };
 
   leaveEventButton = () => {
-    const { setOngoingEvent, endDives, ongoingDives, user } = this.props;
+    const { setOngoingEvent, endDives, ongoingDives, user } = this.props
 
-    endDives(ongoingDives, user._id);
-    setOngoingEvent(null);
-    this.navigate("StartEventScreen");
+    endDives(ongoingDives, user._id)
+    setOngoingEvent(null)
+    this.navigate('StartEventScreen')
   };
 
   userIsCreator = (user) => user._id === this.props.ongoingEvent.creator._id;
@@ -111,12 +111,12 @@ class EventScreen extends React.Component {
     this.props.ongoingEvent.admins.map((a) => a._id).includes(user._id);
 
   userIsNotAdmin = () => {
-    const { user } = this.props;
-    const { userIsCreator, userIsAdmin } = this;
+    const { user } = this.props
+    const { userIsCreator, userIsAdmin } = this
 
-    if (!userIsCreator(user) && !userIsAdmin(user)) return true;
+    if (!userIsCreator(user) && !userIsAdmin(user)) return true
 
-    return false;
+    return false
   };
 
   /*eslint-disable */
@@ -126,7 +126,7 @@ class EventScreen extends React.Component {
   /*eslint-enable */
 
   render() {
-    const { ongoingEvent } = this.props;
+    const { ongoingEvent } = this.props
     const {
       admins,
       participants,
@@ -136,11 +136,11 @@ class EventScreen extends React.Component {
       startdate,
       enddate,
       target,
-    } = ongoingEvent;
+    } = ongoingEvent
 
     return (
       <View>
-        <BackgroundImage height={Dimensions.get("screen").height}>
+        <BackgroundImage height={Dimensions.get('screen').height}>
           <ScrollView>
             <TouchableOpacity
               onPress={this.toEditing}
@@ -160,19 +160,19 @@ class EventScreen extends React.Component {
               </View>
               <AppText style={style.lowerTitle}>Info</AppText>
               <View
-                style={{ flexDirection: "row", justifyContent: "flex-start" }}
+                style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
                 <Icon name="event" type="material" color="white" size={20} />
                 <AppText style={style.text}>
                   {new Date(startdate).getDate()}.
-                  {new Date(startdate).getMonth()} -{" "}
+                  {new Date(startdate).getMonth()} -{' '}
                   {new Date(startdate).getDate()}.
                   {new Date(startdate).getMonth()}.
                   {new Date(startdate).getFullYear()}
                 </AppText>
               </View>
               <View
-                style={{ flexDirection: "row", justifyContent: "flex-start" }}
+                style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
                 <Icon name="schedule" type="material" color="white" size={20} />
                 <AppText style={style.text}>
@@ -181,21 +181,21 @@ class EventScreen extends React.Component {
                 </AppText>
               </View>
               <View
-                style={{ flexDirection: "row", justifyContent: "flex-start" }}
+                style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
                 <Icon name="person" type="material" color="white" size={20} />
                 <AppText style={style.text}>{creator.username}</AppText>
               </View>
 
               <View
-                style={{ flexDirection: "row", justifyContent: "flex-start" }}
+                style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
                 <Icon name="group" type="material" color="white" size={20} />
                 <AppText style={style.text}>{participants.length + 1}</AppText>
               </View>
               <View style={style.buttonDivider} />
               <View
-                style={{ flexDirection: "row", justifyContent: "flex-start" }}
+                style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
                 <Icon
                   name="description"
@@ -208,7 +208,7 @@ class EventScreen extends React.Component {
               <AppText style={style.text}>{description}</AppText>
 
               <View
-                style={{ flexDirection: "row", justifyContent: "flex-start" }}
+                style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
                 <Icon
                   name="location-on"
@@ -245,7 +245,7 @@ class EventScreen extends React.Component {
           </ScrollView>
         </BackgroundImage>
       </View>
-    );
+    )
   }
 }
 
@@ -253,10 +253,10 @@ const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
   ongoingDives: state.ongoingDives,
   user: state.user,
-});
+})
 
 export default connect(mapStateToProps, {
   endDives,
   setOngoingEvent,
   getOngoingEvent,
-})(EventScreen);
+})(EventScreen)

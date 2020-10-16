@@ -26,6 +26,7 @@ function OwnEventStack() {
 }
 
 const ActiveInvites = createStackNavigator()
+
 function ActiveInvitesStack() {
   return (
     <ActiveInvites.Navigator>
@@ -42,17 +43,19 @@ const SafeAreaMaterialTopTabBar = ({ ...props }) => (
 )
 
 const TopBarComponent = createMaterialTopTabNavigator()
+
 function TopBarTabs() {
   return (
     <TopBarComponent.Navigator tabBar={props => <SafeAreaMaterialTopTabBar {...props} />}>
-        <TopBarComponent.Screen name="Tapahtumat" component={OwnEventStack} />
-        <TopBarComponent.Screen name="Kutsut" component={ActiveInvitesStack} />
+      <TopBarComponent.Screen name="Tapahtumat" component={OwnEventStack} />
+      <TopBarComponent.Screen name="Kutsut" component={ActiveInvitesStack} />
     </TopBarComponent.Navigator>
 
   )
 }
 
 const EventMenuStack = createStackNavigator()
+
 function EventStack() {
   return (
     <EventMenuStack.Navigator>
