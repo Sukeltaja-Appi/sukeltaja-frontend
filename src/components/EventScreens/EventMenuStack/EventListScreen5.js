@@ -74,7 +74,7 @@ const List = (props) => {
 
           return (
             <ListItem
-              onPress={() => navigate('Tapahtumasivu', item)}
+              onPress={() => setOngoingEvent(item) && navigate('Tapahtuma', item)}
               containerStyle={eventStyle(item)}
               bottomDivider
               pad={0}

@@ -10,10 +10,11 @@ import EventMenuScreen from './EventMenuStack/EventMenuScreen'
 import Invite from '../ProfileScreens/ProfileTabs/Invite'
 import InvitesScreen from '../ProfileScreens/ProfileTabs/InvitesScreen'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import OngoingEventEntry from '../OngoingEventScreens/OngoingEventEntry'
 
 const EventMenu = createStackNavigator()
 
-function EventMenuStack() {
+function OwnEventStack() {
   return (
     <EventMenu.Navigator initialRouteName="Omat tapahtumat">
       <EventMenu.Screen name="Omat tapahtumat" component={EventListScreen5} options={{ headerShown: false }}/>
@@ -43,15 +44,22 @@ const SafeAreaMaterialTopTabBar = ({ ...props }) => (
 const TopBarComponent = createMaterialTopTabNavigator()
 function TopBarTabs() {
   return (
-    <TopBarComponent.Navigator tabBar={props => <SafeAreaMaterialTopTabBar {...props} />} initialRouteName="Tapahtumat">
-        <TopBarComponent.Screen name="Tapahtumat" component={EventMenuStack} />
+    <TopBarComponent.Navigator tabBar={props => <SafeAreaMaterialTopTabBar {...props} />}>
+        <TopBarComponent.Screen name="Tapahtumat" component={OwnEventStack} />
         <TopBarComponent.Screen name="Kutsut" component={ActiveInvitesStack} />
     </TopBarComponent.Navigator>
 
   )
 }
 
-export default TopBarTabs
+const EventMenuStack = createStackNavigator()
+function EventStack() {
+  return (
+    <EventMenuStack.Navigator>
+      <EventMenuStack.Screen name="yläpalkki" component={TopBarTabs} options={{ headerShown: false }} />
+      <EventMenuStack.Screen name="Tapahtuma" component={OngoingEventEntry} />
+    </EventMenuStack.Navigator>
+  )
+}
 
-// tämän pitäisi olla turha tässä välissä
-//       <EventMenu.Screen name="Tapahtumat" component={EventMenuScreen} />
+export default EventStack
