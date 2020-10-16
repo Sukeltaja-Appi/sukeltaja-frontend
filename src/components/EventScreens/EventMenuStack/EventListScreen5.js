@@ -42,7 +42,7 @@ const EmptyList = (props) => {
 const List = (props) => {
   const { events, ongoingEvent, setOngoingEvent } = props
 
-  const navigate = (item) => props.navigation.navigate('Tapahtumasivu', { item })
+  const navigate = (value, item) => props.navigation.navigate(value, { item })
 
   const eventsSortedByDate = () => events.sort((a, b) => b.startdate.localeCompare(a.startdate))
 
@@ -74,7 +74,7 @@ const List = (props) => {
 
           return (
             <ListItem
-              onPress={() => navigate(item)}
+              onPress={() => navigate('Tapahtumasivu', item)}
               containerStyle={eventStyle(item)}
               bottomDivider
               pad={0}
