@@ -85,6 +85,7 @@ class RegisterScreen extends React.Component {
       },
       passwordMatch: true,
       usernameInUse: false,
+      validationFail: false
     }
   }
 
@@ -93,6 +94,7 @@ class RegisterScreen extends React.Component {
   register = async () => {
     this.setState({ passwordMatch: true })
     this.setState({ usernameInUse: false })
+    this.setState({ validationFail: false })
     if (this.refs.form.getValue()) {
       if (
         this.state.credentials.password ===
@@ -100,11 +102,14 @@ class RegisterScreen extends React.Component {
       ) {
         const response = await userService.create(this.state.credentials)
 
-        if (response) {
+        if (response['username'] !== undefined) {
           await this.login()
-        } else {
-          console.log('Registration failed!')
+        } else if (response['error'] !== undefined && response['error'].includes('unique')) {
+          console.log('Registration failed, username not unique!')
           this.setState({ usernameInUse: true })
+        } else if (response['error'] !== undefined && response['error'].includes('must')) {
+          console.log('Validation failed!')
+          this.setState({ validationFail: true })
         }
       } else {
         this.setState({ passwordMatch: false })
@@ -135,6 +140,7 @@ class RegisterScreen extends React.Component {
     const reference = 'form'
     const { passwordMatch } = this.state
     const { usernameInUse } = this.state
+    const { validationFail } = this.state
 
     const User = t.struct({
       email: t.String,
@@ -169,7 +175,11 @@ class RegisterScreen extends React.Component {
                   Rekisteröinti epäonnistui, käyttäjätunnus on jo olemassa
                 </AppText>
               )}
-
+              {validationFail
+                && <AppText style={{ fontSize: 16, color: 'red' }}>
+                  Käyttäjätunnus min 3 merkkiä, salasana min 6 merkkiä, sposti muotoa x@x.x
+                </AppText>
+              }
               <Form
                 ref={reference}
                 type={User}
