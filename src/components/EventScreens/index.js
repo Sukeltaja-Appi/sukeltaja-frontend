@@ -6,7 +6,6 @@ import EventListScreen from './EventMenuStack/EventListScreen'
 import EventMenuScreen from './EventMenuStack/EventMenuScreen'
 import EventInfoForm from './../common/EventInfoForm'
 import CustomTargetScreen from '../OngoingEventScreens/OngoingEventTabs/CustomTargetScreen'
-import InviteScreen from './../OngoingEventScreens/OngoingEventTabs/InviteScreen'
 
 const EventMenu = createStackNavigator()
 

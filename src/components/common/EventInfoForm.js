@@ -59,8 +59,8 @@ const EventInfoForm = (props) => {
             text='Loppuu: '
           />
           <View syle={style.buttonContainer}>
-          <AppButton title="Seuraava" onPress={submitForm} />
-        </View>
+            <AppButton title="Seuraava" onPress={submitForm} />
+          </View>
         </View>
       </BackgroundImage>
     </View>

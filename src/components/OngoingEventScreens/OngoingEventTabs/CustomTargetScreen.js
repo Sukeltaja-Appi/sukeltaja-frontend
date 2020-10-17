@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet, Dimensions } from 'react-native'
-import { Text, Button } from 'react-native-elements'
+import { Text } from 'react-native-elements'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import { Marker, Callout } from 'react-native-maps'
 import colors from '../../../styles/colors'
@@ -92,7 +92,7 @@ class CustomTargetScreen extends React.Component {
   }
 
   render() {
-    const { initialRegion, target, overlay, query } = this.state
+    const { initialRegion, target } = this.state
 
     // Map needs coordinates in target.location
     const mapTarget = target ? {
@@ -106,32 +106,32 @@ class CustomTargetScreen extends React.Component {
     return (
       <View style={style.container}>
         <BackgroundImage height={Dimensions.get('screen').height}>
-        <View style={style.mapContainer}>
-          <ClusteredMapView
-            style={{ width: 10, height: 10 }}
-            ref={(r) => { this.map = r }}
-            maxZoom={12}
-            mapPadding={{ bottom: 10, left: 68, right: 50 }}
-            radius={42}
-            data={mapTarget ? [mapTarget] : []}
-            initialRegion={initialRegion}
-            onMarkerPress={this.onMarkerPress}
-            renderMarker={this.renderMarker}
-            renderCluster={this.renderCluster}
-            showsUserLocation={true}
-            userLocationAnnotationTitle=''
-            onPress={this.onPress}
-            width={360}
-            height={450}
-          />
-        </View>
-        <View style={style.bottom}>
-          <AppButton
-            buttonStyle={style.button}
-            title='Seuraava'
-            onPress={() => this.selectTarget()}
-          />
-        </View>
+          <View style={style.mapContainer}>
+            <ClusteredMapView
+              style={{ width: 10, height: 10 }}
+              ref={(r) => { this.map = r }}
+              maxZoom={12}
+              mapPadding={{ bottom: 10, left: 68, right: 50 }}
+              radius={42}
+              data={mapTarget ? [mapTarget] : []}
+              initialRegion={initialRegion}
+              onMarkerPress={this.onMarkerPress}
+              renderMarker={this.renderMarker}
+              renderCluster={this.renderCluster}
+              showsUserLocation={true}
+              userLocationAnnotationTitle=''
+              onPress={this.onPress}
+              width={360}
+              height={450}
+            />
+          </View>
+          <View style={style.bottom}>
+            <AppButton
+              buttonStyle={style.button}
+              title='Seuraava'
+              onPress={() => this.selectTarget()}
+            />
+          </View>
         </BackgroundImage>
       </View>
     )

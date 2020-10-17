@@ -26,8 +26,8 @@ class EventInfoScreen extends React.Component {
 
   onButtonPress = async () => {
     const { event } = this.state
-    await this.props.createEvent(event)
 
+    await this.props.createEvent(event)
     this.props.navigation.navigate('CustomTargetScreen')
   }
 
