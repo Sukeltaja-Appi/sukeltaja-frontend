@@ -16,7 +16,7 @@ const EventMenuTabs = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }} >
       <Tab.Navigator>
-        <Tab.Screen name="Home" component={EventMenuStack} />
+        <Tab.Screen name="Tapahtumat" component={EventMenuStack} />
         <Tab.Screen name="Kutsut" component={InviteStack} />
       </Tab.Navigator>
     </SafeAreaView >
