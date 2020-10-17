@@ -1,12 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import { Text, Button } from 'react-native-elements'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import { Marker, Callout } from 'react-native-maps'
 import colors from '../../../styles/colors'
 import decimalToDMS from '../../../utils/coordinates'
 import { paddingSides } from '../../../styles/global'
+import AppButton from '../../common/AppButton'
+import BackgroundImage from '../../common/BackgroundImage'
 
 import { getAll } from '../../../reducers/targetReducer'
 
@@ -103,32 +105,34 @@ class CustomTargetScreen extends React.Component {
 
     return (
       <View style={style.container}>
-          <View style={style.mapContainer}>
-            <ClusteredMapView
-              style={{ width: 10, height: 10 }}
-              ref={(r) => { this.map = r }}
-              maxZoom={12}
-              mapPadding={{ bottom: 10, left: 68, right: 50 }}
-              radius={42}
-              data={mapTarget ? [mapTarget] : []}
-              initialRegion={initialRegion}
-              onMarkerPress={this.onMarkerPress}
-              renderMarker={this.renderMarker}
-              renderCluster={this.renderCluster}
-              showsUserLocation={true}
-              userLocationAnnotationTitle=''
-              onPress={this.onPress}
-              width={360}
-              height={450}
-            />
-          </View>
+        <BackgroundImage height={Dimensions.get('screen').height}>
+        <View style={style.mapContainer}>
+          <ClusteredMapView
+            style={{ width: 10, height: 10 }}
+            ref={(r) => { this.map = r }}
+            maxZoom={12}
+            mapPadding={{ bottom: 10, left: 68, right: 50 }}
+            radius={42}
+            data={mapTarget ? [mapTarget] : []}
+            initialRegion={initialRegion}
+            onMarkerPress={this.onMarkerPress}
+            renderMarker={this.renderMarker}
+            renderCluster={this.renderCluster}
+            showsUserLocation={true}
+            userLocationAnnotationTitle=''
+            onPress={this.onPress}
+            width={360}
+            height={450}
+          />
+        </View>
         <View style={style.bottom}>
-          <Button
+          <AppButton
             buttonStyle={style.button}
             title='Seuraava'
             onPress={() => this.selectTarget()}
           />
         </View>
+        </BackgroundImage>
       </View>
     )
   }

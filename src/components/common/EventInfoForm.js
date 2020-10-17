@@ -1,14 +1,16 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import t from 'tcomb-form-native'
 import RNDateTimePicker from '@react-native-community/datetimepicker'
 import { formatDate } from '../../utils/dates'
 import { Button } from 'react-native-elements'
-import { View } from 'react-native'
+import { View, Dimensions } from 'react-native'
 import { paddingSides } from '../../styles/global'
-import { ScrollView } from 'react-native-gesture-handler'
 import { createEvent } from '../../reducers/eventReducer'
 import { connect } from 'react-redux'
-import { now, inOneHour } from '../../utils/dates'
+import { inOneHour } from '../../utils/dates'
+import BackgroundImage from '../common/BackgroundImage'
+import AppButton from '../common/AppButton'
+import _ from 'lodash'
 
 const { Form } = t.form
 
@@ -31,38 +33,36 @@ const EventInfoForm = (props) => {
       startdate: startDate,
       enddate: endDate
     }
+
     await props.createEvent(event)
-    props.navigation.navigate('CustomTargetScreen')
+    props.navigation.navigate('Valitse sijainti')
   }
 
   return (
-    <View style={style.noPadding}>
-      <ScrollView>
+    <View>
+      <BackgroundImage height={Dimensions.get('screen').height}>
         <View style={style.container}>
           <Form
             type={Event}
             options={options}
             value={divingEvent}
             onChange={(event) => setEvent(event)}
-            style={style.container}
           />
           <DateTimePickerButton
             date={startDate}
             setDate={setStartDate}
-            text={'Alkaa: '}
+            text='Alkaa: '
           />
           <DateTimePickerButton
             date={endDate}
             setDate={setEndDate}
-            text={'Loppuu: '}
+            text='Loppuu: '
           />
-          <Button
-            buttonStyle={style.button}
-            onPress={submitForm}
-            title='Seuraava'
-          />
+          <View syle={style.buttonContainer}>
+          <AppButton title="Seuraava" onPress={submitForm} />
         </View>
-      </ScrollView>
+        </View>
+      </BackgroundImage>
     </View>
   )
 }
@@ -126,54 +126,56 @@ const style = {
     padding: paddingSides,
     paddingBottom: 50
   },
-  bottom: {
-    justifyContent: 'flex-end',
-    width: '100%',
-    padding: paddingSides,
-    bottom: 20,
-  },
   dateButton: {
     width: '100%',
     paddingVertical: 10,
-    marginTop: 30,
-    backgroundColor: 'rgba(52, 52, 52, 0.8)'
+    marginTop: 5,
+    marginBottom: 30,
+    backgroundColor: 'rgba(52, 52, 52, 0.5)',
+    borderRadius: 10
   },
-  button: {
+  buttonContainer: {
+    paddingBottom: 40,
     marginTop: 40,
-    marginBottom: 10,
-    marginHorizontal: 40,
-    backgroundColor: '#00A3FF',
-    paddingVertical: 15,
-    borderColor: '#118BFC',
-    borderWidth: 3,
-    borderRadius: 40,
+    paddingVertical: 50,
   }
 }
 
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet)
+
+stylesheet.textbox.normal.backgroundColor = 'white'
+stylesheet.controlLabel.normal.color = 'white'
+stylesheet.controlLabel.normal.marginLeft = 15
+stylesheet.textbox.normal.borderRadius = 15
+stylesheet.controlLabel.normal.fontFamily = 'nunito-bold'
+stylesheet.controlLabel.error.fontFamily = 'nunito-bold'
+stylesheet.textbox.error.backgroundColor = 'white'
+stylesheet.controlLabel.error.color = 'white'
+stylesheet.controlLabel.error.marginLeft = 15
+stylesheet.textbox.error.borderRadius = 20
+
 const options = {
-  i18n: {
-    optional: '',
-    required: ''
-  },
   fields: {
     title: {
-      label: 'Otsikko',
+      label: 'Tapahtuman nimi',
       error: 'Otsikko ei saa olla tyhjä.',
+      stylesheet: stylesheet
+
     },
     description: {
-      label: 'Kuvaus',
       multiline: true,
+      label: 'Kuvaus',
       stylesheet: {
-        ...Form.stylesheet,
+        ...stylesheet,
         textbox: {
-          ...Form.stylesheet.textbox,
+          ...stylesheet.textbox,
           normal: {
-            ...Form.stylesheet.textbox.normal,
+            ...stylesheet.textbox.normal,
             height: 140,
             textAlignVertical: 'top'
           },
           error: {
-            ...Form.stylesheet.textbox.error,
+            ...stylesheet.textbox.error,
             height: 140
           }
         }
