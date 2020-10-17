@@ -1,77 +1,100 @@
 import React from 'react'
-import { createAppContainer } from 'react-navigation'
-import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs'
-import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
+import { NavigationContainer } from '@react-navigation/native'
+import { connect } from 'react-redux'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MapScreen from './components/MapScreens/MapScreen'
-import EventEntry from './components/EventScreens/EventEntry'
+import EventMenuStack from './components/EventScreens/index'
+import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
 import ProfileScreens from './components/ProfileScreens'
+import LoginStack from './components/ProfileScreens/LoginStack'
+import { createStackNavigator } from '@react-navigation/stack'
+import { MaterialIcons } from '@expo/vector-icons'
 
-import { Icon } from 'react-native-elements'
+const Stack = createStackNavigator()
+const Tab = createBottomTabNavigator()
 
-import colors from './styles/colors'
-
-const TabBarComponent = (props) => (<BottomTabBar {...props} />)
-
-const style = {
-  activeTintColor: '#fff',
-  labelStyle: {
-    fontWeight: 'bold'
-  }
+function TabNavigator() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Profiili"
+      // This fixes not being able to navigate to event edit from current event screen
+      // when user has not visited event tab yet.
+      lazy={false}
+      tabBarOptions={{
+        labelStyle: {
+          fontFamily: 'nunito-bold',
+          fontSize: 12,
+          textTransform: 'uppercase',
+          marginBottom: 5,
+        },
+        style: {
+          height: 55,
+        },
+        iconStyle: {
+          marginBottom: -5,
+        },
+        activeTintColor: '#118BFC',
+      }}
+      t
+    >
+      <Tab.Screen
+        name="Kartta"
+        component={MapScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="room" size={26} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Event"
+        component={OngoingEventEntry}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="event" size={26} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Tapahtumat"
+        component={EventMenuStack}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="event" size={26} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profiili"
+        component={ProfileScreens}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name="account-circle" size={26} color={color} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  )
 }
 
-export const MainTabNavigator = createBottomTabNavigator({
-  OngoingEvent: {
-    screen: OngoingEventEntry,
-    navigationOptions: {
-      tabBarLabel: 'SUKELLUS',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='anchor' type='feather' color={tintColor} />
-      )
-    }
-  },
-  Map: {
-    screen: MapScreen,
-    navigationOptions: {
-      tabBarLabel: 'KARTTA',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='map-pin' type='feather' color={tintColor} />
-      )
-    }
-  },
-  EventList: {
-    screen: EventEntry,
-    navigationOptions: {
-      tabBarLabel: 'TAPAHTUMAT',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='archive' type='feather' color={tintColor} />
-      )
-    }
-  },
-  Profile: {
-    screen: ProfileScreens,
-    navigationOptions: {
-      tabBarLabel: 'KÄYTTÄJÄ',
-      tabBarOptions: style,
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name='user' type='feather' color={tintColor} />
-      )
-    }
-  }
-}, {
-  tabBarComponent: props => {
-    return (
-      <TabBarComponent
-        {...props}
-        style={{ backgroundColor: colors.primary }}
+function Navigator(props) {
+  const LoggedInNavigator = (
+    <Stack.Navigator initialRouteName="Profiili">
+      <Stack.Screen
+        name="Profiili"
+        component={TabNavigator}
+        options={{ headerShown: false }}
       />
-    )
-  },
-  initialRouteName: 'Profile'
-})
+    </Stack.Navigator>
+  )
 
-const Navigator = createAppContainer(MainTabNavigator)
+  return (
+    <NavigationContainer>
+      {props.user ? LoggedInNavigator : <LoginStack />}
+    </NavigationContainer>
+  )
+}
 
-export default Navigator
+const mapStateToProps = (state) => ({ user: state.user })
+
+export default connect(mapStateToProps)(Navigator)

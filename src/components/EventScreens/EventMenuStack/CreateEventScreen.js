@@ -27,7 +27,7 @@ class CreateEventScreen extends React.Component {
     if (validated) {
       await this.props.createEvent(event)
 
-      this.props.navigation.replace('EventListScreen')
+      this.props.navigation.replace('Omat tapahtumat')
     }
   }
 

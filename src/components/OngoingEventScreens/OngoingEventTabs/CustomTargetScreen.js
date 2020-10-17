@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, Image } from 'react-native'
-import { Text, Overlay, Button } from 'react-native-elements'
+import { View, StyleSheet } from 'react-native'
+import { Text, Button } from 'react-native-elements'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import { Marker, Callout } from 'react-native-maps'
 import colors from '../../../styles/colors'
@@ -9,7 +9,6 @@ import decimalToDMS from '../../../utils/coordinates'
 import { paddingSides } from '../../../styles/global'
 
 import { getAll } from '../../../reducers/targetReducer'
-import Target from '../../common/Target'
 
 class CustomTargetScreen extends React.Component {
 
@@ -28,7 +27,7 @@ class CustomTargetScreen extends React.Component {
   }
 
   onPress = evt => {
-    const coord = evt.nativeEvent.coordinate;
+    const coord = evt.nativeEvent.coordinate
 
     console.log(coord)
 
@@ -100,7 +99,7 @@ class CustomTargetScreen extends React.Component {
         longitude: this.state.target.longitude,
         latitude: this.state.target.latitude,
       }
-    } : null;
+    } : null
 
     return (
       <View style={style.container}>

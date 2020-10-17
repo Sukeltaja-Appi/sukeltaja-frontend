@@ -51,10 +51,10 @@ class InvitesScreen extends React.Component {
 
   selectMessage = (message) => {
     if (message.type === 'invitation_admin' || message.type === 'invitation_participant') {
-      this.props.navigation.navigate('Invite', {
+      this.props.navigation.navigate('Kutsu', {
         invProps: {
           message: message,
-          parent: this
+          updateInvites: () => this.updateInvites()
         }
       })
     }

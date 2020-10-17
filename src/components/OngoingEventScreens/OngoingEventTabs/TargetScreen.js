@@ -8,7 +8,6 @@ import locationService from '../../../services/location'
 import { getAll } from '../../../reducers/targetReducer'
 import haversine from '../../../utils/haversine'
 import Target from '../../common/Target'
-import CustomTargetScreen from './CustomTargetScreen'
 
 const style = {
   title: {
