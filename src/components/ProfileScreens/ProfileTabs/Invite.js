@@ -33,20 +33,20 @@ const style = {
 
 const Invite = (props) => {
   const { joinOngoingEvent, checkMessage, navigation } = props
-  const { message, parent } = navigation.getParam('invProps')
+  const { message, updateInvites } = props.route.params.invProps
 
   const join = async () => {
     await joinOngoingEvent(message.data)
     await checkMessage(message, 'accepted')
-    parent.updateInvites()
-    navigation.navigate('InvitesScreen')
-    navigation.navigate('OngoingEvent')
+    updateInvites()
+    navigation.navigate('Kutsut')
+    navigation.navigate('Event')
   }
 
   const removeInvite = async () => {
     await checkMessage(message, 'rejected')
-    parent.updateInvites()
-    navigation.navigate('InvitesScreen')
+    updateInvites()
+    navigation.navigate('Kutsut')
   }
 
   const invitationTypeDisplay = () => {
@@ -78,7 +78,7 @@ const Invite = (props) => {
       <View style={style.buttonDivider}/>
       <Button
         title="<- Takaisin"
-        onPress={() => navigation.navigate('InvitesScreen')}
+        onPress={() => navigation.navigate('Kutsut')}
       />
     </View>
   )

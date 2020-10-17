@@ -12,12 +12,12 @@ const MenuScreen = (props) => {
     {
       title: 'Luo uusi sukellustapahtuma',
       leftIcon: () => <Icon name='edit-2' type='feather' />,
-      destination: 'CreateEventScreen'
+      destination: 'Luo tapahtuma'
     },
     {
       title: 'Selaa omia sukellustapahtumia',
       leftIcon: () => <Icon name='folder' type='feather' />,
-      destination: 'EventListScreen'
+      destination: 'Omat tapahtumat'
     },
     // delete this if no longer needed
     // {

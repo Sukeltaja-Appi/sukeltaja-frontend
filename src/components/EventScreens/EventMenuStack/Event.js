@@ -37,16 +37,16 @@ const style = {
 }
 
 const Event = (props) => {
-  const { navigation, ongoingEvent, deleteEvent } = props
+  const { route, navigation, ongoingEvent, deleteEvent } = props
 
-  const event = navigation.getParam('item')
+  const event = route.params.item
   const { startdate, enddate, title, description, creator, participants, target } = event
 
   const navigate = (route, params) => navigation.navigate(route, params)
 
   const deleteButton = async () => {
     await deleteEvent(event, ongoingEvent)
-    navigation.navigate('EventListScreen')
+    navigation.navigate('Omat tapahtumat')
   }
 
   return (
@@ -58,7 +58,7 @@ const Event = (props) => {
           <Icon
             name='edit'
             type='feather'
-            onPress={() => navigate('EditEventScreen', { item: navigation.getParam('item') })}
+            onPress={() => navigate('Muokkaa tapahtumaa', { item: route.params.item })}
             color={colors.red}
             size={34}
             iconStyle={{ padding: 8 }}

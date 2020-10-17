@@ -31,7 +31,7 @@ const EmptyList = () => (
 const List = (props) => {
   const { events, ongoingEvent, setOngoingEvent } = props
 
-  const navigate = (item) => props.navigation.navigate('Event', { item })
+  const navigate = (item) => props.navigation.navigate('Tapahtumasivu', { item })
 
   const eventsSortedByDate = () => events.sort((a, b) => b.startdate.localeCompare(a.startdate))
 
