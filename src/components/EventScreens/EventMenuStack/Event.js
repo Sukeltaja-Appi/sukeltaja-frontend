@@ -71,8 +71,8 @@ const Event = (props) => {
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
           <Icon name='event' type='material' color='grey' size={20} />
           <Text style={style.text}>{ new Date(startdate).getDate() }.
-          { new Date(startdate).getMonth() } - { new Date(startdate).getDate() }.
-          { new Date(startdate).getMonth() }.{ new Date(startdate).getFullYear() }</Text>
+          { new Date(startdate).getMonth() } - { new Date(enddate).getDate() }.
+          { new Date(enddate).getMonth() }.{ new Date(enddate).getFullYear() }</Text>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
           <Icon name='schedule' type='material' color='grey' size={20} />
