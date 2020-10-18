@@ -57,11 +57,14 @@ class EventScreen extends React.Component {
   navigate = (value, item) => this.props.navigation.navigate(value, { item })
 
   toInvites = () => {
-    this.navigate('InviteScreen', { item: { ongoingComponent: this } })
+    this.navigate('InviteScreen')
   }
 
   toEditing = () => {
-    this.navigate('Muokkaa tapahtumaa', this.props.ongoingEvent)
+    this.props.navigation.navigate('Tapahtumat', {
+      screen: 'Muokkaa tapahtumaa',
+      params: { item: this.props.ongoingEvent }
+    })
   }
 
   leaveEventButton = () => {
