@@ -48,6 +48,7 @@ const options = {
       stylesheet: stylesheet,
       label: 'Anna käyttäjätunnus:',
       error: 'Käyttäjätunnus ei saa olla tyhjä.',
+      autoCapitalize: 'none',
     },
   },
 }
