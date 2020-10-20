@@ -156,7 +156,7 @@ class RegisterScreen extends React.Component {
     return (
       <View>
         <BackgroundImage height={Dimensions.get('screen').height}>
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps='handled'>
             <AppText
               style={{
                 textAlign: 'center',

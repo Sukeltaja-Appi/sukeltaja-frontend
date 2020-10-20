@@ -103,7 +103,7 @@ class EventScreen extends React.Component {
 
     return (
       <View style={styles.noPadding}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps='handled'>
 
           <View style={style.top}>
             <View style={{ marginBottom: 15 }}>
