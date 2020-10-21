@@ -117,7 +117,6 @@ class MainMapScreen extends React.Component {
 
   async startEvent(target) {
     const { user, startEvent } = this.props
-
     const event = {
       title: user.username + ': sukellustapahtuma',
       dives: [],
@@ -125,12 +124,21 @@ class MainMapScreen extends React.Component {
     }
 
     await startEvent(event)
-    this.props.navigation.navigate('Event')
-    if (target.custom)
-      this.props.navigation.navigate('Target', {
-        target: { ...target, name: undefined },
-        custom: true
+
+    if (target.custom) {
+      this.props.navigation.navigate('Event', {
+        screen: 'TargetScreen',
+        params: {
+          screen: 'Target',
+          params: {
+            target: { ...target, name: undefined },
+            custom: true
+          }
+        }
       })
+    } else {
+      this.props.navigation.navigate('Event')
+    }
   }
 
   filteredTargets = () => {
