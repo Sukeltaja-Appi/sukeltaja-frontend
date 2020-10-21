@@ -11,6 +11,8 @@ import decimalToDMS from '../../utils/coordinates'
 import { getAll } from '../../reducers/targetReducer'
 import AppButton from '../common/AppButton'
 import CustomMarker from './CustomMarker'
+import { startEvent } from '../../reducers/eventReducer'
+import targetService from '../../services/targets'
 
 class MainMapScreen extends React.Component {
   constructor(props) {
@@ -53,7 +55,7 @@ class MainMapScreen extends React.Component {
   }
 
   renderPinColor = (pin) => {
-    if (pin._id === 'customLocation')
+    if (pin.custom)
       return '#00A3FF'
 
     return this.props.currentTarget && this.props.currentTarget._id === pin._id ? 'green' : 'red'
@@ -71,7 +73,7 @@ class MainMapScreen extends React.Component {
         pinColor={this.renderPinColor(pin)}
         calloutVisible={_id === selectedTargetId}
       >
-        <Callout tooltip={true}>
+        <Callout tooltip={true} onPress={() => this.startEvent(pin)}>
           <View style={style.callout}>
             <Text style={{ fontWeight: 'bold' }}>{name}</Text>
             {type && <Text>{type}</Text>}
@@ -106,10 +108,29 @@ class MainMapScreen extends React.Component {
       customTarget: {
         _id: 'customLocation',
         name: 'Omavalintainen kohde',
+        custom: true,
         ...event.nativeEvent.coordinate,
       },
       selectedTargetId: 'customLocation'
     })
+  }
+
+  async startEvent(target) {
+    const { user, startEvent } = this.props
+
+    const event = {
+      title: user.username + ': sukellustapahtuma',
+      dives: [],
+      target: !target.custom ? target : undefined,
+    }
+
+    await startEvent(event)
+    this.props.navigation.navigate('Event')
+    if (target.custom)
+      this.props.navigation.navigate('Target', {
+        target: { ...target, name: undefined },
+        custom: true
+      })
   }
 
   filteredTargets = () => {
@@ -234,10 +255,11 @@ const style = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   currentTarget: state.ongoingEvent && state.ongoingEvent.target ? state.ongoingEvent.target : null,
-  targets: state.targets
+  targets: state.targets,
+  user: state.user
 })
 
 export default connect(
   mapStateToProps,
-  { getAll }
+  { getAll, startEvent }
 )(MainMapScreen)

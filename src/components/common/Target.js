@@ -48,7 +48,7 @@ const Target = (props) => {
         if (customLocation)
           // If custom location pop(1) goes back to the map
           props.navigation.pop(2)
-        else
+        else if (target)
           props.navigation.pop(1)
       }
     }
