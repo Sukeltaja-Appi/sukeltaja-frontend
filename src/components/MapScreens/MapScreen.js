@@ -12,7 +12,6 @@ import { getAll } from '../../reducers/targetReducer'
 import AppButton from '../common/AppButton'
 import CustomMarker from './CustomMarker'
 import { startEvent } from '../../reducers/eventReducer'
-import targetService from '../../services/targets'
 
 class MainMapScreen extends React.Component {
   constructor(props) {
