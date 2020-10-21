@@ -40,56 +40,6 @@ class MainMapScreen extends React.Component {
     await this.props.getAll()
   }
 
-  renderCluster = (cluster, onPress) => {
-    const { pointCount, coordinate, clusterId } = cluster
-
-    return (
-      <Marker identifier={`cluster-${clusterId}`} coordinate={coordinate} onPress={onPress}>
-        <View style={style.cluster}>
-          <Text>
-            {pointCount}
-          </Text>
-        </View>
-      </Marker>
-    )
-  }
-
-  renderPinColor = (pin) => {
-    if (pin.custom)
-      return '#00A3FF'
-
-    return this.props.currentTarget && this.props.currentTarget._id === pin._id ? 'green' : 'red'
-  }
-
-  renderMarker = (pin) => {
-    const { _id, name, type, location } = pin
-    const selectedTargetId = this.state.selectedTargetId
-
-    return (
-      <CustomMarker
-        identifier={_id}
-        key={_id}
-        coordinate={location}
-        pinColor={this.renderPinColor(pin)}
-        calloutVisible={_id === selectedTargetId}
-      >
-        <Callout tooltip={true} onPress={() => this.startEvent(pin)}>
-          <View style={style.callout}>
-            <Text style={{ fontWeight: 'bold' }}>{name}</Text>
-            {type && <Text>{type}</Text>}
-            <Text>{`${decimalToDMS(location.latitude)} N`}</Text>
-            <Text>{`${decimalToDMS(location.longitude)} E`}</Text>
-            <AppButton title='Luo uusi tapahtuma'
-              containerStyle={{ paddingVertical: 5, paddingHorizontal: 10, borderWidth: 2, marginTop: 10 }}
-              textStyle={{ fontSize: 16 }}
-            />
-          </View>
-
-        </Callout>
-      </CustomMarker >
-    )
-  }
-
   onMarkerPress = (event) => {
     this.setState({
       selectedTargetId: event.nativeEvent.id,
@@ -158,6 +108,56 @@ class MainMapScreen extends React.Component {
         map.fitToCoordinates(this.filteredTargets().map(m => m.location))
       }
     })
+  }
+
+  renderCluster = (cluster, onPress) => {
+    const { pointCount, coordinate, clusterId } = cluster
+
+    return (
+      <Marker identifier={`cluster-${clusterId}`} coordinate={coordinate} onPress={onPress}>
+        <View style={style.cluster}>
+          <Text>
+            {pointCount}
+          </Text>
+        </View>
+      </Marker>
+    )
+  }
+
+  renderPinColor = (pin) => {
+    if (pin.custom)
+      return '#00A3FF'
+
+    return this.props.currentTarget && this.props.currentTarget._id === pin._id ? 'green' : 'red'
+  }
+
+  renderMarker = (pin) => {
+    const { _id, name, type, location } = pin
+    const selectedTargetId = this.state.selectedTargetId
+
+    return (
+      <CustomMarker
+        identifier={_id}
+        key={_id}
+        coordinate={location}
+        pinColor={this.renderPinColor(pin)}
+        calloutVisible={_id === selectedTargetId}
+      >
+        <Callout tooltip={true} onPress={() => this.startEvent(pin)}>
+          <View style={style.callout}>
+            <Text style={{ fontWeight: 'bold' }}>{name}</Text>
+            {type && <Text>{type}</Text>}
+            <Text>{`${decimalToDMS(location.latitude)} N`}</Text>
+            <Text>{`${decimalToDMS(location.longitude)} E`}</Text>
+            <AppButton title='Luo uusi tapahtuma'
+              containerStyle={{ paddingVertical: 5, paddingHorizontal: 10, borderWidth: 2, marginTop: 10 }}
+              textStyle={{ fontSize: 16 }}
+            />
+          </View>
+
+        </Callout>
+      </CustomMarker >
+    )
   }
 
   render() {
