@@ -20,7 +20,6 @@ import { formatDate } from '../../../utils/dates'
 import { paddingSides } from '../../../styles/global'
 import BackgroundImage from '../../common/BackgroundImage'
 import AppText from '../../common/AppText'
-import { Fab } from '@material-ui/core'
 import { MaterialIcons } from '@expo/vector-icons'
 
 const style = {
