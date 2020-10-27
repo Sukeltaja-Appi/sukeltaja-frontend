@@ -77,7 +77,7 @@ export const ProfileScreen = (props) => {
 
   return (
     <View style={styles.noPadding}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps='handled'>
         <BackgroundImage>
           <SafeAreaView>
             <View style={{ alignItems: 'center' }}>

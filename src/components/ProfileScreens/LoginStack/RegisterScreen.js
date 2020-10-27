@@ -52,23 +52,27 @@ const options = {
       stylesheet: stylesheet,
       label: 'Sähköpostiosoite:',
       error: 'Anna validi sähköpostiosoite.',
+      autoCapitalize: 'none',
     },
     username: {
       stylesheet: stylesheet,
       label: 'Käyttäjätunnus:',
       error: 'Käyttäjätunnus ei saa olla tyhjä.',
+      autoCapitalize: 'none',
     },
     password: {
       stylesheet: stylesheet,
       label: 'Salasana:',
       error: 'Salasana ei saa olla tyhjä.',
       secureTextEntry: true,
+      autoCapitalize: 'none',
     },
     passwordVerification: {
       stylesheet: stylesheet,
       label: 'Salasanan vahvistus:',
       error: 'Vahvistus ei saa olla tyhjä.',
       secureTextEntry: true,
+      autoCapitalize: 'none',
     },
   },
 }
@@ -152,7 +156,7 @@ class RegisterScreen extends React.Component {
     return (
       <View>
         <BackgroundImage height={Dimensions.get('screen').height}>
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps='handled'>
             <AppText
               style={{
                 textAlign: 'center',
