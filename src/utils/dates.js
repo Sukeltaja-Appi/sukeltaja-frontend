@@ -66,3 +66,37 @@ export const inTenMinutes = () => {
     .plus({ minutes: 10 })
     .toJSDate()
 }
+
+export const dateToday = () => {
+  const {year, month, day} = DateTime.local()
+  return DateTime.local(year, month, day)
+  .toJSDate()
+}
+
+export const dateTomorrow = () => {
+  const {year, month, day} = DateTime.local()
+  return DateTime.local(year, month, day)
+  .plus({days:1})
+  .toJSDate()
+}
+
+export const dateInOneWeek = () => {
+  const {year, month, day} = DateTime.local()
+  return DateTime.local(year, month, day)
+  .plus({days:7})
+  .toJSDate()
+}
+
+export const dateInOneWeekAndDay = () => {
+  const {year, month, day} = DateTime.local()
+  return DateTime.local(year, month, day)
+  .plus({days:8})
+  .toJSDate()
+}
+
+export const dateInOneMonth = () => {
+  const {year, month, day} = DateTime.local()
+  return DateTime.local(year, month, day)
+  .plus({months:1})
+  .toJSDate()
+}

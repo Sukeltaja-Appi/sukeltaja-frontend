@@ -1,14 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, FlatList, Text, StyleSheet } from 'react-native'
-import { ListItem, CheckBox } from 'react-native-elements'
+import { View, FlatList, Text, StyleSheet, SectionList } from 'react-native'
+import { ListItem, CheckBox, Icon } from 'react-native-elements'
 
 import { setOngoingEvent } from '../../../reducers/eventReducer'
-import { formatDate } from '../../../utils/dates'
+import { formatDate, dateToday, dateTomorrow, dateInOneWeek, dateInOneWeekAndDay, dateInOneMonth } from '../../../utils/dates'
 import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import AppButtonRound from '../../common/AppButtonRound'
+import { Interval } from 'luxon'
+import { MaterialIcons } from "@expo/vector-icons"
+import AppText from '../../common/AppText'
 
 /*
 const data = [
@@ -20,8 +23,10 @@ const data = [
 ]
 */
 
-const EventListScreen5 = (props) =>
-  props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} />
+const EventListScreen5 = (props) => {
+  console.log(props)
+  return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} />
+}
 
 const EmptyList = (props) => {
   const navigate = (value) => {
@@ -55,6 +60,8 @@ const List = (props) => {
     paddingVertical: 0,
     paddingLeft: 6,
     paddingRight: 14,
+    // userReducer vai connectien kautta?
+    //    backgroundColor: event.creator.username === props.user.username ? colors.secondary_light : 'grey',
     backgroundColor: isOngoingEvent(event) ? colors.secondary_light : 'white',
   })
 
@@ -69,14 +76,37 @@ const List = (props) => {
     />
   )
 
+  const eventsSortedByGroup = () => {
+    const groups = { today: [], week: [], month: [], later: [], old: [] }
+    const eventsByDate = eventsSortedByDate()
+    eventsByDate.forEach(e => {
+      const start = new Date(e.startdate)
+      const end = new Date(e.enddate)
+      console.log(e)
+      console.log(groups)
+      //antaa varmaan aloituksen väärin, esim. start 0800 vs. datetoday 0000
+      if (Interval.fromDateTimes(start, end).contains(dateToday())) { groups['today'].push(e) }
+      else if (Interval.fromDateTimes(dateTomorrow(), dateInOneWeek()).contains(start)) { groups['week'].push(e) }
+      else if (Interval.fromDateTimes(dateInOneWeekAndDay(), dateInOneMonth()).contains(start)) { groups['month'].push(e) }
+      else if (start > dateInOneMonth) { groups['later'].push(e) }
+      else { groups['old'].push(e) }
+    });
+    return groups
+  }
+
   return (
     <View style={styles.noPadding}>
       <FlatList
         data={eventsSortedByDate()}
+        //        sections={eventsSortedByGroup}
         extraData={ongoingEvent}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => {
-          const { title, startdate } = item
-
+          const { title, startdate, enddate, creator, target } = item
+          const start = new Date(startdate)
+          const end = new Date(enddate)
+          console.log('---- props.user ----')
+          console.log(props)
           return (
             <ListItem
               onPress={() =>
@@ -86,18 +116,44 @@ const List = (props) => {
               bottomDivider
               pad={0}
             >
-              {renderCheckBox(item)}
-              <ListItem.Content>
-                <ListItem.Title>{title}</ListItem.Title>
-                <ListItem.Subtitle style={style.subtitle}>
-                  {formatDate(startdate)}
-                </ListItem.Subtitle>
+              <ListItem.Content style={style.dateContainer}>
+                <ListItem.Content style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                  <Icon name='event' type='material' color='white' size={20} />
+                  <AppText>
+                    {start.getDate()}.{start.getMonth()}.{' - '}
+                    {end.getDate()}.{end.getMonth()}.{end.getFullYear()}
+                  </AppText>
+                </ListItem.Content>
+                <ListItem.Content style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                  <Icon name='schedule' type='material' color='white' size={20} />
+                  <AppText>
+                    {start.getHours()}{':'}{start.getMinutes()}
+                  </AppText>
+                </ListItem.Content>
+              </ListItem.Content>
+
+              <ListItem.Content style={style.infoContainer}>
+                <ListItem.Title style={style.title}> {title} </ListItem.Title>
+                <ListItem.Content style={{ flexDirection: 'row' }}>
+                  <Icon name='person' type='material' color='#686868' size={20} />
+                  <ListItem.Subtitle style={style.subtitle}>
+                    {creator.username}
+                  </ListItem.Subtitle>
+                </ListItem.Content>
+                <ListItem.Content style={{ flexDirection: 'row' }}>
+                  <Icon name='room' type='material' color='#686868' size={20} />
+                  <ListItem.Subtitle style={style.subtitle}>
+                    {target === undefined ? 'ei kohdetta' : target.name}
+                  </ListItem.Subtitle>
+                </ListItem.Content>
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
           )
         }}
-        keyExtractor={(item) => item._id}
+        renderSectionHeader={({ section: { key } }) => (
+          <Text style={styles.header}>{key}</Text>
+        )}
       />
       <AppButtonRound title="+" onPress={() => navigate('Luo tapahtuma')} />
     </View>
@@ -116,10 +172,26 @@ const style = StyleSheet.create({
     paddingVertical: 21,
     marginVertical: 0,
   },
-  subtitle: {
-    fontStyle: 'italic',
-    fontSize: 14,
+  title: {
+    fontFamily: 'nunito-bold',
+    color: '#118BFC',
+    fontSize: 18,
   },
+  subtitle: {
+    fontFamily: 'nunito-bold',
+    fontSize: 14,
+    color: '#686868'
+  },
+  dateContainer: {
+    flex: 0.35,
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    backgroundColor: '#379EFE',
+  },
+  infoContainer: {
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+  }
 })
 
 const mapStateToProps = (state) => ({
