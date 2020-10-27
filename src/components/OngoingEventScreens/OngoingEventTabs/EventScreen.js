@@ -90,12 +90,15 @@ class EventScreen extends React.Component {
   navigate = (value, item) => this.props.navigation.navigate(value, { item });
 
   toInvites = () => {
-    this.navigate('InviteScreen', { item: { ongoingComponent: this } })
-  };
+    this.navigate('InviteScreen')
+  }
 
   toEditing = () => {
-    this.navigate('Muokkaa tapahtumaa', this.props.ongoingEvent)
-  };
+    this.props.navigation.navigate('Tapahtumat', {
+      screen: 'Muokkaa tapahtumaa',
+      params: { item: this.props.ongoingEvent }
+    })
+  }
 
   leaveEventButton = () => {
     const { setOngoingEvent, endDives, ongoingDives, user } = this.props
@@ -138,9 +141,9 @@ class EventScreen extends React.Component {
     } = ongoingEvent
 
     return (
-      <View>
+      <View style={styles.noPadding}>
         <BackgroundImage height={Dimensions.get('screen').height}>
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps='handled'>
             <TouchableOpacity
               onPress={this.toEditing}
               style={style.settingsButton}
@@ -185,7 +188,6 @@ class EventScreen extends React.Component {
                 <Icon name="person" type="material" color="white" size={20} />
                 <AppText style={style.text}>{creator.username}</AppText>
               </View>
-
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >

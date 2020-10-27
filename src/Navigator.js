@@ -18,9 +18,6 @@ function TabNavigator() {
   return (
     <Tab.Navigator
       initialRouteName="Profiili"
-      // This fixes not being able to navigate to event edit from current event screen
-      // when user has not visited event tab yet.
-      lazy={false}
       tabBarOptions={{
         labelStyle: {
           fontFamily: "nunito-bold",
