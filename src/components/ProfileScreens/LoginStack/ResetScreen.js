@@ -48,6 +48,7 @@ const options = {
       stylesheet: stylesheet,
       label: 'Anna käyttäjätunnus:',
       error: 'Käyttäjätunnus ei saa olla tyhjä.',
+      autoCapitalize: 'none',
     },
   },
 }
@@ -100,7 +101,7 @@ Varmista että olet kirjoittanut pienet ja suuret kirjaimet oikein.`,
     return (
       <View>
         <BackgroundImage height={Dimensions.get('screen').height}>
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps='handled'>
             <AppText
               style={{
                 textAlign: 'center',

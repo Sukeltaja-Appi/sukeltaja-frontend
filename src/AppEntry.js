@@ -11,6 +11,10 @@ import ServerListener from './ServerListener'
 import OfflineNotifier from './OfflineNotifier'
 import * as Font from 'expo-font'
 import { AppLoading } from 'expo'
+import { enableScreens } from 'react-native-screens'
+
+enableScreens()
+
 // * AppEntry is the first component where the store is available.
 // * App startup code can be placed here.
 // * Components that need to render outside of the Navigator can be

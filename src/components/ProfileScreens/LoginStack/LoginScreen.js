@@ -53,12 +53,14 @@ const options = {
       stylesheet: stylesheet,
       label: 'Käyttäjätunnus:',
       error: 'Käyttäjätunnus ei saa olla tyhjä.',
+      autoCapitalize: 'none',
     },
     password: {
       stylesheet: stylesheet,
       label: 'Salasana:',
       error: 'Salasana ei saa olla tyhjä.',
       secureTextEntry: true,
+      autoCapitalize: 'none',
     },
   },
 }

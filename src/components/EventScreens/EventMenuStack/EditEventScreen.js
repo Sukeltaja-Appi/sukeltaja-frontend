@@ -75,7 +75,7 @@ class EditEventScreen extends React.Component {
 
     return (
       <View style={styles.noPadding}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps='handled'>
           <EventForm
             ref={this.ref}
             event={event}
