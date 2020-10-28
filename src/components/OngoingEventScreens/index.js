@@ -67,7 +67,7 @@ const SafeAreaMaterialTopTabBar = ({ ...props }) => (
   </SafeAreaView>
 )
 
-const OngoingEventTabsNav = createMaterialTopTabNavigator()
+const OngoingEventTabsNav = createStackNavigator()
 
 const OngoingEventTabs = () => {
   return (
