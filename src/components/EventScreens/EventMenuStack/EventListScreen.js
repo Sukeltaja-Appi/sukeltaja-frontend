@@ -8,20 +8,40 @@ import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import AppButtonRound from '../../common/AppButtonRound'
-import { Interval } from 'luxon'
+import { Interval, DateTime } from 'luxon'
 import { MaterialIcons } from "@expo/vector-icons"
 import AppText from '../../common/AppText'
 
-const EventListScreen5 = (props) => {
+const EventListScreen = (props) => {
   console.log(props)
-  return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} />
+  return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} {...eventsSortedByGroup(props)} />
+}
+
+const eventsSortedByGroup = (props) => {
+  const groups = { today: [], week: [], month: [], later: [], old: [] }
+  const { events } = props
+  const eventsByDate = events.sort((a, b) => b.startdate.localeCompare(a.startdate))
+  eventsByDate.forEach(e => {
+    let start = DateTime.local(e.startdate)
+    start = DateTime.local(start.year, start.month, start.day, 11)
+    let end = DateTime.local(e.enddate)
+    end = DateTime.local(end.year, end.month, end.day, 13)
+    console.log(e)
+    console.log(groups)
+    // esim. start 1100 vs. datetoday 1200. Interval tyyliä [jakso[, tunnin tarkkuudella varmaan
+    if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { groups['today'].push(e) }
+    else if (Interval.fromDateTimes(dateTomorrow(), dateInOneWeek()).contains(start)) { groups['week'].push(e) }
+    else if (Interval.fromDateTimes(dateInOneWeek(), dateInOneMonth()).contains(start)) { groups['month'].push(e) }
+    else if (start > dateInOneMonth) { groups['later'].push(e) }
+    else { groups['old'].push(e) }
+  });
+  return groups
 }
 
 const EmptyList = (props) => {
   const navigate = (value) => {
     props.navigation.navigate(value)
   }
-
   return (
     <View>
       <View style={styles.centered}>
@@ -34,8 +54,14 @@ const EmptyList = (props) => {
   )
 }
 
-const List = (props) => {
+const List = (props, eventGroups) => {
   const { events, ongoingEvent, setOngoingEvent } = props
+
+  console.log('--- eventGroups in List ---')
+
+  console.log(eventGroups)
+
+  console.log('--- eventGroups in List END---')
 
   const navigate = (value, item) => props.navigation.navigate(value, { item })
 
@@ -65,31 +91,11 @@ const List = (props) => {
     />
   )
 
-  const eventsSortedByGroup = () => {
-    const groups = { today: [], week: [], month: [], later: [], old: [] }
-    const eventsByDate = eventsSortedByDate()
-    eventsByDate.forEach(e => {
-      const start = DateTime.local(e.startdate)
-      start = DateTime.local(start.year, start.month, start.day, 11)
-      const end = DateTime.local(e.enddate)
-      end = DateTime.local(end.year, end.month, end.day, 13)
-      console.log(e)
-      console.log(groups)
-      // esim. start 1100 vs. datetoday 1200. Interval tyyliä [jakso[, tunnin tarkkuudella varmaan
-      if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { groups['today'].push(e) }
-      else if (Interval.fromDateTimes(dateTomorrow(), dateInOneWeek()).contains(start)) { groups['week'].push(e) }
-      else if (Interval.fromDateTimes(dateInOneWeek(), dateInOneMonth()).contains(start)) { groups['month'].push(e) }
-      else if (start > dateInOneMonth) { groups['later'].push(e) }
-      else { groups['old'].push(e) }
-    });
-    return groups
-  }
-
   return (
     <View style={styles.noPadding}>
-      <FlatList
-        data={eventsSortedByDate()}
-        //        sections={eventsSortedByGroup}
+      <SectionList
+//        data={eventsSortedByDate()}
+        sections={eventGroups}
         extraData={ongoingEvent}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => {
@@ -200,4 +206,4 @@ const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
 })
 
-export default connect(mapStateToProps, { setOngoingEvent })(EventListScreen5)
+export default connect(mapStateToProps, { setOngoingEvent })(EventListScreen)
