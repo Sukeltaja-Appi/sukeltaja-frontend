@@ -13,11 +13,17 @@ import { MaterialIcons } from "@expo/vector-icons"
 import AppText from '../../common/AppText'
 
 const EventListScreen = (props) => {
-  return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} />
+  return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} groups={eventsSortedByGroup(props)} />
 }
 
 const eventsSortedByGroup = (props) => {
-  let groups = []
+  let groups = [
+    { title: 'today', data: [] },
+    { title: 'week', data: [] },
+    { title: 'month', data: [] },
+    { title: 'later', data: [] },
+    { title: 'old', data: [] }
+  ]
   const { events } = props
   const eventsByDate = events.sort((a, b) => b.startdate.localeCompare(a.startdate))
   eventsByDate.forEach(e => {
@@ -56,11 +62,10 @@ const EmptyList = (props) => {
 }
 
 const List = (props) => {
-  const { events, ongoingEvent, setOngoingEvent } = props
-  const groups = eventsSortedByGroup(props)
+  const { events, ongoingEvent, setOngoingEvent, groups } = props
 
-  console.log('--- groups in List ---')
-  console.log(groups)
+  console.log('--- groups in List ---')  
+  console.log(props)
   console.log('--- groups in List END---')
 
   const navigate = (value, item) => props.navigation.navigate(value, { item })
@@ -115,35 +120,35 @@ const List = (props) => {
               pad={0}
             >
               <ListItem.Content style={style.dateContainer}>
-                <ListItem.Content style={style.flexrow}>
+                <View style={style.flexrow}>
                   <Icon name='event' type='material' color='white' size={20} style={style.icon} />
                   <AppText>
                     {start.getDate()}.{start.getMonth()}.{' - '}
                     {end.getDate()}.{end.getMonth()}.{end.getFullYear()}
                   </AppText>
-                </ListItem.Content>
-                <ListItem.Content style={style.flexrow}>
+                </View>
+                <View style={style.flexrow}>
                   <Icon name='schedule' type='material' color='white' size={20} style={style.icon} />
                   <AppText>
                     {start.getHours()}{':'}{start.getMinutes()}
                   </AppText>
-                </ListItem.Content>
+                </View>
               </ListItem.Content>
 
               <ListItem.Content style={style.infoContainer}>
                 <ListItem.Title style={style.title}> {title} </ListItem.Title>
-                <ListItem.Content style={style.flexrow}>
+                <View style={style.flexrow}>
                   <Icon name='person' type='material' color='#686868' size={20} style={style.icon} />
                   <ListItem.Subtitle style={style.subtitle}>
                     {creator.username}
                   </ListItem.Subtitle>
-                </ListItem.Content>
-                <ListItem.Content style={style.flexrow}>
+                </View>
+                <View style={style.flexrow}>
                   <Icon name='room' type='material' color='#686868' size={20} style={style.icon} />
                   <ListItem.Subtitle style={style.subtitle}>
                     {target === undefined ? 'ei kohdetta' : target.name}
                   </ListItem.Subtitle>
-                </ListItem.Content>
+                </View>
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
