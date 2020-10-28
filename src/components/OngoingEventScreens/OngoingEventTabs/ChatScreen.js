@@ -1,24 +1,40 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, FlatList, Text } from 'react-native'
-import { ListItem, Button, Input, Icon } from 'react-native-elements'
+import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { ListItem, Input } from 'react-native-elements'
+import { MaterialIcons } from '@expo/vector-icons'
 
 import eventMsgService from '../../../services/eventMessages'
 import { formatDate } from '../../../utils/dates'
 import styles, { paddingSides } from '../../../styles/global'
 import colors from '../../../styles/colors'
 
-const style = {
+const style = StyleSheet.create({
   subtitle: {
     fontStyle: 'italic',
-    fontSize: 14
+    fontSize: 14,
   },
   top: {
     flex: 1,
     width: '100%',
-    padding: paddingSides,
+  },
+  inputContainer: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    marginRight: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexShrink: 1,
+  },
+  sendMessageButton: {
+    padding: 13,
+    backgroundColor: colors.primary,
+    borderRadius: 100,
+    alignSelf: 'flex-end'
   }
-}
+})
 
 class ChatScreen extends React.Component {
   constructor(props) {
@@ -88,21 +104,27 @@ class ChatScreen extends React.Component {
     return (
       <View style={styles.noPadding}>
         <View style={style.top}>
-          <Input
-            value={this.state.message}
-            onChangeText={message => this.setState({ message })}
-            rightIcon={() => <Icon name='message-circle' type='feather' color={colors.lightgray} />}
-            placeholder='Kirjoita viesti'
-            containerStyle={{ backgroundColor: 'white', marginBottom: 10 }}
-            inputContainerStyle={{ borderBottomWidth: 0 }}
-          />
-          <Button
-            title='Lähetä'
-            onPress={this.sendMessage}
-          />
-        </View>
-        <View style={{ flex: 2 }}>
-          {this.showMessages()}
+          <View style={{ flex: 1, padding: paddingSides }}>
+            {this.showMessages()}
+          </View>
+          <View style={{ flexDirection: 'row', marginHorizontal: 6, marginBottom: 12 }}>
+            <Input
+              multiline
+              maxHeight={110}
+              value={this.state.message}
+              onChangeText={message => this.setState({ message })}
+              placeholder='Kirjoita viesti'
+              containerStyle={style.inputContainer}
+              inputContainerStyle={{ borderBottomWidth: 0 }}
+            />
+            <TouchableOpacity
+              onPress={this.sendMessage}
+              style={style.sendMessageButton}
+            >
+              <MaterialIcons name="send" color='white' size={24} />
+            </TouchableOpacity>
+          </View>
+
         </View>
       </View>
     )
