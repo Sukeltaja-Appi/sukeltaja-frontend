@@ -32,15 +32,12 @@ const eventsSortedByGroup = (props) => {
     let end = DateTime.local(e.enddate)
     end = DateTime.local(end.year, end.month, end.day, 13)
     //    console.log(e)
-    console.log('sorted by ----------')
-    console.log(groups)
-    console.log('sorted by ----------')
     // esim. start 1100 vs. datetoday 1200. Interval tyyliä [jakso[, tunnin tarkkuudella varmaan
-    if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { groups.push({data: e, title: 'today'}) }
-    else if (Interval.fromDateTimes(dateTomorrow(), dateInOneWeek()).contains(start)) { groups.push({data: e, title: 'week'}) }
-    else if (Interval.fromDateTimes(dateInOneWeek(), dateInOneMonth()).contains(start)) { groups.push({data: e, title: 'month'}) }
-    else if (start > dateInOneMonth) { groups.push({data: e, title: 'later'}) }
-    else { groups.push({data: e, title: 'old'}) }
+    if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { groups[0].data.push(e) }
+    else if (Interval.fromDateTimes(dateTomorrow(), dateInOneWeek()).contains(start)) { groups[1].data.push(e) }
+    else if (Interval.fromDateTimes(dateInOneWeek(), dateInOneMonth()).contains(start)) { groups[2].data.push(e) }
+    else if (start > dateInOneMonth) { groups[3].data.push(e) }
+    else { groups[4].data.push(e) }
   });
   return groups
 }
@@ -64,8 +61,8 @@ const EmptyList = (props) => {
 const List = (props) => {
   const { events, ongoingEvent, setOngoingEvent, groups } = props
 
-  console.log('--- groups in List ---')  
-  console.log(props)
+  console.log('--- groups in List ---')
+  console.log(props.groups.length)
   console.log('--- groups in List END---')
 
   const navigate = (value, item) => props.navigation.navigate(value, { item })
@@ -146,7 +143,7 @@ const List = (props) => {
                 <View style={style.flexrow}>
                   <Icon name='room' type='material' color='#686868' size={20} style={style.icon} />
                   <ListItem.Subtitle style={style.subtitle}>
-                    {target === undefined ? 'ei kohdetta' : target.name}
+                    {target == null ? 'ei kohdetta' : target.name}
                   </ListItem.Subtitle>
                 </View>
               </ListItem.Content>
