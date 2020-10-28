@@ -13,12 +13,11 @@ import { MaterialIcons } from "@expo/vector-icons"
 import AppText from '../../common/AppText'
 
 const EventListScreen = (props) => {
-  console.log(props)
-  return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} {...eventsSortedByGroup(props)} />
+  return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} />
 }
 
 const eventsSortedByGroup = (props) => {
-  const groups = { today: [], week: [], month: [], later: [], old: [] }
+  let groups = []
   const { events } = props
   const eventsByDate = events.sort((a, b) => b.startdate.localeCompare(a.startdate))
   eventsByDate.forEach(e => {
@@ -26,14 +25,16 @@ const eventsSortedByGroup = (props) => {
     start = DateTime.local(start.year, start.month, start.day, 11)
     let end = DateTime.local(e.enddate)
     end = DateTime.local(end.year, end.month, end.day, 13)
-    console.log(e)
+    //    console.log(e)
+    console.log('sorted by ----------')
     console.log(groups)
+    console.log('sorted by ----------')
     // esim. start 1100 vs. datetoday 1200. Interval tyyliä [jakso[, tunnin tarkkuudella varmaan
-    if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { groups['today'].push(e) }
-    else if (Interval.fromDateTimes(dateTomorrow(), dateInOneWeek()).contains(start)) { groups['week'].push(e) }
-    else if (Interval.fromDateTimes(dateInOneWeek(), dateInOneMonth()).contains(start)) { groups['month'].push(e) }
-    else if (start > dateInOneMonth) { groups['later'].push(e) }
-    else { groups['old'].push(e) }
+    if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { groups.push({data: e, title: 'today'}) }
+    else if (Interval.fromDateTimes(dateTomorrow(), dateInOneWeek()).contains(start)) { groups.push({data: e, title: 'week'}) }
+    else if (Interval.fromDateTimes(dateInOneWeek(), dateInOneMonth()).contains(start)) { groups.push({data: e, title: 'month'}) }
+    else if (start > dateInOneMonth) { groups.push({data: e, title: 'later'}) }
+    else { groups.push({data: e, title: 'old'}) }
   });
   return groups
 }
@@ -54,14 +55,13 @@ const EmptyList = (props) => {
   )
 }
 
-const List = (props, eventGroups) => {
+const List = (props) => {
   const { events, ongoingEvent, setOngoingEvent } = props
+  const groups = eventsSortedByGroup(props)
 
-  console.log('--- eventGroups in List ---')
-
-  console.log(eventGroups)
-
-  console.log('--- eventGroups in List END---')
+  console.log('--- groups in List ---')
+  console.log(groups)
+  console.log('--- groups in List END---')
 
   const navigate = (value, item) => props.navigation.navigate(value, { item })
 
@@ -94,17 +94,17 @@ const List = (props, eventGroups) => {
   return (
     <View style={styles.noPadding}>
       <SectionList
-//        data={eventsSortedByDate()}
-        sections={eventGroups}
+        //        data={eventsSortedByDate()}
+        sections={groups}
         extraData={ongoingEvent}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => {
           const { title, startdate, enddate, creator, target } = item
           const start = new Date(startdate)
           const end = new Date(enddate)
-          console.log('---- props.user START----')
-          console.log(props)
-          console.log('---- props.user END----')
+          //          console.log('---- props SectionList START----')
+          //          console.log(props)
+          //          console.log('---- props SectionList END----')
           return (
             <ListItem
               onPress={() =>
@@ -149,8 +149,8 @@ const List = (props, eventGroups) => {
             </ListItem>
           )
         }}
-        renderSectionHeader={({ section: { key } }) => (
-          <Text style={styles.header}>{key}</Text>
+        renderSectionHeader={({ section: { title } }) => (
+          <Text style={styles.header}>{title}</Text>
         )}
       />
       <AppButtonRound title="+" onPress={() => navigate('Luo tapahtuma')} />
