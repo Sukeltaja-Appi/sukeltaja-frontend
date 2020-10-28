@@ -2,9 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { View, FlatList, Text, StyleSheet, SectionList } from 'react-native'
 import { ListItem, CheckBox, Icon } from 'react-native-elements'
-
 import { setOngoingEvent } from '../../../reducers/eventReducer'
-import { formatDate, dateToday, dateTomorrow, dateInOneWeek, dateInOneWeekAndDay, dateInOneMonth } from '../../../utils/dates'
+import { formatDate, dateToday1200, dateTomorrow, dateInOneWeek, dateInOneWeekAndDay, dateInOneMonth } from '../../../utils/dates'
 import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -12,16 +11,6 @@ import AppButtonRound from '../../common/AppButtonRound'
 import { Interval } from 'luxon'
 import { MaterialIcons } from "@expo/vector-icons"
 import AppText from '../../common/AppText'
-
-/*
-const data = [
-  {
-    title: 'Luo uusi sukellustapahtuma',
-    leftIcon: () => <Icon name="edit-2" type="material" color="#118BFC" />,
-    onPress: () => navigate('Luo tapahtuma')
-  }
-]
-*/
 
 const EventListScreen5 = (props) => {
   console.log(props)
@@ -80,14 +69,16 @@ const List = (props) => {
     const groups = { today: [], week: [], month: [], later: [], old: [] }
     const eventsByDate = eventsSortedByDate()
     eventsByDate.forEach(e => {
-      const start = new Date(e.startdate)
-      const end = new Date(e.enddate)
+      const start = DateTime.local(e.startdate)
+      start = DateTime.local(start.year, start.month, start.day, 11)
+      const end = DateTime.local(e.enddate)
+      end = DateTime.local(end.year, end.month, end.day, 13)
       console.log(e)
       console.log(groups)
-      //antaa varmaan aloituksen väärin, esim. start 0800 vs. datetoday 0000
-      if (Interval.fromDateTimes(start, end).contains(dateToday())) { groups['today'].push(e) }
+      // esim. start 1100 vs. datetoday 1200. Interval tyyliä [jakso[, tunnin tarkkuudella varmaan
+      if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { groups['today'].push(e) }
       else if (Interval.fromDateTimes(dateTomorrow(), dateInOneWeek()).contains(start)) { groups['week'].push(e) }
-      else if (Interval.fromDateTimes(dateInOneWeekAndDay(), dateInOneMonth()).contains(start)) { groups['month'].push(e) }
+      else if (Interval.fromDateTimes(dateInOneWeek(), dateInOneMonth()).contains(start)) { groups['month'].push(e) }
       else if (start > dateInOneMonth) { groups['later'].push(e) }
       else { groups['old'].push(e) }
     });
@@ -105,8 +96,9 @@ const List = (props) => {
           const { title, startdate, enddate, creator, target } = item
           const start = new Date(startdate)
           const end = new Date(enddate)
-          console.log('---- props.user ----')
+          console.log('---- props.user START----')
           console.log(props)
+          console.log('---- props.user END----')
           return (
             <ListItem
               onPress={() =>
@@ -117,15 +109,15 @@ const List = (props) => {
               pad={0}
             >
               <ListItem.Content style={style.dateContainer}>
-                <ListItem.Content style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                  <Icon name='event' type='material' color='white' size={20} />
+                <ListItem.Content style={style.flexrow}>
+                  <Icon name='event' type='material' color='white' size={20} style={style.icon} />
                   <AppText>
                     {start.getDate()}.{start.getMonth()}.{' - '}
                     {end.getDate()}.{end.getMonth()}.{end.getFullYear()}
                   </AppText>
                 </ListItem.Content>
-                <ListItem.Content style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                  <Icon name='schedule' type='material' color='white' size={20} />
+                <ListItem.Content style={style.flexrow}>
+                  <Icon name='schedule' type='material' color='white' size={20} style={style.icon} />
                   <AppText>
                     {start.getHours()}{':'}{start.getMinutes()}
                   </AppText>
@@ -134,14 +126,14 @@ const List = (props) => {
 
               <ListItem.Content style={style.infoContainer}>
                 <ListItem.Title style={style.title}> {title} </ListItem.Title>
-                <ListItem.Content style={{ flexDirection: 'row' }}>
-                  <Icon name='person' type='material' color='#686868' size={20} />
+                <ListItem.Content style={style.flexrow}>
+                  <Icon name='person' type='material' color='#686868' size={20} style={style.icon} />
                   <ListItem.Subtitle style={style.subtitle}>
                     {creator.username}
                   </ListItem.Subtitle>
                 </ListItem.Content>
-                <ListItem.Content style={{ flexDirection: 'row' }}>
-                  <Icon name='room' type='material' color='#686868' size={20} />
+                <ListItem.Content style={style.flexrow}>
+                  <Icon name='room' type='material' color='#686868' size={20} style={style.icon} />
                   <ListItem.Subtitle style={style.subtitle}>
                     {target === undefined ? 'ei kohdetta' : target.name}
                   </ListItem.Subtitle>
@@ -187,10 +179,19 @@ const style = StyleSheet.create({
     justifyContent: 'flex-start',
     flexDirection: 'column',
     backgroundColor: '#379EFE',
+    padding: 5,
   },
   infoContainer: {
     justifyContent: 'flex-start',
     flexDirection: 'column',
+    padding: 5,
+  },
+  flexrow: {
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+  },
+  icon: {
+    paddingRight: 3,
   }
 })
 

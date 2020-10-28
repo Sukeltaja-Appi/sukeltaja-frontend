@@ -20,8 +20,10 @@ const style = {
     justifyContent: 'center'
   },
   appButtonText: {
-    fontSize: 47,
+    fontSize: 75,
+    fontFamily: 'nunito-bold',
     color: '#fff',
+    bottom: 7,
   }
 }
 

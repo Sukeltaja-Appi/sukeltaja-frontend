@@ -67,9 +67,9 @@ export const inTenMinutes = () => {
     .toJSDate()
 }
 
-export const dateToday = () => {
+export const dateToday1200 = () => {
   const {year, month, day} = DateTime.local()
-  return DateTime.local(year, month, day)
+  return DateTime.local(year, month, day, 12)
   .toJSDate()
 }
 
