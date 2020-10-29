@@ -20,10 +20,10 @@ class CustomTargetScreen extends React.Component {
 
     this.state = {
       initialRegion: {
-        latitude: 65.5,
+        latitude: 63.5,
         longitude: 26.5,
-        latitudeDelta: 0,
-        longitudeDelta: 0.6
+        latitudeDelta: 12,
+        longitudeDelta: 12
       },
       query: '',
       target: null,
@@ -95,6 +95,7 @@ class CustomTargetScreen extends React.Component {
       target: this.state.target
     }
 
+    this.props.navigation.goBack()
     console.log(eventToAdd)
     await this.props.createEvent(eventToAdd)
     this.props.navigation.replace('Omat tapahtumat')
@@ -120,34 +121,28 @@ class CustomTargetScreen extends React.Component {
 
     return (
       <View style={style.container}>
-        <BackgroundImage height={Dimensions.get('screen').height}>
-          <View style={style.mapContainer}>
-            <ClusteredMapView
-              style={{ width: 10, height: 10 }}
-              ref={(r) => { this.map = r }}
-              maxZoom={12}
-              mapPadding={{ bottom: 10, left: 68, right: 50 }}
-              radius={42}
-              data={mapTarget ? [mapTarget] : []}
-              initialRegion={initialRegion}
-              onMarkerPress={this.onMarkerPress}
-              renderMarker={this.renderMarker}
-              renderCluster={this.renderCluster}
-              showsUserLocation={true}
-              userLocationAnnotationTitle=''
-              onPress={this.onPress}
-              width={360}
-              height={450}
-            />
-          </View>
-          <View style={style.bottom}>
-            <AppButton
-              buttonStyle={style.button}
-              title='Seuraava'
-              onPress={() => this.selectTarget()}
-            />
-          </View>
-        </BackgroundImage>
+        <ClusteredMapView
+          style={style.map}
+          ref={(r) => { this.map = r }}
+          maxZoom={12}
+          mapPadding={{ bottom: 160, left: 68, right: 50 }}
+          radius={42}
+          data={mapTarget ? [mapTarget] : []}
+          initialRegion={initialRegion}
+          onMarkerPress={this.onMarkerPress}
+          renderMarker={this.renderMarker}
+          renderCluster={this.renderCluster}
+          showsUserLocation={true}
+          userLocationAnnotationTitle=''
+          onPress={this.onPress}
+        />
+        <View style={style.bottom}>
+          <AppButton
+            buttonStyle={style.button}
+            title='Valitse kohde'
+            onPress={() => this.selectTarget()}
+          />
+        </View>
       </View>
     )
   }
@@ -181,23 +176,6 @@ const style = StyleSheet.create({
     justifyContent: 'flex-end',
     width: '100%',
     padding: paddingSides
-  },
-  button: {
-    marginBottom: 10,
-    marginHorizontal: 60,
-    backgroundColor: '#00A3FF',
-    paddingHorizontal: 30,
-    paddingVertical: 15,
-    borderColor: '#118BFC',
-    borderWidth: 3,
-    borderRadius: 40,
-  },
-  mapContainer: {
-    top: '6%',
-    overflow: 'hidden',
-    borderRadius: 10,
-    borderColor: '#118BFC',
-    borderWidth: 3
   }
 })
 
