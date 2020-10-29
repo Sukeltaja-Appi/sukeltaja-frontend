@@ -5,7 +5,7 @@ import { formatDate } from '../../utils/dates'
 import { Button } from 'react-native-elements'
 import { View, Dimensions } from 'react-native'
 import { paddingSides } from '../../styles/global'
-import { createEvent } from '../../reducers/eventReducer'
+import { createEvent, setOngoingEvent } from '../../reducers/eventReducer'
 import { connect } from 'react-redux'
 import { inOneHour } from '../../utils/dates'
 import BackgroundImage from '../common/BackgroundImage'
@@ -15,8 +15,10 @@ import _ from 'lodash'
 const { Form } = t.form
 
 const EventInfoForm = (props) => {
+  const { setOngoingEvent } = props
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(inOneHour())
+  const [target, setTarget] = useState(null)
   const [divingEvent, setEvent] = useState({
     title: '',
     description: ''
@@ -31,12 +33,17 @@ const EventInfoForm = (props) => {
     const event = {
       ...divingEvent,
       startdate: startDate,
-      enddate: endDate
+      enddate: endDate,
+      target: target
     }
 
-    await props.createEvent(event)
-    props.navigation.navigate('Valitse sijainti')
+    const createdEvent = await props.createEvent(event)
+
+    props.setOngoingEvent(event)
+    console.log(this.ongoingEvent)
   }
+
+  const navigate = () => props.navigation.navigate('Valitse sijainti')
 
   return (
     <View>
@@ -47,6 +54,10 @@ const EventInfoForm = (props) => {
             options={options}
             value={divingEvent}
             onChange={(event) => setEvent(event)}
+          />
+          <Button buttonStyle={{ borderRadius: 10, marginBottom: 30 }}
+            title = "Valitse sijainti"
+            onPress = {navigate}
           />
           <DateTimePickerButton
             date={startDate}
@@ -59,7 +70,7 @@ const EventInfoForm = (props) => {
             text='Loppuu: '
           />
           <View syle={style.buttonContainer}>
-            <AppButton title="Seuraava" onPress={submitForm} />
+            <AppButton title="Luo tapahtuma!" onPress={submitForm} />
           </View>
         </View>
       </BackgroundImage>
@@ -130,7 +141,7 @@ const style = {
     width: '100%',
     paddingVertical: 10,
     marginTop: 5,
-    marginBottom: 30,
+    marginBottom: 20,
     backgroundColor: 'rgba(52, 52, 52, 0.5)',
     borderRadius: 10
   },
@@ -185,12 +196,11 @@ const options = {
 }
 
 const mapStateToProps = (state) => ({
-  ongoingEvent: state.ongoingEvent,
-  ongoingDives: state.ongoingDives,
-  user: state.user
+  setOngoingEvent: state.setOngoingEvent,
+  ongoingEvent: state.ongoingEvent
 })
 
 export default connect(
   mapStateToProps,
-  { createEvent }
+  { createEvent, setOngoingEvent }
 )(EventInfoForm)

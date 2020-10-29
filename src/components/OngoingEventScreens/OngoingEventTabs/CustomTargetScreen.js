@@ -11,11 +11,13 @@ import AppButton from '../../common/AppButton'
 import BackgroundImage from '../../common/BackgroundImage'
 
 import { getAll } from '../../../reducers/targetReducer'
+import { createEvent } from '../../../reducers/eventReducer'
 
 class CustomTargetScreen extends React.Component {
 
   constructor(props) {
     super(props)
+
     this.state = {
       initialRegion: {
         latitude: 65.5,
@@ -87,8 +89,21 @@ class CustomTargetScreen extends React.Component {
 
   navigate = (value, target) => this.props.navigation.navigate(value, { target, custom: true })
 
-  selectTarget = () => {
-    this.navigate('Target', this.state.target)
+  selectTarget = async () => {
+    const eventToAdd = {
+      //...this.state.event,
+      target: this.state.target
+    }
+
+    console.log(eventToAdd)
+    await this.props.createEvent(eventToAdd)
+    this.props.navigation.replace('Omat tapahtumat')
+
+    //const event = this.state.ongoingEvent
+
+    //event.target = this.state.target
+    //updateEvent(event)
+    //this.navigate('Target', this.state.target)
   }
 
   render() {
@@ -188,10 +203,10 @@ const style = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   currentTarget: state.ongoingEvent && state.ongoingEvent.target ? state.ongoingEvent.target : null,
-  targets: state.targets,
+  targets: state.targets
 })
 
 export default connect(
   mapStateToProps,
-  { getAll }
+  { getAll, createEvent }
 )(CustomTargetScreen)
