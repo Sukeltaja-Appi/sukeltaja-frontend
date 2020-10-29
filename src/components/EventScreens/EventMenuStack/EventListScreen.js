@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { View, Text, StyleSheet, SectionList } from 'react-native'
-import { ListItem, CheckBox, Icon } from 'react-native-elements'
+import { ListItem, Icon } from 'react-native-elements'
 import { setOngoingEvent } from '../../../reducers/eventReducer'
 import { dateToday1200, dateTomorrow, dateInOneWeek, dateInOneMonth } from '../../../utils/dates'
 import colors from '../../../styles/colors'
@@ -87,8 +87,8 @@ const List = (props) => {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => {
           const { title, startdate, enddate, creator, target } = item
-          const start = new Date(startdate)
-          const end = new Date(enddate)
+          const start = DateTime.fromISO(startdate)
+          const end = DateTime.fromISO(enddate)
 
           return (
             <ListItem
@@ -102,14 +102,14 @@ const List = (props) => {
               <ListItem.Content style={style.dateContainer}>
                 <View style={style.flexrow}>
                   <AppText>
-                    {start.getDate()}.{start.getMonth()}.{' - '}
-                    {end.getDate()}.{end.getMonth()}.{end.getFullYear()}
+                    {start.day}.{start.month}.{' - '}
+                    {end.day}.{end.month}.{end.year}
                   </AppText>
                 </View>
                 <View style={style.flexrow}>
                   <Icon name='schedule' type='material' color='white' size={20} style={style.icon} />
                   <AppText>
-                    {start.getHours()}{':'}{start.getMinutes()}
+                    {start.hour}{':'}{start.minute.toString().padStart(2, '0')}
                   </AppText>
                 </View>
               </ListItem.Content>

@@ -90,14 +90,6 @@ export const dateInOneWeek = () => {
     .toJSDate()
 }
 
-export const dateInOneWeekAndDay = () => {
-  const { year, month, day } = DateTime.local()
-
-  return DateTime.local(year, month, day)
-    .plus({ days:8 })
-    .toJSDate()
-}
-
 export const dateInOneMonth = () => {
   const { year, month, day } = DateTime.local()
 
