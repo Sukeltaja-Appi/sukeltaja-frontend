@@ -10,12 +10,12 @@ import { connect } from 'react-redux'
 import { inOneHour } from '../../utils/dates'
 import BackgroundImage from '../common/BackgroundImage'
 import AppButton from '../common/AppButton'
+import targetService from '../../services/targets'
 import _ from 'lodash'
 
 const { Form } = t.form
 
 const EventInfoForm = (props) => {
-  const { setOngoingEvent } = props
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(inOneHour())
   const [target, setTarget] = useState(null)
@@ -37,13 +37,22 @@ const EventInfoForm = (props) => {
       target: target
     }
 
-    const createdEvent = await props.createEvent(event)
-
-    props.setOngoingEvent(event)
-    console.log(this.ongoingEvent)
+    await props.createEvent(event)
+    props.navigation.navigate('Omat tapahtumat')
   }
 
-  const navigate = () => props.navigation.navigate('Valitse sijainti')
+  const setEventLocation = async (location) => {
+    if (location !== null) {
+      const result = await targetService.create({
+        ...location,
+        user_created: true
+      })
+
+      setTarget(result)
+    }
+  }
+
+  const navigate = () => props.navigation.navigate('Valitse sijainti', { setTarget: setEventLocation })
 
   return (
     <View>
@@ -55,7 +64,8 @@ const EventInfoForm = (props) => {
             value={divingEvent}
             onChange={(event) => setEvent(event)}
           />
-          <Button buttonStyle={{ borderRadius: 10, marginBottom: 30 }}
+          <Button
+            buttonStyle={{ borderRadius: 10, marginBottom: 30 }}
             title = "Valitse sijainti"
             onPress = {navigate}
           />
@@ -70,7 +80,13 @@ const EventInfoForm = (props) => {
             text='Loppuu: '
           />
           <View syle={style.buttonContainer}>
-            <AppButton title="Luo tapahtuma!" onPress={submitForm} />
+            <AppButton
+              title="Luo tapahtuma!"
+              onPress={submitForm}
+              containerStyle = {{
+                paddingVertival: 5
+              }}
+            />
           </View>
         </View>
       </BackgroundImage>

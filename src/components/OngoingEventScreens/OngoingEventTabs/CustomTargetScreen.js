@@ -8,7 +8,6 @@ import colors from '../../../styles/colors'
 import decimalToDMS from '../../../utils/coordinates'
 import { paddingSides } from '../../../styles/global'
 import AppButton from '../../common/AppButton'
-import BackgroundImage from '../../common/BackgroundImage'
 
 import { getAll } from '../../../reducers/targetReducer'
 import { createEvent } from '../../../reducers/eventReducer'
@@ -18,7 +17,10 @@ class CustomTargetScreen extends React.Component {
   constructor(props) {
     super(props)
 
+    const setTarget = props.route.params?.setTarget
+
     this.state = {
+      setTarget,
       initialRegion: {
         latitude: 63.5,
         longitude: 26.5,
@@ -90,21 +92,8 @@ class CustomTargetScreen extends React.Component {
   navigate = (value, target) => this.props.navigation.navigate(value, { target, custom: true })
 
   selectTarget = async () => {
-    const eventToAdd = {
-      //...this.state.event,
-      target: this.state.target
-    }
-
+    this.state.setTarget(this.state.target)
     this.props.navigation.goBack()
-    console.log(eventToAdd)
-    await this.props.createEvent(eventToAdd)
-    this.props.navigation.replace('Omat tapahtumat')
-
-    //const event = this.state.ongoingEvent
-
-    //event.target = this.state.target
-    //updateEvent(event)
-    //this.navigate('Target', this.state.target)
   }
 
   render() {
