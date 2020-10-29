@@ -1,18 +1,18 @@
-import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { connect } from "react-redux";
-import { View } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MapScreen from "./components/MapScreens/MapScreen";
-import EventMenuStack from "./components/EventScreens/index";
-import ProfileScreens from "./components/ProfileScreens";
-import LoginStack from "./components/ProfileScreens/LoginStack";
-import { createStackNavigator } from "@react-navigation/stack";
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
-import OngoingEventEntry from "./components/OngoingEventScreens/OngoingEventEntry";
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { connect } from 'react-redux'
+import { View } from 'react-native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import MapScreen from './components/MapScreens/MapScreen'
+import EventMenuStack from './components/EventScreens/index'
+import ProfileScreens from './components/ProfileScreens'
+import LoginStack from './components/ProfileScreens/LoginStack'
+import { createStackNavigator } from '@react-navigation/stack'
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
+import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
 
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator()
+const Tab = createBottomTabNavigator()
 
 function TabNavigator() {
   return (
@@ -20,9 +20,9 @@ function TabNavigator() {
       initialRouteName="Profiili"
       tabBarOptions={{
         labelStyle: {
-          fontFamily: "nunito-bold",
+          fontFamily: 'nunito-bold',
           fontSize: 12,
-          textTransform: "uppercase",
+          textTransform: 'uppercase',
           marginBottom: 5,
         },
         style: {
@@ -31,7 +31,7 @@ function TabNavigator() {
         iconStyle: {
           marginBottom: -5,
         },
-        activeTintColor: "#118BFC",
+        activeTintColor: '#118BFC',
       }}
       t
     >
@@ -63,7 +63,7 @@ function TabNavigator() {
         }}
       />
     </Tab.Navigator>
-  );
+  )
 }
 
 function Navigator(props) {
@@ -79,49 +79,49 @@ function Navigator(props) {
         component={OngoingEventEntry}
         options={({ navigation }) => ({
           headerRight: () => (
-            <View style={{ marginHorizontal: 20, flexDirection: "row", justifyContent:'space-between'}}>
+            <View style={{ marginHorizontal: 20, flexDirection: 'row', justifyContent:'space-between' }}>
               <MaterialIcons
-                onPress={() => navigation.navigate("Info")}
+                onPress={() => navigation.navigate('Info')}
                 name="info-outline"
                 size={26}
                 color="#118BFC"
-                style={{padding: 10}}
+                style={{ padding: 10 }}
               />
               <MaterialCommunityIcons
-                onPress={() => navigation.navigate("Sukella")}
+                onPress={() => navigation.navigate('Sukella')}
                 name="waves"
                 size={26}
                 color="#118BFC"
-                style={{padding: 10}}
+                style={{ padding: 10 }}
               />
               <MaterialIcons
-                onPress={() => navigation.navigate("Chat")}
+                onPress={() => navigation.navigate('Chat')}
                 name="chat"
                 size={26}
                 color="#118BFC"
-                style={{padding: 10}}
+                style={{ padding: 10 }}
               />
               <MaterialIcons
-                onPress={() => navigation.navigate("Kohde")}
+                onPress={() => navigation.navigate('Kohde')}
                 name="location-on"
                 size={26}
                 color="#118BFC"
-                style={{padding: 10}}
+                style={{ padding: 10 }}
               />
             </View>
           ),
         })}
       />
     </Stack.Navigator>
-  );
+  )
 
   return (
     <NavigationContainer>
       {props.user ? LoggedInNavigator : <LoginStack />}
     </NavigationContainer>
-  );
+  )
 }
 
-const mapStateToProps = (state) => ({ user: state.user });
+const mapStateToProps = (state) => ({ user: state.user })
 
-export default connect(mapStateToProps)(Navigator);
+export default connect(mapStateToProps)(Navigator)

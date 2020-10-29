@@ -68,35 +68,40 @@ export const inTenMinutes = () => {
 }
 
 export const dateToday1200 = () => {
-  const {year, month, day} = DateTime.local()
+  const { year, month, day } = DateTime.local()
+
   return DateTime.local(year, month, day, 12)
-  .toJSDate()
+    .toJSDate()
 }
 
 export const dateTomorrow = () => {
-  const {year, month, day} = DateTime.local()
+  const { year, month, day } = DateTime.local()
+
   return DateTime.local(year, month, day)
-  .plus({days:1})
-  .toJSDate()
+    .plus({ days:1 })
+    .toJSDate()
 }
 
 export const dateInOneWeek = () => {
-  const {year, month, day} = DateTime.local()
+  const { year, month, day } = DateTime.local()
+
   return DateTime.local(year, month, day)
-  .plus({days:7})
-  .toJSDate()
+    .plus({ days:7 })
+    .toJSDate()
 }
 
 export const dateInOneWeekAndDay = () => {
-  const {year, month, day} = DateTime.local()
+  const { year, month, day } = DateTime.local()
+
   return DateTime.local(year, month, day)
-  .plus({days:8})
-  .toJSDate()
+    .plus({ days:8 })
+    .toJSDate()
 }
 
 export const dateInOneMonth = () => {
-  const {year, month, day} = DateTime.local()
+  const { year, month, day } = DateTime.local()
+
   return DateTime.local(year, month, day)
-  .plus({months:1})
-  .toJSDate()
+    .plus({ months:1 })
+    .toJSDate()
 }

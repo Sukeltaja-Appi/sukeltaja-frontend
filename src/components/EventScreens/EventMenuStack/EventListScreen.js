@@ -1,17 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, FlatList, Text, StyleSheet, SectionList } from 'react-native'
+import { View, Text, StyleSheet, SectionList } from 'react-native'
 import { ListItem, CheckBox, Icon } from 'react-native-elements'
 import { setOngoingEvent } from '../../../reducers/eventReducer'
-import { formatDate, dateToday1200, dateTomorrow, dateInOneWeek, dateInOneWeekAndDay, dateInOneMonth } from '../../../utils/dates'
+import { dateToday1200, dateTomorrow, dateInOneWeek, dateInOneMonth } from '../../../utils/dates'
 import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import AppButtonRound from '../../common/AppButtonRound'
 import { Interval, DateTime } from 'luxon'
-import { MaterialIcons } from "@expo/vector-icons"
 import AppText from '../../common/AppText'
-import userReducer from '../../../reducers/userReducer'
 
 const EventListScreen = (props) => {
   return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} groups={eventsSortedByGroup(props)} />
@@ -19,26 +16,30 @@ const EventListScreen = (props) => {
 
 const eventsSortedByGroup = (props) => {
   let groups = [
+    { title: 'menneet', data: [] },
     { title: 'tänään', data: [] },
     { title: 'seuraavan viikon aikana', data: [] },
     { title: 'seuraavan kuukauden aikana', data: [] },
     { title: 'myöhemmin', data: [] },
-    { title: 'menneet', data: [] }
   ]
   const { events } = props
   const eventsByDate = events.sort((a, b) => b.startdate.localeCompare(a.startdate))
+
   eventsByDate.forEach(e => {
     let start = DateTime.fromISO(e.startdate)
+
     start = DateTime.local(start.year, start.month, start.day, 11)
     let end = DateTime.fromISO(e.enddate)
+
     end = DateTime.local(end.year, end.month, end.day, 13)
 
-    if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { groups[0].data.push(e) }
-    else if (Interval.fromDateTimes(dateTomorrow(), dateInOneWeek()).contains(start)) { groups[1].data.push(e) }
-    else if (Interval.fromDateTimes(dateInOneWeek(), dateInOneMonth()).contains(start)) { groups[2].data.push(e) }
-    else if (start > dateInOneMonth()) { groups[3].data.push(e) }
-    else { groups[4].data.push(e) }
-  });
+    if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { groups[1].data.push(e) }
+    else if (Interval.fromDateTimes(dateTomorrow(), dateInOneWeek()).contains(start)) { groups[2].data.push(e) }
+    else if (Interval.fromDateTimes(dateInOneWeek(), dateInOneMonth()).contains(start)) { groups[3].data.push(e) }
+    else if (start > dateInOneMonth()) { groups[4].data.push(e) }
+    else { groups[0].data.push(e) }
+  })
+
   return groups
 }
 
@@ -46,6 +47,7 @@ const EmptyList = (props) => {
   const navigate = (value) => {
     props.navigation.navigate(value)
   }
+
   return (
     <View>
       <View style={styles.centered}>
@@ -63,32 +65,19 @@ const List = (props) => {
 
   const navigate = (value, item) => props.navigation.navigate(value, { item })
 
-  const eventsSortedByDate = () =>
-    events.sort((a, b) => b.startdate.localeCompare(a.startdate))
-
   const isOngoingEvent = (event) =>
     ongoingEvent ? event._id === ongoingEvent._id : false
 
-  const isCreatorLoggedInUser = (event) => {
+  const isCreatorLoggedInUser = (event) =>
     event.creator.username === user.username ? true : false
-  }
+
   const eventStyle = (event) => ({
     paddingVertical: 0,
     paddingLeft: 6,
     paddingRight: 14,
-    backgroundColor: isOngoingEvent(event) ? colors.secondary_light : isCreatorLoggedInUser(event) ? colors.secondary_dark : 'white',
+    backgroundColor: isOngoingEvent(event) ? colors.secondary_light
+      : isCreatorLoggedInUser(event) ? 'white' : 'light_gray'
   })
-
-  const renderCheckBox = (event) => (
-    <CheckBox
-      checkedIcon="check"
-      checked={isOngoingEvent(event)}
-      containerStyle={style.checkBox}
-      onPress={() =>
-        isOngoingEvent(event) ? setOngoingEvent(null) : setOngoingEvent(event)
-      }
-    />
-  )
 
   return (
     <View style={styles.noPadding}>
@@ -100,6 +89,7 @@ const List = (props) => {
           const { title, startdate, enddate, creator, target } = item
           const start = new Date(startdate)
           const end = new Date(enddate)
+
           return (
             <ListItem
               onPress={() =>
@@ -111,7 +101,6 @@ const List = (props) => {
             >
               <ListItem.Content style={style.dateContainer}>
                 <View style={style.flexrow}>
-                  <Icon name='event' type='material' color='white' size={20} style={style.icon} />
                   <AppText>
                     {start.getDate()}.{start.getMonth()}.{' - '}
                     {end.getDate()}.{end.getMonth()}.{end.getFullYear()}
