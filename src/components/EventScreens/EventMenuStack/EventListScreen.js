@@ -11,6 +11,7 @@ import AppButtonRound from '../../common/AppButtonRound'
 import { Interval, DateTime } from 'luxon'
 import { MaterialIcons } from "@expo/vector-icons"
 import AppText from '../../common/AppText'
+import userReducer from '../../../reducers/userReducer'
 
 const EventListScreen = (props) => {
   return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} groups={eventsSortedByGroup(props)} />
@@ -18,25 +19,24 @@ const EventListScreen = (props) => {
 
 const eventsSortedByGroup = (props) => {
   let groups = [
-    { title: 'today', data: [] },
-    { title: 'week', data: [] },
-    { title: 'month', data: [] },
-    { title: 'later', data: [] },
-    { title: 'old', data: [] }
+    { title: 'tänään', data: [] },
+    { title: 'seuraavan viikon aikana', data: [] },
+    { title: 'seuraavan kuukauden aikana', data: [] },
+    { title: 'myöhemmin', data: [] },
+    { title: 'menneet', data: [] }
   ]
   const { events } = props
   const eventsByDate = events.sort((a, b) => b.startdate.localeCompare(a.startdate))
   eventsByDate.forEach(e => {
-    let start = DateTime.local(e.startdate)
+    let start = DateTime.fromISO(e.startdate)
     start = DateTime.local(start.year, start.month, start.day, 11)
-    let end = DateTime.local(e.enddate)
+    let end = DateTime.fromISO(e.enddate)
     end = DateTime.local(end.year, end.month, end.day, 13)
-    //    console.log(e)
-    // esim. start 1100 vs. datetoday 1200. Interval tyyliä [jakso[, tunnin tarkkuudella varmaan
+
     if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { groups[0].data.push(e) }
     else if (Interval.fromDateTimes(dateTomorrow(), dateInOneWeek()).contains(start)) { groups[1].data.push(e) }
     else if (Interval.fromDateTimes(dateInOneWeek(), dateInOneMonth()).contains(start)) { groups[2].data.push(e) }
-    else if (start > dateInOneMonth) { groups[3].data.push(e) }
+    else if (start > dateInOneMonth()) { groups[3].data.push(e) }
     else { groups[4].data.push(e) }
   });
   return groups
@@ -59,11 +59,7 @@ const EmptyList = (props) => {
 }
 
 const List = (props) => {
-  const { events, ongoingEvent, setOngoingEvent, groups } = props
-
-  console.log('--- groups in List ---')
-  console.log(props.groups)
-  console.log('--- groups in List END---')
+  const { events, ongoingEvent, setOngoingEvent, groups, user } = props
 
   const navigate = (value, item) => props.navigation.navigate(value, { item })
 
@@ -73,13 +69,14 @@ const List = (props) => {
   const isOngoingEvent = (event) =>
     ongoingEvent ? event._id === ongoingEvent._id : false
 
+  const isCreatorLoggedInUser = (event) => {
+    event.creator.username === user.username ? true : false
+  }
   const eventStyle = (event) => ({
     paddingVertical: 0,
     paddingLeft: 6,
     paddingRight: 14,
-    // userReducer vai connectien kautta?
-    //    backgroundColor: event.creator.username === props.user.username ? colors.secondary_light : 'grey',
-    backgroundColor: isOngoingEvent(event) ? colors.secondary_light : 'white',
+    backgroundColor: isOngoingEvent(event) ? colors.secondary_light : isCreatorLoggedInUser(event) ? colors.secondary_dark : 'white',
   })
 
   const renderCheckBox = (event) => (
@@ -96,7 +93,6 @@ const List = (props) => {
   return (
     <View style={styles.noPadding}>
       <SectionList
-        //        data={eventsSortedByDate()}
         sections={groups}
         extraData={ongoingEvent}
         keyExtractor={(item) => item._id}
@@ -104,9 +100,6 @@ const List = (props) => {
           const { title, startdate, enddate, creator, target } = item
           const start = new Date(startdate)
           const end = new Date(enddate)
-          //          console.log('---- props SectionList START----')
-          //          console.log(props)
-          //          console.log('---- props SectionList END----')
           return (
             <ListItem
               onPress={() =>
@@ -151,7 +144,8 @@ const List = (props) => {
             </ListItem>
           )
         }}
-        renderSectionHeader={({ section: { title } }) => (<Text style={style.header}>{title}</Text>)}
+        renderSectionHeader={({ section }) => (section.data.length > 0 ?
+          <Text style={style.header}>{section.title}</Text> : null)}
       />
       <AppButtonRound title="+" onPress={() => navigate('Luo tapahtuma')} />
     </View>
@@ -210,6 +204,7 @@ const style = StyleSheet.create({
 const mapStateToProps = (state) => ({
   events: state.events,
   ongoingEvent: state.ongoingEvent,
+  user: state.user
 })
 
 export default connect(mapStateToProps, { setOngoingEvent })(EventListScreen)
