@@ -62,7 +62,7 @@ const List = (props) => {
   const { events, ongoingEvent, setOngoingEvent, groups } = props
 
   console.log('--- groups in List ---')
-  console.log(props.groups.length)
+  console.log(props.groups)
   console.log('--- groups in List END---')
 
   const navigate = (value, item) => props.navigation.navigate(value, { item })
@@ -136,24 +136,22 @@ const List = (props) => {
                 <ListItem.Title style={style.title}> {title} </ListItem.Title>
                 <View style={style.flexrow}>
                   <Icon name='person' type='material' color='#686868' size={20} style={style.icon} />
-                  <ListItem.Subtitle style={style.subtitle}>
+                  <Text style={style.subtitle}>
                     {creator.username}
-                  </ListItem.Subtitle>
+                  </Text>
                 </View>
                 <View style={style.flexrow}>
                   <Icon name='room' type='material' color='#686868' size={20} style={style.icon} />
-                  <ListItem.Subtitle style={style.subtitle}>
+                  <Text style={style.subtitle}>
                     {target == null ? 'ei kohdetta' : target.name}
-                  </ListItem.Subtitle>
+                  </Text>
                 </View>
               </ListItem.Content>
               <ListItem.Chevron />
             </ListItem>
           )
         }}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.header}>{title}</Text>
-        )}
+        renderSectionHeader={({ section: { title } }) => (<Text style={style.header}>{title}</Text>)}
       />
       <AppButtonRound title="+" onPress={() => navigate('Luo tapahtuma')} />
     </View>
@@ -200,7 +198,13 @@ const style = StyleSheet.create({
   },
   icon: {
     paddingRight: 3,
-  }
+  },
+  header: {
+    paddingLeft: 7,
+    padding: 3,
+    fontFamily: 'nunito-bold',
+    fontSize: 16,
+  },
 })
 
 const mapStateToProps = (state) => ({
