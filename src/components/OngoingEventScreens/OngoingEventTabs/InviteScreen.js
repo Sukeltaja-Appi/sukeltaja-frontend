@@ -11,13 +11,18 @@ import { getOngoingEvent } from "../../../reducers/eventReducer";
 import styles, { paddingSides } from "../../../styles/global";
 import colors from "../../../styles/colors";
 import AppText from "../../common/AppText";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const style = {
   divider: {
     height: 10,
   },
-  buttonGreen: {
-    backgroundColor: colors.green,
+  buttonBlue: {
+    backgroundColor: colors.primary,
+    fontFamily: "nunito-bold",
+  },
+  buttonOrange: {
+    backgroundColor: "#f59e42",
     fontFamily: "nunito-bold",
   },
   top: {
@@ -27,7 +32,6 @@ const style = {
     flex: 4,
   },
   bottom: {
-    flex: 2,
     padding: paddingSides,
   },
   searchContainer: {
@@ -50,6 +54,12 @@ const style = {
     fontFamily: "nunito-bold",
     fontWeight: "normal",
   },
+};
+
+const textButtonStyle = {
+  fontSize: 16,
+  color: "gray",
+  textAlign: "center",
 };
 
 class InviteScreen extends React.Component {
@@ -147,9 +157,37 @@ class InviteScreen extends React.Component {
   setUserColor = (user) => {
     const { userIsPending, userIsParticipant } = this;
 
+    if (userIsPending(user)) return {};
+    if (userIsParticipant(user)) return {};
+
+    if (this.state.selectedUsers.includes(user))
+      return {
+        backgroundColor: colors.primary,
+      };
+
+    return {};
+  };
+
+  setUserTextColor = (user) => {
+    const { userIsPending, userIsParticipant } = this;
+
     if (userIsPending(user))
-      return { backgroundColor: colors.lightBlue, color: "white" };
-    if (userIsParticipant(user)) return { backgroundColor: colors.green };
+      return {
+        fontFamily: "nunito-bold",
+        fontWeight: "normal",
+        color: colors.primary,
+      };
+    if (userIsParticipant(user))
+      return {
+        fontFamily: "nunito-bold",
+        fontWeight: "normal",
+        color: colors.primary,
+      };
+
+    if (this.state.selectedUsers.includes(user))
+      return {
+        color: "#fff",
+      };
 
     return {};
   };
@@ -163,11 +201,17 @@ class InviteScreen extends React.Component {
         onPress={() => this.toggleUserSelection(user)}
         checked={selectedUsers.includes(user)}
         containerStyle={this.setUserColor(user)}
-        textStyle={{
-          fontFamily: 'nunito-bold',
-          fontWeight: 'normal',
-          color: this.userIsPending(user) || this.userIsParticipant(user) ? '#fff' : '#000',
-        }}
+        disabled={this.userIsPending(user) || this.userIsParticipant(user)}
+        iconType="material"
+        uncheckedIcon={
+          this.userIsPending(user) || this.userIsParticipant(user)
+            ? "check"
+            : "add"
+        }
+        checkedIcon="clear"
+        checkedColor="#fff"
+        uncheckedColor={this.userIsPending(user) || this.userIsParticipant(user) ? colors.primary : colors.gray}
+        textStyle={this.setUserTextColor(user)}
       />
     );
   };
@@ -249,7 +293,7 @@ class InviteScreen extends React.Component {
           <Button
             title="Kutsu osallistujaksi"
             onPress={this.inviteParticipants}
-            buttonStyle={style.buttonGreen}
+            buttonStyle={style.buttonBlue}
             titleStyle={{ fontFamily: "nunito-bold" }}
             disabled={this.inviteParticipantButtonDisabled()}
             raised
@@ -258,19 +302,10 @@ class InviteScreen extends React.Component {
           <Button
             title="Kutsu ylläpitäjäksi"
             onPress={this.inviteAdmins}
-            buttonStyle={style.buttonGreen}
+            buttonStyle={style.buttonOrange}
             titleStyle={{ fontFamily: "nunito-bold" }}
             raised
             disabled={this.inviteAdminButtonDisabled()}
-          />
-          <View style={style.divider} />
-          <View style={style.divider} />
-          <View style={style.divider} />
-          <Button
-            title="Takaisin"
-            onPress={this.backButton}
-            titleStyle={{ fontFamily: "nunito-bold" }}
-            raised
           />
         </View>
       </View>
