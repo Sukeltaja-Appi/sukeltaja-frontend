@@ -27,12 +27,15 @@ const style = {
   },
   top: {
     flex: 0,
+    paddingHorizontal: 13,
   },
   middle: {
     flex: 4,
+    paddingHorizontal: 13,
   },
   bottom: {
-    padding: paddingSides,
+    paddingHorizontal: 20,
+    paddingVertical: 10
   },
   searchContainer: {
     backgroundColor: "transparent",
