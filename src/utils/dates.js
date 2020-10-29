@@ -78,15 +78,25 @@ export const dateTomorrow = () => {
   const { year, month, day } = DateTime.local()
 
   return DateTime.local(year, month, day)
-    .plus({ days:1 })
+    .plus({ days: 1 })
     .toJSDate()
 }
 
-export const dateInOneWeek = () => {
+export const thisWeeksSunday = () => {
   const { year, month, day } = DateTime.local()
+  const weekdayNumber = DateTime.local().weekday
 
   return DateTime.local(year, month, day)
-    .plus({ days:7 })
+    .plus({ days: 6 - weekdayNumber })
+    .toJSDate()
+}
+
+export const nextWeeksSunday = () => {
+  const { year, month, day } = DateTime.local()
+  const weekdayNumber = DateTime.local().weekday
+
+  return DateTime.local(year, month, day)
+    .plus({ days: 13 - weekdayNumber })
     .toJSDate()
 }
 
@@ -94,6 +104,6 @@ export const dateInOneMonth = () => {
   const { year, month, day } = DateTime.local()
 
   return DateTime.local(year, month, day)
-    .plus({ months:1 })
+    .plus({ months: 1 })
     .toJSDate()
 }

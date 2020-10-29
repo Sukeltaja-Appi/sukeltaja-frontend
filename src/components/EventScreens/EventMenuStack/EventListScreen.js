@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, Text, StyleSheet, SectionList } from 'react-native'
 import { ListItem, Icon } from 'react-native-elements'
 import { setOngoingEvent } from '../../../reducers/eventReducer'
-import { dateToday1200, dateTomorrow, dateInOneWeek, dateInOneMonth } from '../../../utils/dates'
+import { dateToday1200, dateTomorrow, dateInOneMonth, thisWeeksSunday, nextWeeksSunday } from '../../../utils/dates'
 import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
 import AppButtonRound from '../../common/AppButtonRound'
@@ -18,8 +18,9 @@ const eventsSortedByGroup = (props) => {
   let groups = [
     { title: 'menneet', data: [] },
     { title: 'tänään', data: [] },
-    { title: 'seuraavan viikon aikana', data: [] },
-    { title: 'seuraavan kuukauden aikana', data: [] },
+    { title: 'tällä viikolla', data: [] },
+    { title: 'ensi viikolla', data: [] },
+    { title: 'kuukauden aikana', data: [] },
     { title: 'myöhemmin', data: [] },
   ]
   const { events } = props
@@ -34,9 +35,10 @@ const eventsSortedByGroup = (props) => {
     end = DateTime.local(end.year, end.month, end.day, 13)
 
     if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { groups[1].data.push(e) }
-    else if (Interval.fromDateTimes(dateTomorrow(), dateInOneWeek()).contains(start)) { groups[2].data.push(e) }
-    else if (Interval.fromDateTimes(dateInOneWeek(), dateInOneMonth()).contains(start)) { groups[3].data.push(e) }
-    else if (start > dateInOneMonth()) { groups[4].data.push(e) }
+    else if (Interval.fromDateTimes(dateTomorrow(), thisWeeksSunday()).contains(start)) { groups[2].data.push(e) }
+    else if (Interval.fromDateTimes(thisWeeksSunday(), nextWeeksSunday()).contains(start)) { groups[3].data.push(e) }
+    else if (Interval.fromDateTimes(nextWeeksSunday(), dateInOneMonth()).contains(start)) { groups[4].data.push(e) }
+    else if (start > dateInOneMonth()) { groups[5].data.push(e) }
     else { groups[0].data.push(e) }
   })
 
@@ -61,7 +63,7 @@ const EmptyList = (props) => {
 }
 
 const List = (props) => {
-  const { events, ongoingEvent, setOngoingEvent, groups, user } = props
+  const { ongoingEvent, setOngoingEvent, groups, user } = props
 
   const navigate = (value, item) => props.navigation.navigate(value, { item })
 
@@ -76,7 +78,7 @@ const List = (props) => {
     paddingLeft: 6,
     paddingRight: 14,
     backgroundColor: isOngoingEvent(event) ? colors.secondary_light
-      : isCreatorLoggedInUser(event) ? 'white' : 'light_gray'
+      : isCreatorLoggedInUser(event) ? 'white' : colors.lightgray
   })
 
   return (
