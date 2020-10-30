@@ -15,34 +15,36 @@ const EventListScreen = (props) => {
 }
 
 const eventsSortedByGroup = (props) => {
-  let groups = [
-    { title: 'menneet', data: [] },
-    { title: 'tänään', data: [] },
-    { title: 'tällä viikolla', data: [] },
-    { title: 'ensi viikolla', data: [] },
-    { title: 'kuukauden aikana', data: [] },
-    { title: 'myöhemmin', data: [] },
-  ]
+  const old = [], today = [], thisWeek = [], nextWeek = [], inMonth = [], later = []
   const { events } = props
   const eventsByDate = events.sort((a, b) => b.startdate.localeCompare(a.startdate))
+  const beforeMidday = 11
+  const afterMidday = 11
 
   eventsByDate.forEach(e => {
     let start = DateTime.fromISO(e.startdate)
 
-    start = DateTime.local(start.year, start.month, start.day, 11)
+    start = DateTime.local(start.year, start.month, start.day, beforeMidday)
     let end = DateTime.fromISO(e.enddate)
 
-    end = DateTime.local(end.year, end.month, end.day, 13)
+    end = DateTime.local(end.year, end.month, end.day, afterMidday)
 
-    if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { groups[1].data.push(e) }
-    else if (Interval.fromDateTimes(dateTomorrow(), thisWeeksSunday()).contains(start)) { groups[2].data.push(e) }
-    else if (Interval.fromDateTimes(thisWeeksSunday(), nextWeeksSunday()).contains(start)) { groups[3].data.push(e) }
-    else if (Interval.fromDateTimes(nextWeeksSunday(), dateInOneMonth()).contains(start)) { groups[4].data.push(e) }
-    else if (start > dateInOneMonth()) { groups[5].data.push(e) }
-    else { groups[0].data.push(e) }
+    if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { today.push(e) }
+    else if (Interval.fromDateTimes(dateTomorrow(), thisWeeksSunday()).contains(start)) { thisWeek.push(e) }
+    else if (Interval.fromDateTimes(thisWeeksSunday(), nextWeeksSunday()).contains(start)) { nextWeek.push(e) }
+    else if (Interval.fromDateTimes(nextWeeksSunday(), dateInOneMonth()).contains(start)) { inMonth.push(e) }
+    else if (start > dateInOneMonth()) { later.push(e) }
+    else { old.push(e) }
   })
 
-  return groups
+  return [
+    { title: 'yli kuukauden päästä', data: later },
+    { title: 'kuukauden aikana', data: inMonth },
+    { title: 'ensi viikolla', data: nextWeek },
+    { title: 'tällä viikolla', data: thisWeek },
+    { title: 'tänään', data: today },
+    { title: 'menneet', data: old },
+  ]
 }
 
 const EmptyList = (props) => {

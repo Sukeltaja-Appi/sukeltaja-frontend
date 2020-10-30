@@ -69,8 +69,9 @@ export const inTenMinutes = () => {
 
 export const dateToday1200 = () => {
   const { year, month, day } = DateTime.local()
+  const midday = 12
 
-  return DateTime.local(year, month, day, 12)
+  return DateTime.local(year, month, day, midday)
     .toJSDate()
 }
 
@@ -84,19 +85,19 @@ export const dateTomorrow = () => {
 
 export const thisWeeksSunday = () => {
   const { year, month, day } = DateTime.local()
-  const weekdayNumber = DateTime.local().weekday
+  const weekDayIndexesInLuxon = 6
 
   return DateTime.local(year, month, day)
-    .plus({ days: 6 - weekdayNumber })
+    .plus({ days: weekDayIndexesInLuxon - DateTime.local().weekday })
     .toJSDate()
 }
 
 export const nextWeeksSunday = () => {
   const { year, month, day } = DateTime.local()
-  const weekdayNumber = DateTime.local().weekday
+  const weekDayIndexesInLuxonPlusWeek = 13
 
   return DateTime.local(year, month, day)
-    .plus({ days: 13 - weekdayNumber })
+    .plus({ days: weekDayIndexesInLuxonPlusWeek - DateTime.local().weekday })
     .toJSDate()
 }
 
