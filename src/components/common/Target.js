@@ -44,13 +44,10 @@ const Target = (props) => {
       setOngoingEvent(event)
       updateEvent(event)
 
-      if (props.navigation.pop) {
-        if (customLocation)
-          // If custom location pop(1) goes back to the map
-          props.navigation.pop(2)
-        else
-          props.navigation.pop(1)
-      }
+      props.navigation.reset({
+        index: 0,
+        routes: [{ name: 'TargetScreen' }],
+      })
     }
   }
 

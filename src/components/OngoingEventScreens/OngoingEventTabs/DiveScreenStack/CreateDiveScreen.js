@@ -111,7 +111,7 @@ class CreateDiveScreen extends React.Component {
 
     return (
       <View style={styles.noPadding}>
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps='handled'>
           <DiveForm
             ref={this.ref}
             dive={dive}

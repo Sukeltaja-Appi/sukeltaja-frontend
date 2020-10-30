@@ -16,5 +16,7 @@ export default {
   success: '#52c41a',
   warning: '#faad14',
 
-  background: '#eeeeee'
+  background: '#eeeeee',
+
+  primaryText: '#118BFC'
 }

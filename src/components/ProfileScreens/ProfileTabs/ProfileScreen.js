@@ -77,7 +77,7 @@ export const ProfileScreen = (props) => {
 
   return (
     <View style={styles.noPadding}>
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps='handled'>
         <BackgroundImage>
           <SafeAreaView>
             <View style={{ alignItems: 'center' }}>
@@ -106,7 +106,7 @@ export const ProfileScreen = (props) => {
                   onPress={() => navigate('Kutsut')}
                 >
                   <Text style={{ color: 'white' }}>
-                    {invites.length} kutsua odottaa hyväksymistä
+                    {invites.length} {invites.length === 1 ? 'kutsu' : 'kutsua'} odottaa hyväksymistä
                   </Text>
                 </TouchableOpacity>
               )}

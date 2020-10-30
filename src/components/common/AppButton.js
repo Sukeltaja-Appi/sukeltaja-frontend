@@ -22,10 +22,15 @@ const style = {
   }
 }
 
-const AppButton = ({ onPress, title }) => (
-  <TouchableOpacity onPress={onPress} style={style.appButtonContainer}>
-    <Text style={style.appButtonText}>{title}</Text>
-  </TouchableOpacity>
-)
+const AppButton = ({ onPress, title, containerStyle, textStyle }) => {
+  const extraContainerStyle = containerStyle ?? {}
+  const extraTextStyle = textStyle ?? {}
+
+  return (
+    <TouchableOpacity onPress={onPress} style={{ ...style.appButtonContainer, ...extraContainerStyle }} >
+      <Text style={{ ...style.appButtonText, ...extraTextStyle }}>{title}</Text>
+    </TouchableOpacity >
+  )
+}
 
 export default AppButton
