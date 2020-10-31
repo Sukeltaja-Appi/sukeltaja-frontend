@@ -1,13 +1,16 @@
-import React from 'react'
+/* eslint-disable no-magic-numbers */
+import React, { useRef, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { View, Text, StyleSheet, SectionList } from 'react-native'
+import { View, Text, StyleSheet, SectionList, PixelRatio } from 'react-native'
 import { ListItem, Icon } from 'react-native-elements'
+import { Interval, DateTime } from 'luxon'
+import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
+
 import { setOngoingEvent } from '../../../reducers/eventReducer'
-import { dateToday1200, dateTomorrow, dateInOneMonth, thisWeeksSunday, nextWeeksSunday } from '../../../utils/dates'
+import { nextMonday } from '../../../utils/dates'
 import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
 import AppButtonRound from '../../common/AppButtonRound'
-import { Interval, DateTime } from 'luxon'
 import AppText from '../../common/AppText'
 
 const EventListScreen = (props) => {
@@ -15,35 +18,35 @@ const EventListScreen = (props) => {
 }
 
 const eventsSortedByGroup = (props) => {
-  const old = [], today = [], thisWeek = [], nextWeek = [], inMonth = [], later = []
+  const old = [], today = [], thisWeek = [], nextWeek = [], later = []
   const { events } = props
-  const eventsByDate = events.sort((a, b) => b.startdate.localeCompare(a.startdate))
-  const beforeMidday = 11
-  const afterMidday = 11
+  const eventsByDate = events.sort((a, b) => a.startdate.localeCompare(b.startdate))
 
   eventsByDate.forEach(e => {
     let start = DateTime.fromISO(e.startdate)
-
-    start = DateTime.local(start.year, start.month, start.day, beforeMidday)
     let end = DateTime.fromISO(e.enddate)
 
-    end = DateTime.local(end.year, end.month, end.day, afterMidday)
+    start = DateTime.local(start.year, start.month, start.day)
+    end = DateTime.local(end.year, end.month, end.day).plus({ days: 1 })
 
-    if (Interval.fromDateTimes(start, end).contains(dateToday1200())) { today.push(e) }
-    else if (Interval.fromDateTimes(dateTomorrow(), thisWeeksSunday()).contains(start)) { thisWeek.push(e) }
-    else if (Interval.fromDateTimes(thisWeeksSunday(), nextWeeksSunday()).contains(start)) { nextWeek.push(e) }
-    else if (Interval.fromDateTimes(nextWeeksSunday(), dateInOneMonth()).contains(start)) { inMonth.push(e) }
-    else if (start > dateInOneMonth()) { later.push(e) }
-    else { old.push(e) }
+    if (Interval.fromDateTimes(start, end).contains(DateTime.local()))
+      today.push(e)
+    else if (Interval.fromDateTimes(new Date(), nextMonday()).contains(start))
+      thisWeek.push(e)
+    else if (Interval.fromDateTimes(new Date(), nextMonday().plus({ weeks: 1 })).contains(start))
+      nextWeek.push(e)
+    else if (start > DateTime.local())
+      later.push(e)
+    else
+      old.push(e)
   })
 
   return [
-    { title: 'yli kuukauden päästä', data: later },
-    { title: 'kuukauden aikana', data: inMonth },
-    { title: 'ensi viikolla', data: nextWeek },
-    { title: 'tällä viikolla', data: thisWeek },
-    { title: 'tänään', data: today },
-    { title: 'menneet', data: old },
+    { title: 'Menneet', data: old },
+    { title: 'Tänään', data: today },
+    { title: 'Tällä viikolla', data: thisWeek },
+    { title: 'Ensi viikolla', data: nextWeek },
+    { title: 'Myöhemmin', data: later },
   ]
 }
 
@@ -65,13 +68,22 @@ const EmptyList = (props) => {
 }
 
 const List = (props) => {
-  const { ongoingEvent, setOngoingEvent, groups, user } = props
+  const sectionListRef = useRef(null)
 
+  const { ongoingEvent, setOngoingEvent, groups, user } = props
   const navigate = (value, item) => props.navigation.navigate(value, { item })
+
+  useEffect(() => {
+    if (sectionListRef.current) {
+      sectionListRef.current.scrollToLocation({
+        sectionIndex: 1,
+        itemIndex: 0,
+      })
+    }
+  }, [])
 
   const isOngoingEvent = (event) =>
     ongoingEvent ? event._id === ongoingEvent._id : false
-
   const isCreatorLoggedInUser = (event) =>
     event.creator.username === user.username ? true : false
 
@@ -80,15 +92,26 @@ const List = (props) => {
     paddingLeft: 6,
     paddingRight: 14,
     backgroundColor: isOngoingEvent(event) ? colors.secondary_light
-      : isCreatorLoggedInUser(event) ? 'white' : colors.lightgray
+      : isCreatorLoggedInUser(event) ? 'white' : colors.lightgray,
+    height: 78,
   })
 
   return (
     <View style={styles.noPadding}>
       <SectionList
+        ref={(sectionList) => { sectionListRef.current = sectionList }}
         sections={groups}
         extraData={ongoingEvent}
         keyExtractor={(item) => item._id}
+
+        getItemLayout={sectionListGetItemLayout({
+          getItemHeight: () => 78,
+          getSeparatorHeight: () => 0,
+          getSectionHeaderHeight: () => 30,
+          getSectionFooterHeight: () => 0,
+          listHeaderHeight: 0,
+        })}
+
         renderItem={({ item }) => {
           const { title, startdate, enddate, creator, target } = item
           const start = DateTime.fromISO(startdate)
@@ -129,7 +152,7 @@ const List = (props) => {
                 <View style={style.flexrow}>
                   <Icon name='room' type='material' color='#686868' size={20} style={style.icon} />
                   <Text style={style.subtitle}>
-                    {target == null ? 'ei kohdetta' : target.name}
+                    {!target ? 'ei kohdetta' : target.name}
                   </Text>
                 </View>
               </ListItem.Content>
@@ -137,8 +160,9 @@ const List = (props) => {
             </ListItem>
           )
         }}
-        renderSectionHeader={({ section }) => (section.data.length > 0 ?
-          <Text style={style.header}>{section.title}</Text> : null)}
+        renderSectionHeader={({ section }) => (
+          <Text style={{ ...style.header }} >{section.title}</Text>
+        )}
       />
       <AppButtonRound title="+" onPress={() => navigate('Luo tapahtuma')} />
     </View>
@@ -191,6 +215,8 @@ const style = StyleSheet.create({
     padding: 3,
     fontFamily: 'nunito-bold',
     fontSize: 16,
+    // Hardcode height because getItemLayout needs to know the exact height
+    height: 30,
   },
 })
 

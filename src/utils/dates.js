@@ -67,44 +67,10 @@ export const inTenMinutes = () => {
     .toJSDate()
 }
 
-export const dateToday1200 = () => {
+export const nextMonday = () => {
   const { year, month, day } = DateTime.local()
-  const midday = 12
-
-  return DateTime.local(year, month, day, midday)
-    .toJSDate()
-}
-
-export const dateTomorrow = () => {
-  const { year, month, day } = DateTime.local()
+  const weekDayIndexesInLuxon = 7
 
   return DateTime.local(year, month, day)
-    .plus({ days: 1 })
-    .toJSDate()
-}
-
-export const thisWeeksSunday = () => {
-  const { year, month, day } = DateTime.local()
-  const weekDayIndexesInLuxon = 6
-
-  return DateTime.local(year, month, day)
-    .plus({ days: weekDayIndexesInLuxon - DateTime.local().weekday })
-    .toJSDate()
-}
-
-export const nextWeeksSunday = () => {
-  const { year, month, day } = DateTime.local()
-  const weekDayIndexesInLuxonPlusWeek = 13
-
-  return DateTime.local(year, month, day)
-    .plus({ days: weekDayIndexesInLuxonPlusWeek - DateTime.local().weekday })
-    .toJSDate()
-}
-
-export const dateInOneMonth = () => {
-  const { year, month, day } = DateTime.local()
-
-  return DateTime.local(year, month, day)
-    .plus({ months: 1 })
-    .toJSDate()
+    .plus({ days: weekDayIndexesInLuxon - DateTime.local().weekday + 1 })
 }
