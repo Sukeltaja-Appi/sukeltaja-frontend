@@ -15,6 +15,9 @@ import { enableScreens } from 'react-native-screens'
 
 enableScreens()
 
+// Remove Yellow warnings
+console.disableYellowBox = true
+
 // * AppEntry is the first component where the store is available.
 // * App startup code can be placed here.
 // * Components that need to render outside of the Navigator can be
