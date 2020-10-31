@@ -1,5 +1,5 @@
 import React from 'react'
-import { createMaterialTopTabNavigator, MaterialTopTabBar } from '@react-navigation/material-top-tabs'
+import { MaterialTopTabBar } from '@react-navigation/material-top-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
 import { SafeAreaView } from 'react-native-safe-area-context'
 

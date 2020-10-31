@@ -2,11 +2,10 @@ import React from 'react'
 import {
   View,
   ScrollView,
-  FlatList,
   Dimensions,
   TouchableOpacity,
 } from 'react-native'
-import { Text, Button, ListItem, Icon } from 'react-native-elements'
+import { Button, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 
 import {
@@ -16,11 +15,9 @@ import {
 import { endDives } from '../../../reducers/diveReducer'
 import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
-import { formatDate } from '../../../utils/dates'
 import { paddingSides } from '../../../styles/global'
 import BackgroundImage from '../../common/BackgroundImage'
 import AppText from '../../common/AppText'
-import { MaterialIcons } from '@expo/vector-icons'
 
 const style = {
   buttonEnd: {

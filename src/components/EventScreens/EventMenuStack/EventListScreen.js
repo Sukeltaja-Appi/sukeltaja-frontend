@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import React, { useRef, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { View, Text, StyleSheet, SectionList, PixelRatio } from 'react-native'
+import { View, Text, StyleSheet, SectionList } from 'react-native'
 import { ListItem, Icon } from 'react-native-elements'
 import { Interval, DateTime } from 'luxon'
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
