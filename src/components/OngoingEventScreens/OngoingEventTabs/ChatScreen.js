@@ -1,24 +1,100 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, FlatList, Text } from 'react-native'
-import { ListItem, Button, Input, Icon } from 'react-native-elements'
+import { View, FlatList, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { Input } from 'react-native-elements'
+import { MaterialIcons } from '@expo/vector-icons'
+import { DateTime } from 'luxon'
 
 import eventMsgService from '../../../services/eventMessages'
-import { formatDate } from '../../../utils/dates'
-import styles, { paddingSides } from '../../../styles/global'
+import styles from '../../../styles/global'
 import colors from '../../../styles/colors'
+import AppText from '../../common/AppText'
 
-const style = {
+const style = StyleSheet.create({
   subtitle: {
     fontStyle: 'italic',
-    fontSize: 14
+    fontSize: 14,
   },
   top: {
     flex: 1,
     width: '100%',
-    padding: paddingSides,
+  },
+  inputContainer: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    marginRight: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexShrink: 1,
+  },
+  sendMessageButton: {
+    padding: 13,
+    backgroundColor: colors.primary,
+    borderRadius: 100,
+    alignSelf: 'flex-end'
+  },
+  dateMarkerContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 10
+  },
+  dateMarkerText: {
+    textAlign: 'center',
+    alignSelf: 'center',
+    paddingHorizontal: 10,
+    color: '#a1a1a1'
+  },
+  dateMarkerLine: {
+    marginTop: 4,
+    height: 1,
+    borderBottomWidth: 1,
+    flexGrow: 1,
+    alignSelf: 'center',
+    borderColor: '#a1a1a1'
   }
-}
+})
+const messageStyle = StyleSheet.create({
+  touchable: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingVertical: 5,
+    paddingLeft: 10,
+    paddingRight: 5
+  },
+  messageContainer: {
+    flexGrow: 1,
+    flexBasis: 0,
+  },
+  text: {
+    color: '#424242',
+  },
+  timeText: {
+    color: '#939393',
+    fontSize: 12,
+  },
+})
+const ownMessageStyle = StyleSheet.create({
+  ...messageStyle,
+  touchable: {
+    ...messageStyle.touchable,
+    backgroundColor: colors.primary,
+  },
+  text: {
+    ...messageStyle.text,
+    color: 'white',
+  },
+  timeText: {
+    ...messageStyle.timeText,
+    color: 'white',
+  },
+})
 
 class ChatScreen extends React.Component {
   constructor(props) {
@@ -28,7 +104,40 @@ class ChatScreen extends React.Component {
     }
   }
 
-  invitesSortedByDate = () => this.props.ongoingEvent.eventMessages.sort((a, b) => b.created.localeCompare(a.created))
+  formatDate = (isoDate) => {
+    return DateTime.fromISO(isoDate).toLocaleString(DateTime.DATE_FULL)
+  }
+
+  messagesSortedByDate = () => {
+    const messages = [...this.props.ongoingEvent.eventMessages]
+    const today = new Date().toISOString().split('T')[0]
+
+    messages.sort((a, b) => b.created.localeCompare(a.created))
+    let prevDate = null
+
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const { created } = messages[i]
+      const date = created.split('T')[0]
+
+      if (date !== prevDate) {
+        if (created.split('T')[0] === today) {
+          messages.splice(i + 1, 0, {
+            dateMarker: true,
+            text: 'Tänään'
+          })
+        }
+        else {
+          messages.splice(i + 1, 0, {
+            dateMarker: true,
+            text: this.formatDate(created)
+          })
+        }
+        prevDate = date
+      }
+    }
+
+    return messages
+  }
 
   showMessages = () => {
     const { eventMessages } = this.props.ongoingEvent
@@ -43,25 +152,48 @@ class ChatScreen extends React.Component {
 
     return (
       <FlatList
-        data={this.invitesSortedByDate()}
+        inverted
+        data={this.messagesSortedByDate()}
+        style={{ paddingHorizontal: 10 }}
         renderItem={({ item }) => {
+          if (item.dateMarker) {
+            return (
+              <View style={style.dateMarkerContainer}>
+                <View style={style.dateMarkerLine} />
+                <AppText style={style.dateMarkerText}>{item.text}</AppText>
+                <View style={style.dateMarkerLine} />
+              </View>
+            )
+          }
           const { user, created, text } = item
+          const date = new Date(created)
+          const time = `${date.getHours()}:${date.getMinutes().toString().padEnd(2, '0')}`
+
+          const isMyMessage = user._id === this.props.user._id
+          const currentStyle = isMyMessage ? ownMessageStyle : messageStyle
 
           return (
-            <ListItem
+            <View
+              // Change View to TouchableOpacity if we need this
               onPress={() => this.selectMessage(item)}
-              bottomDivider
+              style={currentStyle.touchable}
             >
-              <ListItem.Content>
-                <ListItem.Title>{text}</ListItem.Title>
-                <ListItem.Subtitle style={style.subtitle}>
-                  {user.username + ', ' + formatDate(created)}
-                </ListItem.Subtitle>
-              </ListItem.Content>
-            </ListItem>
+              <View style={currentStyle.container}>
+                <View style={currentStyle.messageContainer}>
+                  {
+                    !isMyMessage && <AppText style={{ color: colors.primary }}>{user.username}</AppText>
+                  }
+                  <AppText style={currentStyle.text}>
+                    {text}
+                  </AppText>
+                </View>
+                <View style={{ alignSelf: 'flex-start' }}>
+                  <AppText style={currentStyle.timeText}>{time}</AppText>
+                </View>
+              </View>
+            </View>
           )
-        }
-        }
+        }}
         keyExtractor={item => item._id}
       />
     )
@@ -88,28 +220,37 @@ class ChatScreen extends React.Component {
     return (
       <View style={styles.noPadding}>
         <View style={style.top}>
-          <Input
-            value={this.state.message}
-            onChangeText={message => this.setState({ message })}
-            rightIcon={() => <Icon name='message-circle' type='feather' color={colors.lightgray} />}
-            placeholder='Kirjoita viesti'
-            containerStyle={{ backgroundColor: 'white', marginBottom: 10 }}
-            inputContainerStyle={{ borderBottomWidth: 0 }}
-          />
-          <Button
-            title='Lähetä'
-            onPress={this.sendMessage}
-          />
-        </View>
-        <View style={{ flex: 2 }}>
-          {this.showMessages()}
+          <View style={{ flex: 1, padding: 10 }}>
+            {this.showMessages()}
+          </View>
+          <View style={{ flexDirection: 'row', marginHorizontal: 6, marginBottom: 12 }}>
+            <Input
+              multiline
+              maxHeight={110}
+              value={this.state.message}
+              onChangeText={message => this.setState({ message })}
+              placeholder='Kirjoita viesti'
+              containerStyle={style.inputContainer}
+              inputContainerStyle={{ borderBottomWidth: 0 }}
+            />
+            <TouchableOpacity
+              onPress={this.sendMessage}
+              style={style.sendMessageButton}
+            >
+              <MaterialIcons name="send" color='white' size={24} />
+            </TouchableOpacity>
+          </View>
+
         </View>
       </View>
     )
   }
 }
 
-const mapStateToProps = (state) => ({ ongoingEvent: state.ongoingEvent })
+const mapStateToProps = (state) => ({
+  ongoingEvent: state.ongoingEvent,
+  user: state.user,
+})
 
 export default connect(
   mapStateToProps,
