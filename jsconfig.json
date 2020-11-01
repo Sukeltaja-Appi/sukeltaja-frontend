@@ -3,6 +3,7 @@
     "target": "esnext",
     "module": "commonjs",
     "checkJs": true,
-    "maxNodeModuleJsDepth": 5
+    "maxNodeModuleJsDepth": 5,
+    "jsx": "react-native"
   }
 }
