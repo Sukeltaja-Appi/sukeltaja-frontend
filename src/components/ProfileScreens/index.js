@@ -5,8 +5,8 @@ import InvitesScreen from './ProfileTabs/InvitesScreen'
 import LicenseScreen from './ProfileTabs/LicenseScreen'
 import ProfileScreen from './ProfileTabs/ProfileScreen'
 import SettingsScreen from './ProfileTabs/SettingsScreen'
-import EventListScreen from '../EventScreens/EventMenuStack/EventListScreen'
 import DiveHistoryScreen from './ProfileTabs/DiveHistoryScreen'
+
 
 const StackMessage = createStackNavigator()
 

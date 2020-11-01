@@ -1,28 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, FlatList, Text, StyleSheet } from 'react-native'
-import { ListItem } from 'react-native-elements'
+import { View, FlatList, Text, StyleSheet, RefreshControl } from 'react-native'
+import { ListItem, Icon } from 'react-native-elements'
+import { MaterialIcons } from '@expo/vector-icons'
 
-import { setOngoingEvent } from '../../../reducers/eventReducer'
-import { diveReducer } from '../../../reducers/diveReducer'
+import { diveReducer, initializeDives, ongoingDivesReducer } from '../../../reducers/diveReducer'
 import { formatDate } from '../../../utils/dates'
-import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
-import events2 from '../../../services/events'
+import colors from '../../../styles/colors'
 
 const style = StyleSheet.create({
-  acceptButton: {
-    padding: 10,
-    borderRadius: 100,
-    marginBottom: 5,
-    borderColor: '#e8e8e8'
-  },
-  rejectButton: {
-    padding: 10,
-    borderRadius: 100,
-    borderColor: '#e8e8e8',
-    marginRight: 15
-  },
   divider: {
     paddingHorizontal: 20,
     paddingVertical: 5,
@@ -37,65 +24,136 @@ const style = StyleSheet.create({
 
 const n6 = 6
 
-const EventListScreen = (props) => props.user.dives.length === 0 ? <EmptyList /> : <List {...props} />
+class DiveHistoryScreen extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      dives: [],
+      isFetching: false
+    }
+    this.loadDives()
+  }
 
-const EmptyList = () => (
-  <View style={styles.centered}>
-    <Text style={styles.h5}>Ei omia tapahtumia.</Text>
-  </View>
-)
+  componentDidMount() {
+    this.updatedDives()
+  }
 
-const List = (props) => {
-  const { ongoingEvent, dives, events } = props
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { dives } = nextProps
 
-  const navigate = (item) => props.navigation.navigate('Dive', { item })
-  const divesSortedByDate = () => dives.sort((a, b) => b.startdate.localeCompare(a.startdate))
+    this.setState({ dives: dives })
+  }
 
-  return (
-    <View style={styles.noPadding}>
-      <FlatList
-        data={divesSortedByDate()}
-        extraData={ongoingEvent}
-        renderItem={({ item }) => {
-          const { startdate, enddate, latitude, longitude, event } = item
+  updatedDives = () => {
+    const { dives } = this.props
 
-          return (
-            <ListItem
-              onPress={() => navigate(item)}
-              bottomDivider
-              pad={0}
-            >
-              <ListItem.Content>
-                <ListItem.Title>{event}</ListItem.Title>
-                <ListItem.Subtitle style={style.subtitle}>
-                  {
-                    'Alkoi: ' + formatDate(startdate) + '\n'
-                    + 'Loppui:' + formatDate(enddate) + '\n'
-                    + 'Koordinaatit: L: '
-                    + parseFloat(latitude).toFixed(n6) + '; P:'
-                    + parseFloat(longitude).toFixed(n6)
-                  }
-                </ListItem.Subtitle>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          )
-        }
-        }
-        keyExtractor={item => item._id}
-      />
-    </View>
-  )
+    //console.log(this.props.dives)
+    this.setState({ dives: dives })
+  }
+
+  loadDives = async () => {
+    this.setState({ isFetching: true })
+    await this.props.initializeDives()
+    this.setState({ isFetching: false })
+    this.updatedDives()
+  }
+
+  divesSortedByDate = () => {
+    return this.state.dives.sort((a, b) => b.startdate.localeCompare(a.startdate))
+  }
+
+  nameOfEvent = (eventId) => {
+    const { events } = this.props
+    const event = events.find(e => e._id === eventId)
+
+    return event.title
+  }
+
+  targetOfEvent = (eventId) => {
+    const { events } = this.props
+    const event = events.find(e => e._id === eventId)
+
+    if (event.target===undefined) {
+      return 'ei kohdetta'
+    }
+    const targetName = event.target.name + '/' + event.target.type
+
+    return targetName
+  }
+
+  selectDive = (dive) => {
+    console.log(dive)
+  }
+
+  lengthOfDive = (startTime, endTime) => {
+    const diff = new Date(endTime) - new Date(startTime)
+    const minutes = Math.round((diff/1000)/60)
+    return minutes
+  }
+
+  List = () => {
+
+    return (
+      <View style={styles.noPadding}>
+        <FlatList
+          data={this.divesSortedByDate()}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.isFetching}
+              onRefresh={this.loadDives}
+              colors={['#118BFC']}
+            />
+          }
+          renderItem={({ item }) => {
+            const { startdate, enddate, latitude, longitude, event } = item
+            const eventName = this.nameOfEvent(event)
+            const targetName = this.targetOfEvent(event)
+            const diveLength = this.lengthOfDive(startdate, enddate)
+
+            return (
+              <ListItem
+                onPress={() => this.selectDive(item)}
+                bottomDivider
+                containerStyle={{ paddingVertical: 3, paddingHorizontal: 16 }}
+              >
+                <Icon name='person' size={60} color={'#606060'} />
+                <ListItem.Content>
+                  <ListItem.Title style={{ color: colors.primaryText, fontSize: 18, flex: 1, flexWrap: 'wrap' }}>
+                    {eventName}
+                  </ListItem.Title>
+                  <ListItem.Subtitle style={style.subtitle}>
+                    {
+                      'Päivä: ' + formatDate(startdate) + '\n'
+                      + 'Kesto: ' + diveLength + ' min' + '\n'
+                      + 'Koordinaatit: L: '
+                      + parseFloat(latitude).toFixed(n6) + '; P:'
+                      + parseFloat(longitude).toFixed(n6) +'\n'
+                      + 'Kohde: ' + targetName
+                    }
+                  </ListItem.Subtitle>
+                </ListItem.Content>
+                <ListItem.Chevron />
+              </ListItem>
+            )
+          }
+          }
+          keyExtractor={item => item._id}
+        />
+      </View>
+    )
+  }
+  render() {
+    return this.List()
+  }
 }
 
 const mapStateToProps = (state) => ({
   events: state.events,
-  ongoingEvent: state.ongoingEvent,
   user: state.user,
   dives: state.user.dives
 })
 
 export default connect(
   mapStateToProps,
-  { setOngoingEvent, diveReducer }
-)(EventListScreen)
+  { diveReducer, initializeDives, ongoingDivesReducer }
+)(DiveHistoryScreen)
