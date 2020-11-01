@@ -88,12 +88,11 @@ const List = (props) => {
     event.creator.username === user.username ? true : false
 
   const eventStyle = (event) => ({
-    paddingVertical: 0,
-    paddingLeft: 6,
-    paddingRight: 14,
     backgroundColor: isOngoingEvent(event) ? colors.secondary_light
       : isCreatorLoggedInUser(event) ? 'white' : colors.lightgray,
     height: 78,
+    padding: 0,
+    paddingRight: 14,
   })
 
   return (
@@ -127,11 +126,9 @@ const List = (props) => {
               pad={0}
             >
               <ListItem.Content style={style.dateContainer}>
-                <View style={style.flexrow}>
-                  <AppText>
-                    {start.day}.{start.month}.{' - '}
-                    {end.day}.{end.month}.{end.year}
-                  </AppText>
+                <View style={{ marginBottom: 5 }} >
+                  <AppText>{start.day}.{start.month}.{' - '}</AppText>
+                  <AppText>{end.day}.{end.month}.{end.year} </AppText>
                 </View>
                 <View style={style.flexrow}>
                   <Icon name='schedule' type='material' color='white' size={20} style={style.icon} />
@@ -139,6 +136,7 @@ const List = (props) => {
                     {start.hour}{':'}{start.minute.toString().padStart(2, '0')}
                   </AppText>
                 </View>
+
               </ListItem.Content>
 
               <ListItem.Content style={style.infoContainer}>
@@ -192,16 +190,19 @@ const style = StyleSheet.create({
     color: '#686868'
   },
   dateContainer: {
-    flex: 0.35,
-    justifyContent: 'flex-start',
+    flexBasis: 100,
+    flexGrow: 0,
+    justifyContent: 'center',
     flexDirection: 'column',
     backgroundColor: '#379EFE',
-    padding: 5,
+    alignSelf: 'stretch',
+    paddingLeft: 8,
   },
   infoContainer: {
     justifyContent: 'flex-start',
     flexDirection: 'column',
     padding: 5,
+    flexGrow: 100,
   },
   flexrow: {
     justifyContent: 'flex-start',
