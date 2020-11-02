@@ -31,15 +31,15 @@ const style = {
     paddingVertical: 0,
     paddingLeft: 1,
     paddingRight: 5,
-    marginBottom: 8,
+    marginBottom: 3,
   },
   iconContainer: {
-    flex: 0.33,
+    flex: 0.25,
     justifyContent: 'center',
     flexDirection: 'column',
     backgroundColor: '#379EFE',
     alignItems: 'center',
-    height: 100,
+    height: 70,
   },
   divider: {
     height: 10,
@@ -135,25 +135,22 @@ class DiveListScreen extends React.Component {
                     </ListItem.Subtitle>
                   </ListItem.Content>
                   <ListItem.Content
-                    style={{ flexDirection: 'row', marginTop: 5 }}
+                    style={{ flexDirection: 'row' }}
                   >
                     <MaterialIcons
                       name="room"
                       size={20}
                       color={colors.primary}
                     />
-                    <ListItem.Subtitle style={style.subtitle}>
-                      {'Koordinaatit: '}
-                    </ListItem.Subtitle>
-                  </ListItem.Content>
-                  <ListItem.Subtitle
-                    style={{ ...style.subtitle, marginLeft: 5 }}
-                  >
-                    {'L:' +
+                    <ListItem.Subtitle
+                      style={{ ...style.subtitle, marginLeft: 5 }}
+                    >
+                      {'L:' +
                       parseFloat(latitude).toFixed(n6) +
                       '; P:' +
                       parseFloat(longitude).toFixed(n6)}
-                  </ListItem.Subtitle>
+                    </ListItem.Subtitle>
+                  </ListItem.Content>
                 </ListItem.Content>
                 <ListItem.Chevron />
               </ListItem>
