@@ -90,18 +90,8 @@ const List = (props) => {
     }
   }, [])
 
-  const isOngoingEvent = (event) =>
-    ongoingEvent ? event._id === ongoingEvent._id : false
   const isCreatorLoggedInUser = (event) =>
     event.creator.username === user.username ? true : false
-
-  const eventStyle = (event) => ({
-    backgroundColor: isOngoingEvent(event) ? colors.secondary_light
-      : isCreatorLoggedInUser(event) ? 'white' : colors.lightgray,
-    height: 78,
-    padding: 0,
-    paddingRight: 14,
-  })
 
   return (
     <View style={styles.noPadding}>
@@ -129,7 +119,7 @@ const List = (props) => {
               onPress={() => {
                 setOngoingEvent(item) && navigate('Tapahtuma', item)
               }}
-              containerStyle={eventStyle(item)}
+              containerStyle={style.event}
               bottomDivider
               pad={0}
             >
@@ -229,6 +219,12 @@ const style = StyleSheet.create({
     // Hardcode height because getItemLayout needs to know the exact height
     height: 30,
   },
+  event: {
+    backgroundColor: 'white',
+    height: 78,
+    padding: 0,
+    paddingRight: 14,
+  }
 })
 
 const mapStateToProps = (state) => ({
