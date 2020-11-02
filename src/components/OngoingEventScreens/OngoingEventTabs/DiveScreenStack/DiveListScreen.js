@@ -10,6 +10,7 @@ import styles from "../../../../styles/global";
 import { paddingSides } from "../../../../styles/global";
 import AppText from "../../../common/AppText";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import CommonButton from "../../../common/CommonButton";
 
 const style = {
   headline: {
@@ -57,27 +58,6 @@ const style = {
     padding: paddingSides,
     marginBottom: 12,
     alignItems: "center",
-  },
-  buttonDive: {
-    backgroundColor: colors.primary,
-    borderRadius: 12,
-    fontFamily: "nunito-bold",
-  },
-  buttonCreate: {
-    backgroundColor: colors.primary,
-    borderRadius: 12,
-  },
-  hairline: {
-    backgroundColor: "#A2A2A2",
-    height: 2,
-    width: 165,
-  },
-  loginButtonBelowText1: {
-    fontFamily: "AvenirNext-Bold",
-    fontSize: 14,
-    paddingHorizontal: 5,
-    alignSelf: "center",
-    color: "#A2A2A2",
   },
 };
 
@@ -200,34 +180,24 @@ class DiveListScreen extends React.Component {
         </View>
         <View style={style.bottom}>
           <View style={style.divider} />
-          <Button
-            title="Aloita sukeltaminen"
+          <CommonButton
+            title="Sukella"
             onPress={() => this.navigate("DiveScreen")}
             buttonStyle={style.buttonDive}
-            raised
-            titleStyle={{
-              fontFamily: "nunito-bold",
-              textTransform: "uppercase",
-            }}
           />
           <View style={style.divider} />
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={{ flex: 1, height: 1, backgroundColor: colors.gray }} />
             <View>
-              <Text style={{ width: 50, textAlign: "center", color: 'gray'}}>TAI</Text>
+              <AppText style={{ width: 50, textAlign: "center", color: 'gray'}}>TAI</AppText>
             </View>
             <View style={{ flex: 1, height: 1, backgroundColor: colors.gray }} />
           </View>
           <View style={style.divider} />
-          <Button
-            title="Luo uusi sukellus"
+          <CommonButton
+            title="Luo uusi sukellus listalle"
             buttonStyle={style.buttonCreate}
             onPress={() => this.navigate("CreateDiveScreen")}
-            raised
-            titleStyle={{
-              fontFamily: "nunito-bold",
-              textTransform: "uppercase",
-            }}
           />
         </View>
       </View>

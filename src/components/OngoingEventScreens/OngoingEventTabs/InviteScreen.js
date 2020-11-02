@@ -1,29 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { View, FlatList, Text } from "react-native";
+import { View, FlatList } from "react-native";
 import { CheckBox, Button, SearchBar } from "react-native-elements";
 
 import { loadAllUsers } from "../../../reducers/userReducer";
 import { sendMessage } from "../../../reducers/messageReducer";
 import { getOngoingEvent } from "../../../reducers/eventReducer";
 
-import styles, { paddingSides } from "../../../styles/global";
+import styles from "../../../styles/global";
 import colors from "../../../styles/colors";
 import AppText from "../../common/AppText";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import CommonButton from "../../common/CommonButton";
 
 const style = {
   divider: {
     height: 10,
-  },
-  buttonBlue: {
-    backgroundColor: colors.primary,
-    fontFamily: "nunito-bold",
-  },
-  buttonOrange: {
-    backgroundColor: "#f59e42",
-    fontFamily: "nunito-bold",
   },
   top: {
     flex: 0,
@@ -35,7 +27,11 @@ const style = {
   },
   bottom: {
     paddingHorizontal: 20,
-    paddingVertical: 10
+    paddingVertical: 10,
+    justifyContent: "flex-end",
+    width: "100%",
+    marginBottom: 12,
+    alignItems: "center",
   },
   searchContainer: {
     backgroundColor: "transparent",
@@ -59,12 +55,6 @@ const style = {
   },
 };
 
-const textButtonStyle = {
-  fontSize: 16,
-  color: "gray",
-  textAlign: "center",
-};
-
 class InviteScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -72,7 +62,7 @@ class InviteScreen extends React.Component {
       displayedUsers: [],
       selectedUsers: [],
       query: "",
-      listMessage: "Ei käyttäjiä",
+      listMessage: "Ei käyttäjiä!",
     };
     this.showList = this.showList.bind(this);
   }
@@ -176,23 +166,25 @@ class InviteScreen extends React.Component {
 
     if (userIsPending(user))
       return {
+        color: colors.primary,
         fontFamily: "nunito-bold",
         fontWeight: "normal",
-        color: colors.primary,
       };
     if (userIsParticipant(user))
       return {
+        color: colors.primary,
         fontFamily: "nunito-bold",
         fontWeight: "normal",
-        color: colors.primary,
       };
 
     if (this.state.selectedUsers.includes(user))
       return {
         color: "#fff",
+        fontFamily: "nunito-bold",
+        fontWeight: "normal",
       };
 
-    return {};
+    return { fontFamily: "nunito-bold", fontWeight: "normal" };
   };
 
   renderListItem = (user) => {
@@ -213,7 +205,11 @@ class InviteScreen extends React.Component {
         }
         checkedIcon="clear"
         checkedColor="#fff"
-        uncheckedColor={this.userIsPending(user) || this.userIsParticipant(user) ? colors.primary : colors.gray}
+        uncheckedColor={
+          this.userIsPending(user) || this.userIsParticipant(user)
+            ? colors.primary
+            : colors.gray
+        }
         textStyle={this.setUserTextColor(user)}
       />
     );
@@ -223,7 +219,7 @@ class InviteScreen extends React.Component {
     if (invitableUsers.length === 0) {
       return (
         <View style={styles.centered}>
-          <AppText style={styles.h5}>{this.state.listMessage}</AppText>
+          <AppText style={{...styles.h5, top: -50 }}>{this.state.listMessage}</AppText>
         </View>
       );
     } else {
@@ -293,21 +289,24 @@ class InviteScreen extends React.Component {
         <View style={style.middle}>{this.showList(displayedUsers)}</View>
 
         <View style={style.bottom}>
-          <Button
+          <CommonButton
             title="Kutsu osallistujaksi"
             onPress={this.inviteParticipants}
-            buttonStyle={style.buttonBlue}
-            titleStyle={{ fontFamily: "nunito-bold" }}
             disabled={this.inviteParticipantButtonDisabled()}
-            raised
           />
           <View style={style.divider} />
-          <Button
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flex: 1, height: 1, backgroundColor: colors.gray }} />
+            <View>
+              <AppText style={{ width: 50, textAlign: "center", color: 'gray'}}>TAI</AppText>
+            </View>
+            <View style={{ flex: 1, height: 1, backgroundColor: colors.gray }} />
+          </View>
+          <View style={style.divider} />
+          <CommonButton
             title="Kutsu ylläpitäjäksi"
             onPress={this.inviteAdmins}
-            buttonStyle={style.buttonOrange}
-            titleStyle={{ fontFamily: "nunito-bold" }}
-            raised
+            buttonStyle={{backgroundColor: "#f59e42" }}
             disabled={this.inviteAdminButtonDisabled()}
           />
         </View>
