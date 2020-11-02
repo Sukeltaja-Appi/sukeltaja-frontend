@@ -1,127 +1,244 @@
-import React from 'react'
-import { View, FlatList } from 'react-native'
-import { Text, Button, ListItem } from 'react-native-elements'
-import { connect } from 'react-redux'
+import React from "react";
+import { View, FlatList } from "react-native";
+import { Text, Button, ListItem } from "react-native-elements";
+import { connect } from "react-redux";
 
-import { formatDate } from '../../../../utils/dates'
+import { formatDate } from "../../../../utils/dates";
 
-import colors from '../../../../styles/colors'
-import styles from '../../../../styles/global'
-import { paddingSides } from '../../../../styles/global'
+import colors from "../../../../styles/colors";
+import styles from "../../../../styles/global";
+import { paddingSides } from "../../../../styles/global";
+import AppText from "../../../common/AppText";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
 const style = {
   headline: {
-    alignItems: 'center',
-    marginBottom: 10
+    alignItems: "flex-start",
+    marginBottom: 10,
   },
   subtitle: {
-    fontStyle: 'italic',
-    fontSize: 14
+    fontSize: 13,
+    fontFamily: "nunito-bold",
+    marginLeft: 5,
+  },
+  title: {
+    fontSize: 16,
+    fontFamily: "nunito-bold",
+    marginLeft: 5,
+  },
+  diveContainer: {
+    paddingVertical: 0,
+    paddingLeft: 1,
+    paddingRight: 5,
+    marginBottom: 8,
+  },
+  iconContainer: {
+    flex: 0.33,
+    justifyContent: "center",
+    flexDirection: "column",
+    backgroundColor: "#379EFE",
+    alignItems: "center",
+    height: 100,
   },
   divider: {
-    height: 10
+    height: 10,
   },
   top: {
-    flex: 5,
-    justifyContent: 'flex-start',
-    marginTop: 10
+    flex: 9,
+    justifyContent: "flex-start",
+    marginTop: 10,
+    paddingHorizontal: 15,
+    marginBottom: 50
   },
   bottom: {
     flex: 2,
-    justifyContent: 'flex-end',
-    width: '100%',
+    justifyContent: "center",
+    width: "100%",
     padding: paddingSides,
-    marginBottom: 12
+    marginBottom: 12,
+    alignItems: "center",
+  },
+  buttonDive: {
+    backgroundColor: colors.primary,
+    borderRadius: 12,
+    fontFamily: "nunito-bold",
   },
   buttonCreate: {
-    backgroundColor: colors.green
+    backgroundColor: colors.primary,
+    borderRadius: 12,
   },
-}
+  hairline: {
+    backgroundColor: "#A2A2A2",
+    height: 2,
+    width: 165,
+  },
+  loginButtonBelowText1: {
+    fontFamily: "AvenirNext-Bold",
+    fontSize: 14,
+    paddingHorizontal: 5,
+    alignSelf: "center",
+    color: "#A2A2A2",
+  },
+};
 
-const n6 = 6
+const n6 = 6;
 
 class DiveListScreen extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
-  navigate = (value) => this.props.navigation.navigate(value)
-  navigateToDive = (item) => this.props.navigation.navigate('Dive', { item })
+  navigate = (value) => this.props.navigation.navigate(value);
+  navigateToDive = (item) => this.props.navigation.navigate("Dive", { item });
 
-  divesSortedByDate = () => this.props.ongoingEvent.dives.sort((a, b) => b.startdate.localeCompare(a.startdate))
+  divesSortedByDate = () =>
+    this.props.ongoingEvent.dives.sort((a, b) =>
+      b.startdate.localeCompare(a.startdate)
+    );
 
   displayEndDate = (dive) => {
-    if (!dive.enddate) return 'Meneillään oleva!'
+    if (!dive.enddate) return "Meneillään oleva!";
 
-    return 'Loppui: ' + formatDate(dive.enddate)
-  }
+    return "Loppui: " + formatDate(dive.enddate);
+  };
+
+  showList = (ongoingEvent) => {
+    if (this.props.ongoingEvent.dives.length === 0) {
+      return (
+        <View style={styles.centered}>
+          <AppText style={styles.h5}>Ei sukelluksia löytynyt.</AppText>
+          <AppText style={styles.h4}>
+            Aloita uusi sukellus tai luo sukellus listaan.
+          </AppText>
+        </View>
+      );
+    } else {
+      return (
+        <FlatList
+          data={this.divesSortedByDate()}
+          extraData={ongoingEvent.dives}
+          renderItem={({ item }) => {
+            const { user, startdate, latitude, longitude } = item;
+
+            return (
+              <ListItem
+                onPress={() => this.navigateToDive(item)}
+                bottomDivider
+                underlayColor="#fff"
+                containerStyle={style.diveContainer}
+                pad={5}
+              >
+                <ListItem.Content style={style.iconContainer}>
+                  <MaterialCommunityIcons name="waves" size={36} color="#fff" />
+                </ListItem.Content>
+                <ListItem.Content style={style.diveContainer}>
+                  <ListItem.Content
+                    style={{ flexDirection: "row", alignItems: "center" }}
+                  >
+                    <MaterialIcons
+                      name="person"
+                      size={20}
+                      color={colors.primary}
+                    />
+                    <ListItem.Title style={style.title}>
+                      {"Sukeltaja: " + user.username}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Content style={{ flexDirection: "row" }}>
+                    <MaterialIcons
+                      name="schedule"
+                      size={20}
+                      color={colors.primary}
+                    />
+                    <ListItem.Subtitle style={style.subtitle}>
+                      {formatDate(startdate)}
+                    </ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Content
+                    style={{ flexDirection: "row", marginTop: 5 }}
+                  >
+                    <MaterialIcons
+                      name="room"
+                      size={20}
+                      color={colors.primary}
+                    />
+                    <ListItem.Subtitle style={style.subtitle}>
+                      {"Koordinaatit: "}
+                    </ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Subtitle
+                    style={{ ...style.subtitle, marginLeft: 5 }}
+                  >
+                    {"L:" +
+                      parseFloat(latitude).toFixed(n6) +
+                      "; P:" +
+                      parseFloat(longitude).toFixed(n6)}
+                  </ListItem.Subtitle>
+                </ListItem.Content>
+                <ListItem.Chevron />
+              </ListItem>
+            );
+          }}
+          keyExtractor={(item) => item._id}
+        />
+      );
+    }
+  };
 
   render() {
-    const { ongoingEvent } = this.props
+    const { ongoingEvent } = this.props;
 
     return (
       <View style={styles.noPadding}>
         <View style={style.top}>
           <View style={style.headline}>
-            <Text style={{ fontSize: 24 }}>Sukellukset</Text>
+            <AppText style={{ fontSize: 24, color: colors.primary }}>
+              Sukellukset
+            </AppText>
           </View>
-          <FlatList
-            data={this.divesSortedByDate()}
-            extraData={ongoingEvent.dives}
-            renderItem={({ item }) => {
-              const { user, startdate, latitude, longitude } = item
-
-              return (
-                <ListItem
-                  onPress={() => this.navigateToDive(item)}
-                  bottomDivider
-                >
-                  <ListItem.Content>
-                    <ListItem.Title>{'Sukeltaja: ' + user.username}</ListItem.Title>
-                    <ListItem.Subtitle style={style.subtitle}>
-                      {
-                        'Alkoi: ' + formatDate(startdate) + '\n'
-                        + this.displayEndDate(item)
-                        + '\nKoordinaatit: L:'
-                        + parseFloat(latitude).toFixed(n6) + '; P:'
-                        + parseFloat(longitude).toFixed(n6)}
-                    </ListItem.Subtitle>
-                  </ListItem.Content>
-                  <ListItem.Chevron />
-                </ListItem>
-              )
-            }
-            }
-            keyExtractor={item => item._id}
-          />
+          <View>{this.showList(ongoingEvent)}</View>
         </View>
         <View style={style.bottom}>
           <View style={style.divider} />
           <Button
-            title='Luo uusi sukellus ->'
-            buttonStyle={style.buttonCreate}
-            onPress={() => this.navigate('CreateDiveScreen')}
+            title="Aloita sukeltaminen"
+            onPress={() => this.navigate("DiveScreen")}
+            buttonStyle={style.buttonDive}
             raised
+            titleStyle={{
+              fontFamily: "nunito-bold",
+              textTransform: "uppercase",
+            }}
           />
           <View style={style.divider} />
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{ flex: 1, height: 1, backgroundColor: colors.gray }} />
+            <View>
+              <Text style={{ width: 50, textAlign: "center", color: 'gray'}}>TAI</Text>
+            </View>
+            <View style={{ flex: 1, height: 1, backgroundColor: colors.gray }} />
+          </View>
+          <View style={style.divider} />
           <Button
-            title='Aloita sukelluksia ->'
-            onPress={() => this.navigate('DiveScreen')}
+            title="Luo uusi sukellus"
+            buttonStyle={style.buttonCreate}
+            onPress={() => this.navigate("CreateDiveScreen")}
             raised
+            titleStyle={{
+              fontFamily: "nunito-bold",
+              textTransform: "uppercase",
+            }}
           />
         </View>
       </View>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
   ongoingDives: state.ongoingDives,
-  user: state.user
-})
+  user: state.user,
+});
 
-export default connect(
-  mapStateToProps,
-  null
-)(DiveListScreen)
+export default connect(mapStateToProps, null)(DiveListScreen);
