@@ -118,9 +118,9 @@ const List = (props) => {
 
           return (
             <ListItem
-              onPress={() =>
+              onPress={() => {
                 setOngoingEvent(item) && navigate('Tapahtuma', item)
-              }
+              }}
               containerStyle={eventStyle(item)}
               bottomDivider
               pad={0}
@@ -140,16 +140,16 @@ const List = (props) => {
               </ListItem.Content>
 
               <ListItem.Content style={style.infoContainer}>
-                <ListItem.Title style={style.title}> {title} </ListItem.Title>
+                <ListItem.Title numberOfLines={1} style={style.title}> {title} </ListItem.Title>
                 <View style={style.flexrow}>
                   <Icon name='person' type='material' color='#686868' size={20} style={style.icon} />
-                  <Text style={style.subtitle}>
+                  <Text style={style.subtitle} numberOfLines={1}>
                     {creator.username}
                   </Text>
                 </View>
                 <View style={style.flexrow}>
                   <Icon name='room' type='material' color='#686868' size={20} style={style.icon} />
-                  <Text style={style.subtitle}>
+                  <Text numberOfLines={1} style={style.subtitle}>
                     {!target ? 'ei kohdetta' : target.name}
                   </Text>
                 </View>
@@ -183,11 +183,13 @@ const style = StyleSheet.create({
     fontFamily: 'nunito-bold',
     color: '#118BFC',
     fontSize: 18,
+    paddingRight: 20,
   },
   subtitle: {
     fontFamily: 'nunito-bold',
     fontSize: 14,
-    color: '#686868'
+    color: '#686868',
+    paddingRight: 20,
   },
   dateContainer: {
     flexBasis: 100,
