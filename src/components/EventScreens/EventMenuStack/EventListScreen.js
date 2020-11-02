@@ -41,13 +41,21 @@ const eventsSortedByGroup = (props) => {
       old.push(e)
   })
 
-  return [
-    { title: 'Menneet', data: old },
-    { title: 'Tänään', data: today },
-    { title: 'Tällä viikolla', data: thisWeek },
-    { title: 'Ensi viikolla', data: nextWeek },
-    { title: 'Myöhemmin', data: later },
-  ]
+  if (!today.length && !thisWeek.length && !nextWeek.length) {
+    return [
+      { title: 'Menneet', data: old },
+      { title: 'Tulevat', data: later },
+    ].filter(c => c.data.length > 0)
+  } else {
+    return [
+      { title: 'Menneet', data: old },
+      { title: 'Tänään', data: today },
+      { title: 'Tällä viikolla', data: thisWeek },
+      { title: 'Ensi viikolla', data: nextWeek },
+      { title: 'Myöhemmin', data: later },
+    ].filter(c => c.data.length > 0)
+  }
+
 }
 
 const EmptyList = (props) => {
