@@ -1,30 +1,30 @@
-import React from "react";
-import { View, FlatList } from "react-native";
-import { Text, Button, ListItem } from "react-native-elements";
-import { connect } from "react-redux";
+import React from 'react'
+import { View, FlatList } from 'react-native'
+import { ListItem } from 'react-native-elements'
+import { connect } from 'react-redux'
+import { formatDate } from '../../../../utils/dates'
 
-import { formatDate } from "../../../../utils/dates";
+import colors from '../../../../styles/colors'
+import styles from '../../../../styles/global'
+import { paddingSides } from '../../../../styles/global'
 
-import colors from "../../../../styles/colors";
-import styles from "../../../../styles/global";
-import { paddingSides } from "../../../../styles/global";
-import AppText from "../../../common/AppText";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import CommonButton from "../../../common/CommonButton";
+import AppText from '../../../common/AppText'
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
+import CommonButton from '../../../common/CommonButton'
 
 const style = {
   headline: {
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 13,
-    fontFamily: "nunito-bold",
+    fontFamily: 'nunito-bold',
     marginLeft: 5,
   },
   title: {
     fontSize: 16,
-    fontFamily: "nunito-bold",
+    fontFamily: 'nunito-bold',
     marginLeft: 5,
   },
   diveContainer: {
@@ -35,10 +35,10 @@ const style = {
   },
   iconContainer: {
     flex: 0.33,
-    justifyContent: "center",
-    flexDirection: "column",
-    backgroundColor: "#379EFE",
-    alignItems: "center",
+    justifyContent: 'center',
+    flexDirection: 'column',
+    backgroundColor: '#379EFE',
+    alignItems: 'center',
     height: 100,
   },
   divider: {
@@ -46,30 +46,30 @@ const style = {
   },
   top: {
     flex: 9,
-    justifyContent: "flex-start",
+    justifyContent: 'flex-start',
     marginTop: 10,
     paddingHorizontal: 15,
     marginBottom: 50
   },
   bottom: {
     flex: 2,
-    justifyContent: "center",
-    width: "100%",
+    justifyContent: 'center',
+    width: '100%',
     padding: paddingSides,
     marginBottom: 12,
-    alignItems: "center",
+    alignItems: 'center',
   },
-};
+}
 
-const n6 = 6;
+const n6 = 6
 
 class DiveListScreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   navigate = (value) => this.props.navigation.navigate(value);
-  navigateToDive = (item) => this.props.navigation.navigate("Dive", { item });
+  navigateToDive = (item) => this.props.navigation.navigate('Dive', { item });
 
   divesSortedByDate = () =>
     this.props.ongoingEvent.dives.sort((a, b) =>
@@ -77,9 +77,9 @@ class DiveListScreen extends React.Component {
     );
 
   displayEndDate = (dive) => {
-    if (!dive.enddate) return "Meneillään oleva!";
+    if (!dive.enddate) return 'Meneillään oleva!'
 
-    return "Loppui: " + formatDate(dive.enddate);
+    return 'Loppui: ' + formatDate(dive.enddate)
   };
 
   showList = (ongoingEvent) => {
@@ -91,14 +91,14 @@ class DiveListScreen extends React.Component {
             Aloita uusi sukellus tai luo sukellus listaan.
           </AppText>
         </View>
-      );
+      )
     } else {
       return (
         <FlatList
           data={this.divesSortedByDate()}
           extraData={ongoingEvent.dives}
           renderItem={({ item }) => {
-            const { user, startdate, latitude, longitude } = item;
+            const { user, startdate, latitude, longitude } = item
 
             return (
               <ListItem
@@ -113,7 +113,7 @@ class DiveListScreen extends React.Component {
                 </ListItem.Content>
                 <ListItem.Content style={style.diveContainer}>
                   <ListItem.Content
-                    style={{ flexDirection: "row", alignItems: "center" }}
+                    style={{ flexDirection: 'row', alignItems: 'center' }}
                   >
                     <MaterialIcons
                       name="person"
@@ -121,10 +121,10 @@ class DiveListScreen extends React.Component {
                       color={colors.primary}
                     />
                     <ListItem.Title style={style.title}>
-                      {"Sukeltaja: " + user.username}
+                      {'Sukeltaja: ' + user.username}
                     </ListItem.Title>
                   </ListItem.Content>
-                  <ListItem.Content style={{ flexDirection: "row" }}>
+                  <ListItem.Content style={{ flexDirection: 'row' }}>
                     <MaterialIcons
                       name="schedule"
                       size={20}
@@ -135,7 +135,7 @@ class DiveListScreen extends React.Component {
                     </ListItem.Subtitle>
                   </ListItem.Content>
                   <ListItem.Content
-                    style={{ flexDirection: "row", marginTop: 5 }}
+                    style={{ flexDirection: 'row', marginTop: 5 }}
                   >
                     <MaterialIcons
                       name="room"
@@ -143,30 +143,30 @@ class DiveListScreen extends React.Component {
                       color={colors.primary}
                     />
                     <ListItem.Subtitle style={style.subtitle}>
-                      {"Koordinaatit: "}
+                      {'Koordinaatit: '}
                     </ListItem.Subtitle>
                   </ListItem.Content>
                   <ListItem.Subtitle
                     style={{ ...style.subtitle, marginLeft: 5 }}
                   >
-                    {"L:" +
+                    {'L:' +
                       parseFloat(latitude).toFixed(n6) +
-                      "; P:" +
+                      '; P:' +
                       parseFloat(longitude).toFixed(n6)}
                   </ListItem.Subtitle>
                 </ListItem.Content>
                 <ListItem.Chevron />
               </ListItem>
-            );
+            )
           }}
           keyExtractor={(item) => item._id}
         />
-      );
+      )
     }
   };
 
   render() {
-    const { ongoingEvent } = this.props;
+    const { ongoingEvent } = this.props
 
     return (
       <View style={styles.noPadding}>
@@ -182,14 +182,14 @@ class DiveListScreen extends React.Component {
           <View style={style.divider} />
           <CommonButton
             title="Sukella"
-            onPress={() => this.navigate("DiveScreen")}
+            onPress={() => this.navigate('DiveScreen')}
             buttonStyle={style.buttonDive}
           />
           <View style={style.divider} />
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ flex: 1, height: 1, backgroundColor: colors.gray }} />
             <View>
-              <AppText style={{ width: 50, textAlign: "center", color: 'gray'}}>TAI</AppText>
+              <AppText style={{ width: 50, textAlign: 'center', color: 'gray' }}>TAI</AppText>
             </View>
             <View style={{ flex: 1, height: 1, backgroundColor: colors.gray }} />
           </View>
@@ -197,11 +197,11 @@ class DiveListScreen extends React.Component {
           <CommonButton
             title="Luo uusi sukellus listalle"
             buttonStyle={style.buttonCreate}
-            onPress={() => this.navigate("CreateDiveScreen")}
+            onPress={() => this.navigate('CreateDiveScreen')}
           />
         </View>
       </View>
-    );
+    )
   }
 }
 
@@ -209,6 +209,6 @@ const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
   ongoingDives: state.ongoingDives,
   user: state.user,
-});
+})
 
-export default connect(mapStateToProps, null)(DiveListScreen);
+export default connect(mapStateToProps, null)(DiveListScreen)

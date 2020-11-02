@@ -1,7 +1,6 @@
-import React from "react";
-import { Button, TouchableOpacity, Text } from "react-native";
-import colors from "../../styles/colors";
-import { paddingSides } from "../../styles/global";
+import React from 'react'
+import { TouchableOpacity, Text } from 'react-native'
+import colors from '../../styles/colors'
 
 const style = {
   commonButtonContainer: {
@@ -12,10 +11,10 @@ const style = {
   },
   commonButtonText: {
     fontSize: 16,
-    color: "#fff",
-    fontFamily: "nunito-bold",
-    textTransform: "uppercase",
-    alignSelf: "center",
+    color: '#fff',
+    fontFamily: 'nunito-bold',
+    textTransform: 'uppercase',
+    alignSelf: 'center',
   },
   disabledContainerStyle: {
     backgroundColor: colors.buttonDisabled_light
@@ -23,7 +22,7 @@ const style = {
   disabledTextStyle: {
     color: colors.buttonDisabled_dark
   }
-};
+}
 
 const CommonButton = ({
   onPress,
@@ -32,8 +31,8 @@ const CommonButton = ({
   titleStyle,
   disabled,
 }) => {
-  const extraContainerStyle = buttonStyle ?? {};
-  const extraTitleStyle = titleStyle ?? {};
+  const extraContainerStyle = buttonStyle ?? {}
+  const extraTitleStyle = titleStyle ?? {}
 
   return (
     <TouchableOpacity
@@ -55,7 +54,7 @@ const CommonButton = ({
         {title}
       </Text>
     </TouchableOpacity>
-  );
-};
+  )
+}
 
-export default CommonButton;
+export default CommonButton
