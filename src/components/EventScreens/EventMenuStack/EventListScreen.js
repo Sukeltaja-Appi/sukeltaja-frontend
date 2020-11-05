@@ -2,7 +2,7 @@
 import React, { useRef, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { View, Text, StyleSheet, SectionList } from 'react-native'
-import { ListItem, Icon } from 'react-native-elements'
+import { ListItem, Icon, Divider } from 'react-native-elements'
 import { Interval, DateTime } from 'luxon'
 import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
 
@@ -45,7 +45,7 @@ const eventsSortedByGroup = (props) => {
     return [
       { title: 'Menneet', data: old },
       { title: 'Tulevat', data: later },
-    ].filter(c => c.data.length > 0)
+    ]
   } else {
     return [
       { title: 'Menneet', data: old },
@@ -53,7 +53,7 @@ const eventsSortedByGroup = (props) => {
       { title: 'Tällä viikolla', data: thisWeek },
       { title: 'Ensi viikolla', data: nextWeek },
       { title: 'Myöhemmin', data: later },
-    ].filter(c => c.data.length > 0)
+    ]
   }
 
 }
@@ -140,8 +140,8 @@ const List = (props) => {
               <ListItem.Content style={style.infoContainer}>
                 <ListItem.Title numberOfLines={1} style={style.title}> {title} </ListItem.Title>
                 <View style={style.flexrow}>
-                  <Icon name='person' type='material' color='#686868' size={20} style={style.icon} />
-                  <Text style={style.subtitle} numberOfLines={1}>
+                  <Icon name='person' type='material' color={isCreatorLoggedInUser(item) ? '#379EFE' : '#686868'} size={20} style={style.icon} />
+                  <Text style={isCreatorLoggedInUser(item) ? style.subtitleCreator : style.subtitle} numberOfLines={1}>
                     {creator.username}
                   </Text>
                 </View>
@@ -157,7 +157,10 @@ const List = (props) => {
           )
         }}
         renderSectionHeader={({ section }) => (
-          <Text style={{ ...style.header }} >{section.title}</Text>
+          <View>
+            <Text style={{ ...style.header }} >{section.title}</Text>
+            <Divider />
+          </View>
         )}
       />
       <AppButtonRound title="+" onPress={() => navigate('Luo tapahtuma')} />
@@ -179,7 +182,7 @@ const style = StyleSheet.create({
   },
   title: {
     fontFamily: 'nunito-bold',
-    color: '#118BFC',
+    color: '#686868',
     fontSize: 18,
     paddingRight: 20,
   },
@@ -187,6 +190,12 @@ const style = StyleSheet.create({
     fontFamily: 'nunito-bold',
     fontSize: 14,
     color: '#686868',
+    paddingRight: 20,
+  },
+  subtitleCreator: {
+    fontFamily: 'nunito-bold',
+    fontSize: 14,
+    color: '#379EFE',
     paddingRight: 20,
   },
   dateContainer: {
