@@ -8,10 +8,10 @@ import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
 
 import { setOngoingEvent } from '../../../reducers/eventReducer'
 import { nextMonday } from '../../../utils/dates'
-import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
 import AppButtonRound from '../../common/AppButtonRound'
 import AppText from '../../common/AppText'
+import { min } from 'react-native-reanimated'
 
 const EventListScreen = (props) => {
   return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} groups={eventsSortedByGroup(props)} />
@@ -45,7 +45,7 @@ const eventsSortedByGroup = (props) => {
     return [
       { title: 'Menneet', data: old },
       { title: 'Tulevat', data: later },
-    ]
+    ].filter(c => c.data.length > 0)
   } else {
     return [
       { title: 'Menneet', data: old },
@@ -53,7 +53,7 @@ const eventsSortedByGroup = (props) => {
       { title: 'Tällä viikolla', data: thisWeek },
       { title: 'Ensi viikolla', data: nextWeek },
       { title: 'Myöhemmin', data: later },
-    ]
+    ].filter(c => c.data.length > 0)
   }
 
 }
@@ -84,7 +84,7 @@ const List = (props) => {
   useEffect(() => {
     if (sectionListRef.current) {
       sectionListRef.current.scrollToLocation({
-        sectionIndex: 1,
+        sectionIndex: min(1, groups.length-1),
         itemIndex: 0,
       })
     }
@@ -140,7 +140,8 @@ const List = (props) => {
               <ListItem.Content style={style.infoContainer}>
                 <ListItem.Title numberOfLines={1} style={style.title}> {title} </ListItem.Title>
                 <View style={style.flexrow}>
-                  <Icon name='person' type='material' color={isCreatorLoggedInUser(item) ? '#379EFE' : '#686868'} size={20} style={style.icon} />
+                  <Icon name='person' type='material' color={isCreatorLoggedInUser(item) ? '#379EFE' : '#686868'}
+                    size={20} style={style.icon} />
                   <Text style={isCreatorLoggedInUser(item) ? style.subtitleCreator : style.subtitle} numberOfLines={1}>
                     {creator.username}
                   </Text>
