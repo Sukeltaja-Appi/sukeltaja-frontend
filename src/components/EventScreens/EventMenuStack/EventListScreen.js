@@ -64,7 +64,7 @@ const EmptyList = (props) => {
   }
 
   return (
-    <View>
+    <View style={styles.noPadding}>
       <View style={styles.centered}>
         <Text style={styles.h5}>Ei omia tapahtumia.</Text>
       </View>
