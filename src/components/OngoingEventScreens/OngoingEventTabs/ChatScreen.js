@@ -167,7 +167,7 @@ class ChatScreen extends React.Component {
           }
           const { user, created, text } = item
           const date = new Date(created)
-          const time = `${date.getHours()}:${date.getMinutes().toString().padEnd(2, '0')}`
+          const time = `${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`
 
           const isMyMessage = user._id === this.props.user._id
           const currentStyle = isMyMessage ? ownMessageStyle : messageStyle
