@@ -41,13 +41,21 @@ const eventsSortedByGroup = (props) => {
       old.push(e)
   })
 
-  return [
-    { title: 'Menneet', data: old },
-    { title: 'Tänään', data: today },
-    { title: 'Tällä viikolla', data: thisWeek },
-    { title: 'Ensi viikolla', data: nextWeek },
-    { title: 'Myöhemmin', data: later },
-  ]
+  if (!today.length && !thisWeek.length && !nextWeek.length) {
+    return [
+      { title: 'Menneet', data: old },
+      { title: 'Tulevat', data: later },
+    ].filter(c => c.data.length > 0)
+  } else {
+    return [
+      { title: 'Menneet', data: old },
+      { title: 'Tänään', data: today },
+      { title: 'Tällä viikolla', data: thisWeek },
+      { title: 'Ensi viikolla', data: nextWeek },
+      { title: 'Myöhemmin', data: later },
+    ].filter(c => c.data.length > 0)
+  }
+
 }
 
 const EmptyList = (props) => {
@@ -82,18 +90,8 @@ const List = (props) => {
     }
   }, [])
 
-  const isOngoingEvent = (event) =>
-    ongoingEvent ? event._id === ongoingEvent._id : false
   const isCreatorLoggedInUser = (event) =>
     event.creator.username === user.username ? true : false
-
-  const eventStyle = (event) => ({
-    backgroundColor: isOngoingEvent(event) ? colors.secondary_light
-      : isCreatorLoggedInUser(event) ? 'white' : colors.lightgray,
-    height: 78,
-    padding: 0,
-    paddingRight: 14,
-  })
 
   return (
     <View style={styles.noPadding}>
@@ -118,10 +116,10 @@ const List = (props) => {
 
           return (
             <ListItem
-              onPress={() =>
+              onPress={() => {
                 setOngoingEvent(item) && navigate('Tapahtuma', item)
-              }
-              containerStyle={eventStyle(item)}
+              }}
+              containerStyle={style.event}
               bottomDivider
               pad={0}
             >
@@ -140,16 +138,16 @@ const List = (props) => {
               </ListItem.Content>
 
               <ListItem.Content style={style.infoContainer}>
-                <ListItem.Title style={style.title}> {title} </ListItem.Title>
+                <ListItem.Title numberOfLines={1} style={style.title}> {title} </ListItem.Title>
                 <View style={style.flexrow}>
                   <Icon name='person' type='material' color='#686868' size={20} style={style.icon} />
-                  <Text style={style.subtitle}>
+                  <Text style={style.subtitle} numberOfLines={1}>
                     {creator.username}
                   </Text>
                 </View>
                 <View style={style.flexrow}>
                   <Icon name='room' type='material' color='#686868' size={20} style={style.icon} />
-                  <Text style={style.subtitle}>
+                  <Text numberOfLines={1} style={style.subtitle}>
                     {!target ? 'ei kohdetta' : target.name}
                   </Text>
                 </View>
@@ -183,11 +181,13 @@ const style = StyleSheet.create({
     fontFamily: 'nunito-bold',
     color: '#118BFC',
     fontSize: 18,
+    paddingRight: 20,
   },
   subtitle: {
     fontFamily: 'nunito-bold',
     fontSize: 14,
-    color: '#686868'
+    color: '#686868',
+    paddingRight: 20,
   },
   dateContainer: {
     flexBasis: 100,
@@ -219,6 +219,12 @@ const style = StyleSheet.create({
     // Hardcode height because getItemLayout needs to know the exact height
     height: 30,
   },
+  event: {
+    backgroundColor: 'white',
+    height: 78,
+    padding: 0,
+    paddingRight: 14,
+  }
 })
 
 const mapStateToProps = (state) => ({
