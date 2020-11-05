@@ -11,7 +11,6 @@ import { nextMonday } from '../../../utils/dates'
 import styles from '../../../styles/global'
 import AppButtonRound from '../../common/AppButtonRound'
 import AppText from '../../common/AppText'
-import { min } from 'react-native-reanimated'
 
 const EventListScreen = (props) => {
   return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} groups={eventsSortedByGroup(props)} />
@@ -84,7 +83,7 @@ const List = (props) => {
   useEffect(() => {
     if (sectionListRef.current) {
       sectionListRef.current.scrollToLocation({
-        sectionIndex: min(1, groups.length-1),
+        sectionIndex: Math.min(1, groups.length - 1),
         itemIndex: 0,
       })
     }
