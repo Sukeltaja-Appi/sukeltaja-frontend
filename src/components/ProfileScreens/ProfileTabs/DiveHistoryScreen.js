@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { View, FlatList, Text, StyleSheet, RefreshControl } from 'react-native'
-import { ListItem, Icon } from 'react-native-elements'
-import { FontAwesome5 } from '@expo/vector-icons'
+import { ListItem } from 'react-native-elements'
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 
 import { initializeDives } from '../../../reducers/diveReducer'
 import { formatDate } from '../../../utils/dates'
@@ -11,9 +11,31 @@ import colors from '../../../styles/colors'
 
 const style = StyleSheet.create({
   divider: {
-    paddingHorizontal: 20,
-    paddingVertical: 5,
     height: 10
+  },
+  title: {
+    fontSize: 18,
+    fontFamily: 'nunito-bold',
+    marginLeft: 5,
+  },
+  subtitle: {
+    fontSize: 13,
+    fontFamily: 'nunito-bold',
+    marginLeft: 5,
+  },
+  diveContainer: {
+    paddingVertical: 0,
+    paddingLeft: 1,
+    paddingRight: 5,
+    marginBottom: 8,
+  },
+  iconContainer: {
+    flex: 0.33,
+    justifyContent: 'center',
+    flexDirection: 'column',
+    backgroundColor: '#379EFE',
+    alignItems: 'center',
+    height: 135,
   },
   flexRowCenter: {
     flex: 1,
@@ -68,7 +90,11 @@ class DiveHistoryScreen extends React.Component {
     const event = events.find(e => e._id === eventId)
 
     if (event.target===undefined) {
-      return 'Oma kohde'
+      return 'Oma kohde: nimetön'
+    }
+
+    if (event.target.type===undefined) {
+      return 'Oma kohde: ' + event.target.name
     }
     const targetName = event.target.name + '/' + event.target.type
 
@@ -111,23 +137,46 @@ class DiveHistoryScreen extends React.Component {
               <ListItem
                 onPress={() => this.selectDive(item)}
                 bottomDivider
-                containerStyle={{ paddingVertical: 3, paddingHorizontal: 16 }}
+                underlayColor="#fff"
+                containerStyle={style.diveContainer}
+                pad={5}
               >
-                <FontAwesome5 name='water' size={36} color={'#606060'} />
-                <ListItem.Content>
-                  <ListItem.Title style={{ color: colors.primaryText, fontSize: 18, flex: 1, flexWrap: 'wrap'}}>
-                    {eventName}
-                  </ListItem.Title>
-                  <ListItem.Subtitle style={style.subtitle}>
-                    {
-                      'Aloitus: ' + formatDate(startdate) + '\n'
-                      + 'Kesto: ' + diveLength + ' min' + '\n'
-                      + 'Koordinaatit: L: '
-                      + parseFloat(latitude).toFixed(n6) + '; P:'
-                      + parseFloat(longitude).toFixed(n6) +'\n'
-                      + 'Kohde: ' + targetName
-                    }
-                  </ListItem.Subtitle>
+                <ListItem.Content style={style.iconContainer} >
+                  <FontAwesome5 name='water' size={36} color={'#fff'} />
+                </ListItem.Content>
+                <ListItem.Content style={style.diveContainer} >
+                  <ListItem.Content style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <ListItem.Title style={style.title}>
+                      {targetName}
+                    </ListItem.Title>
+                  </ListItem.Content>
+                  <ListItem.Content style={{ flexDirection: 'row', marginTop: 5 }}>
+                    <MaterialIcons name='schedule' size={20} color={colors.primary}/>
+                    <ListItem.Subtitle style={style.subtitle}>
+                      {formatDate(startdate)}
+                    </ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Content style={{ flexDirection: 'row', marginTop: 5 }}>
+                    <MaterialIcons name='schedule' size={20} color={colors.secondary}/>
+                    <ListItem.Subtitle style={style.subtitle}>
+                      {'Kesto: ' + diveLength + ' min'}
+                    </ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Content style={{ flexDirection: 'row', marginTop: 5 }}>
+                    <MaterialIcons name='room' size={20} color={colors.primary}/>
+                    <ListItem.Subtitle style={style.subtitle}>
+                      {
+                        'L: ' + parseFloat(latitude).toFixed(n6) + '; P:' +
+                        parseFloat(longitude).toFixed(n6)
+                      }
+                    </ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Content style={{ flexDirection: 'row', marginTop: 5 }}>
+                    <MaterialIcons name='date-range' size={20} color={colors.primary}/>
+                    <ListItem.Subtitle style={style.subtitle}>
+                      {eventName}
+                    </ListItem.Subtitle>
+                  </ListItem.Content>
                 </ListItem.Content>
                 <ListItem.Chevron />
               </ListItem>
