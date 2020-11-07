@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { View, FlatList, Text, StyleSheet, RefreshControl } from 'react-native'
 import { ListItem, Icon } from 'react-native-elements'
-import { MaterialIcons } from '@expo/vector-icons'
+import { FontAwesome5 } from '@expo/vector-icons'
 
-import { diveReducer, initializeDives, ongoingDivesReducer } from '../../../reducers/diveReducer'
+import { initializeDives } from '../../../reducers/diveReducer'
 import { formatDate } from '../../../utils/dates'
 import styles from '../../../styles/global'
 import colors from '../../../styles/colors'
@@ -38,12 +38,6 @@ class DiveHistoryScreen extends React.Component {
     this.updatedDives()
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { dives } = nextProps
-
-    this.setState({ dives: dives })
-  }
-
   updatedDives = () => {
     const { dives } = this.props
 
@@ -74,20 +68,23 @@ class DiveHistoryScreen extends React.Component {
     const event = events.find(e => e._id === eventId)
 
     if (event.target===undefined) {
-      return 'ei kohdetta'
+      return 'Oma kohde'
     }
     const targetName = event.target.name + '/' + event.target.type
 
     return targetName
   }
 
+  navigate = (value) => this.props.navigation.navigate(value)
+
   selectDive = (dive) => {
-    console.log(dive)
+    this.props.navigation.navigate('Sukellus', { dive })
   }
 
   lengthOfDive = (startTime, endTime) => {
     const diff = new Date(endTime) - new Date(startTime)
     const minutes = Math.round((diff/1000)/60)
+
     return minutes
   }
 
@@ -116,14 +113,14 @@ class DiveHistoryScreen extends React.Component {
                 bottomDivider
                 containerStyle={{ paddingVertical: 3, paddingHorizontal: 16 }}
               >
-                <Icon name='person' size={60} color={'#606060'} />
+                <FontAwesome5 name='water' size={36} color={'#606060'} />
                 <ListItem.Content>
-                  <ListItem.Title style={{ color: colors.primaryText, fontSize: 18, flex: 1, flexWrap: 'wrap' }}>
+                  <ListItem.Title style={{ color: colors.primaryText, fontSize: 18, flex: 1, flexWrap: 'wrap'}}>
                     {eventName}
                   </ListItem.Title>
                   <ListItem.Subtitle style={style.subtitle}>
                     {
-                      'Päivä: ' + formatDate(startdate) + '\n'
+                      'Aloitus: ' + formatDate(startdate) + '\n'
                       + 'Kesto: ' + diveLength + ' min' + '\n'
                       + 'Koordinaatit: L: '
                       + parseFloat(latitude).toFixed(n6) + '; P:'
@@ -155,5 +152,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { diveReducer, initializeDives, ongoingDivesReducer }
+  { initializeDives }
 )(DiveHistoryScreen)

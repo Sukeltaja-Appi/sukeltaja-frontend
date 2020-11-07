@@ -6,7 +6,7 @@ import LicenseScreen from './ProfileTabs/LicenseScreen'
 import ProfileScreen from './ProfileTabs/ProfileScreen'
 import SettingsScreen from './ProfileTabs/SettingsScreen'
 import DiveHistoryScreen from './ProfileTabs/DiveHistoryScreen'
-
+import DiveScreen from './ProfileTabs/DiveScreen'
 
 const StackMessage = createStackNavigator()
 
@@ -39,6 +39,7 @@ function ProfileStack() {
       <Profile.Screen name="Kutsut" component={MessageStack} />
       <Profile.Screen name="Asetukset" component={SettingsStack} />
       <Profile.Screen name="Sukellushistoria" component={DiveHistoryScreen} />
+      <Profile.Screen name="Sukellus" component={DiveScreen} />
     </Profile.Navigator>
   )
 }

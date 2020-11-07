@@ -25,7 +25,7 @@ function TabNavigator() {
           marginBottom: 5,
         },
         style: {
-          height: 55,
+          height: 80,
         },
         iconStyle: {
           marginBottom: -5,
