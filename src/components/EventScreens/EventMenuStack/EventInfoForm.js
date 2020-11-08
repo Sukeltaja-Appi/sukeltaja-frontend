@@ -81,6 +81,7 @@ const EventInfoForm = (props) => {
     if (target.location !== undefined) {
       return `Sijainti: ${decimalToDMS(target.latitude)}, ${decimalToDMS(target.longitude)}`
     }
+
     return 'Muokkaa sijaintia'
   }
 
