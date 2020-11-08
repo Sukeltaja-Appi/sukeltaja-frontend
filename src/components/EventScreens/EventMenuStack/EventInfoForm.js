@@ -78,7 +78,7 @@ const EventInfoForm = (props) => {
   })
 
   const getLocationButtonTitle = () => {
-    if (target.location !== undefined) {
+    if (target !== undefined) {
       return `Sijainti: ${decimalToDMS(target.latitude)}, ${decimalToDMS(target.longitude)}`
     }
 
