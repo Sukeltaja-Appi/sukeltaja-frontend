@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, Dimensions } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { Text } from 'react-native-elements'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import { Marker, Callout } from 'react-native-maps'
