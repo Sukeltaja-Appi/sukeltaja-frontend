@@ -4,7 +4,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import EditEventScreen from './EventMenuStack/EditEventScreen'
-import EventInfoForm from '../common/EventInfoForm'
+import EventInfoForm from './EventMenuStack/EventInfoForm'
 import CustomTargetScreen from '../OngoingEventScreens/OngoingEventTabs/CustomTargetScreen'
 import Event from './EventMenuStack/Event'
 import EventListScreen from './EventMenuStack/EventListScreen'
