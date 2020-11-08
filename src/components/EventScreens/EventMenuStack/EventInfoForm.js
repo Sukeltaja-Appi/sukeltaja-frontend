@@ -8,6 +8,7 @@ import { paddingSides } from '../../../styles/global'
 import { startEvent, setOngoingEvent } from '../../../reducers/eventReducer'
 import { connect } from 'react-redux'
 import { inOneHour } from '../../../utils/dates'
+import decimalToDMS from '../../../utils/coordinates'
 import AppButton from '../../common/AppButton'
 import targetService from '../../../services/targets'
 import { useIsFocused } from '@react-navigation/native'
@@ -76,6 +77,13 @@ const EventInfoForm = (props) => {
     setNavFromCustomMap: setNavFromCustomMap
   })
 
+  const getLocationButtonTitle = () => {
+    if (target.location !== undefined) {
+      return `Sijainti: ${decimalToDMS(target.latitude)}, ${decimalToDMS(target.longitude)}`
+    }
+    return 'Muokkaa sijaintia'
+  }
+
   return (
     <View>
       <View style={style.container}>
@@ -86,8 +94,8 @@ const EventInfoForm = (props) => {
           onChange={(event) => setEvent(event)}
         />
         <Button
-          buttonStyle={{ borderRadius: 10, marginBottom: 30 }}
-          title="Valitse sijainti"
+          buttonStyle={style.button}
+          title={getLocationButtonTitle()}
           onPress={navigate}
         />
         <DateTimePickerButton
@@ -102,9 +110,9 @@ const EventInfoForm = (props) => {
         />
         <View syle={style.buttonContainer}>
           <AppButton
-            title="Luo tapahtuma!"
+            title='Luo tapahtuma!'
             onPress={submitForm}
-            containerStyle={style.button}
+            containerStyle={style.submitButton}
           />
         </View>
       </View>
@@ -154,7 +162,7 @@ const DateTimePickerButton = (props) => {
           onChange={onTimeChange}
         />
       }
-      <Button buttonStyle={style.dateButton}
+      <Button buttonStyle={style.button}
         title={text + ' ' + formatDate(localDate)}
         onPress={() => {
           showDatePicker(true)
@@ -185,6 +193,12 @@ const style = {
     paddingVertical: 50,
   },
   button: {
+    paddingVertical: 20,
+    marginBottom: 20,
+    borderRadius: 10,
+    backgroundColor: '#00A3FF',
+  },
+  submitButton: {
     paddingVertical: 20,
     paddingHorizontal: 15,
     marginTop: 10,
