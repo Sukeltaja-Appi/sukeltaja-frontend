@@ -65,18 +65,16 @@ class MainMapScreen extends React.Component {
   }
 
   async startEvent(target) {
-    if (target.custom) {
-      this.props.navigation.navigate('Tapahtumat', {
-        screen: 'Tapahtumat',
+    this.props.navigation.navigate('Tapahtumat', {
+      screen: 'Tapahtumat',
+      params: {
+        screen: 'Luo tapahtuma',
         params: {
-          screen: 'Luo tapahtuma',
-          params: {
-            target: { ...target, name: undefined },
-            custom: true
-          }
+          target: { ...target, name: undefined },
+          custom: true
         }
-      })
-    }
+      }
+    })
   }
 
   filteredTargets = () => {
