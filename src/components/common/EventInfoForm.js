@@ -79,38 +79,36 @@ const EventInfoForm = (props) => {
 
   return (
     <View>
-      <BackgroundImage height={Dimensions.get('screen').height}>
-        <View style={style.container}>
-          <Form
-            type={Event}
-            options={options}
-            value={divingEvent}
-            onChange={(event) => setEvent(event)}
+      <View style={style.container}>
+        <Form
+          type={Event}
+          options={options}
+          value={divingEvent}
+          onChange={(event) => setEvent(event)}
+        />
+        <Button
+          buttonStyle={{ borderRadius: 10, marginBottom: 30 }}
+          title="Valitse sijainti"
+          onPress={navigate}
+        />
+        <DateTimePickerButton
+          date={startDate}
+          setDate={setStartDate}
+          text='Alkaa: '
+        />
+        <DateTimePickerButton
+          date={endDate}
+          setDate={setEndDate}
+          text='Loppuu: '
+        />
+        <View syle={style.buttonContainer}>
+          <AppButton
+            title="Luo tapahtuma!"
+            onPress={submitForm}
+            containerStyle={style.button}
           />
-          <Button
-            buttonStyle={{ borderRadius: 10, marginBottom: 30 }}
-            title="Valitse sijainti"
-            onPress={navigate}
-          />
-          <DateTimePickerButton
-            date={startDate}
-            setDate={setStartDate}
-            text='Alkaa: '
-          />
-          <DateTimePickerButton
-            date={endDate}
-            setDate={setEndDate}
-            text='Loppuu: '
-          />
-          <View syle={style.buttonContainer}>
-            <AppButton
-              title="Luo tapahtuma!"
-              onPress={submitForm}
-              containerStyle={style.button}
-            />
-          </View>
         </View>
-      </BackgroundImage>
+      </View>
     </View>
   )
 }
@@ -199,7 +197,7 @@ const style = {
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet)
 
 stylesheet.textbox.normal.backgroundColor = 'white'
-stylesheet.controlLabel.normal.color = 'white'
+stylesheet.controlLabel.normal.color = 'black'
 stylesheet.controlLabel.normal.marginLeft = 15
 stylesheet.textbox.normal.borderRadius = 15
 stylesheet.controlLabel.normal.fontFamily = 'nunito-bold'
