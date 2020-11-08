@@ -1,28 +1,48 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import t from 'tcomb-form-native'
 import RNDateTimePicker from '@react-native-community/datetimepicker'
 import { formatDate } from '../../utils/dates'
 import { Button } from 'react-native-elements'
 import { View, Dimensions } from 'react-native'
 import { paddingSides } from '../../styles/global'
-import { createEvent, setOngoingEvent } from '../../reducers/eventReducer'
+import { startEvent, setOngoingEvent } from '../../reducers/eventReducer'
 import { connect } from 'react-redux'
 import { inOneHour } from '../../utils/dates'
 import BackgroundImage from '../common/BackgroundImage'
 import AppButton from '../common/AppButton'
 import targetService from '../../services/targets'
+import { useIsFocused } from '@react-navigation/native'
 import _ from 'lodash'
 
 const { Form } = t.form
 
 const EventInfoForm = (props) => {
+  const isFocused = useIsFocused()
+  const [navFromCustomMap, setNavFromCustomMap] = useState(false)
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(inOneHour())
-  const [target, setTarget] = useState(null)
+  const [target, setTarget] = useState()
   const [divingEvent, setEvent] = useState({
     title: '',
     description: ''
   })
+
+  useEffect(() => {
+    if (navFromCustomMap) {
+      setNavFromCustomMap(false)
+
+      return
+    }
+    if (isFocused) {
+      getInitialData()
+    }
+  }, [isFocused])
+
+  const getInitialData = async () => {
+    const targetFromMap = props.route.params.target
+
+    setTarget(targetFromMap)
+  }
 
   const Event = t.struct({
     title: t.String,
@@ -30,29 +50,32 @@ const EventInfoForm = (props) => {
   })
 
   const submitForm = async () => {
+    let location
+
+    if (target !== 'undefined') {
+      location = await targetService.create({
+        ...target,
+        name: undefined,
+        user_created: true
+      })
+    }
+
     const event = {
       ...divingEvent,
       startdate: startDate,
       enddate: endDate,
-      target: target
+      target: location
     }
 
-    await props.createEvent(event)
+    await props.startEvent(event)
     props.navigation.navigate('Omat tapahtumat')
   }
 
-  const setEventLocation = async (location) => {
-    if (location !== null) {
-      const result = await targetService.create({
-        ...location,
-        user_created: true
-      })
-
-      setTarget(result)
-    }
-  }
-
-  const navigate = () => props.navigation.navigate('Valitse sijainti', { setTarget: setEventLocation })
+  const navigate = () => props.navigation.navigate('Valitse sijainti', {
+    target: target,
+    setTarget: setTarget,
+    setNavFromCustomMap: setNavFromCustomMap
+  })
 
   return (
     <View>
@@ -66,8 +89,8 @@ const EventInfoForm = (props) => {
           />
           <Button
             buttonStyle={{ borderRadius: 10, marginBottom: 30 }}
-            title = "Valitse sijainti"
-            onPress = {navigate}
+            title="Valitse sijainti"
+            onPress={navigate}
           />
           <DateTimePickerButton
             date={startDate}
@@ -83,9 +106,7 @@ const EventInfoForm = (props) => {
             <AppButton
               title="Luo tapahtuma!"
               onPress={submitForm}
-              containerStyle = {{
-                paddingVertival: 5
-              }}
+              containerStyle={style.button}
             />
           </View>
         </View>
@@ -165,6 +186,13 @@ const style = {
     paddingBottom: 40,
     marginTop: 40,
     paddingVertical: 50,
+  },
+  button: {
+    paddingVertical: 20,
+    paddingHorizontal: 15,
+    marginTop: 10,
+    marginRight: 40,
+    marginLeft: 40
   }
 }
 
@@ -218,5 +246,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { createEvent, setOngoingEvent }
+  { startEvent, setOngoingEvent }
 )(EventInfoForm)

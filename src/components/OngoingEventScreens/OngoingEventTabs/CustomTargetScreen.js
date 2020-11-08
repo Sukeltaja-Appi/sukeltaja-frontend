@@ -16,11 +16,13 @@ class CustomTargetScreen extends React.Component {
 
   constructor(props) {
     super(props)
-
-    const setTarget = props.route.params?.setTarget
+    const target = this.props.route.params.target
+    const setTarget = props.route.params.setTarget
+    const setNavFromCustomMap = props.route.params.setNavFromCustomMap
 
     this.state = {
       setTarget,
+      setNavFromCustomMap,
       initialRegion: {
         latitude: 63.5,
         longitude: 26.5,
@@ -28,21 +30,22 @@ class CustomTargetScreen extends React.Component {
         longitudeDelta: 12
       },
       query: '',
-      target: null,
+      target: target
     }
   }
 
   onPress = evt => {
     const coord = evt.nativeEvent.coordinate
 
-    console.log(coord)
-
     this.setState({
-      target: { ...coord }
+      target: { ...this.state.target, ...coord, location: { ...coord } }
     })
   }
 
   componentDidMount() {
+    if (this.state.target !== 'undefined') {
+      this.renderMarker(this.state.target)
+    }
     if (this.props.targets.length === 0) {
       this.loadTargets()
     }
@@ -92,9 +95,11 @@ class CustomTargetScreen extends React.Component {
   navigate = (value, target) => this.props.navigation.navigate(value, { target, custom: true })
 
   selectTarget = async () => {
-    this.state.setTarget(this.state.target)
-    this.props.navigation.goBack()
-  }
+    if (this.state.target !== 'undefined') {
+      this.state.setTarget(this.state.target)
+      this.state.setNavFromCustomMap(true)
+    }
+    this.props.navigation.goBack()}
 
   render() {
     const { initialRegion, target } = this.state
@@ -130,6 +135,13 @@ class CustomTargetScreen extends React.Component {
             buttonStyle={style.button}
             title='Valitse kohde'
             onPress={() => this.selectTarget()}
+            containerStyle={{
+              paddingVertical: 20,
+              paddingHorizontal: 15,
+              marginTop: 10,
+              marginRight: 40,
+              marginLeft: 40
+            }}
           />
         </View>
       </View>
