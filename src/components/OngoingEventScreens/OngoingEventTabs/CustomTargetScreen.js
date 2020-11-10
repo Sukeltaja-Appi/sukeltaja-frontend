@@ -1,20 +1,28 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { View, StyleSheet } from 'react-native'
-import { Text, Button } from 'react-native-elements'
+import { Text } from 'react-native-elements'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import { Marker, Callout } from 'react-native-maps'
 import colors from '../../../styles/colors'
 import decimalToDMS from '../../../utils/coordinates'
 import { paddingSides } from '../../../styles/global'
+import AppButton from '../../common/AppButton'
 
 import { getAll } from '../../../reducers/targetReducer'
+import { createEvent } from '../../../reducers/eventReducer'
 
 class CustomTargetScreen extends React.Component {
 
   constructor(props) {
     super(props)
+    const target = this.props.route.params.target
+    const setTarget = props.route.params.setTarget
+    const setNavFromCustomMap = props.route.params.setNavFromCustomMap
+
     this.state = {
+      setTarget,
+      setNavFromCustomMap,
       initialRegion: {
         latitude: 63.5,
         longitude: 26.5,
@@ -22,21 +30,22 @@ class CustomTargetScreen extends React.Component {
         longitudeDelta: 12
       },
       query: '',
-      target: null,
+      target: target
     }
   }
 
   onPress = evt => {
     const coord = evt.nativeEvent.coordinate
 
-    console.log(coord)
-
     this.setState({
-      target: { ...coord }
+      target: { ...this.state.target, ...coord, location: { ...coord } }
     })
   }
 
   componentDidMount() {
+    if (this.state.target !== 'undefined') {
+      this.renderMarker(this.state.target)
+    }
     if (this.props.targets.length === 0) {
       this.loadTargets()
     }
@@ -85,12 +94,15 @@ class CustomTargetScreen extends React.Component {
 
   navigate = (value, target) => this.props.navigation.navigate(value, { target, custom: true })
 
-  selectTarget = () => {
-    this.navigate('Target', this.state.target)
-  }
+  selectTarget = async () => {
+    if (this.state.target !== 'undefined') {
+      this.state.setTarget(this.state.target)
+      this.state.setNavFromCustomMap(true)
+    }
+    this.props.navigation.goBack()}
 
   render() {
-    const { initialRegion, target, overlay, query } = this.state
+    const { initialRegion, target } = this.state
 
     // Map needs coordinates in target.location
     const mapTarget = target ? {
@@ -104,10 +116,10 @@ class CustomTargetScreen extends React.Component {
     return (
       <View style={style.container}>
         <ClusteredMapView
+          style={style.map}
           ref={(r) => { this.map = r }}
           maxZoom={12}
           mapPadding={{ bottom: 160, left: 68, right: 50 }}
-          style={style.map}
           radius={42}
           data={mapTarget ? [mapTarget] : []}
           initialRegion={initialRegion}
@@ -118,11 +130,18 @@ class CustomTargetScreen extends React.Component {
           userLocationAnnotationTitle=''
           onPress={this.onPress}
         />
-
         <View style={style.bottom}>
-          <Button
+          <AppButton
+            buttonStyle={style.button}
             title='Valitse kohde'
             onPress={() => this.selectTarget()}
+            containerStyle={{
+              paddingVertical: 20,
+              paddingHorizontal: 15,
+              marginTop: 10,
+              marginRight: 40,
+              marginLeft: 40
+            }}
           />
         </View>
       </View>
@@ -147,7 +166,7 @@ const style = StyleSheet.create({
     alignItems: 'center'
   },
   map: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   marker: {
     height: 50,
@@ -157,16 +176,16 @@ const style = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     width: '100%',
-    padding: paddingSides,
+    padding: paddingSides
   }
 })
 
 const mapStateToProps = (state) => ({
   currentTarget: state.ongoingEvent && state.ongoingEvent.target ? state.ongoingEvent.target : null,
-  targets: state.targets,
+  targets: state.targets
 })
 
 export default connect(
   mapStateToProps,
-  { getAll }
+  { getAll, createEvent }
 )(CustomTargetScreen)
