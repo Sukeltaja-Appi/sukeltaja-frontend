@@ -1,14 +1,15 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { connect } from 'react-redux'
+import { View } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MapScreen from './components/MapScreens/MapScreen'
 import EventMenuStack from './components/EventScreens/index'
-import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
 import ProfileScreens from './components/ProfileScreens'
 import LoginStack from './components/ProfileScreens/LoginStack'
 import { createStackNavigator } from '@react-navigation/stack'
-import { MaterialIcons } from '@expo/vector-icons'
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
+import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -44,15 +45,6 @@ function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Event"
-        component={OngoingEventEntry}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="event" size={26} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Tapahtumat"
         component={EventMenuStack}
         options={{
@@ -81,6 +73,44 @@ function Navigator(props) {
         name="Profiili"
         component={TabNavigator}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Tapahtuma"
+        component={OngoingEventEntry}
+        options={({ navigation }) => ({
+          headerRight: () => (
+            <View style={{ marginHorizontal: 20, flexDirection: 'row', justifyContent:'space-between' }}>
+              <MaterialIcons
+                onPress={() => navigation.navigate('Info')}
+                name="info-outline"
+                size={26}
+                color="#118BFC"
+                style={{ padding: 10 }}
+              />
+              <MaterialCommunityIcons
+                onPress={() => navigation.navigate('Sukella')}
+                name="waves"
+                size={26}
+                color="#118BFC"
+                style={{ padding: 10 }}
+              />
+              <MaterialIcons
+                onPress={() => navigation.navigate('Chat')}
+                name="chat"
+                size={26}
+                color="#118BFC"
+                style={{ padding: 10 }}
+              />
+              <MaterialIcons
+                onPress={() => navigation.navigate('Kohde')}
+                name="location-on"
+                size={26}
+                color="#118BFC"
+                style={{ padding: 10 }}
+              />
+            </View>
+          ),
+        })}
       />
     </Stack.Navigator>
   )

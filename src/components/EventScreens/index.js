@@ -2,7 +2,6 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
 import CreateEventScreen from './EventMenuStack/CreateEventScreen'
 import EditEventScreen from './EventMenuStack/EditEventScreen'
 import Event from './EventMenuStack/Event'

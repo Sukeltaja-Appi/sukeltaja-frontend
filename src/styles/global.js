@@ -29,7 +29,9 @@ export default StyleSheet.create({
   h5: {
     marginTop: 50,
     fontSize: 18,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: 'nunito-bold',
+    color: 'black'
   },
   roundButton: {
     width: 100,
