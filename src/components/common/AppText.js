@@ -4,6 +4,7 @@ import { Text } from 'react-native'
 const style = {
   appText: {
     fontFamily: 'nunito-bold',
+    color: 'white'
   },
 }
 
