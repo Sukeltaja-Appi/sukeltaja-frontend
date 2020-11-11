@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import { connect } from 'react-redux'
 import { formatDate } from '../../../../utils/dates'
-
+import { DateTime } from 'luxon'
 import colors from '../../../../styles/colors'
 import styles from '../../../../styles/global'
 import { paddingSides } from '../../../../styles/global'
@@ -99,6 +99,7 @@ class DiveListScreen extends React.Component {
           extraData={ongoingEvent.dives}
           renderItem={({ item }) => {
             const { user, startdate, latitude, longitude } = item
+            const start = DateTime.fromISO(startdate)
 
             return (
               <ListItem
@@ -131,7 +132,10 @@ class DiveListScreen extends React.Component {
                       color={colors.primary}
                     />
                     <ListItem.Subtitle style={style.subtitle}>
-                      {formatDate(startdate)}
+                      {start.setLocale('fi').toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}
+                    </ListItem.Subtitle>
+                    <ListItem.Subtitle style={style.subtitle}>
+                      {start.setLocale('fi').toLocaleString(DateTime.TIME_WITH_SECONDS)}
                     </ListItem.Subtitle>
                   </ListItem.Content>
                   <ListItem.Content
