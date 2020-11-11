@@ -33,6 +33,12 @@ export default StyleSheet.create({
     fontFamily: 'nunito-bold',
     color: 'black'
   },
+  h4: {
+    fontSize: 14,
+    textAlign: 'center',
+    fontFamily: 'nunito-bold',
+    color: 'black'
+  },
   roundButton: {
     width: 100,
     height: 100,
