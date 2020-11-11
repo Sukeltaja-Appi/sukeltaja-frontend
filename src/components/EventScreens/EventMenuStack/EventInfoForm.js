@@ -13,6 +13,7 @@ import AppButton from '../../common/AppButton'
 import targetService from '../../../services/targets'
 import { useIsFocused } from '@react-navigation/native'
 import _ from 'lodash'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const { Form } = t.form
 
@@ -24,7 +25,7 @@ const EventInfoForm = (props) => {
   const [target, setTarget] = useState()
   const [divingEvent, setEvent] = useState({
     title: '',
-    description: ''
+    description: '',
   })
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const EventInfoForm = (props) => {
 
   const Event = t.struct({
     title: t.String,
-    description: t.String
+    description: t.String,
   })
 
   const submitForm = async () => {
@@ -56,7 +57,7 @@ const EventInfoForm = (props) => {
       location = await targetService.create({
         ...target,
         name: undefined,
-        user_created: true
+        user_created: true,
       })
     }
 
@@ -64,22 +65,25 @@ const EventInfoForm = (props) => {
       ...divingEvent,
       startdate: startDate,
       enddate: endDate,
-      target: location
+      target: location,
     }
 
     await props.startEvent(event)
     props.navigation.navigate('Omat tapahtumat')
   }
 
-  const navigate = () => props.navigation.navigate('Valitse sijainti', {
-    target: target,
-    setTarget: setTarget,
-    setNavFromCustomMap: setNavFromCustomMap
-  })
+  const navigate = () =>
+    props.navigation.navigate('Valitse sijainti', {
+      target: target,
+      setTarget: setTarget,
+      setNavFromCustomMap: setNavFromCustomMap,
+    })
 
   const getLocationButtonTitle = () => {
     if (target !== undefined) {
-      return `Sijainti: ${decimalToDMS(target.latitude)}, ${decimalToDMS(target.longitude)}`
+      return `Sijainti: ${decimalToDMS(target.latitude)}, ${decimalToDMS(
+        target.longitude
+      )}`
     }
 
     return 'Muokkaa sijaintia'
@@ -87,36 +91,38 @@ const EventInfoForm = (props) => {
 
   return (
     <View>
-      <View style={style.container}>
-        <Form
-          type={Event}
-          options={options}
-          value={divingEvent}
-          onChange={(event) => setEvent(event)}
-        />
-        <Button
-          buttonStyle={style.button}
-          title={getLocationButtonTitle()}
-          onPress={navigate}
-        />
-        <DateTimePickerButton
-          date={startDate}
-          setDate={setStartDate}
-          text='Alkaa: '
-        />
-        <DateTimePickerButton
-          date={endDate}
-          setDate={setEndDate}
-          text='Loppuu: '
-        />
-        <View syle={style.buttonContainer}>
-          <AppButton
-            title='Luo tapahtuma!'
-            onPress={submitForm}
-            containerStyle={style.submitButton}
+      <ScrollView keyboardShouldPersistTaps="handled">
+        <View style={style.container}>
+          <Form
+            type={Event}
+            options={options}
+            value={divingEvent}
+            onChange={(event) => setEvent(event)}
           />
+          <Button
+            buttonStyle={style.button}
+            title={getLocationButtonTitle()}
+            onPress={navigate}
+          />
+          <DateTimePickerButton
+            date={startDate}
+            setDate={setStartDate}
+            text="Alkaa: "
+          />
+          <DateTimePickerButton
+            date={endDate}
+            setDate={setEndDate}
+            text="Loppuu: "
+          />
+          <View syle={style.buttonContainer}>
+            <AppButton
+              title="Luo tapahtuma!"
+              onPress={submitForm}
+              containerStyle={style.submitButton}
+            />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   )
 }
@@ -149,21 +155,14 @@ const DateTimePickerButton = (props) => {
 
   return (
     <View style={style.noPadding}>
-      {isShowingDatePicker &&
-        <RNDateTimePicker
-          mode='date'
-          value={date}
-          onChange={onDateChange}
-        />
-      }
-      {isShowingTimePicker &&
-        <RNDateTimePicker
-          mode='time'
-          value={date}
-          onChange={onTimeChange}
-        />
-      }
-      <Button buttonStyle={style.button}
+      {isShowingDatePicker && (
+        <RNDateTimePicker mode="date" value={date} onChange={onDateChange} />
+      )}
+      {isShowingTimePicker && (
+        <RNDateTimePicker mode="time" value={date} onChange={onTimeChange} />
+      )}
+      <Button
+        buttonStyle={style.button}
         title={text + ' ' + formatDate(localDate)}
         onPress={() => {
           showDatePicker(true)
@@ -178,7 +177,7 @@ const style = {
   container: {
     width: '100%',
     padding: paddingSides,
-    paddingBottom: 50
+    paddingBottom: 50,
   },
   dateButton: {
     width: '100%',
@@ -186,7 +185,7 @@ const style = {
     marginTop: 5,
     marginBottom: 20,
     backgroundColor: 'rgba(52, 52, 52, 0.5)',
-    borderRadius: 10
+    borderRadius: 10,
   },
   buttonContainer: {
     paddingBottom: 40,
@@ -204,8 +203,8 @@ const style = {
     paddingHorizontal: 15,
     marginTop: 10,
     marginRight: 40,
-    marginLeft: 40
-  }
+    marginLeft: 40,
+  },
 }
 
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet)
@@ -226,8 +225,7 @@ const options = {
     title: {
       label: 'Tapahtuman nimi',
       error: 'Otsikko ei saa olla tyhjä.',
-      stylesheet: stylesheet
-
+      stylesheet: stylesheet,
     },
     description: {
       multiline: true,
@@ -239,24 +237,23 @@ const options = {
           normal: {
             ...stylesheet.textbox.normal,
             height: 140,
-            textAlignVertical: 'top'
+            textAlignVertical: 'top',
           },
           error: {
             ...stylesheet.textbox.error,
-            height: 140
-          }
-        }
-      }
-    }
-  }
+            height: 140,
+          },
+        },
+      },
+    },
+  },
 }
 
 const mapStateToProps = (state) => ({
   setOngoingEvent: state.setOngoingEvent,
-  ongoingEvent: state.ongoingEvent
+  ongoingEvent: state.ongoingEvent,
 })
 
-export default connect(
-  mapStateToProps,
-  { startEvent, setOngoingEvent }
-)(EventInfoForm)
+export default connect(mapStateToProps, { startEvent, setOngoingEvent })(
+  EventInfoForm
+)
