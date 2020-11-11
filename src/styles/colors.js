@@ -18,5 +18,8 @@ export default {
 
   background: '#eeeeee',
 
-  primaryText: '#118BFC'
+  primaryText: '#118BFC',
+
+  buttonDisabled_dark: '#9ea3a3',
+  buttonDisabled_light: '#e8ebeb'
 }
