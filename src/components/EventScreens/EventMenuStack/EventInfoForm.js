@@ -177,8 +177,7 @@ const DateTimePickerButton = (props) => {
 const style = {
   container: {
     width: '100%',
-    padding: paddingSides,
-    paddingBottom: 50
+    padding: paddingSides
   },
   dateButton: {
     width: '100%',
@@ -202,7 +201,6 @@ const style = {
   submitButton: {
     paddingVertical: 20,
     paddingHorizontal: 15,
-    marginTop: 10,
     marginRight: 40,
     marginLeft: 40
   }
