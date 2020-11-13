@@ -9,6 +9,7 @@ import DiveListScreen from './OngoingEventTabs/DiveScreenStack/DiveListScreen'
 import CreateDiveScreen from './OngoingEventTabs/DiveScreenStack/CreateDiveScreen'
 import Dive from './OngoingEventTabs/DiveScreenStack/Dive'
 import EditDiveScreen from './OngoingEventTabs/DiveScreenStack/EditDiveScreen'
+import EditEventScreen from '../EventScreens/EventMenuStack/EditEventScreen'
 import EventScreen from './OngoingEventTabs/EventScreen'
 import InviteScreen from './OngoingEventTabs/InviteScreen'
 import TargetScreen from './OngoingEventTabs/TargetScreen'
@@ -22,6 +23,7 @@ const EventScreenStack = () => {
     <EventScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
       <EventScreenStackNav.Screen name="EventScreen" component={EventScreen} />
       <EventScreenStackNav.Screen name="InviteScreen" component={InviteScreen} />
+      <EventScreenStackNav.Screen name="Muokkaa tapahtumaa" component={EditEventScreen} />
     </EventScreenStackNav.Navigator>
   )
 }
@@ -69,7 +71,7 @@ const OngoingEventTabs = () => {
       <OngoingEventTabsNav.Screen name="Sukella" component={DiveScreenStack} />
       <OngoingEventTabsNav.Screen name="Chat" component={ChatScreenStack} />
       <OngoingEventTabsNav.Screen name="Kohde" component={TargetScreenStack} />
-      <EventScreenStackNav.Screen name="Kutsu osallistujia" component={InviteScreen} />
+      <OngoingEventTabsNav.Screen name="Kutsu osallistujia" component={InviteScreen} />
     </OngoingEventTabsNav.Navigator>
   )
 }
