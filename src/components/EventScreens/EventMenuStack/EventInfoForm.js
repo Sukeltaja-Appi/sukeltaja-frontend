@@ -69,7 +69,9 @@ const EventInfoForm = (props) => {
     }
 
     await props.startEvent(event)
-    props.navigation.navigate('Omat tapahtumat')
+    props.navigation.navigate('Tapahtumat', {
+      screen: 'Omat tapahtumat'
+    })
   }
 
   const navigate = () =>
