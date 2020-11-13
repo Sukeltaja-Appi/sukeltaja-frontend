@@ -69,7 +69,7 @@ const OngoingEventTabs = () => {
       <OngoingEventTabsNav.Screen name="Sukella" component={DiveScreenStack} />
       <OngoingEventTabsNav.Screen name="Chat" component={ChatScreenStack} />
       <OngoingEventTabsNav.Screen name="Kohde" component={TargetScreenStack} />
-      <EventScreenStackNav.Screen name="Kutsu osallistujia" component={InviteScreen} />
+      <OngoingEventTabsNav.Screen name="Kutsu osallistujia" component={InviteScreen} />
     </OngoingEventTabsNav.Navigator>
   )
 }
