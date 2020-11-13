@@ -69,7 +69,9 @@ const EventInfoForm = (props) => {
     }
 
     await props.startEvent(event)
-    props.navigation.navigate('Omat tapahtumat')
+    props.navigation.navigate('Tapahtumat', {
+      screen: 'Omat tapahtumat'
+    })
   }
 
   const navigate = () =>
@@ -201,7 +203,6 @@ const style = {
   submitButton: {
     paddingVertical: 20,
     paddingHorizontal: 15,
-    marginTop: 10,
     marginRight: 40,
     marginLeft: 40,
   },

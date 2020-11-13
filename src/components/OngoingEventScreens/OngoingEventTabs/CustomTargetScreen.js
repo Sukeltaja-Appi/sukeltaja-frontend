@@ -43,7 +43,7 @@ class CustomTargetScreen extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.target !== 'undefined') {
+    if (this.state.target !== undefined) {
       this.renderMarker(this.state.target)
     }
     if (this.props.targets.length === 0) {
