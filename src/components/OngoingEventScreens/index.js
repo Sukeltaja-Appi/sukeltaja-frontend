@@ -1,7 +1,5 @@
 import React from 'react'
-import { MaterialTopTabBar } from '@react-navigation/material-top-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 import CustomTargetScreen from './OngoingEventTabs/CustomTargetScreen'
 import ChatScreen from './OngoingEventTabs/ChatScreen'
