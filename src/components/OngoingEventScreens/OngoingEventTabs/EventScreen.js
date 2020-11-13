@@ -59,17 +59,11 @@ const style = {
     marginLeft: 5,
   },
   settingsButton: {
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.2)',
+    elevation: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 60,
     position: 'absolute',
-    top: 20,
-    right: 20,
-    height: 60,
-    backgroundColor: '#fff',
-    borderRadius: 50,
+    right: 0,
   },
 }
 
@@ -141,14 +135,8 @@ class EventScreen extends React.Component {
       <View style={styles.noPadding}>
         <BackgroundImage height={Dimensions.get('screen').height}>
           <ScrollView keyboardShouldPersistTaps='handled'>
-            <TouchableOpacity
-              onPress={this.toEditing}
-              style={style.settingsButton}
-            >
-              <Icon name="settings" size={40} color="#00A3FF" />
-            </TouchableOpacity>
             <View style={style.top}>
-              <View style={{ marginBottom: 15 }}>
+              <View style={{ marginBottom: 15, flexDirection: 'row' }}>
                 <AppText
                   style={{
                     fontSize: 36,
@@ -156,6 +144,12 @@ class EventScreen extends React.Component {
                 >
                   {title}
                 </AppText>
+                <TouchableOpacity
+                  onPress={this.toEditing}
+                  style={style.settingsButton}
+                >
+                  <Icon name="settings" size={60} color="white" />
+                </TouchableOpacity>
               </View>
               <AppText style={style.lowerTitle}>Info</AppText>
               <View
