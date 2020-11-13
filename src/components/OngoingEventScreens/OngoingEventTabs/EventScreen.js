@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import { Button, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
+import MapView, { Marker } from 'react-native-maps'
 
 import {
   setOngoingEvent,
@@ -65,6 +66,12 @@ const style = {
     position: 'absolute',
     right: 0,
   },
+  map: {
+    flex: 1,
+    width: '100%',
+    height: 250,
+    borderRadius: 20,
+  }
 }
 
 class EventScreen extends React.Component {
@@ -211,21 +218,20 @@ class EventScreen extends React.Component {
                 <AppText style={style.lowerTitle}>Sijainti</AppText>
               </View>
               <AppText style={style.text}>lisätään</AppText>
-              <View style={style.buttonDivider} />
-              <Button
-                title="Kutsu lisää osallistujia"
-                onPress={this.toInvites}
-                buttonStyle={style.buttonInvite}
-                disabled={this.userIsNotAdmin()}
-                raised
-              />
-              <View style={style.buttonDivider} />
-              <Button
-                title="Muokkaa tapahtumaa"
-                onPress={this.toEditing}
-                disabled={this.userIsNotAdmin()}
-                raised
-              />
+
+              <MapView
+                style={style.map}
+                initialRegion={{
+                  latitude: 60.1733244,
+                  longitude: 24.9410248,
+                  latitudeDelta: 0.05,
+                  longitudeDelta: 0.05
+                }}>
+                <Marker
+                  coordinate={{ latitude: 60.1733244, longitude: 24.9410248 }}
+                />
+              </MapView>
+
               <View style={style.buttonDivider} />
               <Button
                 title="Poistu"
@@ -234,6 +240,7 @@ class EventScreen extends React.Component {
                 raised
               />
             </View>
+
           </ScrollView>
         </BackgroundImage>
       </View>
