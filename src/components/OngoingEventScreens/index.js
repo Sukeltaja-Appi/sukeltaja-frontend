@@ -17,6 +17,7 @@ import TargetScreen from './OngoingEventTabs/TargetScreen'
 
 import Target from '../common/Target'
 
+//poista InviteScreen kun EventScreen muutettu
 const EventScreenStackNav = createStackNavigator()
 const EventScreenStack = () => {
   return (
@@ -61,12 +62,6 @@ const TargetScreenStack = () => {
   )
 }
 
-const SafeAreaMaterialTopTabBar = ({ ...props }) => (
-  <SafeAreaView>
-    <MaterialTopTabBar {...props} />
-  </SafeAreaView>
-)
-
 const OngoingEventTabsNav = createStackNavigator()
 
 const OngoingEventTabs = () => {
@@ -76,6 +71,7 @@ const OngoingEventTabs = () => {
       <OngoingEventTabsNav.Screen name="Sukella" component={DiveScreenStack} />
       <OngoingEventTabsNav.Screen name="Chat" component={ChatScreenStack} />
       <OngoingEventTabsNav.Screen name="Kohde" component={TargetScreenStack} />
+      <EventScreenStackNav.Screen name="Kutsu osallistujia" component={InviteScreen} />
     </OngoingEventTabsNav.Navigator>
   )
 }
