@@ -10,6 +10,8 @@ import LoginStack from './components/ProfileScreens/LoginStack'
 import { createStackNavigator } from '@react-navigation/stack'
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
 import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
+import EventInfoForm from './components/EventScreens/EventMenuStack/EventInfoForm'
+import CustomTargetScreen from './components/OngoingEventScreens/OngoingEventTabs/CustomTargetScreen'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -111,6 +113,14 @@ function Navigator(props) {
             </View>
           ),
         })}
+      />
+      <Stack.Screen
+        name="Luo tapahtuma"
+        component={EventInfoForm}
+      />
+      <Stack.Screen
+        name="Valitse sijainti"
+        component={CustomTargetScreen}
       />
     </Stack.Navigator>
   )
