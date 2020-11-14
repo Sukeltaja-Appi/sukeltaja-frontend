@@ -4,7 +4,8 @@ import { View, FlatList, Text, StyleSheet, RefreshControl } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 
-import { initializeDives } from '../../../reducers/diveReducer'
+import { initializeDives, diveReducer } from '../../../reducers/diveReducer'
+import { initializeEvents } from '../../../reducers/eventReducer'
 import { formatDate } from '../../../utils/dates'
 import styles from '../../../styles/global'
 import colors from '../../../styles/colors'
@@ -63,7 +64,12 @@ class DiveHistoryScreen extends React.Component {
   updatedDives = () => {
     const { dives } = this.props
 
-    //console.log(this.props.dives)
+    var merged = [].concat.apply([], this.props.events.map(e => e.dives))
+
+    const filtered = merged.filter(d => d.user._id === this.props.user._id)
+
+    //console.log(filtered)
+
     this.setState({ dives: dives })
   }
 
