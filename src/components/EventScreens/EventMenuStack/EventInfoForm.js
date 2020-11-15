@@ -33,36 +33,29 @@ const EventInfoForm = (props) => {
     const item = props.route.params.item
 
     if (!modifyEvent && item !== undefined) {
-      setModifyEvent(true)
-
-      setEvent({
-        title: item.title,
-        description: item.description
-      })
-      setStartDate(new Date(item.startdate))
-      setEndDate(new Date(item.enddate))
-      setTarget({
-        ...item.target,
-        location: {
-          longitude: item.target.longitude,
-          latitude: item.target.latitude
-        },
-      })
-
-      return
-    }
-
-    if (navFromCustomMap) {
+      initializeEventData(item)
+    } else if (navFromCustomMap) {
       setNavFromCustomMap(false)
-
-      return
-    }
-    if (isFocused) {
-      getInitialData()
+    } else if (isFocused) {
+      initializeMapData()
     }
   }, [isFocused])
 
-  const getInitialData = async () => {
+  const initializeEventData = item => {
+    setModifyEvent(true)
+    setEvent({ title: item.title, description: item.description })
+    setStartDate(new Date(item.startdate))
+    setEndDate(new Date(item.enddate))
+    setTarget({
+      ...item.target,
+      location: {
+        longitude: item.target.longitude,
+        latitude: item.target.latitude
+      },
+    })
+  }
+
+  const initializeMapData = async () => {
     const targetFromMap = props.route.params.target
 
     if (targetFromMap !== undefined) {
@@ -79,7 +72,6 @@ const EventInfoForm = (props) => {
     let location
 
     if (modifyEvent) {
-      console.log('test')
 
       return
     }
@@ -263,6 +255,7 @@ const options = {
         ...stylesheet,
         textbox: {
           ...stylesheet.textbox,
+          bottom: 30,
           normal: {
             ...stylesheet.textbox.normal,
             height: 140,
