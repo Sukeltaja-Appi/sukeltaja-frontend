@@ -11,7 +11,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
 import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
 import EventInfoForm from './components/EventScreens/EventMenuStack/EventInfoForm'
-import CustomTargetScreen from './components/OngoingEventScreens/OngoingEventTabs/CustomTargetScreen'
 import SelectTargetScreen from './components/MapScreens/SelectTargetScreen'
 
 const Stack = createStackNavigator()
