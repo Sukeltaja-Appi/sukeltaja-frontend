@@ -18,32 +18,14 @@ import { ScrollView } from 'react-native-gesture-handler'
 const { Form } = t.form
 
 const EventInfoForm = (props) => {
-  const isFocused = useIsFocused()
-  const [navFromCustomMap, setNavFromCustomMap] = useState(false)
+
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(inOneHour())
-  const [target, setTarget] = useState()
+  const [target, setTarget] = useState(props.route.params.target)
   const [divingEvent, setEvent] = useState({
     title: '',
     description: '',
   })
-
-  useEffect(() => {
-    if (navFromCustomMap) {
-      setNavFromCustomMap(false)
-
-      return
-    }
-    if (isFocused) {
-      getInitialData()
-    }
-  }, [isFocused])
-
-  const getInitialData = async () => {
-    const targetFromMap = props.route.params.target
-
-    setTarget(targetFromMap)
-  }
 
   const Event = t.struct({
     title: t.String,
@@ -51,21 +33,11 @@ const EventInfoForm = (props) => {
   })
 
   const submitForm = async () => {
-    let location
-
-    if (target !== 'undefined') {
-      location = await targetService.create({
-        ...target,
-        name: undefined,
-        user_created: true,
-      })
-    }
-
     const event = {
       ...divingEvent,
       startdate: startDate,
       enddate: endDate,
-      target: location,
+      target,
     }
 
     await props.startEvent(event)
@@ -74,11 +46,16 @@ const EventInfoForm = (props) => {
     })
   }
 
-  const navigate = () =>
+  const targetChanged = (newTarget) => {
+    console.log(newTarget)
+    setTarget(newTarget)
+    props.navigation.goBack()
+  }
+
+  const changeLocation = () =>
     props.navigation.navigate('Valitse sijainti', {
       target: target,
-      setTarget: setTarget,
-      setNavFromCustomMap: setNavFromCustomMap,
+      targetSelected: targetChanged,
     })
 
   const getLocationButtonTitle = () => {
@@ -104,7 +81,7 @@ const EventInfoForm = (props) => {
           <Button
             buttonStyle={style.button}
             title={getLocationButtonTitle()}
-            onPress={navigate}
+            onPress={changeLocation}
           />
           <DateTimePickerButton
             date={startDate}

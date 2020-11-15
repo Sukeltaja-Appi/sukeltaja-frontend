@@ -12,6 +12,7 @@ import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
 import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
 import EventInfoForm from './components/EventScreens/EventMenuStack/EventInfoForm'
 import CustomTargetScreen from './components/OngoingEventScreens/OngoingEventTabs/CustomTargetScreen'
+import SelectTargetScreen from './components/MapScreens/SelectTargetScreen'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -81,7 +82,7 @@ function Navigator(props) {
         component={OngoingEventEntry}
         options={({ navigation }) => ({
           headerRight: () => (
-            <View style={{ marginHorizontal: 20, flexDirection: 'row', justifyContent:'space-between' }}>
+            <View style={{ marginHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
               <MaterialIcons
                 onPress={() => navigation.navigate('Info')}
                 name="info-outline"
@@ -120,7 +121,8 @@ function Navigator(props) {
       />
       <Stack.Screen
         name="Valitse sijainti"
-        component={CustomTargetScreen}
+        component={SelectTargetScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   )
