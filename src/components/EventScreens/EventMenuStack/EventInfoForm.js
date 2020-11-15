@@ -19,6 +19,7 @@ const { Form } = t.form
 
 const EventInfoForm = (props) => {
   const isFocused = useIsFocused()
+  const [modifyEvent, setModifyEvent] = useState(false)
   const [navFromCustomMap, setNavFromCustomMap] = useState(false)
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(inOneHour())
@@ -29,6 +30,28 @@ const EventInfoForm = (props) => {
   })
 
   useEffect(() => {
+    const item = props.route.params.item
+
+    if (!modifyEvent && item !== undefined) {
+      setModifyEvent(true)
+
+      setEvent({
+        title: item.title,
+        description: item.description
+      })
+      setStartDate(new Date(item.startdate))
+      setEndDate(new Date(item.enddate))
+      setTarget({
+        ...item.target,
+        location: {
+          longitude: item.target.longitude,
+          latitude: item.target.latitude
+        },
+      })
+
+      return
+    }
+
     if (navFromCustomMap) {
       setNavFromCustomMap(false)
 
@@ -42,7 +65,9 @@ const EventInfoForm = (props) => {
   const getInitialData = async () => {
     const targetFromMap = props.route.params.target
 
-    setTarget(targetFromMap)
+    if (targetFromMap !== undefined) {
+      setTarget(targetFromMap)
+    }
   }
 
   const Event = t.struct({
@@ -52,6 +77,12 @@ const EventInfoForm = (props) => {
 
   const submitForm = async () => {
     let location
+
+    if (modifyEvent) {
+      console.log('test')
+
+      return
+    }
 
     if (target !== 'undefined') {
       location = await targetService.create({
@@ -74,12 +105,13 @@ const EventInfoForm = (props) => {
     })
   }
 
-  const navigate = () =>
+  const navigate = () => {
     props.navigation.navigate('Valitse sijainti', {
       target: target,
       setTarget: setTarget,
       setNavFromCustomMap: setNavFromCustomMap,
     })
+  }
 
   const getLocationButtonTitle = () => {
     if (target !== undefined) {
@@ -89,6 +121,14 @@ const EventInfoForm = (props) => {
     }
 
     return 'Muokkaa sijaintia'
+  }
+
+  const getSubmitButtonTitle = () => {
+    if (modifyEvent) {
+      return 'Tallenna muutokset'
+    }
+
+    return 'Luo tapahtuma!'
   }
 
   return (
@@ -118,7 +158,7 @@ const EventInfoForm = (props) => {
           />
           <View syle={style.buttonContainer}>
             <AppButton
-              title="Luo tapahtuma!"
+              title={getSubmitButtonTitle()}
               onPress={submitForm}
               containerStyle={style.submitButton}
             />
@@ -133,13 +173,11 @@ const DateTimePickerButton = (props) => {
   const { date, setDate, text } = props
   const [isShowingDatePicker, showDatePicker] = useState(false)
   const [isShowingTimePicker, showTimePicker] = useState(false)
-  const [localDate, setLocalDate] = useState(date)
 
   const onDateChange = (event, newDate) => {
     showDatePicker(false)
     if (newDate !== undefined) {
       setDate(newDate)
-      setLocalDate(newDate)
     }
     showTimePicker(true)
   }
@@ -148,10 +186,7 @@ const DateTimePickerButton = (props) => {
     showDatePicker(false)
     showTimePicker(false)
     if (newDate !== undefined) {
-      setLocalDate(localDate.setMinutes(newDate.getMinutes()))
-      setLocalDate(localDate.setHours(newDate.getHours()))
-      setDate(localDate)
-      setLocalDate(localDate)
+      setDate(newDate)
     }
   }
 
@@ -165,7 +200,7 @@ const DateTimePickerButton = (props) => {
       )}
       <Button
         buttonStyle={style.button}
-        title={text + ' ' + formatDate(localDate)}
+        title={text + ' ' + formatDate(date)}
         onPress={() => {
           showDatePicker(true)
           showTimePicker(false)

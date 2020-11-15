@@ -119,6 +119,10 @@ function Navigator(props) {
         component={EventInfoForm}
       />
       <Stack.Screen
+        name="Muokkaa tapahtumaa"
+        component={EventInfoForm}
+      />
+      <Stack.Screen
         name="Valitse sijainti"
         component={CustomTargetScreen}
       />
