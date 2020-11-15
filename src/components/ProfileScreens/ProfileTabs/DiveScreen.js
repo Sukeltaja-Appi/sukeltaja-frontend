@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Text, Divider } from 'react-native-elements'
+import { Text, Divider, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 
@@ -14,21 +14,23 @@ import { setOngoingEvent } from '../../../reducers/eventReducer'
 const style = {
   container: {
     paddingHorizontal: paddingSides,
-    paddingVertical: 20,
+    paddingVertical: 25,
     backgroundColor: 'white'
   },
   iconContainer: {
-    flex: 1.25,
     justifyContent: 'center',
     flexDirection: 'column',
     backgroundColor: '#379EFE',
     alignItems: 'center',
-    height: 100,
+    flexBasis: 100,
+    flexGrow: 0,
+    alignSelf: 'stretch',
   },
   title: {
-    fontSize: 20,
     fontFamily: 'nunito-bold',
-    marginLeft: 10,
+    color: '#379EFE',
+    fontSize: 16,
+    paddingRight: 20,
   },
   subtitle: {
     fontSize: 13,
@@ -41,6 +43,11 @@ const style = {
   text: {
     fontSize: 16,
     marginLeft: 5
+  },
+  flexRowCenter: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'row'
   }
 }
 
@@ -79,6 +86,7 @@ class DiveScreen extends React.Component {
     const targetName = event.target.name + '/' + event.target.type
 
     return targetName
+
   }
 
   navigate = (value) => this.props.navigation.navigate(value)
@@ -90,6 +98,14 @@ class DiveScreen extends React.Component {
 
     //this.props.navigation.navigate('Kutsut', { event })
     console.log(item)
+  }
+
+  navigateToEdit = (dive) => {
+    console.log(dive)
+  }
+
+  navigateToRemove = (dive) => {
+    console.log(dive)
   }
 
   Dive = () => {
@@ -106,32 +122,58 @@ class DiveScreen extends React.Component {
             </View>
             <View style={style.container}>
               <Text style={style.title}>
-                {this.targetOfEvent(event)}, {formatDate(startdate)}
+                {this.targetOfEvent(event) + ',\n'}{formatDate(startdate)}
               </Text>
             </View>
           </View>
           <Divider style={style.divider} />
           <View style={{ flexDirection: 'row', marginTop: 0 }}>
-            <MaterialIcons name='schedule' size={20} color={colors.secondary}/>
+            <MaterialIcons name='schedule' size={20} color={colors.primary}/>
             <Text style={style.text}>
               Kesto: {this.lengthOfDive(startdate, enddate)} min
             </Text>
           </View>
           <View style={{ flexDirection: 'row', marginTop: 10 }}>
-            <MaterialIcons name='room' size={20} color={colors.secondary}/>
+            <MaterialIcons name='room' size={20} color={colors.primary}/>
             <Text style={style.text}>
               L: {parseFloat(latitude).toFixed(n6)}; P: {parseFloat(longitude).toFixed(n6)}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', marginTop: 10 }}>
-            <MaterialIcons name='date-range' size={20} color={colors.secondary}/>
+            <MaterialIcons name='date-range' size={20} color={colors.primary}/>
             <Text style={style.text}> {eventName} </Text>
           </View>
           <Divider style={style.divider} />
-          <AppButton
-            title= {eventName}
-            onPress={() => this.navigateToEvent(event)}
-          />
+          <View style={{ flexDirection: 'row', marginTop: 0, alignItems: 'center' }}>
+            <Icon
+              name='edit'
+              type='feather'
+              size={40}
+              color={colors.gray}
+              onPress={() => this.navigateToEdit(dive)}
+            />
+            <Text style={style.text}>Muokkaa</Text>
+          </View>
+          <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
+            <Icon
+              name='trash'
+              type='feather'
+              size={40}
+              color={colors.gray}
+              onPress={() => this.navigateToRemove(dive)}
+            />
+            <Text style={style.text}>Poista</Text>
+          </View>
+          <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
+            <MaterialIcons
+              name='date-range'
+              type='feather'
+              size={40}
+              color={colors.gray}
+              onPress={() => this.navigateToEvent(dive)}
+            />
+            <Text style={style.text}>Sukellustapahtumaan</Text>
+          </View>
         </View>
       </View>
     )

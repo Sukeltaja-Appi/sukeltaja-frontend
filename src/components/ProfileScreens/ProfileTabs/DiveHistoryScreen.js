@@ -12,12 +12,15 @@ import colors from '../../../styles/colors'
 
 const style = StyleSheet.create({
   divider: {
+    paddingHorizontal: 20,
+    paddingVertical: 5,
     height: 10
   },
   title: {
-    fontSize: 18,
     fontFamily: 'nunito-bold',
-    marginLeft: 5,
+    color: '#379EFE',
+    fontSize: 16,
+    paddingRight: 20,
   },
   subtitle: {
     fontSize: 13,
@@ -27,16 +30,17 @@ const style = StyleSheet.create({
   diveContainer: {
     paddingVertical: 0,
     paddingLeft: 1,
-    paddingRight: 5,
-    marginBottom: 8,
+    justifyContent: 'flex-start',
+    flexGrow: 100,
   },
   iconContainer: {
-    flex: 0.33,
+    flexBasis: 100,
+    flexGrow: 0,
     justifyContent: 'center',
     flexDirection: 'column',
     backgroundColor: '#379EFE',
     alignItems: 'center',
-    height: 135,
+    alignSelf: 'stretch',
   },
   flexRowCenter: {
     flex: 1,
@@ -157,30 +161,15 @@ class DiveHistoryScreen extends React.Component {
                     </ListItem.Title>
                   </ListItem.Content>
                   <ListItem.Content style={{ flexDirection: 'row', marginTop: 5 }}>
-                    <MaterialIcons name='schedule' size={20} color={colors.primary}/>
+                    <MaterialIcons name='date-range' size={20} color={colors.primary}/>
                     <ListItem.Subtitle style={style.subtitle}>
                       {formatDate(startdate)}
                     </ListItem.Subtitle>
                   </ListItem.Content>
-                  <ListItem.Content style={{ flexDirection: 'row', marginTop: 5 }}>
-                    <MaterialIcons name='schedule' size={20} color={colors.secondary}/>
+                  <ListItem.Content style={{ flexDirection: 'row', marginTop: 5, marginBottom: 5 }}>
+                    <MaterialIcons name='schedule' size={20} color={colors.primary}/>
                     <ListItem.Subtitle style={style.subtitle}>
                       {'Kesto: ' + diveLength + ' min'}
-                    </ListItem.Subtitle>
-                  </ListItem.Content>
-                  <ListItem.Content style={{ flexDirection: 'row', marginTop: 5 }}>
-                    <MaterialIcons name='room' size={20} color={colors.primary}/>
-                    <ListItem.Subtitle style={style.subtitle}>
-                      {
-                        'L: ' + parseFloat(latitude).toFixed(n6) + '; P:' +
-                        parseFloat(longitude).toFixed(n6)
-                      }
-                    </ListItem.Subtitle>
-                  </ListItem.Content>
-                  <ListItem.Content style={{ flexDirection: 'row', marginTop: 5 }}>
-                    <MaterialIcons name='date-range' size={20} color={colors.primary}/>
-                    <ListItem.Subtitle style={style.subtitle}>
-                      {eventName}
                     </ListItem.Subtitle>
                   </ListItem.Content>
                 </ListItem.Content>
