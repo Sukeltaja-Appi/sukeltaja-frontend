@@ -13,9 +13,11 @@ const style = StyleSheet.create({
   },
   h4: {
     fontSize: 28,
+    color: '#424242',
   },
   h5: {
     fontSize: 16,
+    color: '#424242',
   },
   buttonStyle: {
     paddingVertical: 5,
