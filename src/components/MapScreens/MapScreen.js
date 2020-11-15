@@ -1,17 +1,16 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, Dimensions } from 'react-native'
-import { SearchBar, Text } from 'react-native-elements'
+import { View, StyleSheet, Dimensions, KeyboardAvoidingView } from 'react-native'
+import { SearchBar, Text, Overlay } from 'react-native-elements'
 import ClusteredMapView from 'react-native-maps-super-cluster'
-import { Marker, Callout } from 'react-native-maps'
+import { Marker } from 'react-native-maps'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import colors from '../../styles/colors'
-import decimalToDMS from '../../utils/coordinates'
 import { getAll } from '../../reducers/targetReducer'
-import AppButton from '../common/AppButton'
-import CustomMarker from './CustomMarker'
 import { startEvent } from '../../reducers/eventReducer'
+import Target from './Target'
+import CustomTarget from './CustomTarget'
 
 class MainMapScreen extends React.Component {
   constructor(props) {
@@ -25,8 +24,9 @@ class MainMapScreen extends React.Component {
       },
       query: '',
       customTarget: null,
-      selectedTargetId: null,
+      target: null,
     }
+    this.searchInputRef = null
   }
 
   componentDidMount() {
@@ -40,27 +40,36 @@ class MainMapScreen extends React.Component {
   }
 
   onMarkerPress = (event) => {
-    this.setState({
-      selectedTargetId: event.nativeEvent.id,
-    })
+    const { latitude, longitude } = event.nativeEvent.coordinate
+    const target = this.props.targets.find(
+      m => m.latitude === latitude && m.longitude === longitude
+    )
+
+    if (target) {
+      this.setState({ target })
+    } else if (event.nativeEvent.id === 'customLocation') {
+      this.setState({ target: this.state.customTarget })
+    }
   }
 
   onPress = event => {
-    if (this.state.selectedTargetId) {
+    this.searchInputRef.blur()
+    if (this.state.target) {
       return this.setState({
         customTarget: null,
-        selectedTargetId: null,
+        target: null,
       })
+    }
+    const customTarget = {
+      _id: 'customLocation',
+      name: 'Omavalintainen kohde',
+      custom: true,
+      ...event.nativeEvent.coordinate,
     }
 
     this.setState({
-      customTarget: {
-        _id: 'customLocation',
-        name: 'Omavalintainen kohde',
-        custom: true,
-        ...event.nativeEvent.coordinate,
-      },
-      selectedTargetId: 'customLocation'
+      customTarget,
+      target: customTarget,
     })
   }
 
@@ -105,46 +114,30 @@ class MainMapScreen extends React.Component {
   }
 
   renderPinColor = (pin) => {
-    if (pin.custom)
-      return '#00A3FF'
+    if (this.state.target?._id === pin._id)
+      return 'green'
 
-    return this.props.currentTarget && this.props.currentTarget._id === pin._id ? 'green' : 'red'
+    return pin.custom ? '#00A3FF' : 'red'
   }
 
   renderMarker = (pin) => {
     const { _id, name, type, location } = pin
-    const selectedTargetId = this.state.selectedTargetId
 
     return (
-      <CustomMarker
+      <Marker
         identifier={_id}
-        key={_id}
+        key={`${_id}-${this.state.target?._id === _id}`}
         coordinate={location}
         pinColor={this.renderPinColor(pin)}
-        calloutVisible={_id === selectedTargetId}
-      >
-        <Callout tooltip={true} onPress={() => this.startEvent(pin)}>
-          <View style={style.callout}>
-            <Text style={{ fontWeight: 'bold' }}>{name}</Text>
-            {type && <Text>{type}</Text>}
-            <Text>{`${decimalToDMS(location.latitude)} N`}</Text>
-            <Text>{`${decimalToDMS(location.longitude)} E`}</Text>
-            <AppButton title='Luo uusi tapahtuma'
-              containerStyle={{ paddingVertical: 5, paddingHorizontal: 10, borderWidth: 2, marginTop: 10 }}
-              textStyle={{ fontSize: 16 }}
-            />
-          </View>
-
-        </Callout>
-      </CustomMarker >
+      />
     )
   }
 
   render() {
-    const { initialRegion, customTarget, query } = this.state
+    const { initialRegion, customTarget, query, target } = this.state
     const targets = this.filteredTargets()
     // Map needs coordinates in target.location
-    const mapTarget = customTarget ? {
+    const customMapTarget = customTarget ? {
       ...customTarget,
       location: {
         longitude: customTarget.longitude,
@@ -153,41 +146,70 @@ class MainMapScreen extends React.Component {
     } : null
 
     targets.forEach(t => t.location = { longitude: t.longitude, latitude: t.latitude })
-
-    if (mapTarget)
-      targets.push(mapTarget)
+    if (customMapTarget)
+      targets.push(customMapTarget)
 
     return (
-      <View style={style.container}>
-        <ClusteredMapView
-          ref={(r) => { this.map = r }}
-          maxZoom={12}
-          mapPadding={{ top: 100, left: 50, right: 50 }}
-          style={style.map}
-          radius={42}
-          data={targets}
-          initialRegion={initialRegion}
-          renderMarker={this.renderMarker}
-          renderCluster={this.renderCluster}
-          showsUserLocation={true}
-          userLocationAnnotationTitle=''
-          onPress={this.onPress}
-          onMarkerPress={this.onMarkerPress}
-        />
-
-        <SafeAreaView>
-          <SearchBar
-            placeholder='Etsi kohde'
-            containerStyle={style.searchContainer}
-            inputContainerStyle={style.searchInputContainer}
-            inputStyle={style.searchInput}
-            lightTheme
-            clearIcon={{ name: 'x', type: 'feather', size: 28 }}
-            onChangeText={this.search}
-            value={query}
+      <Fragment>
+        <View style={style.container}>
+          <ClusteredMapView
+            ref={(r) => { this.map = r }}
+            maxZoom={12}
+            mapPadding={{ top: 100, left: 50, right: 50 }}
+            style={style.map}
+            radius={42}
+            data={targets}
+            initialRegion={initialRegion}
+            renderMarker={this.renderMarker}
+            renderCluster={this.renderCluster}
+            showsUserLocation={true}
+            userLocationAnnotationTitle=''
+            onPress={this.onPress}
+            onMarkerPress={this.onMarkerPress}
           />
-        </SafeAreaView>
-      </View>
+          <SafeAreaView>
+            <SearchBar
+              placeholder='Etsi kohde'
+              containerStyle={style.searchContainer}
+              inputContainerStyle={style.searchInputContainer}
+              inputStyle={style.searchInput}
+              lightTheme
+              clearIcon={{ name: 'x', type: 'feather', size: 28 }}
+              onChangeText={this.search}
+              value={query}
+              ref={(val) => this.searchInputRef = val}
+            />
+          </SafeAreaView>
+        </View>
+        {target && (
+          <View>
+            { /* when statusBarTranslucent is true, overlay is not pushed up when keyboard is visible
+               * and when statusBarTranslucent, overlay doesn't dim status bar area of the map. For this
+               * reason we use separate overlay for the backdrop.
+               */
+            }
+            <Overlay
+              statusBarTranslucent
+              overlayStyle={style.backdropOverlay}
+              animationType='fade'
+              isVisible
+            />
+            <Overlay
+              onBackdropPress={() => this.setState({ target: null })}
+              overlayStyle={style.overlay}
+              // Hide backdrop, backdrop is done with separate overlay
+              backdropStyle={{ backgroundColor: 'none' }}
+              animationType='fade'
+              isVisible
+            >
+              {target.custom ?
+                <CustomTarget {...this.props} target={target} targetSelected={this.props.targetSelected} /> :
+                <Target {...this.props} target={target} targetSelected={this.props.targetSelected} />
+              }
+            </Overlay>
+          </View>
+        )}
+      </Fragment >
     )
   }
 }
@@ -209,7 +231,7 @@ const style = StyleSheet.create({
     alignItems: 'center'
   },
   map: {
-    ...StyleSheet.absoluteFillObject
+    ...StyleSheet.absoluteFillObject,
   },
   searchContainer: {
     backgroundColor: 'transparent',
@@ -218,7 +240,8 @@ const style = StyleSheet.create({
     width: Dimensions.get('window').width * 0.95,
     position: 'relative',
     borderBottomColor: 'transparent',
-    borderTopColor: 'transparent'
+    borderTopColor: 'transparent',
+    zIndex: 999,
   },
   searchInputContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -238,6 +261,15 @@ const style = StyleSheet.create({
     borderColor: '#BABABA',
     backgroundColor: '#fff',
     padding: 5,
+  },
+  overlay: {
+    position: 'absolute',
+    bottom: 0,
+    padding: 0,
+    width: '100%',
+  },
+  backdropOverlay: {
+    display: 'none',
   }
 })
 
