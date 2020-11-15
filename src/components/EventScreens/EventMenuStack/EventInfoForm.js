@@ -120,7 +120,7 @@ const EventInfoForm = (props) => {
       )}`
     }
 
-    return 'Muokkaa sijaintia'
+    return 'Valitse sijainti'
   }
 
   const getSubmitButtonTitle = () => {
@@ -156,13 +156,11 @@ const EventInfoForm = (props) => {
             setDate={setEndDate}
             text="Loppuu: "
           />
-          <View syle={style.buttonContainer}>
-            <AppButton
-              title={getSubmitButtonTitle()}
-              onPress={submitForm}
-              containerStyle={style.submitButton}
-            />
-          </View>
+          <AppButton
+            title={getSubmitButtonTitle()}
+            onPress={submitForm}
+            containerStyle={style.submitButton}
+          />
         </View>
       </ScrollView>
     </View>
@@ -223,11 +221,6 @@ const style = {
     marginBottom: 20,
     backgroundColor: 'rgba(52, 52, 52, 0.5)',
     borderRadius: 10,
-  },
-  buttonContainer: {
-    paddingBottom: 40,
-    marginTop: 40,
-    paddingVertical: 50,
   },
   button: {
     paddingVertical: 20,
