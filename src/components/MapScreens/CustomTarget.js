@@ -43,7 +43,7 @@ const CustomTarget = ({ target, targetSelected }) => {
 
   return (
     <View style={style.view}>
-      <Input placeholder='Kohteen nimi' value={name} onChange={(e) => setName(e.target.value)}></Input>
+      <Input placeholder='Kohteen nimi' value={name} onChange={(e) => { setName(e.nativeEvent.text) }}></Input>
       <Text style={style.h5}>{`${decimalToDMS(latitude)} N`}</Text>
       <Text style={style.h5}>{`${decimalToDMS(longitude)} E`}</Text>
       <AppButton
