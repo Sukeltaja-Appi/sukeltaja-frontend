@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { View, Linking, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { Input } from 'react-native-elements'
 import decimalToDMS from '../../utils/coordinates'
 
-import AppText from '../common/AppText'
 import AppButton from '../common/AppButton'
 import targetService from '../../services/targets'
 
