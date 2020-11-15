@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { View, StyleSheet, Dimensions, KeyboardAvoidingView } from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import { SearchBar, Text, Overlay } from 'react-native-elements'
 import ClusteredMapView from 'react-native-maps-super-cluster'
 import { Marker } from 'react-native-maps'
@@ -8,11 +8,10 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import colors from '../../styles/colors'
 import { getAll } from '../../reducers/targetReducer'
-import { startEvent } from '../../reducers/eventReducer'
 import Target from './Target'
 import CustomTarget from './CustomTarget'
 
-class MainMapScreen extends React.Component {
+class SelectTargetScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -70,13 +69,6 @@ class MainMapScreen extends React.Component {
     this.setState({
       customTarget,
       target: customTarget,
-    })
-  }
-
-  async startEvent(target) {
-    this.props.navigation.navigate('Luo tapahtuma', {
-      target: { ...target, name: undefined },
-      custom: true
     })
   }
 
@@ -145,6 +137,9 @@ class MainMapScreen extends React.Component {
       }
     } : null
 
+    // Map supports targetSelected either as prop or route param. Maybe a bit ugly.
+    const targetSelected = this.props.targetSelected || this.props.route.params.targetSelected
+
     targets.forEach(t => t.location = { longitude: t.longitude, latitude: t.latitude })
     if (customMapTarget)
       targets.push(customMapTarget)
@@ -155,7 +150,7 @@ class MainMapScreen extends React.Component {
           <ClusteredMapView
             ref={(r) => { this.map = r }}
             maxZoom={12}
-            mapPadding={{ top: 100, left: 50, right: 50 }}
+            mapPadding={{ top: 100, left: 50, right: 10 }}
             style={style.map}
             radius={42}
             data={targets}
@@ -166,6 +161,10 @@ class MainMapScreen extends React.Component {
             userLocationAnnotationTitle=''
             onPress={this.onPress}
             onMarkerPress={this.onMarkerPress}
+            // Without this, there will be empty space at the bottom equal to the
+            // size of the native status bar. This emtpy space is not visible when
+            // bottom nav bar hides it.
+            height={Dimensions.get('screen').height}
           />
           <SafeAreaView>
             <SearchBar
@@ -193,7 +192,10 @@ class MainMapScreen extends React.Component {
               overlayStyle={style.backdropOverlay}
               animationType='fade'
               isVisible
-            />
+            >
+              {/* children is required property so this can't be empty */}
+              <Fragment />
+            </Overlay>
             <Overlay
               onBackdropPress={() => this.setState({ target: null })}
               overlayStyle={style.overlay}
@@ -203,8 +205,8 @@ class MainMapScreen extends React.Component {
               isVisible
             >
               {target.custom ?
-                <CustomTarget {...this.props} target={target} targetSelected={this.props.targetSelected} /> :
-                <Target {...this.props} target={target} targetSelected={this.props.targetSelected} />
+                <CustomTarget {...this.props} target={target} targetSelected={targetSelected} /> :
+                <Target {...this.props} target={target} targetSelected={targetSelected} />
               }
             </Overlay>
           </View>
@@ -228,10 +230,11 @@ const style = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+    borderWidth: 10,
   },
   searchContainer: {
     backgroundColor: 'transparent',
@@ -281,5 +284,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { getAll, startEvent }
-)(MainMapScreen)
+  { getAll }
+)(SelectTargetScreen)
