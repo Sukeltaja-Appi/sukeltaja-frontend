@@ -154,7 +154,7 @@ class SelectTargetScreen extends React.Component {
         <View style={style.container}>
           <ClusteredMapView
             ref={(r) => { this.map = r }}
-            maxZoom={12}
+            maxZoomLevel={16}
             mapPadding={{ top: 100, left: 50, right: 10 }}
             style={style.map}
             radius={42}
