@@ -104,8 +104,8 @@ function Navigator(props) {
                 style={{ padding: 10 }}
               />
               <MaterialIcons
-                onPress={() => navigation.navigate('Kohde')}
-                name="location-on"
+                onPress={() => navigation.navigate('Kutsu osallistujia')}
+                name="person-add"
                 size={26}
                 color="#118BFC"
                 style={{ padding: 10 }}
