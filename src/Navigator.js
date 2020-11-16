@@ -9,7 +9,7 @@ import ProfileScreens from './components/ProfileScreens'
 import LoginStack from './components/ProfileScreens/LoginStack'
 import { createStackNavigator } from '@react-navigation/stack'
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
-import OngoingEventEntry from './components/OngoingEventScreens/OngoingEventEntry'
+import OngoingEventTabs from './components/OngoingEventScreens/'
 import EventInfoForm from './components/EventScreens/EventMenuStack/EventInfoForm'
 import SelectTargetScreen from './components/MapScreens/SelectTargetScreen'
 
@@ -78,7 +78,7 @@ function Navigator(props) {
       />
       <Stack.Screen
         name="Tapahtuma"
-        component={OngoingEventEntry}
+        component={OngoingEventTabs}
         options={({ navigation }) => ({
           headerRight: () => (
             <View style={{ marginHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between' }}>

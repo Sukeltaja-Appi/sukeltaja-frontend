@@ -87,12 +87,6 @@ class EventScreen extends React.Component {
     return false
   }
 
-  /*eslint-disable */
-  pressUser = (item) => {
-    console.log()
-  }
-  /*eslint-enable */
-
   render() {
     const { ongoingEvent } = this.props
     const { admins, participants, creator, title, description } = ongoingEvent
@@ -148,7 +142,6 @@ class EventScreen extends React.Component {
               renderItem={({ item }) => {
                 return (
                   <ListItem
-                    onPress={this.pressUser(item)}
                     bottomDivider
                   >
                     <ListItem.Content>

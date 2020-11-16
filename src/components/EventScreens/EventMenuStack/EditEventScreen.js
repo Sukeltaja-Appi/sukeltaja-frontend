@@ -61,7 +61,6 @@ class EditEventScreen extends React.Component {
           routes: [
             { name: 'Tapahtumat' },
             { name: 'Omat tapahtumat' },
-            { name: 'Tapahtumasivu', params: { item: updatedEvent } }
           ]
         })
 
