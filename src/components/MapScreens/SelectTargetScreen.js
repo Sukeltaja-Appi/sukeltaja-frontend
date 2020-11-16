@@ -24,6 +24,7 @@ class SelectTargetScreen extends React.Component {
       query: '',
       customTarget: null,
       target: null,
+      previousTarget: this.props.route?.params?.previousTarget
     }
     this.searchInputRef = null
   }
@@ -46,6 +47,8 @@ class SelectTargetScreen extends React.Component {
 
     if (target) {
       this.setState({ target })
+    } else if (event.nativeEvent.id === this.state.previousTarget?._id) {
+      this.setState({ target: this.state.previousTarget })
     } else if (event.nativeEvent.id === 'customLocation') {
       this.setState({ target: this.state.customTarget })
     }
@@ -106,7 +109,7 @@ class SelectTargetScreen extends React.Component {
   }
 
   renderPinColor = (pin) => {
-    if (this.state.target?._id === pin._id)
+    if (pin._id === this.state.target?._id || pin._id === this.state.previousTarget?._id)
       return 'green'
 
     return pin.custom ? '#00A3FF' : 'red'
@@ -126,7 +129,7 @@ class SelectTargetScreen extends React.Component {
   }
 
   render() {
-    const { initialRegion, customTarget, query, target } = this.state
+    const { initialRegion, customTarget, query, target, previousTarget } = this.state
     const targets = this.filteredTargets()
     // Map needs coordinates in target.location
     const customMapTarget = customTarget ? {
@@ -140,9 +143,11 @@ class SelectTargetScreen extends React.Component {
     // Map supports targetSelected either as prop or route param. Maybe a bit ugly.
     const targetSelected = this.props.targetSelected || this.props.route.params.targetSelected
 
-    targets.forEach(t => t.location = { longitude: t.longitude, latitude: t.latitude })
     if (customMapTarget)
       targets.push(customMapTarget)
+    if (previousTarget && !targets.some(t => t._id === previousTarget._id))
+      targets.push(previousTarget)
+    targets.forEach(t => t.location = { longitude: t.longitude, latitude: t.latitude })
 
     return (
       <Fragment>

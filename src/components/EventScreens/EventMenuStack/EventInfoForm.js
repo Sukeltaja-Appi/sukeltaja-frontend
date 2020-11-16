@@ -52,7 +52,7 @@ const EventInfoForm = (props) => {
 
   const changeLocation = () =>
     props.navigation.navigate('Valitse sijainti', {
-      target: target,
+      previousTarget: target,
       targetSelected: targetChanged,
     })
 
