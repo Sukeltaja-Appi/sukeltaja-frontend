@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from 'react-native'
 import { Input } from 'react-native-elements'
 import decimalToDMS from '../../utils/coordinates'
 
-import AppButton from '../common/AppButton'
+import CommonButton from '../common/CommonButton'
 import targetService from '../../services/targets'
 
 const style = StyleSheet.create({
@@ -18,9 +18,6 @@ const style = StyleSheet.create({
     fontSize: 16,
   },
   buttonStyle: {
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderWidth: 2,
     marginTop: 10,
   }
 })
@@ -45,9 +42,9 @@ const CustomTarget = ({ target, targetSelected }) => {
       <Input placeholder='Kohteen nimi' value={name} onChange={(e) => { setName(e.nativeEvent.text) }}></Input>
       <Text style={style.h5}>{`${decimalToDMS(latitude)} N`}</Text>
       <Text style={style.h5}>{`${decimalToDMS(longitude)} E`}</Text>
-      <AppButton
+      <CommonButton
         title='Valitse kohteeksi'
-        containerStyle={style.buttonStyle}
+        buttonStyle={style.buttonStyle}
         onPress={createTarget}
       />
     </View>

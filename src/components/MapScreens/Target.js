@@ -3,7 +3,7 @@ import { View, Linking, StyleSheet, Text } from 'react-native'
 import decimalToDMS from '../../utils/coordinates'
 
 import AppText from '../common/AppText'
-import AppButton from '../common/AppButton'
+import CommonButton from '../common/CommonButton'
 import { KYPPI_URL } from '@env'
 
 const style = StyleSheet.create({
@@ -37,13 +37,13 @@ const Target = ({ target, targetSelected }) => {
       {material && <AppText>{`Materiaali: ${material}`}</AppText>}
       <Text style={style.h5}>{`${decimalToDMS(latitude)} N`}</Text>
       <Text style={style.h5}>{`${decimalToDMS(longitude)} E`}</Text>
-      <AppButton
+      <CommonButton
         title='Valitse kohteeksi'
         containerStyle={style.buttonStyle}
         onPress={() => targetSelected(target)}
       />
       { mj_id &&
-        <AppButton
+        <CommonButton
           title='MJ-rekisteri'
           containerStyle={style.buttonStyle}
           onPress={() => Linking.openURL(`${KYPPI_URL}${mj_id}`)}
