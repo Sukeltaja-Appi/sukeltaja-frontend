@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import t from 'tcomb-form-native'
 import RNDateTimePicker from '@react-native-community/datetimepicker'
 import { formatDate } from '../../../utils/dates'
@@ -10,58 +10,30 @@ import { connect } from 'react-redux'
 import { inOneHour } from '../../../utils/dates'
 import decimalToDMS from '../../../utils/coordinates'
 import AppButton from '../../common/AppButton'
-import targetService from '../../../services/targets'
-import { useIsFocused } from '@react-navigation/native'
 import _ from 'lodash'
 import { ScrollView } from 'react-native-gesture-handler'
 
 const { Form } = t.form
 
 const EventInfoForm = (props) => {
-  const isFocused = useIsFocused()
-  const [modifyEvent, setModifyEvent] = useState(false)
-  const [navFromCustomMap, setNavFromCustomMap] = useState(false)
-  const [startDate, setStartDate] = useState(new Date())
-  const [endDate, setEndDate] = useState(inOneHour())
-  const [target, setTarget] = useState()
-  const [divingEvent, setEvent] = useState({
+  const item = props.route.params.item
+  const [modifying, setModifying] = useState(item !== undefined ? true : false)
+  const [startDate, setStartDate] = useState(modifying ? item.startdate : new Date())
+  const [endDate, setEndDate] = useState(modifying ? item.startdate : inOneHour())
+  const [target, setTarget] = useState(modifying ? {
+    ...item.target,
+    location: {
+      longitude: item.target.longitude,
+      latitude: item.target.latitude,
+    },
+  } : props.route.params.target)
+  const [divingEvent, setEvent] = useState(modifying ? {
+    title: item.title,
+    description: item.description,
+  } : {
     title: '',
     description: '',
   })
-
-  useEffect(() => {
-    const item = props.route.params.item
-
-    if (!modifyEvent && item !== undefined) {
-      initializeEventData(item)
-    } else if (navFromCustomMap) {
-      setNavFromCustomMap(false)
-    } else if (isFocused) {
-      initializeMapData()
-    }
-  }, [isFocused])
-
-  const initializeEventData = item => {
-    setModifyEvent(true)
-    setEvent({ title: item.title, description: item.description })
-    setStartDate(new Date(item.startdate))
-    setEndDate(new Date(item.enddate))
-    setTarget({
-      ...item.target,
-      location: {
-        longitude: item.target.longitude,
-        latitude: item.target.latitude
-      },
-    })
-  }
-
-  const initializeMapData = async () => {
-    const targetFromMap = props.route.params.target
-
-    if (targetFromMap !== undefined) {
-      setTarget(targetFromMap)
-    }
-  }
 
   const Event = t.struct({
     title: t.String,
@@ -69,26 +41,11 @@ const EventInfoForm = (props) => {
   })
 
   const submitForm = async () => {
-    let location
-
-    if (modifyEvent) {
-
-      return
-    }
-
-    if (target !== 'undefined') {
-      location = await targetService.create({
-        ...target,
-        name: undefined,
-        user_created: true,
-      })
-    }
-
     const event = {
       ...divingEvent,
       startdate: startDate,
       enddate: endDate,
-      target: location,
+      target,
     }
 
     await props.startEvent(event)
@@ -97,13 +54,17 @@ const EventInfoForm = (props) => {
     })
   }
 
-  const navigate = () => {
-    props.navigation.navigate('Valitse sijainti', {
-      target: target,
-      setTarget: setTarget,
-      setNavFromCustomMap: setNavFromCustomMap,
-    })
+  const targetChanged = (newTarget) => {
+    console.log(newTarget)
+    setTarget(newTarget)
+    props.navigation.goBack()
   }
+
+  const changeLocation = () =>
+    props.navigation.navigate('Valitse sijainti', {
+      previousTarget: target,
+      targetSelected: targetChanged,
+    })
 
   const getLocationButtonTitle = () => {
     if (target !== undefined) {
@@ -116,7 +77,7 @@ const EventInfoForm = (props) => {
   }
 
   const getSubmitButtonTitle = () => {
-    if (modifyEvent) {
+    if (modifying) {
       return 'Tallenna muutokset'
     }
 
@@ -136,7 +97,7 @@ const EventInfoForm = (props) => {
           <Button
             buttonStyle={style.button}
             title={getLocationButtonTitle()}
-            onPress={navigate}
+            onPress={changeLocation}
           />
           <DateTimePickerButton
             date={startDate}

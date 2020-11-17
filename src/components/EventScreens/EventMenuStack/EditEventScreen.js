@@ -53,7 +53,7 @@ class EditEventScreen extends React.Component {
 
         this.props.navigation.dispatch(resetAction)
 
-        this.props.navigation.navigate('OngoingEvent')
+        this.props.navigation.navigate('Tapahtuma', { item: ongoingEvent })
 
       } else {
         const resetAction = CommonActions.reset({
@@ -61,7 +61,6 @@ class EditEventScreen extends React.Component {
           routes: [
             { name: 'Tapahtumat' },
             { name: 'Omat tapahtumat' },
-            { name: 'Tapahtumasivu', params: { item: updatedEvent } }
           ]
         })
 
