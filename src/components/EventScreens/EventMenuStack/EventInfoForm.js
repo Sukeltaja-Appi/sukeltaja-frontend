@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import t from 'tcomb-form-native'
 import RNDateTimePicker from '@react-native-community/datetimepicker'
 import { formatDate } from '../../../utils/dates'
@@ -28,6 +28,18 @@ const EventInfoForm = (props) => {
     title: '',
     description: '',
   })
+
+  useEffect(() => {
+    if (startDate > endDate) {
+      setEndDate(startDate)
+    }
+  }, [startDate])
+
+  useEffect(() => {
+    if (startDate > endDate) {
+      setStartDate(endDate)
+    }
+  }, [endDate])
 
   const Event = t.struct({
     title: t.String,
