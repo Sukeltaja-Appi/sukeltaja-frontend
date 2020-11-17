@@ -5,7 +5,7 @@ import { formatDate } from '../../../utils/dates'
 import { Button } from 'react-native-elements'
 import { View } from 'react-native'
 import { paddingSides } from '../../../styles/global'
-import { startEvent, setOngoingEvent } from '../../../reducers/eventReducer'
+import { startEvent, updateEvent, setOngoingEvent } from '../../../reducers/eventReducer'
 import { connect } from 'react-redux'
 import { inOneHour } from '../../../utils/dates'
 import decimalToDMS from '../../../utils/coordinates'
@@ -42,7 +42,12 @@ const EventInfoForm = (props) => {
       target,
     }
 
-    await props.startEvent(event)
+    if (!modifying) {
+      await props.startEvent(event)
+    } else {
+      await props.updateEvent({ ...item, ...event })
+    }
+
     props.navigation.navigate('Tapahtumat', {
       screen: 'Omat tapahtumat'
     })
@@ -235,6 +240,6 @@ const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
 })
 
-export default connect(mapStateToProps, { startEvent, setOngoingEvent })(
+export default connect(mapStateToProps, { startEvent, updateEvent, setOngoingEvent })(
   EventInfoForm
 )
