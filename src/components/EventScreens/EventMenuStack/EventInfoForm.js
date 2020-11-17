@@ -17,16 +17,10 @@ const { Form } = t.form
 
 const EventInfoForm = (props) => {
   const item = props.route.params.item
-  const [modifying, setModifying] = useState(item !== undefined ? true : false)
-  const [startDate, setStartDate] = useState(modifying ? item.startdate : new Date())
-  const [endDate, setEndDate] = useState(modifying ? item.startdate : inOneHour())
-  const [target, setTarget] = useState(modifying ? {
-    ...item.target,
-    location: {
-      longitude: item.target.longitude,
-      latitude: item.target.latitude,
-    },
-  } : props.route.params.target)
+  const modifying = item !== undefined ? true : false
+  const [startDate, setStartDate] = useState(modifying ? new Date(item.startdate) : new Date())
+  const [endDate, setEndDate] = useState(modifying ? new Date(item.enddate) : inOneHour())
+  const [target, setTarget] = useState(modifying ? item.target : props.route.params.target)
   const [divingEvent, setEvent] = useState(modifying ? {
     title: item.title,
     description: item.description,
@@ -68,6 +62,10 @@ const EventInfoForm = (props) => {
 
   const getLocationButtonTitle = () => {
     if (target !== undefined) {
+      if (target.name !== undefined && target.name !== '') {
+        return `Kohde: ${target.name}`
+      }
+
       return `Sijainti: ${decimalToDMS(target.latitude)}, ${decimalToDMS(
         target.longitude
       )}`
