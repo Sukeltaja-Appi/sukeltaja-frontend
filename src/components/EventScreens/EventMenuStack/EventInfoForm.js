@@ -220,7 +220,7 @@ stylesheet.controlLabel.error.fontFamily = 'nunito-bold'
 stylesheet.textbox.error.backgroundColor = 'white'
 stylesheet.controlLabel.error.color = 'black'
 stylesheet.controlLabel.error.marginLeft = 15
-stylesheet.textbox.error.borderRadius = 20
+stylesheet.textbox.error.borderRadius = 15
 
 const options = {
   i18n: {
@@ -240,15 +240,12 @@ const options = {
         ...stylesheet,
         textbox: {
           ...stylesheet.textbox,
-          bottom: 30,
           normal: {
             ...stylesheet.textbox.normal,
             height: 140,
             textAlignVertical: 'top',
-          },
-          error: {
-            ...stylesheet.textbox.error,
-            height: 140,
+            paddingHorizontal: 8,
+            paddingVertical: 8,
           },
         },
       },
