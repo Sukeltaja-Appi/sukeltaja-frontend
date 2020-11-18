@@ -16,6 +16,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 const { Form } = t.form
 
 const EventInfoForm = (props) => {
+  const reference = React.createRef()
   const item = props.route.params.item
   const modifying = item !== undefined ? true : false
   const [startDate, setStartDate] = useState(modifying ? new Date(item.startdate) : new Date())
@@ -43,10 +44,13 @@ const EventInfoForm = (props) => {
 
   const Event = t.struct({
     title: t.String,
-    description: t.String,
+    description: t.maybe(t.String),
   })
 
   const submitForm = async () => {
+    if (!reference.current.getValue()) {
+      return
+    }
     const event = {
       ...divingEvent,
       startdate: startDate,
@@ -78,7 +82,7 @@ const EventInfoForm = (props) => {
     })
 
   const getLocationButtonTitle = () => {
-    if (target !== undefined) {
+    if (target !== undefined && target !== null) {
       if (target.name !== undefined && target.name !== '') {
         return `Kohde: ${target.name}`
       }
@@ -104,6 +108,7 @@ const EventInfoForm = (props) => {
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={style.container}>
           <Form
+            ref={reference}
             type={Event}
             options={options}
             value={divingEvent}
@@ -213,15 +218,19 @@ stylesheet.textbox.normal.borderRadius = 15
 stylesheet.controlLabel.normal.fontFamily = 'nunito-bold'
 stylesheet.controlLabel.error.fontFamily = 'nunito-bold'
 stylesheet.textbox.error.backgroundColor = 'white'
-stylesheet.controlLabel.error.color = 'white'
+stylesheet.controlLabel.error.color = 'black'
 stylesheet.controlLabel.error.marginLeft = 15
 stylesheet.textbox.error.borderRadius = 20
 
 const options = {
+  i18n: {
+    optional: '',
+    required: '',
+  },
   fields: {
     title: {
       label: 'Tapahtuman nimi',
-      error: 'Otsikko ei saa olla tyhjä.',
+      error: 'Tapahtuman nimi ei saa olla tyhjä',
       stylesheet: stylesheet,
     },
     description: {
