@@ -83,21 +83,21 @@ function Navigator(props) {
         options={({ navigation }) => ({
           headerRight: () => (
             <View style={style.headerViewStyle}>
-                <TouchableOpacity onPress={() => navigation.navigate('Info')}
+              <TouchableOpacity onPress={() => navigation.navigate('Info')}
                 style={style.iconWithTextView}
-                >
-                  <MaterialIcons
-                    name="info-outline"
-                    size={26}
-                    color="#118BFC"
-                  />
-                  <Text style={style.iconTextStyle}>
+              >
+                <MaterialIcons
+                  name="info-outline"
+                  size={26}
+                  color="#118BFC"
+                />
+                <Text style={style.iconTextStyle}>
                     Info
                 </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Sukella')}
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Sukella')}
                 style={style.iconWithTextView}
-                >
+              >
                 <MaterialCommunityIcons
                   name="waves"
                   size={26}
@@ -109,7 +109,7 @@ function Navigator(props) {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Chat')}
                 style={style.iconWithTextView}
-                >
+              >
                 <MaterialIcons
                   name="chat"
                   size={26}
@@ -121,7 +121,7 @@ function Navigator(props) {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Kutsu osallistujia')}
                 style={style.iconWithTextView}
-                >
+              >
                 <MaterialIcons
                   name="person-add"
                   size={26}
