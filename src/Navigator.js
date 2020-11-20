@@ -8,7 +8,7 @@ import EventMenuStack from './components/EventScreens/index'
 import ProfileScreens from './components/ProfileScreens'
 import LoginStack from './components/ProfileScreens/LoginStack'
 import { createStackNavigator } from '@react-navigation/stack'
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
+import { MaterialIcons, MaterialCommunityIcons, Fontisto } from '@expo/vector-icons'
 import OngoingEventTabs from './components/OngoingEventScreens/'
 import EventInfoForm from './components/EventScreens/EventMenuStack/EventInfoForm'
 import SelectTargetScreen from './components/MapScreens/SelectTargetScreen'
@@ -79,8 +79,14 @@ function Navigator(props) {
       <Stack.Screen
         name="Tapahtuma"
         component={OngoingEventTabs}
-        headerShown='false'
         options={({ navigation }) => ({
+          title: '',
+          headerBackImage: () => (
+            <Fontisto
+              name="arrow-left-l"
+              size={38}
+              color="#118BFC"
+            />),
           headerRight: () => (
             <View style={style.headerViewStyle}>
               <TouchableOpacity onPress={() => navigation.navigate('Info')}
@@ -92,7 +98,7 @@ function Navigator(props) {
                   color="#118BFC"
                 />
                 <Text style={style.iconTextStyle}>
-                    Info
+                  Info
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate('Sukella')}
