@@ -105,6 +105,7 @@ class DiveScreen extends React.Component {
     if (selectedUsers && selectedUsers.length > 0) {
       let { ongoingEvent, startDives, user } = this.props
 
+      // TODO: Hyväksyykö backend null arvon? Ois varmaan parempi
       let latitude = 0
       let longitude = 0
 
@@ -117,17 +118,14 @@ class DiveScreen extends React.Component {
         console.log('Geolocation unavailable.')
       }
 
-      let dives = []
-
-      selectedUsers.forEach((u) => {
-        dives.push({
-          event: ongoingEvent._id,
-          startdate: new Date(),
-          user: u._id,
-          latitude,
-          longitude,
-        })
-      })
+      const startDate = new Date()
+      const dives = selectedUsers.map((u) => ({
+        event: ongoingEvent._id,
+        startdate: startDate,
+        user: u._id,
+        latitude,
+        longitude,
+      }))
 
       await startDives(dives, user._id)
 
