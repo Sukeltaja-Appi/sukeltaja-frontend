@@ -53,6 +53,7 @@ class DiveScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      startDate: null,
       counter: 0,
       ongoing: false,
       selectedUsers: [],
@@ -64,9 +65,9 @@ class DiveScreen extends React.Component {
   navigate = (value) => this.props.navigation.navigate(value);
 
   counterUpdate = () => {
-    const { counter, ongoing } = this.state
+    const { startDate, ongoing } = this.state
 
-    if (ongoing) this.setState({ counter: counter + 1 })
+    if (ongoing) this.setState({ counter: Date.now() - startDate.getTime() })
   };
 
   userIsAdmin = () => {
@@ -129,7 +130,7 @@ class DiveScreen extends React.Component {
 
       await startDives(dives, user._id)
 
-      this.setState({ counter: 0, ongoing: true })
+      this.setState({ counter: 0, ongoing: true, startDate })
     }
   };
 
@@ -144,7 +145,7 @@ class DiveScreen extends React.Component {
   };
 
   duration = () =>
-    Duration.fromMillis(this.state.counter * 1000).toFormat('hh:mm:ss');
+    Duration.fromMillis(this.state.counter).toFormat('hh:mm:ss');
 
   toggleUserSelection = (user) => {
     const { ongoing, selectedUsers } = this.state
