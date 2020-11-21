@@ -313,10 +313,6 @@ class DiveScreen extends React.Component {
             <View style={style.divider} />
             <AppText style={style.counter}>{this.duration()}</AppText>
             <View style={style.divider} />
-            <CommonButton
-              title="Avaa sukelluslista"
-              onPress={() => this.navigate('DiveListScreen')}
-            />
             <View style={style.divider} />
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View
