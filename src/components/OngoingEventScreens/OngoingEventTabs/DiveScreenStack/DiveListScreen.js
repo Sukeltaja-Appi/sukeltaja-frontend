@@ -86,8 +86,8 @@ class DiveListScreen extends React.Component {
     if (this.props.ongoingEvent.dives.length === 0) {
       return (
         <View style={styles.centered}>
-          <AppText style={styles.h5}>Ei sukelluksia löytynyt.</AppText>
-          <AppText style={styles.h4}>
+          <AppText style={styles.h5}>Ei sukelluksia</AppText>
+          <AppText style={{ ...styles.h5, fontSize: 14 }}>
             Aloita uusi sukellus tai luo sukellus listaan.
           </AppText>
         </View>
@@ -150,9 +150,9 @@ class DiveListScreen extends React.Component {
                       style={{ ...style.subtitle, marginLeft: 5 }}
                     >
                       {'L:' +
-                      parseFloat(latitude).toFixed(n6) +
-                      '; P:' +
-                      parseFloat(longitude).toFixed(n6)}
+                        parseFloat(latitude).toFixed(n6) +
+                        '; P:' +
+                        parseFloat(longitude).toFixed(n6)}
                     </ListItem.Subtitle>
                   </ListItem.Content>
                 </ListItem.Content>
@@ -172,11 +172,6 @@ class DiveListScreen extends React.Component {
     return (
       <View style={styles.noPadding}>
         <View style={style.top}>
-          <View style={style.headline}>
-            <AppText style={{ fontSize: 24, color: colors.primary }}>
-              Sukellukset
-            </AppText>
-          </View>
           <View>{this.showList(ongoingEvent)}</View>
         </View>
         <View style={style.bottom}>
