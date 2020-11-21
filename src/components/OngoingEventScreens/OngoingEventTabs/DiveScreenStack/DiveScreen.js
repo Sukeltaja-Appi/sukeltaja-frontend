@@ -163,15 +163,10 @@ class DiveScreen extends React.Component {
   userIsDiving = (user) => {
     const { dives } = this.props.ongoingEvent
 
-    if (
-      dives
-        .filter((d) => !d.enddate)
-        .map((d) => d.user._id)
-        .includes(user._id)
-    )
-      return true
-
-    return false
+    return dives
+      .filter((d) => !d.enddate)
+      .map((d) => d.user._id)
+      .includes(user._id)
   };
 
   setUserColor = (user) => {
