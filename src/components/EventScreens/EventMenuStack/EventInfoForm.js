@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import t from 'tcomb-form-native'
 import RNDateTimePicker from '@react-native-community/datetimepicker'
 import { formatDate } from '../../../utils/dates'
 import { Button } from 'react-native-elements'
 import { View } from 'react-native'
 import { paddingSides } from '../../../styles/global'
-import { startEvent, setOngoingEvent } from '../../../reducers/eventReducer'
+import { startEvent, updateEvent, setOngoingEvent } from '../../../reducers/eventReducer'
 import { connect } from 'react-redux'
 import { inOneHour } from '../../../utils/dates'
 import decimalToDMS from '../../../utils/coordinates'
@@ -16,21 +16,41 @@ import { ScrollView } from 'react-native-gesture-handler'
 const { Form } = t.form
 
 const EventInfoForm = (props) => {
-
-  const [startDate, setStartDate] = useState(new Date())
-  const [endDate, setEndDate] = useState(inOneHour())
-  const [target, setTarget] = useState(props.route.params.target)
-  const [divingEvent, setEvent] = useState({
+  const reference = React.createRef()
+  const item = props.route.params.item
+  const modifying = item !== undefined ? true : false
+  const [startDate, setStartDate] = useState(modifying ? new Date(item.startdate) : new Date())
+  const [endDate, setEndDate] = useState(modifying ? new Date(item.enddate) : inOneHour())
+  const [target, setTarget] = useState(modifying ? item.target : props.route.params.target)
+  const [divingEvent, setEvent] = useState(modifying ? {
+    title: item.title,
+    description: item.description,
+  } : {
     title: '',
     description: '',
   })
 
+  useEffect(() => {
+    if (startDate > endDate) {
+      setEndDate(startDate)
+    }
+  }, [startDate])
+
+  useEffect(() => {
+    if (startDate > endDate) {
+      setStartDate(endDate)
+    }
+  }, [endDate])
+
   const Event = t.struct({
     title: t.String,
-    description: t.String,
+    description: t.maybe(t.String),
   })
 
   const submitForm = async () => {
+    if (!reference.current.getValue()) {
+      return
+    }
     const event = {
       ...divingEvent,
       startdate: startDate,
@@ -38,7 +58,12 @@ const EventInfoForm = (props) => {
       target,
     }
 
-    await props.startEvent(event)
+    if (!modifying) {
+      await props.startEvent(event)
+    } else {
+      await props.updateEvent({ ...item, ...event })
+    }
+
     props.navigation.navigate('Tapahtumat', {
       screen: 'Omat tapahtumat'
     })
@@ -57,13 +82,25 @@ const EventInfoForm = (props) => {
     })
 
   const getLocationButtonTitle = () => {
-    if (target !== undefined) {
+    if (target !== undefined && target !== null) {
+      if (target.name !== undefined && target.name !== '') {
+        return `Kohde: ${target.name}`
+      }
+
       return `Sijainti: ${decimalToDMS(target.latitude)}, ${decimalToDMS(
         target.longitude
       )}`
     }
 
-    return 'Muokkaa sijaintia'
+    return 'Valitse sijainti'
+  }
+
+  const getSubmitButtonTitle = () => {
+    if (modifying) {
+      return 'Tallenna muutokset'
+    }
+
+    return 'Luo tapahtuma!'
   }
 
   return (
@@ -71,6 +108,7 @@ const EventInfoForm = (props) => {
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={style.container}>
           <Form
+            ref={reference}
             type={Event}
             options={options}
             value={divingEvent}
@@ -91,13 +129,11 @@ const EventInfoForm = (props) => {
             setDate={setEndDate}
             text="Loppuu: "
           />
-          <View syle={style.buttonContainer}>
-            <AppButton
-              title="Luo tapahtuma!"
-              onPress={submitForm}
-              containerStyle={style.submitButton}
-            />
-          </View>
+          <AppButton
+            title={getSubmitButtonTitle()}
+            onPress={submitForm}
+            containerStyle={style.submitButton}
+          />
         </View>
       </ScrollView>
     </View>
@@ -108,13 +144,11 @@ const DateTimePickerButton = (props) => {
   const { date, setDate, text } = props
   const [isShowingDatePicker, showDatePicker] = useState(false)
   const [isShowingTimePicker, showTimePicker] = useState(false)
-  const [localDate, setLocalDate] = useState(date)
 
   const onDateChange = (event, newDate) => {
     showDatePicker(false)
     if (newDate !== undefined) {
       setDate(newDate)
-      setLocalDate(newDate)
     }
     showTimePicker(true)
   }
@@ -123,10 +157,7 @@ const DateTimePickerButton = (props) => {
     showDatePicker(false)
     showTimePicker(false)
     if (newDate !== undefined) {
-      setLocalDate(localDate.setMinutes(newDate.getMinutes()))
-      setLocalDate(localDate.setHours(newDate.getHours()))
-      setDate(localDate)
-      setLocalDate(localDate)
+      setDate(newDate)
     }
   }
 
@@ -140,7 +171,7 @@ const DateTimePickerButton = (props) => {
       )}
       <Button
         buttonStyle={style.button}
-        title={text + ' ' + formatDate(localDate)}
+        title={text + ' ' + formatDate(date)}
         onPress={() => {
           showDatePicker(true)
           showTimePicker(false)
@@ -163,11 +194,6 @@ const style = {
     marginBottom: 20,
     backgroundColor: 'rgba(52, 52, 52, 0.5)',
     borderRadius: 10,
-  },
-  buttonContainer: {
-    paddingBottom: 40,
-    marginTop: 40,
-    paddingVertical: 50,
   },
   button: {
     paddingVertical: 20,
@@ -192,15 +218,19 @@ stylesheet.textbox.normal.borderRadius = 15
 stylesheet.controlLabel.normal.fontFamily = 'nunito-bold'
 stylesheet.controlLabel.error.fontFamily = 'nunito-bold'
 stylesheet.textbox.error.backgroundColor = 'white'
-stylesheet.controlLabel.error.color = 'white'
+stylesheet.controlLabel.error.color = 'black'
 stylesheet.controlLabel.error.marginLeft = 15
-stylesheet.textbox.error.borderRadius = 20
+stylesheet.textbox.error.borderRadius = 15
 
 const options = {
+  i18n: {
+    optional: '',
+    required: '',
+  },
   fields: {
     title: {
       label: 'Tapahtuman nimi',
-      error: 'Otsikko ei saa olla tyhjä.',
+      error: 'Tapahtuman nimi ei saa olla tyhjä',
       stylesheet: stylesheet,
     },
     description: {
@@ -214,10 +244,8 @@ const options = {
             ...stylesheet.textbox.normal,
             height: 140,
             textAlignVertical: 'top',
-          },
-          error: {
-            ...stylesheet.textbox.error,
-            height: 140,
+            paddingHorizontal: 8,
+            paddingVertical: 8,
           },
         },
       },
@@ -230,6 +258,6 @@ const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
 })
 
-export default connect(mapStateToProps, { startEvent, setOngoingEvent })(
+export default connect(mapStateToProps, { startEvent, updateEvent, setOngoingEvent })(
   EventInfoForm
 )
