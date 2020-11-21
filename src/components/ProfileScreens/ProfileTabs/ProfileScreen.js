@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import { Icon, Text, ListItem } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import * as SecureStore from 'expo-secure-store'
 
 import { logout } from '../../../store'
 import { getMessages } from '../../../reducers/messageReducer'
@@ -48,6 +49,7 @@ export const ProfileScreen = (props) => {
     serverListener.disconnect()
     logout()
     userService.setToken(null)
+    SecureStore.deleteItemAsync('currentUser').catch(err => console.error(err))
   }
 
   const menuData = [
