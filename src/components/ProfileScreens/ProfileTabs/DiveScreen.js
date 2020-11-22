@@ -7,8 +7,6 @@ import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 import styles, { paddingSides } from '../../../styles/global'
 import { formatDate } from '../../../utils/dates'
 import colors from '../../../styles/colors'
-import CommonButton from '../../common/AppButton'
-import AppButton from '../../common/AppButton'
 import { setOngoingEvent } from '../../../reducers/eventReducer'
 
 const style = {
@@ -94,13 +92,12 @@ class DiveScreen extends React.Component {
   navigateToEvent = (event) => {
     const item = this.props.events.find(e => e._id === event)
 
-    //setOngoingEvent(item)
-
-    //this.props.navigation.navigate('Kutsut', { event })
-    console.log(item)
+    setOngoingEvent(item)
+    this.props.navigation.navigate('Event', { item })
   }
 
   navigateToEdit = (dive) => {
+    this.props.navigation.navigate('EditDiveScreen', { item : dive })
     console.log(dive)
   }
 
@@ -117,7 +114,7 @@ class DiveScreen extends React.Component {
       <View style={style.noPadding}>
         <View style={style.container}>
           <View style={styles.row}>
-            <View style={style.iconContainer}>
+            <View style={style.iconContaineritem}>
               <FontAwesome5 name='water' size={36} color={'#fff'} />
             </View>
             <View style={style.container}>
@@ -170,7 +167,7 @@ class DiveScreen extends React.Component {
               type='feather'
               size={40}
               color={colors.gray}
-              onPress={() => this.navigateToEvent(dive)}
+              onPress={() => this.navigateToEvent(event)}
             />
             <Text style={style.text}>Sukellustapahtumaan</Text>
           </View>
@@ -191,5 +188,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { }
+  { setOngoingEvent }
 )(DiveScreen)
