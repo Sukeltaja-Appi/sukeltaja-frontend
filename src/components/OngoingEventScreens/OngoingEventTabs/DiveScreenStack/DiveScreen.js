@@ -103,7 +103,6 @@ class DiveScreen extends React.Component {
         startDate,
         counter: Date.now() - startDate.getTime()
       })
-      this.counterUpdate()
     }
   }
 
