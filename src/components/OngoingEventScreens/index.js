@@ -3,10 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import ChatScreen from './OngoingEventTabs/ChatScreen'
 import ChatMessage from './OngoingEventTabs/ChatMessage'
-import DiveScreen from './OngoingEventTabs/DiveScreenStack/DiveScreen'
-import DiveListScreen from './OngoingEventTabs/DiveScreenStack/DiveListScreen'
-import Dive from './OngoingEventTabs/DiveScreenStack/Dive'
-import EditDiveScreen from './OngoingEventTabs/DiveScreenStack/EditDiveScreen'
+import DiveScreenStack from './OngoingEventTabs/DiveScreenStack/index'
 import EventScreen from './OngoingEventTabs/EventScreen'
 import InviteScreen from './OngoingEventTabs/InviteScreen'
 
@@ -28,18 +25,6 @@ const ChatScreenStack = () => {
       <ChatScreenStackNav.Screen name="ChatScreen" component={ChatScreen} />
       <ChatScreenStackNav.Screen name="ChatMessage" component={ChatMessage} />
     </ChatScreenStackNav.Navigator>
-  )
-}
-
-const DiveScreenStackNav = createStackNavigator()
-const DiveScreenStack = () => {
-  return (
-    <DiveScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
-      <DiveScreenStackNav.Screen name="DiveListScreen" component={DiveListScreen} />
-      <DiveScreenStackNav.Screen name="DiveScreen" component={DiveScreen} />
-      <DiveScreenStackNav.Screen name="Dive" component={Dive} />
-      <DiveScreenStackNav.Screen name="EditDiveScreen" component={EditDiveScreen} />
-    </DiveScreenStackNav.Navigator>
   )
 }
 

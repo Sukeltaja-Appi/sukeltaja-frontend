@@ -89,10 +89,21 @@ class DiveScreen extends React.Component {
   };
 
   componentDidMount() {
+    // Set state of possible active dive
     this.interval = setInterval(() => this.counterUpdate(), 1000)
-
     if (!this.userIsAdmin()) {
       this.selectParticipantUser()
+    }
+    if (this.props.ongoingDives.length > 0) {
+      const startDate = new Date(this.props.ongoingDives[0].startdate)
+
+      this.setState({
+        ongoing: true,
+        selectedUsers: this.props.ongoingDives.map(d => d.user),
+        startDate,
+        counter: Date.now() - startDate.getTime()
+      })
+      this.counterUpdate()
     }
   }
 
@@ -151,7 +162,7 @@ class DiveScreen extends React.Component {
     const { ongoing, selectedUsers } = this.state
 
     if (!ongoing && this.userIsAdmin()) {
-      if (!selectedUsers.includes(user)) {
+      if (!selectedUsers.some(u => u._id === user._id)) {
         this.setState({ selectedUsers: [...selectedUsers, user] })
       } else {
         this.setState({
@@ -161,19 +172,8 @@ class DiveScreen extends React.Component {
     }
   };
 
-  userIsDiving = (user) => {
-    const { dives } = this.props.ongoingEvent
-
-    return dives
-      .filter((d) => !d.enddate)
-      .map((d) => d.user._id)
-      .includes(user._id)
-  };
-
   setUserColor = (user) => {
-    if (this.userIsDiving(user)) return { backgroundColor: colors.primary }
-
-    if (this.state.selectedUsers.includes(user))
+    if (this.state.selectedUsers.some(u => u._id === user._id))
       return {
         backgroundColor: colors.primary,
       }
@@ -182,15 +182,14 @@ class DiveScreen extends React.Component {
   };
 
   setUserTextColor = (user) => {
-    if (this.userIsDiving(user)) return { color: '#fff' }
-
-    if (this.state.selectedUsers.includes(user))
+    if (this.state.selectedUsers.some(u => u._id === user._id))
       return {
         color: '#fff',
       }
 
     return {}
   };
+
   renderListItem = (user) => {
     const { selectedUsers } = this.state
 
