@@ -66,20 +66,18 @@ class DiveHistoryScreen extends React.Component {
   }
 
   updatedDives = () => {
-    const { dives } = this.props
+    const { events } = this.props
 
-    var merged = [].concat.apply([], this.props.events.map(e => e.dives))
+    var merged = [].concat.apply([], events.map(e => e.dives))
 
-    const filtered = merged.filter(d => d.user._id === this.props.user._id)
+    var filtered = merged.filter(d => d.user._id === this.props.user._id)
 
-    //console.log(filtered)
-
-    this.setState({ dives: dives })
+    this.setState({ dives: filtered })
   }
 
   loadDives = async () => {
     this.setState({ isFetching: true })
-    await this.props.initializeDives()
+    await this.props.initializeEvents()
     this.setState({ isFetching: false })
     this.updatedDives()
   }
@@ -88,16 +86,13 @@ class DiveHistoryScreen extends React.Component {
     return this.state.dives.sort((a, b) => b.startdate.localeCompare(a.startdate))
   }
 
-  nameOfEvent = (eventId) => {
+  targetOfEvent = (id) => {
     const { events } = this.props
-    const event = events.find(e => e._id === eventId)
+    const event = events.find(e => e.dives.some(item => item._id === id))
 
-    return event.title
-  }
-
-  targetOfEvent = (eventId) => {
-    const { events } = this.props
-    const event = events.find(e => e._id === eventId)
+    if (event===undefined) {
+      return
+    }
 
     if (event.target===undefined) {
       return 'Oma kohde: nimetön'
@@ -138,9 +133,8 @@ class DiveHistoryScreen extends React.Component {
             />
           }
           renderItem={({ item }) => {
-            const { startdate, enddate, latitude, longitude, event } = item
-            const eventName = this.nameOfEvent(event)
-            const targetName = this.targetOfEvent(event)
+            const { startdate, enddate, _id } = item
+            const targetName = this.targetOfEvent(_id)
             const diveLength = this.lengthOfDive(startdate, enddate)
 
             return (
