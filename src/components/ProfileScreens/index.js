@@ -7,8 +7,9 @@ import ProfileScreen from './ProfileTabs/ProfileScreen'
 import SettingsScreen from './ProfileTabs/SettingsScreen'
 import DiveHistoryScreen from './ProfileTabs/DiveHistoryScreen'
 import DiveScreen from './ProfileTabs/DiveScreen'
-import EditDiveScreen from './../OngoingEventScreens/OngoingEventTabs/DiveScreenStack/EditDiveScreen'
+//import EditDiveScreen from './../OngoingEventScreens/OngoingEventTabs/DiveScreenStack/EditDiveScreen'
 import EventScreen from './../OngoingEventScreens/OngoingEventTabs/EventScreen'
+import EditDiveScreen from './ProfileTabs/DiveEditScreen'
 
 const StackMessage = createStackNavigator()
 
