@@ -105,17 +105,17 @@ class RegisterScreen extends React.Component {
         this.state.credentials.password ===
         this.state.credentials.passwordVerification
       ) {
+        this.setState({ showLoadingIndicator: true })
         const response = await userService.create(this.state.credentials)
 
         if (response['username'] !== undefined) {
-          this.setState({ showLoadingIndicator: true })
           await this.login()
         } else if (response['error'] !== undefined && response['error'].includes('unique')) {
           console.log('Registration failed, username not unique!')
-          this.setState({ usernameInUse: true })
+          this.setState({ usernameInUse: true, showLoadingIndicator: false })
         } else if (response['error'] !== undefined && response['error'].includes('must')) {
           console.log('Validation failed!')
-          this.setState({ validationFail: true })
+          this.setState({ validationFail: true, showLoadingIndicator: false })
         }
       } else {
         this.setState({ passwordMatch: false })
