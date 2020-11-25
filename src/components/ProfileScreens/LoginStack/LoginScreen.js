@@ -83,6 +83,7 @@ class LoginScreen extends React.Component {
         password: '',
       },
       validLogin: true,
+      showLoadingIndicator: false
     }
   }
 
@@ -91,7 +92,7 @@ class LoginScreen extends React.Component {
   login = async () => {
     if (this.refs.form.getValue()) {
       //const { login, initializeEvents, initializeDives, getAll } = this.props
-      this.setState({ validLogin: true })
+      this.setState({ validLogin: true, showLoadingIndicator: true })
       const { login, initializeEvents, getAll } = this.props
 
       const user = await login(this.state.credentials)
@@ -112,6 +113,7 @@ class LoginScreen extends React.Component {
   render() {
     const { credentials } = this.state
     const { validLogin } = this.state
+    const { showLoadingIndicator } = this.state
     const reference = 'form'
 
     const User = t.struct({
@@ -145,7 +147,7 @@ class LoginScreen extends React.Component {
               value={credentials}
               onChange={(credentials) => this.setState({ credentials })}
             />
-            <AppButton title="Kirjaudu" onPress={this.login} />
+            <AppButton title="Kirjaudu" onPress={this.login} showLoadingIconOnPress={showLoadingIndicator}/>
 
             <View style={style.buttonDivider} />
             <TouchableOpacity onPress={() => this.navigate('ResetScreen')}>

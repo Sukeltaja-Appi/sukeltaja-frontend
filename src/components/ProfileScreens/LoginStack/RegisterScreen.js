@@ -89,7 +89,8 @@ class RegisterScreen extends React.Component {
       },
       passwordMatch: true,
       usernameInUse: false,
-      validationFail: false
+      validationFail: false,
+      showLoadingIndicator: false
     }
   }
 
@@ -107,6 +108,7 @@ class RegisterScreen extends React.Component {
         const response = await userService.create(this.state.credentials)
 
         if (response['username'] !== undefined) {
+          this.setState({ showLoadingIndicator: true })
           await this.login()
         } else if (response['error'] !== undefined && response['error'].includes('unique')) {
           console.log('Registration failed, username not unique!')
@@ -145,6 +147,7 @@ class RegisterScreen extends React.Component {
     const { passwordMatch } = this.state
     const { usernameInUse } = this.state
     const { validationFail } = this.state
+    const { showLoadingIndicator } = this.state
 
     const User = t.struct({
       email: t.String,
@@ -192,7 +195,7 @@ class RegisterScreen extends React.Component {
                 onChange={(credentials) => this.setState({ credentials })}
               />
 
-              <AppButton onPress={this.register} title="Rekisteröidy" />
+              <AppButton onPress={this.register} title="Rekisteröidy" showLoadingIconOnPress={showLoadingIndicator} />
 
               <View style={style.buttonDivider} />
               <View style={style.buttonDivider} />
