@@ -17,11 +17,11 @@ const { Form } = t.form
 
 const EventInfoForm = (props) => {
   const reference = React.createRef()
-  const item = props.route.params.item
+  const item = props.route.params?.item
   const modifying = item !== undefined ? true : false
   const [startDate, setStartDate] = useState(modifying ? new Date(item.startdate) : new Date())
   const [endDate, setEndDate] = useState(modifying ? new Date(item.enddate) : inOneHour())
-  const [target, setTarget] = useState(modifying ? item.target : props.route.params.target)
+  const [target, setTarget] = useState(modifying ? item.target : props.route.params?.target)
   const [loadingIconVisible, setLoadingIconVisible] = useState(false)
   const [divingEvent, setEvent] = useState(modifying ? {
     title: item.title,
