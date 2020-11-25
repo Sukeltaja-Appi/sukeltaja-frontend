@@ -22,6 +22,7 @@ const EventInfoForm = (props) => {
   const [startDate, setStartDate] = useState(modifying ? new Date(item.startdate) : new Date())
   const [endDate, setEndDate] = useState(modifying ? new Date(item.enddate) : inOneHour())
   const [target, setTarget] = useState(modifying ? item.target : props.route.params.target)
+  const [loadingIconVisible, setLoadingIconVisible] = useState(false)
   const [divingEvent, setEvent] = useState(modifying ? {
     title: item.title,
     description: item.description,
@@ -51,6 +52,7 @@ const EventInfoForm = (props) => {
     if (!reference.current.getValue()) {
       return
     }
+    setLoadingIconVisible(true)
     const event = {
       ...divingEvent,
       startdate: startDate,
@@ -133,6 +135,7 @@ const EventInfoForm = (props) => {
             title={getSubmitButtonTitle()}
             onPress={submitForm}
             containerStyle={style.submitButton}
+            showLoadingIconOnPress = {loadingIconVisible}
           />
         </View>
       </ScrollView>

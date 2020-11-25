@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   TouchableOpacity,
   Text,
+  View,
+  ActivityIndicator,
 } from 'react-native'
 
 const style = {
@@ -22,12 +24,20 @@ const style = {
   }
 }
 
-const AppButton = ({ onPress, title, containerStyle, textStyle }) => {
+const AppButton = ({ onPress, title, containerStyle, textStyle, showLoadingIconOnPress }) => {
   const extraContainerStyle = containerStyle ?? {}
   const extraTextStyle = textStyle ?? {}
 
+  if (showLoadingIconOnPress) {
+    return (
+      <TouchableOpacity style={{ ...style.appButtonContainer, ...extraContainerStyle }}>
+        <ActivityIndicator size="large" color="white" />
+      </TouchableOpacity>
+    )
+  }
+
   return (
-    <TouchableOpacity onPress={onPress} style={{ ...style.appButtonContainer, ...extraContainerStyle }} >
+    <TouchableOpacity onPress={onPress} style={{ ...style.appButtonContainer, ...extraContainerStyle }}>
       <Text style={{ ...style.appButtonText, ...extraTextStyle }}>{title}</Text>
     </TouchableOpacity >
   )
