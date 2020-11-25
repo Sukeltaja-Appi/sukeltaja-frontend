@@ -105,7 +105,7 @@ class LoginScreen extends React.Component {
         getServerListener().setupCommunication()
       } else {
         console.log('Wrong username or password')
-        this.setState({ validLogin: false })
+        this.setState({ validLogin: false, showLoadingIndicator: false })
       }
     }
   };
