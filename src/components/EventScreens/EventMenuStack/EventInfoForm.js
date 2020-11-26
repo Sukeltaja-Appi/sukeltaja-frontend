@@ -152,12 +152,11 @@ const DateTimePickerButton = (props) => {
     showDatePicker(false)
     if (newDate !== undefined) {
       setDate(newDate)
+      showTimePicker(true)
     }
-    showTimePicker(true)
   }
 
   const onTimeChange = (event, newDate) => {
-    showDatePicker(false)
     showTimePicker(false)
     if (newDate !== undefined) {
       setDate(newDate)
@@ -175,10 +174,7 @@ const DateTimePickerButton = (props) => {
       <Button
         buttonStyle={style.button}
         title={text + ' ' + formatDate(date)}
-        onPress={() => {
-          showDatePicker(true)
-          showTimePicker(false)
-        }}
+        onPress={() => showDatePicker(true)}
       />
     </View>
   )
