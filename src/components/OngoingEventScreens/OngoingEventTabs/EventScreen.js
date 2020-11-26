@@ -217,20 +217,23 @@ class EventScreen extends React.Component {
                 />
                 <AppText style={style.lowerTitle}>Sijainti</AppText>
               </View>
-              <AppText style={style.text}>lisätään</AppText>
+              <AppText style={style.text}>{target ? target.name : 'ei kohdetta'}</AppText>
 
+              {target ?
               <MapView
                 style={style.map}
                 initialRegion={{
-                  latitude: 60.1733244,
-                  longitude: 24.9410248,
+                  latitude: target.latitude,
+                  longitude: target.longitude,
                   latitudeDelta: 0.05,
                   longitudeDelta: 0.05
                 }}>
                 <Marker
-                  coordinate={{ latitude: 60.1733244, longitude: 24.9410248 }}
+                  coordinate={{ latitude: target.latitude, longitude: target.longitude }}
+                  title={target.name}
                 />
               </MapView>
+              : null}
 
               <View style={style.buttonDivider} />
               <Button
