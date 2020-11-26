@@ -147,7 +147,7 @@ class LoginScreen extends React.Component {
               value={credentials}
               onChange={(credentials) => this.setState({ credentials })}
             />
-            <AppButton title="Kirjaudu" onPress={this.login} showLoadingIconOnPress={showLoadingIndicator}/>
+            <AppButton title="Kirjaudu" onPress={this.login} loading={showLoadingIndicator}/>
 
             <View style={style.buttonDivider} />
             <TouchableOpacity onPress={() => this.navigate('ResetScreen')}>

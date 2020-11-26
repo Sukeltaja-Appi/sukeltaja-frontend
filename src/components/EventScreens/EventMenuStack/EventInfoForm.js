@@ -135,7 +135,7 @@ const EventInfoForm = (props) => {
             title={getSubmitButtonTitle()}
             onPress={submitForm}
             containerStyle={style.submitButton}
-            showLoadingIconOnPress = {loadingIconVisible}
+            loading = {loadingIconVisible}
           />
         </View>
       </ScrollView>

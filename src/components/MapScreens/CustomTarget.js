@@ -26,8 +26,10 @@ const CustomTarget = ({ target, targetSelected }) => {
   const { latitude, longitude } = target
 
   const [name, setName] = useState('')
+  const [loadingIconVisible, setLoadingIconVisible] = useState(false)
 
   const createTarget = async () => {
+    setLoadingIconVisible(true)
     const createdTarget = await targetService.create({
       ...target,
       name,
@@ -45,6 +47,7 @@ const CustomTarget = ({ target, targetSelected }) => {
       <CommonButton
         title='Valitse kohteeksi'
         buttonStyle={style.buttonStyle}
+        loading={loadingIconVisible}
         onPress={createTarget}
       />
     </View>

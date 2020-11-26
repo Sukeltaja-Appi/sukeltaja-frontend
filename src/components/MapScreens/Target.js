@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Linking, StyleSheet, Text } from 'react-native'
 import decimalToDMS from '../../utils/coordinates'
 
@@ -29,6 +29,7 @@ const style = StyleSheet.create({
 
 const Target = ({ target, targetSelected }) => {
   const { name, type, material, latitude, longitude, mj_id } = target
+  const [loadingIconVisible, setLoadingIconVisible] = useState(false)
 
   return (
     <View style={style.view}>
@@ -40,7 +41,11 @@ const Target = ({ target, targetSelected }) => {
       <CommonButton
         title='Valitse kohteeksi'
         containerStyle={style.buttonStyle}
-        onPress={() => targetSelected(target)}
+        loading={loadingIconVisible}
+        onPress={() => {
+          setLoadingIconVisible(true)
+          targetSelected(target)
+        }}
       />
       { mj_id &&
         <CommonButton

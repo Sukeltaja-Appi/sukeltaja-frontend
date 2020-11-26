@@ -23,11 +23,11 @@ const style = {
   }
 }
 
-const AppButton = ({ onPress, title, containerStyle, textStyle, showLoadingIconOnPress }) => {
+const AppButton = ({ onPress, title, containerStyle, textStyle, loading }) => {
   const extraContainerStyle = containerStyle ?? {}
   const extraTextStyle = textStyle ?? {}
 
-  if (showLoadingIconOnPress) {
+  if (loading) {
     return (
       <TouchableOpacity style={{ ...style.appButtonContainer, ...extraContainerStyle }}>
         <ActivityIndicator size="large" color="white" />

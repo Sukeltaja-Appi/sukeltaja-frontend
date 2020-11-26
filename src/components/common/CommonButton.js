@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, Text } from 'react-native'
+import { TouchableOpacity, ActivityIndicator, Text } from 'react-native'
 import colors from '../../styles/colors'
 
 const style = {
@@ -30,9 +30,18 @@ const CommonButton = ({
   buttonStyle,
   titleStyle,
   disabled,
+  loading,
 }) => {
   const extraContainerStyle = buttonStyle ?? {}
   const extraTitleStyle = titleStyle ?? {}
+
+  if (loading) {
+    return (
+      <TouchableOpacity style={{ ...style.commonButtonContainer, ...extraContainerStyle }}>
+        <ActivityIndicator size="small" color="white" />
+      </TouchableOpacity>
+    )
+  }
 
   return (
     <TouchableOpacity

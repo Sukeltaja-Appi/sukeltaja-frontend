@@ -195,7 +195,7 @@ class RegisterScreen extends React.Component {
                 onChange={(credentials) => this.setState({ credentials })}
               />
 
-              <AppButton onPress={this.register} title="Rekisteröidy" showLoadingIconOnPress={showLoadingIndicator} />
+              <AppButton onPress={this.register} title="Rekisteröidy" loading={showLoadingIndicator} />
 
               <View style={style.buttonDivider} />
               <View style={style.buttonDivider} />
