@@ -28,8 +28,8 @@ unless this is explicitly prohibited.
 ### Other
 
 The structure of the navigator is defined in:
-- root:	[src/Navigator.js](https://github.com/Sukeltaja-App/sukeltaja-frontend/blob/master/src/Navigator.js)
-- various component folders: index.js [(example)](https://github.com/Sukeltaja-App/sukeltaja-frontend/blob/master/src/components/EventScreens/index.js)
+- root:	[src/Navigator.js](https://github.com/Sukeltaja-Appi/sukeltaja-frontend/blob/master/src/Navigator.js)
+- various component folders: index.js [(example)](https://github.com/Sukeltaja-Appi/sukeltaja-frontend/blob/master/src/components/EventScreens/index.js)
 
 ## Used Libraries
 
@@ -42,7 +42,7 @@ The structure of the navigator is defined in:
 
 Implemented queuing requests on some reducer functions.
 
-Used to notify the user if the internet is not available. ([OfflineNotifier.js](https://github.com/Sukeltaja-App/sukeltaja-frontend/blob/master/src/OfflineNotifier.js))
+Used to notify the user if the internet is not available. ([OfflineNotifier.js](https://github.com/Sukeltaja-Appi/sukeltaja-frontend/blob/master/src/OfflineNotifier.js))
 
 (Internet availability check is done on a general ping server, not on the app backend)
 
@@ -58,7 +58,7 @@ May also unnecessarily stress the backend though, if it is moved from heroku.
 - Implements websocket connections
 - Reconnects automatically if connection drops! (Necessary with heroku backend)
 
-When the user logs in, a websocket connection is formed with the backend ([ServerListener.js](https://github.com/Sukeltaja-App/sukeltaja-frontend/blob/master/src/ServerListener.js)). The server sends updates through the websocket connection.
+When the user logs in, a websocket connection is formed with the backend ([ServerListener.js](https://github.com/Sukeltaja-Appi/sukeltaja-frontend/blob/master/src/ServerListener.js)). The server sends updates through the websocket connection.
 
 Currently it sends:
 - new messages (invites) that have been sent to the user

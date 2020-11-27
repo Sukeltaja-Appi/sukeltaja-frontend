@@ -1,14 +1,14 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { connect } from 'react-redux'
-import { View } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import MapScreen from './components/MapScreens/MapScreen'
 import EventMenuStack from './components/EventScreens/index'
 import ProfileScreens from './components/ProfileScreens'
 import LoginStack from './components/ProfileScreens/LoginStack'
 import { createStackNavigator } from '@react-navigation/stack'
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
+import { MaterialIcons, MaterialCommunityIcons, Fontisto } from '@expo/vector-icons'
 import OngoingEventTabs from './components/OngoingEventScreens/'
 import EventInfoForm from './components/EventScreens/EventMenuStack/EventInfoForm'
 import SelectTargetScreen from './components/MapScreens/SelectTargetScreen'
@@ -80,36 +80,63 @@ function Navigator(props) {
         name="Tapahtuma"
         component={OngoingEventTabs}
         options={({ navigation }) => ({
+          title: '',
+          headerBackImage: () => (
+            <Fontisto
+              name="arrow-left-l"
+              size={38}
+              color="#118BFC"
+            />),
           headerRight: () => (
-            <View style={{ marginHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <MaterialIcons
-                onPress={() => navigation.navigate('Info')}
-                name="info-outline"
-                size={26}
-                color="#118BFC"
-                style={{ padding: 10 }}
-              />
-              <MaterialCommunityIcons
-                onPress={() => navigation.navigate('Sukella')}
-                name="waves"
-                size={26}
-                color="#118BFC"
-                style={{ padding: 10 }}
-              />
-              <MaterialIcons
-                onPress={() => navigation.navigate('Chat')}
-                name="chat"
-                size={26}
-                color="#118BFC"
-                style={{ padding: 10 }}
-              />
-              <MaterialIcons
-                onPress={() => navigation.navigate('Kutsu osallistujia')}
-                name="person-add"
-                size={26}
-                color="#118BFC"
-                style={{ padding: 10 }}
-              />
+            <View style={style.headerViewStyle}>
+              <TouchableOpacity onPress={() => navigation.navigate('Info')}
+                style={style.iconWithTextView}
+              >
+                <MaterialIcons
+                  name="info-outline"
+                  size={26}
+                  color="#118BFC"
+                />
+                <Text style={style.iconTextStyle}>
+                  Info
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Sukella')}
+                style={style.iconWithTextView}
+              >
+                <MaterialCommunityIcons
+                  name="waves"
+                  size={26}
+                  color="#118BFC"
+                />
+                <Text style={style.iconTextStyle}>
+                  Sukella
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Chat')}
+                style={style.iconWithTextView}
+              >
+                <MaterialIcons
+                  name="chat"
+                  size={26}
+                  color="#118BFC"
+                />
+                <Text style={style.iconTextStyle}>
+                  Chat
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Kutsu osallistujia')}
+                style={style.iconWithTextView}
+              >
+                <MaterialIcons
+                  name="person-add"
+                  size={26}
+                  color="#118BFC"
+                />
+                <Text style={style.iconTextStyle}>
+                  Kutsu
+                </Text>
+              </TouchableOpacity>
             </View>
           ),
         })}
@@ -136,6 +163,21 @@ function Navigator(props) {
     </NavigationContainer>
   )
 }
+
+const style = StyleSheet.create({
+  iconWithTextView: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: 5,
+  },
+  iconTextStyle: {
+    color: '#118BFC'
+  },
+  headerViewStyle: {
+    marginHorizontal: 20,
+    flexDirection: 'row',
+  },
+})
 
 const mapStateToProps = (state) => ({ user: state.user })
 
