@@ -13,7 +13,8 @@ Old teams admin couldn't be contacted, so new repositories had to be made. First
 
 ## Installation
 
-Installation will be through App Store (iOS) or Play Store (Android). Links to be added in future.
+Installation will be through [Play Store (Android)](https://play.google.com/store/apps/details?id=com.sukeltaja.sukeltajaapp). 
+App Store (iOS) will be added in future.
 
 ## Documentation
 
