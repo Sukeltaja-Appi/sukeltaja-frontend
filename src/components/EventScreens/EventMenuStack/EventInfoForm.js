@@ -48,23 +48,27 @@ const EventInfoForm = (props) => {
     if (!reference.current.getValue()) {
       return
     }
-    setLoadingIconVisible(true)
-    const event = {
-      ...divingEvent,
-      startdate: startDate,
-      enddate: endDate,
-      target,
-    }
+    try {
+      setLoadingIconVisible(true)
+      const event = {
+        ...divingEvent,
+        startdate: startDate,
+        enddate: endDate,
+        target,
+      }
 
-    if (!modifying) {
-      await props.startEvent(event)
-    } else {
-      await props.updateEvent({ ...item, ...event })
-    }
+      if (!modifying) {
+        await props.startEvent(event)
+      } else {
+        await props.updateEvent({ ...item, ...event })
+      }
 
-    props.navigation.navigate('Tapahtumat', {
-      screen: 'Omat tapahtumat'
-    })
+      props.navigation.navigate('Tapahtumat', {
+        screen: 'Omat tapahtumat'
+      })
+    } finally {
+      setLoadingIconVisible(false)
+    }
   }
 
   const targetChanged = (newTarget) => {

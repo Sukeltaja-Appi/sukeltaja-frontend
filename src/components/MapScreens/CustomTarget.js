@@ -29,14 +29,18 @@ const CustomTarget = ({ target, targetSelected }) => {
   const [loadingIconVisible, setLoadingIconVisible] = useState(false)
 
   const createTarget = async () => {
-    setLoadingIconVisible(true)
-    const createdTarget = await targetService.create({
-      ...target,
-      name,
-      user_created: true
-    })
+    try {
+      setLoadingIconVisible(true)
+      const createdTarget = await targetService.create({
+        ...target,
+        name,
+        user_created: true
+      })
 
-    targetSelected(createdTarget)
+      targetSelected(createdTarget)
+    } finally {
+      setLoadingIconVisible(false)
+    }
   }
 
   return (
