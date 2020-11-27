@@ -23,13 +23,9 @@ const EventInfoForm = (props) => {
   const [endDate, setEndDate] = useState(modifying ? new Date(item.enddate) : inOneHour())
   const [target, setTarget] = useState(modifying ? item.target : props.route.params?.target)
   const [loadingIconVisible, setLoadingIconVisible] = useState(false)
-  const [divingEvent, setEvent] = useState(modifying ? {
-    title: item.title,
-    description: item.description,
-  } : {
-    title: '',
-    description: '',
-  })
+  const [divingEvent, setEvent] = useState(modifying ?
+    { title: item.title, description: item.description } :
+    { title: '', description: '' })
 
   useEffect(() => {
     if (startDate > endDate) {
@@ -135,7 +131,7 @@ const EventInfoForm = (props) => {
             title={getSubmitButtonTitle()}
             onPress={submitForm}
             containerStyle={style.submitButton}
-            loading = {loadingIconVisible}
+            loading={loadingIconVisible}
           />
         </View>
       </ScrollView>
