@@ -11,9 +11,9 @@
     "orientation": "portrait",
     "icon": "./assets/logo_1_512.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/pictures/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#118bfc"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
