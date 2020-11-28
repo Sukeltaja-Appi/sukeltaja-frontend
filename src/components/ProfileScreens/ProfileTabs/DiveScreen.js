@@ -8,6 +8,7 @@ import styles, { paddingSides } from '../../../styles/global'
 import { formatDate } from '../../../utils/dates'
 import colors from '../../../styles/colors'
 import { setOngoingEvent } from '../../../reducers/eventReducer'
+import { deleteDive } from '../../../reducers/diveReducer'
 
 const style = {
   container: {
@@ -65,14 +66,18 @@ class DiveScreen extends React.Component {
 
   nameOfEvent = (eventId) => {
     const { events } = this.props
-    const event = events.find(e => e._id === eventId)
+    const event = events.find(e => e.dives.some(item => item._id === eventId))
 
     return event.title
   }
 
   targetOfEvent = (eventId) => {
     const { events } = this.props
-    const event = events.find(e => e._id === eventId)
+    const event = events.find(e => e.dives.some(item => item._id === eventId))
+
+    if (event===undefined) {
+      return
+    }
 
     if (event.target===undefined) {
       return 'Oma kohde: nimetön'
@@ -89,11 +94,12 @@ class DiveScreen extends React.Component {
 
   navigate = (value) => this.props.navigation.navigate(value)
 
-  navigateToEvent = (event) => {
-    const item = this.props.events.find(e => e._id === event)
+  navigateToEvent = (id) => {
+    const { events } = this.props
+    const event = events.find(e => e.dives.some(item => item._id === id))
 
-    setOngoingEvent(item)
-    this.props.navigation.navigate('Event', { item })
+    this.props.setOngoingEvent(event)
+    this.props.navigation.navigate('Event', { event })
   }
 
   navigateToEdit = (dive) => {
@@ -101,14 +107,22 @@ class DiveScreen extends React.Component {
     console.log(dive)
   }
 
-  navigateToRemove = (dive) => {
+  navigateToDiveHistory = () => {
+    this.props.navigation.navigate('Sukellushistoria')
+  }
+
+  navigateToRemove = async (dive) => {
+    const { user } = this.props
+
+    //await deleteDive(dive, user._id)
+    //this.navigateToDiveHistory()
     console.log(dive)
   }
 
   Dive = () => {
     const dive = this.props.route.params.dive
-    const { startdate, enddate, event, latitude, longitude } = dive
-    const eventName = this.nameOfEvent(event)
+    const { startdate, enddate, latitude, longitude, _id } = dive
+    const eventName = this.nameOfEvent(_id)
 
     return (
       <View style={style.noPadding}>
@@ -119,7 +133,7 @@ class DiveScreen extends React.Component {
             </View>
             <View style={style.container}>
               <Text style={style.title}>
-                {this.targetOfEvent(event) + ',\n'}{formatDate(startdate)}
+                {this.targetOfEvent(_id) + ',\n'}{formatDate(startdate)}
               </Text>
             </View>
           </View>
@@ -167,7 +181,7 @@ class DiveScreen extends React.Component {
               type='feather'
               size={40}
               color={colors.gray}
-              onPress={() => this.navigateToEvent(event)}
+              onPress={() => this.navigateToEvent(_id)}
             />
             <Text style={style.text}>Sukellustapahtumaan</Text>
           </View>
