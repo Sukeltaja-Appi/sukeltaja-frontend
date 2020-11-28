@@ -103,20 +103,20 @@ class DiveScreen extends React.Component {
   }
 
   navigateToEdit = (dive) => {
-    this.props.navigation.navigate('EditDiveScreen', { item : dive })
-    console.log(dive)
+    this.props.navigation.navigate('DiveEditScreen', { item : dive })
   }
 
   navigateToDiveHistory = () => {
-    this.props.navigation.navigate('Sukellushistoria')
+    this.props.navigation.navigate('Profiili')
   }
 
   navigateToRemove = async (dive) => {
-    const { user } = this.props
+    const { user, deleteDive } = this.props
 
-    //await deleteDive(dive, user._id)
-    //this.navigateToDiveHistory()
-    console.log(dive)
+    await deleteDive(dive, user._id)
+
+    this.navigateToDiveHistory()
+
   }
 
   Dive = () => {
@@ -202,5 +202,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { setOngoingEvent }
+  { setOngoingEvent, deleteDive }
 )(DiveScreen)

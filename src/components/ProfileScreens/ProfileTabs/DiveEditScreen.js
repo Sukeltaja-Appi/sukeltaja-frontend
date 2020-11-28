@@ -10,6 +10,7 @@ import { updateDive } from '../../../reducers/diveReducer'
 import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
 import { paddingSides } from '../../../styles/global'
+import { setOngoingEvent } from '../../../reducers/eventReducer'
 
 const style = {
   divider: {
@@ -23,7 +24,7 @@ const style = {
   }
 }
 
-class EditDiveScreen extends React.Component {
+class DiveScreenEdit extends React.Component {
   constructor(props) {
     super(props)
     this.ref = React.createRef()
@@ -41,7 +42,7 @@ class EditDiveScreen extends React.Component {
     this.state = {
       dive: {
         _id,
-        user: user,
+        user: user.username,
         startdate: new Date(startdate),
         enddate: new Date(enddate),
         longitude,
@@ -52,77 +53,20 @@ class EditDiveScreen extends React.Component {
     }
   }
 
-  getLocation = async () => {
-    try {
-      const location = await locationService.getLocationAsync()
+  navigate = (value) => this.props.navigation.navigate(value)
 
-      const latitude = location.coords.latitude
-      const longitude = location.coords.longitude
-
-      let dive = this.state.dive
-
-      dive.latitude = latitude
-      dive.longitude = longitude
-
-      this.setState({ dive })
-    } catch (err) { console.log('Geolocation unavailable.') }
-  }
-
-  back = (dive) => {
-    const resetAction = CommonActions.reset({
-      index: 2,
-      routes: [
-        { name: 'DiveScreen' },
-        { name: 'DiveListScreen' },
-        { name: 'Dive', params: { item: dive } },
-      ],
-    })
-
-    this.props.navigation.dispatch(resetAction)
-  }
-
-  // User can only edit dives in which they are the diver
-  // or any dives in the event if they have admin/creator status.
   updateButton = async () => {
-    const validated = this.ref.current.getValue()
     const { dive } = this.state
+    const { user, events, updateDive } = this.props
+    const event = events.find(e => e.dives.some(item => item._id === dive._id))
 
-    if (validated) {
-      const { user, ongoingEvent, updateDive } = this.props
+    dive.event = event._id
+    const updatedDive = await updateDive(dive, user._id)
 
-      let { creator, admins, participants } = ongoingEvent
-
-      admins = [creator, ...admins]
-      const allParticipants = [creator, ...admins, ...participants]
-      let allowed = false
-
-      if (user.username === dive.user) {
-        dive.user = user._id
-        allowed = true
-
-      } else if (admins.map(a => a._id).includes(user._id)) {
-
-        for (let i = 0; i < allParticipants.length; i++) {
-
-          if (allParticipants[i].username === dive.user) {
-
-            dive.user = allParticipants[i]._id
-            allowed = true
-            break
-          }
-        }
-      }
-
-      if (allowed) {
-        dive.event = ongoingEvent._id
-        const updatedDive = await updateDive(dive, user._id)
-
-        this.back(updatedDive)
-      }
-    }
+    this.props.navigation.navigate('Sukellus', { updatedDive })
   }
 
-  render() {
+  Dive = () => {
     const { dive, originalDive } = this.state
 
     return (
@@ -152,15 +96,20 @@ class EditDiveScreen extends React.Component {
         </ScrollView>
       </View>
     )
+
+  }
+  render() {
+    return this.Dive()
   }
 }
 
 const mapStateToProps = (state) => ({
-  ongoingEvent: state.ongoingEvent,
-  user: state.user
+  user: state.user,
+  events: state.events,
+  ongoingEvent: state.ongoingEvent
 })
 
 export default connect(
   mapStateToProps,
   { updateDive }
-)(EditDiveScreen)
+)(DiveScreenEdit)
