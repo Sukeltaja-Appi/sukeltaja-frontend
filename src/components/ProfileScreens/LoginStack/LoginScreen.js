@@ -128,6 +128,9 @@ class LoginScreen extends React.Component {
               color: 'white',
               fontSize: 34,
               marginTop: 100,
+              textShadowOffset: { width: 2, height: 2 },
+              textShadowRadius: 1,
+              textShadowColor: '#000',
             }}
           >
             Kirjaudu sisään

@@ -10,7 +10,7 @@ import AppButton from '../../common/AppButton'
 import BackgroundImage from '../../common/BackgroundImage'
 import AppText from '../../common/AppText'
 
-const logo = require('../../../pictures/mobiililogot_vaaka.png')
+const logo = require('../../../pictures/mobiililogot_vaaka_fixed.png')
 
 const style = {
   container: {
@@ -50,8 +50,11 @@ class OpeningScreen extends React.Component {
               style={{
                 textAlign: 'center',
                 color: 'white',
-                fontSize: 44,
+                fontSize: 40,
                 marginTop: 20,
+                textShadowOffset: { width: 2, height: 2 },
+                textShadowRadius: 1,
+                textShadowColor: '#000',
               }}
             >
               Sukeltaja-App

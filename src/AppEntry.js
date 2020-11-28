@@ -27,6 +27,7 @@ function AppEntry() {
     Font.loadAsync({
       'nunito-regular': require('../assets/fonts/Nunito-Regular.ttf'),
       'nunito-bold': require('../assets/fonts/Nunito-Bold.ttf'),
+      'nunito-extrabold': require('../assets/fonts/Nunito-ExtraBold.ttf'),
     })
 
   const [fontsLoaded, setFontsLoaded] = useState(false)

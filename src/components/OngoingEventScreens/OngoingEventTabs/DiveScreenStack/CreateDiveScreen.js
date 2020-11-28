@@ -130,7 +130,7 @@ const CreateDiveScreen = (props) => {
             onPress={getLocation}
           />
           <AppText style={{
-            color: 'black',
+            color: colors.primary,
             fontSize: 16,
             marginBottom: 5,
             marginLeft: 10
@@ -141,7 +141,7 @@ const CreateDiveScreen = (props) => {
             text=""
           />
           <AppText style={{
-            color: 'black',
+            color: colors.primary,
             fontSize: 16,
             marginBottom: 5,
             marginLeft: 10
