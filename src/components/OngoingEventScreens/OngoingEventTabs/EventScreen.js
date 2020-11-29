@@ -94,9 +94,8 @@ class EventScreen extends React.Component {
   }
 
   toEditing = () => {
-    this.props.navigation.navigate('Info', {
-      screen: 'Muokkaa tapahtumaa',
-      params: { item: this.props.ongoingEvent }
+    this.props.navigation.navigate('Muokkaa tapahtumaa', {
+      item: this.props.ongoingEvent
     })
   }
 
@@ -120,12 +119,6 @@ class EventScreen extends React.Component {
 
     return false
   };
-
-  /*eslint-disable */
-  pressUser = (item) => {
-    console.log();
-  };
-  /*eslint-enable */
 
   render() {
     const { ongoingEvent } = this.props
