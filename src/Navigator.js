@@ -176,6 +176,8 @@ const style = StyleSheet.create({
   headerViewStyle: {
     marginHorizontal: 20,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 220,
   },
 })
 

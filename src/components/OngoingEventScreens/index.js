@@ -48,10 +48,22 @@ const OngoingEventTabsNav = createStackNavigator()
 const OngoingEventTabs = () => {
   return (
     <OngoingEventTabsNav.Navigator>
-      <OngoingEventTabsNav.Screen name="Info" component={EventScreenStack} />
-      <OngoingEventTabsNav.Screen name="Sukella" component={DiveScreenStack} />
-      <OngoingEventTabsNav.Screen name="Chat" component={ChatScreenStack} />
-      <OngoingEventTabsNav.Screen name="Kutsu osallistujia" component={InviteScreen} />
+      <OngoingEventTabsNav.Screen name="Info"
+        component={EventScreenStack}
+        options={{ animationEnabled: false }}
+      />
+      <OngoingEventTabsNav.Screen name="Sukella"
+        component={DiveScreenStack}
+        options={{ animationEnabled: false }}
+      />
+      <OngoingEventTabsNav.Screen name="Chat"
+        component={ChatScreenStack}
+        options={{ animationEnabled: false }}
+      />
+      <OngoingEventTabsNav.Screen name="Kutsu osallistujia"
+        component={InviteScreen}
+        options={{ animationEnabled: false }}
+      />
     </OngoingEventTabsNav.Navigator>
   )
 }
