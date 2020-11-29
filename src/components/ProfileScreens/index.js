@@ -40,7 +40,8 @@ function ProfileStack() {
       style={{
         height: '100%',
       }}
-    /> ), headerTintColor: '#fff', headerTitleAlign: 'center', headerTitleStyle: { fontFamily: 'nunito-bold', textShadowOffset: { width: 0, height: 2 },
+    /> ), headerTintColor: '#fff', headerTitleAlign: 'center',
+    headerTitleStyle: { fontFamily: 'nunito-bold', textShadowOffset: { width: 0, height: 2 },
       textShadowRadius: 3,
       textShadowColor: '#404040', } }}>
       <Profile.Screen name="Profiili" component={ProfileScreen} options={{ headerShown: false }}/>

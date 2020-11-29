@@ -19,6 +19,7 @@ import styles from '../../../styles/global'
 import BackgroundImage from '../../common/BackgroundImage'
 import { SERVICE_EMAIL } from '@env'
 import AppText from '../../common/AppText'
+import colors from '../../../styles/colors'
 
 export const ProfileScreen = (props) => {
   const [invites, setInvites] = useState([])
@@ -53,22 +54,22 @@ export const ProfileScreen = (props) => {
   const menuData = [
     {
       title: 'Sukellushistoria',
-      leftIcon: () => <Icon name="history" type="material" color="#118BFC" />,
+      leftIcon: () => <Icon name="history" type="material" color={colors.primary} />,
       onPress: () => navigate('Sukellushistoria'),
     },
     {
       title: 'Asetukset',
-      leftIcon: () => <Icon name="settings" type="material" color="#118BFC" />,
+      leftIcon: () => <Icon name="settings" type="material" color={colors.primary} />,
       onPress: () => navigate('Asetukset'),
     },
     {
       title: 'Palaute',
-      leftIcon: () => <Icon name="feedback" type="material" color="#118BFC" />,
+      leftIcon: () => <Icon name="feedback" type="material" color={colors.primary} />,
       onPress: () => Linking.openURL(`mailto:${SERVICE_EMAIL}`),
     },
     {
       title: 'Kirjaudu ulos',
-      leftIcon: () => <Icon name="log-out" type="feather" color="#118BFC" />,
+      leftIcon: () => <Icon name="log-out" type="feather" color={colors.primary} />,
       onPress: () => logoutButton(),
     },
   ]
@@ -127,14 +128,14 @@ export const ProfileScreen = (props) => {
                   <ListItem.Title
                     style={{
                       fontFamily: 'nunito-bold',
-                      color: '#118BFC',
-                      fontSize: 18,
+                      color: colors.primary,
+                      fontSize: 16,
                     }}
                   >
                     {title}
                   </ListItem.Title>
                 </ListItem.Content>
-                <ListItem.Chevron color='#118BFC' />
+                <ListItem.Chevron color={colors.primary} />
               </ListItem>
             )
           }}
