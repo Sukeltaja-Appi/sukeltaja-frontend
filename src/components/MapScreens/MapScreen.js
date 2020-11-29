@@ -142,7 +142,7 @@ class MainMapScreen extends React.Component {
               style={style.gradient}>
               <CommonButton title='Luo uusi tapahtuma'
                 buttonStyle={{ backgroundColor: 'transparent' }}
-                titleStyle={{ fontSize: 14, textTransform: 'uppercase' }}
+                titleStyle={{ fontSize: 14, textTransform: 'uppercase', fontFamily: 'nunito-extrabold' }}
               />
             </LinearGradient>
           </View>

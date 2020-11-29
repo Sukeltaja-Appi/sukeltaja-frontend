@@ -106,7 +106,7 @@ export const ProfileScreen = (props) => {
                   style={style.notificationStyle}
                   onPress={() => navigate('Kutsut')}
                 >
-                  <Text style={{ color: 'white', fontFamily: 'nunito-bold' }}>
+                  <Text style={{ color: 'white', fontFamily: 'nunito-bold', fontSize: 16 }}>
                     {invites.length} {invites.length === 1 ? 'kutsu' : 'kutsua'} odottaa hyväksymistä!
                   </Text>
                 </TouchableOpacity>
