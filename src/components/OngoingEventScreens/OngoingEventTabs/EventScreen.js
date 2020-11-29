@@ -72,7 +72,12 @@ const style = {
     flex: 1,
     width: '100%',
     height: 250,
-    borderRadius: 20,
+  },
+  mapContainer: {
+    borderRadius: 10,
+    overflow: 'hidden',
+    borderWidth: 3,
+    borderColor: '#118BFC'
   }
 }
 
@@ -129,7 +134,7 @@ class EventScreen extends React.Component {
       title,
       description,
       startdate,
-      //enddate,
+      enddate,
       target,
     } = ongoingEvent
 
@@ -172,10 +177,10 @@ class EventScreen extends React.Component {
                 <Icon name="event" type="material" color="white" size={20} />
                 <AppText style={style.text}>
                   {new Date(startdate).getDate()}.
-                  {new Date(startdate).getMonth()} -{' '}
-                  {new Date(startdate).getDate()}.
-                  {new Date(startdate).getMonth()}.
-                  {new Date(startdate).getFullYear()}
+                  {new Date(startdate).getMonth()+1} -{' '}
+                  {new Date(enddate).getDate()}.
+                  {new Date(enddate).getMonth()+1}.
+                  {new Date(enddate).getFullYear()}
                 </AppText>
               </View>
               <View
@@ -228,21 +233,22 @@ class EventScreen extends React.Component {
               <AppText style={style.text}>{target ? target.name : 'ei kohdetta'}</AppText>
 
               {target ?
-                <MapView
-                  style={style.map}
-                  initialRegion={{
-                    latitude: target.latitude,
-                    longitude: target.longitude,
-                    latitudeDelta: 0.05,
-                    longitudeDelta: 0.05
-                  }}>
-                  <Marker
-                    coordinate={{ latitude: target.latitude, longitude: target.longitude }}
-                    title={target.name}
-                  />
-                </MapView>
+                <View style={style.mapContainer}>
+                  <MapView
+                    style={style.map}
+                    initialRegion={{
+                      latitude: target.latitude,
+                      longitude: target.longitude,
+                      latitudeDelta: 0.05,
+                      longitudeDelta: 0.05
+                    }}>
+                    <Marker
+                      coordinate={{ latitude: target.latitude, longitude: target.longitude }}
+                      title={target.name}
+                    />
+                  </MapView>
+                </View>
                 : null}
-
             </View>
 
           </ScrollView>
