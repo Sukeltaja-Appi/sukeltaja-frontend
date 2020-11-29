@@ -41,9 +41,7 @@ function ProfileStack() {
         height: '100%',
       }}
     /> ), headerTintColor: '#fff', headerTitleAlign: 'center',
-    headerTitleStyle: { fontFamily: 'nunito-bold', textShadowOffset: { width: 0, height: 2 },
-      textShadowRadius: 3,
-      textShadowColor: '#404040', } }}>
+    headerTitleStyle: { fontFamily: 'nunito-bold' } }}>
       <Profile.Screen name="Profiili" component={ProfileScreen} options={{ headerShown: false }}/>
       <Profile.Screen name="Kutsut" component={MessageStack} />
       <Profile.Screen name="Asetukset" component={SettingsStack} />
