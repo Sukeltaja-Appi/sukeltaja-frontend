@@ -6,6 +6,8 @@ import LicenseScreen from './ProfileTabs/LicenseScreen'
 import ProfileScreen from './ProfileTabs/ProfileScreen'
 import SettingsScreen from './ProfileTabs/SettingsScreen'
 import EventListScreen from '../EventScreens/EventMenuStack/EventListScreen'
+import { LinearGradient } from 'expo-linear-gradient'
+import { Header } from 'react-native/Libraries/NewAppScreen'
 
 const StackMessage = createStackNavigator()
 
@@ -33,7 +35,14 @@ const Profile = createStackNavigator()
 
 function ProfileStack() {
   return (
-    <Profile.Navigator initialRouteName="Profiili" >
+    <Profile.Navigator initialRouteName="Profiili" screenOptions={{ headerBackground: () => ( <LinearGradient
+      colors={['#118bfc', '#12bcff']}
+      style={{
+        height: '100%',
+      }}
+    /> ), headerTintColor: '#fff', headerTitleAlign: 'center', headerTitleStyle: { fontFamily: 'nunito-bold', textShadowOffset: { width: 0, height: 2 },
+      textShadowRadius: 3,
+      textShadowColor: '#404040', } }}>
       <Profile.Screen name="Profiili" component={ProfileScreen} options={{ headerShown: false }}/>
       <Profile.Screen name="Kutsut" component={MessageStack} />
       <Profile.Screen name="Asetukset" component={SettingsStack} />

@@ -134,7 +134,7 @@ export const ProfileScreen = (props) => {
                     {title}
                   </ListItem.Title>
                 </ListItem.Content>
-                <ListItem.Chevron />
+                <ListItem.Chevron color='#118BFC' />
               </ListItem>
             )
           }}
