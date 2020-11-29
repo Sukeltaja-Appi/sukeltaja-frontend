@@ -12,6 +12,7 @@ import { getAll } from '../../reducers/targetReducer'
 import AppButton from '../common/AppButton'
 import CustomMarker from './CustomMarker'
 import { startEvent } from '../../reducers/eventReducer'
+import CommonButton from '../common/CommonButton'
 
 class MainMapScreen extends React.Component {
   constructor(props) {
@@ -102,7 +103,7 @@ class MainMapScreen extends React.Component {
     return (
       <Marker identifier={`cluster-${clusterId}`} coordinate={coordinate} onPress={onPress}>
         <View style={style.cluster}>
-          <Text>
+          <Text style={{ fontFamily: 'nunito-bold' }}>
             {pointCount}
           </Text>
         </View>
@@ -132,13 +133,13 @@ class MainMapScreen extends React.Component {
         <Callout tooltip={true} onPress={() => this.startEvent(pin)}>
           <View style={style.callout}>
             <Text style={{ fontFamily: 'nunito-extrabold', color: colors.primary, fontSize: 16 }}>{name}</Text>
-            {type && <Text style={{ fontFamily: 'nunito-bold' }}>{type}</Text>}
+            {type && <Text style={{ fontFamily: 'nunito-bold', textTransform: 'capitalize' }}>{type}</Text>}
             <Text style={{ fontFamily: 'nunito-extrabold', marginTop: 10 }}>Sijainti:</Text>
             <Text style={{ fontFamily: 'nunito-bold' }}>{`${decimalToDMS(location.latitude)} N`}</Text>
             <Text style={{ fontFamily: 'nunito-bold' }}>{`${decimalToDMS(location.longitude)} E`}</Text>
-            <AppButton title='Luo uusi tapahtuma'
-              containerStyle={{ paddingVertical: 5, paddingHorizontal: 10, borderWidth: 2, marginTop: 10 }}
-              textStyle={{ fontSize: 14 }}
+            <CommonButton title='Luo uusi tapahtuma'
+              buttonStyle={{ paddingVertical: 10, paddingHorizontal: 20, marginTop: 10 }}
+              titleStyle={{ fontSize: 14, textTransform: 'uppercase' }}
             />
           </View>
 
@@ -206,7 +207,7 @@ const style = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 16,
     alignItems: 'center',
-    borderColor: colors.primary_light,
+    borderColor: '#BABABA',
     justifyContent: 'center',
     backgroundColor: '#fff'
   },
@@ -237,7 +238,9 @@ const style = StyleSheet.create({
   },
   searchInput: {
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    color: 'black'
+    color: 'black',
+    fontFamily: 'nunito-bold',
+    fontWeight: 'normal',
   },
   callout: {
     borderWidth: 1,
