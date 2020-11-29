@@ -5,9 +5,10 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native'
-import { Button, Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 import MapView, { Marker } from 'react-native-maps'
+import { MaterialIcons } from '@expo/vector-icons'
 
 import {
   setOngoingEvent,
@@ -45,7 +46,7 @@ const style = {
     padding: paddingSides,
     marginBottom: 10,
   },
-  buttonDivider: {
+  divider: {
     height: 15,
   },
   descriptionStyle: {
@@ -54,6 +55,7 @@ const style = {
   lowerTitle: {
     fontSize: 25,
     marginBottom: 10,
+    paddingLeft: 5,
   },
   text: {
     fontSize: 16,
@@ -128,15 +130,18 @@ class EventScreen extends React.Component {
   render() {
     const { ongoingEvent } = this.props
     const {
-      admins,
+      //admins,
       participants,
       creator,
       title,
       description,
       startdate,
-      enddate,
+      //enddate,
       target,
     } = ongoingEvent
+
+    const startingDate = new Date(startdate)
+    const startTime = `${startingDate.getHours()}:${startingDate.getMinutes().toString().padStart(2, '0')}`
 
     return (
       <View style={styles.noPadding}>
@@ -158,7 +163,16 @@ class EventScreen extends React.Component {
                   <Icon name="settings" size={60} color="white" />
                 </TouchableOpacity>
               </View>
-              <AppText style={style.lowerTitle}>Info</AppText>
+              <View
+                style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
+              >
+                <MaterialIcons
+                  name="info-outline"
+                  size={30}
+                  color="white"
+                />
+                <AppText style={style.lowerTitle}>Info</AppText>
+              </View>
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
@@ -176,8 +190,7 @@ class EventScreen extends React.Component {
               >
                 <Icon name="schedule" type="material" color="white" size={20} />
                 <AppText style={style.text}>
-                  Lähtö {new Date(startdate).getHours()}:
-                  {new Date(startdate).getMinutes()}
+                  Lähtö {startTime}
                 </AppText>
               </View>
               <View
@@ -190,9 +203,11 @@ class EventScreen extends React.Component {
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
                 <Icon name="group" type="material" color="white" size={20} />
-                <AppText style={style.text}>{participants.length + 1}</AppText>
+                <AppText style={style.text}>
+                  {participants.length + 1} {participants.length === 0 ? 'osallistuja' : 'osallistujaa'}
+                </AppText>
               </View>
-              <View style={style.buttonDivider} />
+              <View style={style.divider} />
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
@@ -205,7 +220,7 @@ class EventScreen extends React.Component {
                 <AppText style={style.lowerTitle}>Kuvaus</AppText>
               </View>
               <AppText style={style.text}>{description}</AppText>
-
+              <View style={style.divider} />
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
@@ -220,28 +235,21 @@ class EventScreen extends React.Component {
               <AppText style={style.text}>{target ? target.name : 'ei kohdetta'}</AppText>
 
               {target ?
-              <MapView
-                style={style.map}
-                initialRegion={{
-                  latitude: target.latitude,
-                  longitude: target.longitude,
-                  latitudeDelta: 0.05,
-                  longitudeDelta: 0.05
-                }}>
-                <Marker
-                  coordinate={{ latitude: target.latitude, longitude: target.longitude }}
-                  title={target.name}
-                />
-              </MapView>
-              : null}
+                <MapView
+                  style={style.map}
+                  initialRegion={{
+                    latitude: target.latitude,
+                    longitude: target.longitude,
+                    latitudeDelta: 0.05,
+                    longitudeDelta: 0.05
+                  }}>
+                  <Marker
+                    coordinate={{ latitude: target.latitude, longitude: target.longitude }}
+                    title={target.name}
+                  />
+                </MapView>
+                : null}
 
-              <View style={style.buttonDivider} />
-              <Button
-                title="Poistu"
-                onPress={this.leaveEventButton}
-                buttonStyle={style.buttonEnd}
-                raised
-              />
             </View>
 
           </ScrollView>
