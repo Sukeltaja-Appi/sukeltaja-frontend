@@ -17,18 +17,15 @@ const { Form } = t.form
 
 const EventInfoForm = (props) => {
   const reference = React.createRef()
-  const item = props.route.params.item
+  const item = props.route.params?.item
   const modifying = item !== undefined ? true : false
   const [startDate, setStartDate] = useState(modifying ? new Date(item.startdate) : new Date())
   const [endDate, setEndDate] = useState(modifying ? new Date(item.enddate) : inOneHour())
-  const [target, setTarget] = useState(modifying ? item.target : props.route.params.target)
-  const [divingEvent, setEvent] = useState(modifying ? {
-    title: item.title,
-    description: item.description,
-  } : {
-    title: '',
-    description: '',
-  })
+  const [target, setTarget] = useState(modifying ? item.target : props.route.params?.target)
+  const [loadingIconVisible, setLoadingIconVisible] = useState(false)
+  const [divingEvent, setEvent] = useState(modifying ?
+    { title: item.title, description: item.description } :
+    { title: '', description: '' })
 
   useEffect(() => {
     if (startDate > endDate) {
@@ -51,22 +48,27 @@ const EventInfoForm = (props) => {
     if (!reference.current.getValue()) {
       return
     }
-    const event = {
-      ...divingEvent,
-      startdate: startDate,
-      enddate: endDate,
-      target,
-    }
+    try {
+      setLoadingIconVisible(true)
+      const event = {
+        ...divingEvent,
+        startdate: startDate,
+        enddate: endDate,
+        target,
+      }
 
-    if (!modifying) {
-      await props.startEvent(event)
-    } else {
-      await props.updateEvent({ ...item, ...event })
-    }
+      if (!modifying) {
+        await props.startEvent(event)
+      } else {
+        await props.updateEvent({ ...item, ...event })
+      }
 
-    props.navigation.navigate('Tapahtumat', {
-      screen: 'Omat tapahtumat'
-    })
+      props.navigation.navigate('Tapahtumat', {
+        screen: 'Omat tapahtumat'
+      })
+    } finally {
+      setLoadingIconVisible(false)
+    }
   }
 
   const targetChanged = (newTarget) => {
@@ -133,6 +135,7 @@ const EventInfoForm = (props) => {
             title={getSubmitButtonTitle()}
             onPress={submitForm}
             containerStyle={style.submitButton}
+            loading={loadingIconVisible}
           />
         </View>
       </ScrollView>
@@ -149,12 +152,11 @@ const DateTimePickerButton = (props) => {
     showDatePicker(false)
     if (newDate !== undefined) {
       setDate(newDate)
+      showTimePicker(true)
     }
-    showTimePicker(true)
   }
 
   const onTimeChange = (event, newDate) => {
-    showDatePicker(false)
     showTimePicker(false)
     if (newDate !== undefined) {
       setDate(newDate)
@@ -172,10 +174,7 @@ const DateTimePickerButton = (props) => {
       <Button
         buttonStyle={style.button}
         title={text + ' ' + formatDate(date)}
-        onPress={() => {
-          showDatePicker(true)
-          showTimePicker(false)
-        }}
+        onPress={() => showDatePicker(true)}
       />
     </View>
   )
