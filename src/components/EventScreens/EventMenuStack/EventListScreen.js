@@ -128,15 +128,7 @@ const List = (props) => {
                   colors={['#118bfc', '#12bcff']}
                   start={[0, 0]}
                   end={[1, 1]}
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                    alignSelf: 'stretch',
-                    paddingLeft: 8,
-
-                  }}
+                  style={style.gradient}
                 >
                   <View style={{ marginBottom: 5 }} >
                     <AppText>{start.day}.{start.month}.{' - '}</AppText>
@@ -243,6 +235,14 @@ const style = StyleSheet.create({
     height: 78,
     padding: 0,
     paddingRight: 14,
+  },
+  gradient: {
+    height: '100%',
+    width: '100%',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignSelf: 'stretch',
+    paddingLeft: 8,
   }
 })
 

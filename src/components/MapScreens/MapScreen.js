@@ -13,6 +13,7 @@ import AppButton from '../common/AppButton'
 import CustomMarker from './CustomMarker'
 import { startEvent } from '../../reducers/eventReducer'
 import CommonButton from '../common/CommonButton'
+import { LinearGradient } from 'expo-linear-gradient'
 
 class MainMapScreen extends React.Component {
   constructor(props) {
@@ -137,10 +138,13 @@ class MainMapScreen extends React.Component {
             <Text style={{ fontFamily: 'nunito-extrabold', marginTop: 10 }}>Sijainti:</Text>
             <Text style={{ fontFamily: 'nunito-bold' }}>{`${decimalToDMS(location.latitude)} N`}</Text>
             <Text style={{ fontFamily: 'nunito-bold' }}>{`${decimalToDMS(location.longitude)} E`}</Text>
-            <CommonButton title='Luo uusi tapahtuma'
-              buttonStyle={{ paddingVertical: 10, paddingHorizontal: 20, marginTop: 10 }}
-              titleStyle={{ fontSize: 14, textTransform: 'uppercase' }}
-            />
+            <LinearGradient colors={['#118bfc', '#12bcff']}
+              style={style.gradient}>
+              <CommonButton title='Luo uusi tapahtuma'
+                buttonStyle={{ backgroundColor: 'transparent' }}
+                titleStyle={{ fontSize: 14, textTransform: 'uppercase' }}
+              />
+            </LinearGradient>
           </View>
 
         </Callout>
@@ -248,6 +252,12 @@ const style = StyleSheet.create({
     borderColor: '#BABABA',
     backgroundColor: '#fff',
     padding: 5,
+  },
+  gradient: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginTop: 10,
+    borderRadius: 12,
   }
 })
 
