@@ -12,6 +12,7 @@ import styles from '../../../styles/global'
 import AppButtonRound from '../../common/AppButtonRound'
 import AppText from '../../common/AppText'
 import { LinearGradient } from 'expo-linear-gradient'
+import colors from '../../../styles/colors'
 
 const EventListScreen = (props) => {
   return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} groups={eventsSortedByGroup(props)} />
@@ -120,7 +121,6 @@ const List = (props) => {
                 setOngoingEvent(item) && navigate('Tapahtuma', item)
               }}
               containerStyle={style.event}
-              bottomDivider
               pad={0}
             >
               <ListItem.Content style={style.dateContainer}>
@@ -233,6 +233,8 @@ const style = StyleSheet.create({
   event: {
     backgroundColor: 'white',
     height: 78,
+    borderWidth: 0.5,
+    borderColor: '#d4d4d4',
     padding: 0,
     paddingRight: 14,
   },
