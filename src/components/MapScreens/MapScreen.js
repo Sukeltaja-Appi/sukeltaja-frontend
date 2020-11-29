@@ -137,7 +137,7 @@ class MainMapScreen extends React.Component {
             <Text>{`${decimalToDMS(location.longitude)} E`}</Text>
             <AppButton title='Luo uusi tapahtuma'
               containerStyle={{ paddingVertical: 5, paddingHorizontal: 10, borderWidth: 2, marginTop: 10 }}
-              textStyle={{ fontSize: 16 }}
+              textStyle={{ fontSize: 14 }}
             />
           </View>
 
