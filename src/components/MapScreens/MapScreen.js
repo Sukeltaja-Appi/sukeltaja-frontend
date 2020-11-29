@@ -131,10 +131,11 @@ class MainMapScreen extends React.Component {
       >
         <Callout tooltip={true} onPress={() => this.startEvent(pin)}>
           <View style={style.callout}>
-            <Text style={{ fontWeight: 'bold' }}>{name}</Text>
-            {type && <Text>{type}</Text>}
-            <Text>{`${decimalToDMS(location.latitude)} N`}</Text>
-            <Text>{`${decimalToDMS(location.longitude)} E`}</Text>
+            <Text style={{ fontFamily: 'nunito-extrabold', color: colors.primary, fontSize: 16 }}>{name}</Text>
+            {type && <Text style={{ fontFamily: 'nunito-bold' }}>{type}</Text>}
+            <Text style={{ fontFamily: 'nunito-extrabold', marginTop: 10 }}>Sijainti:</Text>
+            <Text style={{ fontFamily: 'nunito-bold' }}>{`${decimalToDMS(location.latitude)} N`}</Text>
+            <Text style={{ fontFamily: 'nunito-bold' }}>{`${decimalToDMS(location.longitude)} E`}</Text>
             <AppButton title='Luo uusi tapahtuma'
               containerStyle={{ paddingVertical: 5, paddingHorizontal: 10, borderWidth: 2, marginTop: 10 }}
               textStyle={{ fontSize: 14 }}
