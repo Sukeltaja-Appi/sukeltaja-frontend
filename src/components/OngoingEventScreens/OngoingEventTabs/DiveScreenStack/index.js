@@ -10,9 +10,9 @@ import { endDives } from '../../../../reducers/diveReducer'
 import { getOngoingEvent } from '../../../../reducers/eventReducer'
 
 const DiveScreenStackNav = createStackNavigator()
-const DiveScreenStack = (props) => {
-  console.log(props.ongoingDives)
-  if (props.ongoingDives.length) {
+const DiveScreenStack = ({ navigation, ongoingDives }) => {
+
+  if (ongoingDives.length) {
     // Force to dive screen when there's active dives
     return (
       <DiveScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
