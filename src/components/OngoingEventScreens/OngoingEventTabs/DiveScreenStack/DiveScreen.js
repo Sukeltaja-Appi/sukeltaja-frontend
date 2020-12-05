@@ -57,6 +57,8 @@ class DiveScreen extends React.Component {
       counter: 0,
       ongoing: false,
       selectedUsers: [],
+      startDiveLoading: false,
+      endDiveLoading: false,
     }
     this.showList = this.showList.bind(this)
     this.showListTitle = this.showListTitle.bind(this)
@@ -114,40 +116,51 @@ class DiveScreen extends React.Component {
     const { selectedUsers } = this.state
 
     if (selectedUsers && selectedUsers.length > 0) {
-      let { ongoingEvent, startDives, user } = this.props
-
-      // TODO: Hyväksyykö backend null arvon? Ois varmaan parempi
-      let latitude = 0
-      let longitude = 0
-
       try {
-        const location = await locationService.getLocationAsync()
+        let { ongoingEvent, startDives, user } = this.props
+        // TODO: Hyväksyykö backend null arvon? Ois varmaan parempi
 
-        latitude = location.coords.latitude
-        longitude = location.coords.longitude
-      } catch (err) {
-        console.log('Geolocation unavailable.')
+        this.setState({ startDiveLoading: true })
+        const { longitude, latitude } = await this.getLocation()
+
+        const startDate = new Date()
+        const dives = selectedUsers.map((u) => ({
+          event: ongoingEvent._id,
+          startdate: startDate,
+          user: u._id,
+          latitude,
+          longitude,
+        }))
+
+        await startDives(dives, user._id)
+
+        this.setState({ counter: 0, ongoing: true, startDate })
+      } finally {
+        this.setState({ startDiveLoading: false })
       }
 
-      const startDate = new Date()
-      const dives = selectedUsers.map((u) => ({
-        event: ongoingEvent._id,
-        startdate: startDate,
-        user: u._id,
-        latitude,
-        longitude,
-      }))
-
-      await startDives(dives, user._id)
-
-      this.setState({ counter: 0, ongoing: true, startDate })
     }
   };
+
+  getLocation = async () => {
+    try {
+      return await locationService.getLocationAsync()
+    } catch (err) {
+      console.log('Geolocation unavailable.')
+
+      return { longitude: 0, latitude: 0 }
+    }
+  }
 
   endButton = async () => {
     let { endDives, ongoingDives, user } = this.props
 
-    endDives(ongoingDives, user._id)
+    try {
+      this.setState({ endDiveLoading: true })
+      await endDives(ongoingDives, user._id)
+    } finally {
+      this.setState({ endDiveLoading: false })
+    }
 
     if (this.userIsAdmin())
       this.setState({ ongoing: false, selectedUsers: [] })
@@ -273,6 +286,7 @@ class DiveScreen extends React.Component {
               title="Aloita sukellus"
               onPress={this.diveButton}
               disabled={this.noOneIsSelected()}
+              loading={this.state.startDiveLoading}
               raised
             />
             <View style={style.divider} />
@@ -316,6 +330,7 @@ class DiveScreen extends React.Component {
               title="Lopeta sukellus"
               onPress={this.endButton}
               buttonStyle={{ backgroundColor: colors.red }}
+              loading={this.state.endDiveLoading}
             />
           </View>
         </View>
