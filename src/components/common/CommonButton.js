@@ -38,8 +38,23 @@ const CommonButton = ({
   if (loading) {
     return (
       <TouchableOpacity style={{ ...style.commonButtonContainer, ...extraContainerStyle }}>
-        <ActivityIndicator size="small" color="white" />
-      </TouchableOpacity>
+        <ActivityIndicator size="small" color="white" style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+        }} />
+        <Text
+          style={{
+            ...style.commonButtonText,
+            ...extraTitleStyle,
+            color: 'rgba(0,0,0,0)',
+          }}
+        >
+          {title}
+        </Text>
+      </TouchableOpacity >
     )
   }
 
