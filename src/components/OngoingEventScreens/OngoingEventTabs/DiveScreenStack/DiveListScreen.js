@@ -49,7 +49,6 @@ const style = {
     justifyContent: 'flex-start',
     marginTop: 10,
     paddingHorizontal: 15,
-    marginBottom: 50
   },
   bottom: {
     flex: 2,
