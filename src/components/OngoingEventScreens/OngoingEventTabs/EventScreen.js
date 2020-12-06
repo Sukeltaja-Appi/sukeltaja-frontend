@@ -2,7 +2,6 @@ import React from 'react'
 import {
   View,
   ScrollView,
-  Dimensions,
   TouchableOpacity,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
@@ -18,7 +17,6 @@ import { endDives } from '../../../reducers/diveReducer'
 import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
 import { paddingSides } from '../../../styles/global'
-import BackgroundImage from '../../common/BackgroundImage'
 import AppText from '../../common/AppText'
 
 const style = {
@@ -56,10 +54,12 @@ const style = {
     fontSize: 25,
     marginBottom: 10,
     paddingLeft: 5,
+    color: 'black',
   },
   text: {
     fontSize: 16,
     marginLeft: 5,
+    color: 'black',
   },
   settingsButton: {
     elevation: 0,
@@ -78,6 +78,13 @@ const style = {
     overflow: 'hidden',
     borderWidth: 3,
     borderColor: '#118BFC'
+  },
+  textContainer: {
+    borderRadius: 10,
+    overflow: 'hidden',
+    borderWidth: 5,
+    borderColor: 'white',
+    backgroundColor: 'white'
   }
 }
 
@@ -142,39 +149,42 @@ class EventScreen extends React.Component {
     const startTime = `${startingDate.getHours()}:${startingDate.getMinutes().toString().padStart(2, '0')}`
 
     return (
-      <View style={styles.noPadding}>
-        <BackgroundImage height={Dimensions.get('screen').height}>
-          <ScrollView keyboardShouldPersistTaps='handled'>
-            <View style={style.top}>
-              <View style={{ marginBottom: 15, flexDirection: 'row' }}>
+      <View style={styles.noPadding} >
+        <ScrollView keyboardShouldPersistTaps='handled'>
+          <View style={style.top}>
+            <View style={{ marginBottom: 15, flexDirection: 'row' }}>
+              <View style={{ marginRight: 60 }}>
                 <AppText
                   style={{
                     fontSize: 36,
+                    color: 'black',
                   }}
                 >
                   {title}
                 </AppText>
-                <TouchableOpacity
-                  onPress={this.toEditing}
-                  style={style.settingsButton}
-                >
-                  <Icon name="settings" size={60} color="white" />
-                </TouchableOpacity>
               </View>
+              <TouchableOpacity
+                onPress={this.toEditing}
+                style={style.settingsButton}
+              >
+                <Icon name="settings" size={60} color="grey" />
+              </TouchableOpacity>
+            </View>
+            <View style={style.textContainer}>
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
                 <MaterialIcons
                   name="info-outline"
                   size={30}
-                  color="white"
+                  color="#118BFC"
                 />
                 <AppText style={style.lowerTitle}>Info</AppText>
               </View>
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
-                <Icon name="event" type="material" color="white" size={20} />
+                <Icon name="event" type="material" color="#118BFC" size={20} />
                 <AppText style={style.text}>
                   {new Date(startdate).getDate()}.
                   {new Date(startdate).getMonth()+1} -{' '}
@@ -186,7 +196,7 @@ class EventScreen extends React.Component {
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
-                <Icon name="schedule" type="material" color="white" size={20} />
+                <Icon name="schedule" type="material" color="#118BFC" size={20} />
                 <AppText style={style.text}>
                   Lähtö {startTime}
                 </AppText>
@@ -194,44 +204,50 @@ class EventScreen extends React.Component {
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
-                <Icon name="person" type="material" color="white" size={20} />
+                <Icon name="person" type="material" color="#118BFC" size={20} />
                 <AppText style={style.text}>{creator.username}</AppText>
               </View>
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
-                <Icon name="group" type="material" color="white" size={20} />
+                <Icon name="group" type="material" color="#118BFC" size={20} />
                 <AppText style={style.text}>
                   {participants.length + 1} {participants.length === 0 ? 'osallistuja' : 'osallistujaa'}
                 </AppText>
               </View>
-              <View style={style.divider} />
+            </View>
+            <View style={style.divider} />
+            <View style={style.textContainer}>
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
                 <Icon
                   name="description"
                   type="material"
-                  color="white"
+                  color="#118BFC"
                   size={30}
                 />
                 <AppText style={style.lowerTitle}>Kuvaus</AppText>
               </View>
-              <AppText style={style.text}>{description}</AppText>
-              <View style={style.divider} />
+              <AppText style={style.text}>
+                {description ? description : 'ei kuvausta'}
+              </AppText>
+            </View>
+            <View style={style.divider} />
+            <View style={style.textContainer}>
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
               >
                 <Icon
                   name="location-on"
                   type="material"
-                  color="white"
+                  color="#E22222"
                   size={30}
                 />
                 <AppText style={style.lowerTitle}>Sijainti</AppText>
               </View>
               <AppText style={style.text}>{target ? target.name : 'ei kohdetta'}</AppText>
-
+              <View style={style.divider} />
               {target ?
                 <View style={style.mapContainer}>
                   <MapView
@@ -250,9 +266,8 @@ class EventScreen extends React.Component {
                 </View>
                 : null}
             </View>
-
-          </ScrollView>
-        </BackgroundImage>
+          </View>
+        </ScrollView>
       </View>
     )
   }
