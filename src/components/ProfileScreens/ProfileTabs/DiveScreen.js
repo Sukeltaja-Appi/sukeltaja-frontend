@@ -3,6 +3,7 @@ import { View } from 'react-native'
 import { Text, Divider, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
+import { CommonActions } from '@react-navigation/native'
 
 import styles, { paddingSides } from '../../../styles/global'
 import { formatDate } from '../../../utils/dates'
@@ -58,6 +59,11 @@ class DiveScreen extends React.Component {
   }
 
   lengthOfDive = (startTime, endTime) => {
+
+    if(endTime === null) {
+      return null
+    }
+
     const diff = new Date(endTime) - new Date(startTime)
     const minutes = Math.round((diff/1000)/60)
 
@@ -67,6 +73,10 @@ class DiveScreen extends React.Component {
   nameOfEvent = (eventId) => {
     const { events } = this.props
     const event = events.find(e => e.dives.some(item => item._id === eventId))
+
+    if (event===undefined) {
+      return
+    }
 
     return event.title
   }
@@ -114,9 +124,7 @@ class DiveScreen extends React.Component {
     const { user, deleteDive } = this.props
 
     await deleteDive(dive, user._id)
-
     this.navigateToDiveHistory()
-
   }
 
   Dive = () => {

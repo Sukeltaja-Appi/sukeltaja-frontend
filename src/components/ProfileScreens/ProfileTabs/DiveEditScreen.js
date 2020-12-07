@@ -10,7 +10,6 @@ import { updateDive } from '../../../reducers/diveReducer'
 import colors from '../../../styles/colors'
 import styles from '../../../styles/global'
 import { paddingSides } from '../../../styles/global'
-import { setOngoingEvent } from '../../../reducers/eventReducer'
 
 const style = {
   divider: {
@@ -53,17 +52,48 @@ class DiveScreenEdit extends React.Component {
     }
   }
 
+  getLocation = async () => {
+    try {
+      const location = await locationService.getLocationAsync()
+
+      const latitude = location.coords.latitude
+      const longitude = location.coords.longitude
+
+      let dive = this.state.dive
+
+      dive.latitude = latitude
+      dive.longitude = longitude
+
+      this.setState({ dive })
+    } catch (err) { console.log('Geolocation unavailable.') }
+  }
+
   navigate = (value) => this.props.navigation.navigate(value)
 
   updateButton = async () => {
-    const { dive } = this.state
+    var { dive } = this.state
+    const validated = this.ref.current.getValue()
     const { user, events, updateDive } = this.props
     const event = events.find(e => e.dives.some(item => item._id === dive._id))
 
-    dive.event = event._id
-    const updatedDive = await updateDive(dive, user._id)
+    if (validated) {
+      let allowed = false
 
-    this.props.navigation.navigate('Sukellus', { updatedDive })
+      if (dive.startdate < dive.enddate) {
+        allowed = true
+      }
+
+      if (allowed) {
+        dive.event = event._id
+        dive = await updateDive(dive, user._id)
+
+        this.props.navigation.navigate('Sukellus', { dive })
+      }
+    }
+  }
+
+  back = (dive) => {
+    this.props.navigation.navigate('Sukellus', { dive })
   }
 
   Dive = () => {
@@ -82,7 +112,7 @@ class DiveScreenEdit extends React.Component {
           />
           <View style={style.buttonContainer}>
             <Button
-              title='Hae Nykyinen sijaintini'
+              title='Hae Nykyinen sijaintini'a
               onPress={this.getLocation}
               raised
             />

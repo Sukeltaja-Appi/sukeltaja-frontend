@@ -1,10 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, FlatList, Text, StyleSheet, RefreshControl } from 'react-native'
+import { View, FlatList, StyleSheet, RefreshControl } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
 
-import { initializeDives, diveReducer } from '../../../reducers/diveReducer'
 import { initializeEvents } from '../../../reducers/eventReducer'
 import { formatDate } from '../../../utils/dates'
 import styles from '../../../styles/global'
@@ -48,8 +47,6 @@ const style = StyleSheet.create({
     flexDirection: 'row'
   }
 })
-
-const n6 = 6
 
 class DiveHistoryScreen extends React.Component {
   constructor(props) {
@@ -190,5 +187,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { initializeDives }
+  { initializeEvents }
 )(DiveHistoryScreen)
