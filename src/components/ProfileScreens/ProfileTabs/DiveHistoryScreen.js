@@ -48,6 +48,9 @@ const style = StyleSheet.create({
   }
 })
 
+const n60 = 60
+const n1000 = 1000
+
 class DiveHistoryScreen extends React.Component {
   constructor(props) {
     super(props)
@@ -111,7 +114,7 @@ class DiveHistoryScreen extends React.Component {
 
   lengthOfDive = (startTime, endTime) => {
     const diff = new Date(endTime) - new Date(startTime)
-    const minutes = Math.round((diff/1000)/60)
+    const minutes = Math.round((diff/n1000)/n60)
 
     return minutes
   }

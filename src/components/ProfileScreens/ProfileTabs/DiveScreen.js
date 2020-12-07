@@ -3,7 +3,6 @@ import { View } from 'react-native'
 import { Text, Divider, Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
 import { FontAwesome5, MaterialIcons } from '@expo/vector-icons'
-import { CommonActions } from '@react-navigation/native'
 
 import styles, { paddingSides } from '../../../styles/global'
 import { formatDate } from '../../../utils/dates'
@@ -52,6 +51,8 @@ const style = {
 }
 
 const n6 = 6
+const n60 = 60
+const n1000 = 1000
 
 class DiveScreen extends React.Component {
   constructor(props) {
@@ -65,7 +66,7 @@ class DiveScreen extends React.Component {
     }
 
     const diff = new Date(endTime) - new Date(startTime)
-    const minutes = Math.round((diff/1000)/60)
+    const minutes = Math.round((diff/n1000)/n60)
 
     return minutes
   }
