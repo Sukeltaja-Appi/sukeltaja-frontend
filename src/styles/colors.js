@@ -21,5 +21,5 @@ export default {
   primaryText: '#118BFC',
 
   buttonDisabled_dark: '#9ea3a3',
-  buttonDisabled_light: '#e8ebeb'
+  buttonDisabled_light: '#d6d6d6'
 }

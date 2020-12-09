@@ -85,6 +85,8 @@ export const startDives = (dives, userID) => {
   }
 }
 
+// FIXME: This sets ongoing dives to [], but unless dives parameter includes all
+// ongoing dives, some ongoing dives will stay ongoing and be removed from ongoingDives array
 // Ends started dives. Updates users own dive, if one exists in parameter dives.
 export const endDives = (dives, userID) => {
   async function thunk (dispatch) {

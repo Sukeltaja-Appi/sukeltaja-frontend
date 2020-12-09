@@ -31,11 +31,11 @@ export default StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     fontFamily: 'nunito-bold',
-    color: 'black'
+    color: '#333'
   },
   roundButton: {
     width: 100,
     height: 100,
-    borderRadius: 50
+    borderRadius: 50,
   }
 })
