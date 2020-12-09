@@ -12,21 +12,12 @@ const Tab = createMaterialTopTabNavigator()
 const EventMenuTabs = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#118bfc' }} >
-      <LinearGradient
-        colors={['#118bfc', '#12bcff']}
-        start={[0, 0]}
-        end={[1, 1]}
-        style={{
-          height: '100%',
-        }}
-      >
-        <Tab.Navigator tabBarOptions={{ style: { backgroundColor: 'transparent' }, activeTintColor: '#fff',
-          inactiveTintColor: '#fff', labelStyle:{ fontFamily: 'nunito-bold' },
-          indicatorStyle:{ backgroundColor: '#fff' } }} >
-          <Tab.Screen name="Tapahtumat" component={EventMenuStack} />
-          <Tab.Screen name="Kutsut" component={InviteStack} />
-        </Tab.Navigator>
-      </LinearGradient>
+      <Tab.Navigator tabBarOptions={{ style: { backgroundColor: '#118bfc' }, activeTintColor: '#fff',
+        inactiveTintColor: '#fff', labelStyle:{ fontFamily: 'nunito-bold' },
+        indicatorStyle:{ backgroundColor: '#fff' } }} >
+        <Tab.Screen name="Tapahtumat" component={EventMenuStack} />
+        <Tab.Screen name="Kutsut" component={InviteStack} />
+      </Tab.Navigator>
     </SafeAreaView >
   )
 }
