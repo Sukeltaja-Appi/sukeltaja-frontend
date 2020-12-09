@@ -216,11 +216,11 @@ const DateTimePickerButton = (props) => {
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet)
 
 stylesheet.textbox.normal.backgroundColor = 'white'
-stylesheet.controlLabel.normal.color = 'black'
-stylesheet.controlLabel.normal.marginLeft = 15
+stylesheet.controlLabel.normal.color = '#118bfc'
+stylesheet.controlLabel.normal.marginLeft = 10
 stylesheet.textbox.normal.borderRadius = 15
-stylesheet.controlLabel.normal.fontFamily = 'nunito-bold'
-stylesheet.controlLabel.error.fontFamily = 'nunito-bold'
+stylesheet.controlLabel.normal.fontFamily = 'nunito-extrabold'
+stylesheet.controlLabel.error.fontFamily = 'nunito-extrabold'
 stylesheet.textbox.error.backgroundColor = 'white'
 stylesheet.controlLabel.error.color = 'white'
 stylesheet.controlLabel.error.marginLeft = 15

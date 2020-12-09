@@ -171,7 +171,8 @@ const style = StyleSheet.create({
     padding: 5,
   },
   iconTextStyle: {
-    color: '#118BFC'
+    color: '#118BFC',
+    fontFamily: 'nunito-bold'
   },
   headerViewStyle: {
     marginHorizontal: 20,
