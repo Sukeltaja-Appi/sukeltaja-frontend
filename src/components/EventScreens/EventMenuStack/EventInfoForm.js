@@ -5,88 +5,104 @@ import { formatDate } from '../../../utils/dates'
 import { Button } from 'react-native-elements'
 import { View } from 'react-native'
 import { paddingSides } from '../../../styles/global'
-import { startEvent, setOngoingEvent } from '../../../reducers/eventReducer'
+import { startEvent, updateEvent, setOngoingEvent } from '../../../reducers/eventReducer'
 import { connect } from 'react-redux'
 import { inOneHour } from '../../../utils/dates'
 import decimalToDMS from '../../../utils/coordinates'
 import AppButton from '../../common/AppButton'
-import targetService from '../../../services/targets'
-import { useIsFocused } from '@react-navigation/native'
 import _ from 'lodash'
 import { ScrollView } from 'react-native-gesture-handler'
 
 const { Form } = t.form
 
 const EventInfoForm = (props) => {
-  const isFocused = useIsFocused()
-  const [navFromCustomMap, setNavFromCustomMap] = useState(false)
-  const [startDate, setStartDate] = useState(new Date())
-  const [endDate, setEndDate] = useState(inOneHour())
-  const [target, setTarget] = useState()
-  const [divingEvent, setEvent] = useState({
-    title: '',
-    description: '',
-  })
+  const reference = React.createRef()
+  const item = props.route.params?.item
+  const modifying = item !== undefined ? true : false
+  const [startDate, setStartDate] = useState(modifying ? new Date(item.startdate) : new Date())
+  const [endDate, setEndDate] = useState(modifying ? new Date(item.enddate) : inOneHour())
+  const [target, setTarget] = useState(modifying ? item.target : props.route.params?.target)
+  const [loadingIconVisible, setLoadingIconVisible] = useState(false)
+  const [divingEvent, setEvent] = useState(modifying ?
+    { title: item.title, description: item.description } :
+    { title: '', description: '' })
 
   useEffect(() => {
-    if (navFromCustomMap) {
-      setNavFromCustomMap(false)
-
-      return
+    if (startDate > endDate) {
+      setEndDate(startDate)
     }
-    if (isFocused) {
-      getInitialData()
+  }, [startDate])
+
+  useEffect(() => {
+    if (startDate > endDate) {
+      setStartDate(endDate)
     }
-  }, [isFocused])
-
-  const getInitialData = async () => {
-    const targetFromMap = props.route.params.target
-
-    setTarget(targetFromMap)
-  }
+  }, [endDate])
 
   const Event = t.struct({
     title: t.String,
-    description: t.String,
+    description: t.maybe(t.String),
   })
 
   const submitForm = async () => {
-    let location
+    if (!reference.current.getValue()) {
+      return
+    }
+    try {
+      setLoadingIconVisible(true)
+      const event = {
+        ...divingEvent,
+        startdate: startDate,
+        enddate: endDate,
+        target,
+      }
 
-    if (target !== 'undefined') {
-      location = await targetService.create({
-        ...target,
-        name: undefined,
-        user_created: true,
+      if (!modifying) {
+        await props.startEvent(event)
+      } else {
+        await props.updateEvent({ ...item, ...event })
+      }
+
+      props.navigation.navigate('Tapahtumat', {
+        screen: 'Omat tapahtumat'
       })
+    } finally {
+      setLoadingIconVisible(false)
     }
-
-    const event = {
-      ...divingEvent,
-      startdate: startDate,
-      enddate: endDate,
-      target: location,
-    }
-
-    await props.startEvent(event)
-    props.navigation.navigate('Omat tapahtumat')
   }
 
-  const navigate = () =>
+  const targetChanged = (newTarget) => {
+    console.log(newTarget)
+    setTarget(newTarget)
+    props.navigation.goBack()
+  }
+
+  const changeLocation = () =>
     props.navigation.navigate('Valitse sijainti', {
-      target: target,
-      setTarget: setTarget,
-      setNavFromCustomMap: setNavFromCustomMap,
+      previousTarget: target,
+      targetSelected: targetChanged,
     })
 
   const getLocationButtonTitle = () => {
-    if (target !== undefined) {
+    if (target !== undefined && target !== null) {
+      if (target.name !== undefined && target.name !== '') {
+        return `Kohde: ${target.name}`
+      }
+
       return `Sijainti: ${decimalToDMS(target.latitude)}, ${decimalToDMS(
         target.longitude
       )}`
     }
 
-    return 'Muokkaa sijaintia'
+    return 'Valitse sijainti'
+  }
+
+  const getSubmitButtonTitle = () => {
+    if (modifying) {
+      return 'Tallenna muutokset'
+    }
+
+    return 'Luo tapahtuma!'
   }
 
   return (
@@ -94,6 +110,7 @@ const EventInfoForm = (props) => {
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={style.container}>
           <Form
+            ref={reference}
             type={Event}
             options={options}
             value={divingEvent}
@@ -102,7 +119,7 @@ const EventInfoForm = (props) => {
           <Button
             buttonStyle={style.button}
             title={getLocationButtonTitle()}
-            onPress={navigate}
+            onPress={changeLocation}
           />
           <DateTimePickerButton
             date={startDate}
@@ -114,13 +131,12 @@ const EventInfoForm = (props) => {
             setDate={setEndDate}
             text="Loppuu: "
           />
-          <View syle={style.buttonContainer}>
-            <AppButton
-              title="Luo tapahtuma!"
-              onPress={submitForm}
-              containerStyle={style.submitButton}
-            />
-          </View>
+          <AppButton
+            title={getSubmitButtonTitle()}
+            onPress={submitForm}
+            containerStyle={style.submitButton}
+            loading={loadingIconVisible}
+          />
         </View>
       </ScrollView>
     </View>
@@ -131,25 +147,19 @@ const DateTimePickerButton = (props) => {
   const { date, setDate, text } = props
   const [isShowingDatePicker, showDatePicker] = useState(false)
   const [isShowingTimePicker, showTimePicker] = useState(false)
-  const [localDate, setLocalDate] = useState(date)
 
   const onDateChange = (event, newDate) => {
     showDatePicker(false)
     if (newDate !== undefined) {
       setDate(newDate)
-      setLocalDate(newDate)
+      showTimePicker(true)
     }
-    showTimePicker(true)
   }
 
   const onTimeChange = (event, newDate) => {
-    showDatePicker(false)
     showTimePicker(false)
     if (newDate !== undefined) {
-      setLocalDate(localDate.setMinutes(newDate.getMinutes()))
-      setLocalDate(localDate.setHours(newDate.getHours()))
-      setDate(localDate)
-      setLocalDate(localDate)
+      setDate(newDate)
     }
   }
 
@@ -163,11 +173,8 @@ const DateTimePickerButton = (props) => {
       )}
       <Button
         buttonStyle={style.button}
-        title={text + ' ' + formatDate(localDate)}
-        onPress={() => {
-          showDatePicker(true)
-          showTimePicker(false)
-        }}
+        title={text + ' ' + formatDate(date)}
+        onPress={() => showDatePicker(true)}
       />
     </View>
   )
@@ -187,11 +194,6 @@ const style = {
     backgroundColor: 'rgba(52, 52, 52, 0.5)',
     borderRadius: 10,
   },
-  buttonContainer: {
-    paddingBottom: 40,
-    marginTop: 40,
-    paddingVertical: 50,
-  },
   button: {
     paddingVertical: 20,
     marginBottom: 20,
@@ -201,7 +203,6 @@ const style = {
   submitButton: {
     paddingVertical: 20,
     paddingHorizontal: 15,
-    marginTop: 10,
     marginRight: 40,
     marginLeft: 40,
   },
@@ -216,15 +217,19 @@ stylesheet.textbox.normal.borderRadius = 15
 stylesheet.controlLabel.normal.fontFamily = 'nunito-bold'
 stylesheet.controlLabel.error.fontFamily = 'nunito-bold'
 stylesheet.textbox.error.backgroundColor = 'white'
-stylesheet.controlLabel.error.color = 'white'
+stylesheet.controlLabel.error.color = 'black'
 stylesheet.controlLabel.error.marginLeft = 15
-stylesheet.textbox.error.borderRadius = 20
+stylesheet.textbox.error.borderRadius = 15
 
 const options = {
+  i18n: {
+    optional: '',
+    required: '',
+  },
   fields: {
     title: {
       label: 'Tapahtuman nimi',
-      error: 'Otsikko ei saa olla tyhjä.',
+      error: 'Tapahtuman nimi ei saa olla tyhjä',
       stylesheet: stylesheet,
     },
     description: {
@@ -238,10 +243,8 @@ const options = {
             ...stylesheet.textbox.normal,
             height: 140,
             textAlignVertical: 'top',
-          },
-          error: {
-            ...stylesheet.textbox.error,
-            height: 140,
+            paddingHorizontal: 8,
+            paddingVertical: 8,
           },
         },
       },
@@ -254,6 +257,6 @@ const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
 })
 
-export default connect(mapStateToProps, { startEvent, setOngoingEvent })(
+export default connect(mapStateToProps, { startEvent, updateEvent, setOngoingEvent })(
   EventInfoForm
 )

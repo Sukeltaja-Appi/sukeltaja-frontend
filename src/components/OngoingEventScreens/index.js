@@ -1,22 +1,16 @@
 import React from 'react'
-import { MaterialTopTabBar } from '@react-navigation/material-top-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
-import CustomTargetScreen from './OngoingEventTabs/CustomTargetScreen'
 import ChatScreen from './OngoingEventTabs/ChatScreen'
 import ChatMessage from './OngoingEventTabs/ChatMessage'
 import DiveScreen from './OngoingEventTabs/DiveScreenStack/DiveScreen'
 import DiveListScreen from './OngoingEventTabs/DiveScreenStack/DiveListScreen'
-import CreateDiveScreen from './OngoingEventTabs/DiveScreenStack/CreateDiveScreen'
 import Dive from './OngoingEventTabs/DiveScreenStack/Dive'
 import EditDiveScreen from './OngoingEventTabs/DiveScreenStack/EditDiveScreen'
 import EventScreen from './OngoingEventTabs/EventScreen'
 import InviteScreen from './OngoingEventTabs/InviteScreen'
-import TargetScreen from './OngoingEventTabs/TargetScreen'
-
-import Target from '../common/Target'
-
+import CreateDiveScreen from './OngoingEventTabs/CreateDiveScreen'
+//poista InviteScreen kun EventScreen muutettu
 const EventScreenStackNav = createStackNavigator()
 const EventScreenStack = () => {
   return (
@@ -50,32 +44,27 @@ const DiveScreenStack = () => {
   )
 }
 
-const TargetScreenStackNav = createStackNavigator()
-const TargetScreenStack = () => {
-  return (
-    <TargetScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
-      <TargetScreenStackNav.Screen name="TargetScreen" component={TargetScreen} />
-      <TargetScreenStackNav.Screen name="Target" component={Target} />
-      <TargetScreenStackNav.Screen name="CustomTargetScreen" component={CustomTargetScreen} />
-    </TargetScreenStackNav.Navigator>
-  )
-}
-
-const SafeAreaMaterialTopTabBar = ({ ...props }) => (
-  <SafeAreaView>
-    <MaterialTopTabBar {...props} />
-  </SafeAreaView>
-)
-
 const OngoingEventTabsNav = createStackNavigator()
 
 const OngoingEventTabs = () => {
   return (
     <OngoingEventTabsNav.Navigator>
-      <OngoingEventTabsNav.Screen name="Info" component={EventScreenStack} />
-      <OngoingEventTabsNav.Screen name="Sukella" component={DiveScreenStack} />
-      <OngoingEventTabsNav.Screen name="Chat" component={ChatScreenStack} />
-      <OngoingEventTabsNav.Screen name="Kohde" component={TargetScreenStack} />
+      <OngoingEventTabsNav.Screen name="Info"
+        component={EventScreenStack}
+        options={{ animationEnabled: false }}
+      />
+      <OngoingEventTabsNav.Screen name="Sukella"
+        component={DiveScreenStack}
+        options={{ animationEnabled: false }}
+      />
+      <OngoingEventTabsNav.Screen name="Chat"
+        component={ChatScreenStack}
+        options={{ animationEnabled: false }}
+      />
+      <OngoingEventTabsNav.Screen name="Kutsu osallistujia"
+        component={InviteScreen}
+        options={{ animationEnabled: false }}
+      />
     </OngoingEventTabsNav.Navigator>
   )
 }
