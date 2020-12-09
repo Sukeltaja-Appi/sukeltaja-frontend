@@ -198,7 +198,7 @@ class DiveListScreen extends React.Component {
           <CommonButton
             title="Luo uusi sukellus listalle"
             buttonStyle={style.buttonCreate}
-            onPress={() => this.navigate('CreateDiveScreen')}
+            onPress={() => this.navigate('CreateDiveForm')}
           />
         </View>
       </View>

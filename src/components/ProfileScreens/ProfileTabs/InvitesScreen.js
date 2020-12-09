@@ -43,12 +43,10 @@ class InvitesScreen extends React.Component {
       invites: [],
       isFetching: false,
     }
-
-    this.loadMessages()
   }
 
   componentDidMount() {
-    this.updateInvites()
+    this.loadMessages()
   }
 
   // FIXME

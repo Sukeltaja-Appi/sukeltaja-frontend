@@ -9,13 +9,18 @@ Mobile app for divers diving in Finland.
 
 This repository contains the frontend, backend can be found [here](https://github.com/Sukeltaja-Appi/sukeltaja-backend)
 
+Old teams admin couldn't be contacted, so new repositories had to be made. First teams repositories can be found [here](https://github.com/Sukeltaja-App) 
+
 ## Installation
 
-Installation will be through App Store (iOS) or Play Store (Android). Links to be added in future.
+Installation will be through [Play Store (Android)](https://play.google.com/store/apps/details?id=com.sukeltaja.sukeltajaapp). 
+App Store (iOS) will be added in future.
 
 ## Documentation
 
 Product backlog can be found on these [Google Sheets](https://docs.google.com/spreadsheets/d/12R7Eyg8GfjwaTioiXE2EIYMrVciJc61XiFn1YNzCHeo/)   
+
+Frontend layout has been planned using Figma, plans can be found [here](https://www.figma.com/files/project/15318743/Sukeltaja)
 
 Folder containing documentation and logs can be found on this [Google Drive](https://drive.google.com/drive/folders/1qjhxyoQXK3AdszzGWidufNLbTf9tiPbt) folder. Older documentation can be found [here](https://drive.google.com/drive/folders/1uOuPRkYjwMznLqBzBnsY3kqNimeE84Uz)
 
@@ -32,3 +37,6 @@ Folder containing documentation and logs can be found on this [Google Drive](htt
   * Definition of Done is met on every User Story included in the Sprint
   * all tests are passing
   * backlog is updated
+
+## License
+  * [MIT](https://github.com/Sukeltaja-Appi/sukeltaja-frontend/blob/master/license)

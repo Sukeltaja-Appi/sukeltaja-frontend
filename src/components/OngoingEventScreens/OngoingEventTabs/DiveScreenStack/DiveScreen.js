@@ -177,7 +177,7 @@ class DiveScreen extends React.Component {
   };
 
   setUserColor = (user) => {
-    if (this.userIsDiving(user)) return { backgroundColor: colors.primary }
+    if (this.userIsDiving(user)) return { backgroundColor: '#fff' }
 
     if (this.state.selectedUsers.includes(user))
       return {
@@ -188,7 +188,7 @@ class DiveScreen extends React.Component {
   };
 
   setUserTextColor = (user) => {
-    if (this.userIsDiving(user)) return { color: '#fff' }
+    if (this.userIsDiving(user)) return { color: '#000' }
 
     if (this.state.selectedUsers.includes(user))
       return {
@@ -210,7 +210,7 @@ class DiveScreen extends React.Component {
           iconType="material"
           checkedIcon="clear"
           uncheckedIcon="add"
-          checkedColor="#fff"
+          checkedColor={colors.primary}
           textStyle={this.setUserTextColor(user)}
         />
       )

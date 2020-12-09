@@ -46,7 +46,7 @@ const style = {
   },
 }
 
-const CreateDiveScreen = (props) => {
+const CreateDiveForm = (props) => {
   const [startDate, setStartDate] = useState(now())
   const [endDate, setEndDate] = useState(inTenMinutes())
   const [dive, setDive] = useState({
@@ -238,13 +238,13 @@ const userOptions = {
       stylesheet: stylesheet,
     },
     latitude: {
-      label: 'Latitude',
-      error: 'Sukeltajan nimi ei saa olla tyhjä.',
+      label: 'Leveysaste',
+      error: 'Leveysaste ei saa olla tyhjä.',
       stylesheet: stylesheet,
     },
     longitude: {
-      label: 'Longitude',
-      error: 'Sukeltajan nimi ei saa olla tyhjä.',
+      label: 'Pituusaste',
+      error: 'Pituusaste ei saa olla tyhjä.',
       stylesheet: stylesheet,
     }
   }
@@ -258,4 +258,4 @@ const mapStateToProps = (state) => ({
 export default connect(
   mapStateToProps,
   { createDive }
-)(CreateDiveScreen)
+)(CreateDiveForm)

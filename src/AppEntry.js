@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import * as SecureStore from 'expo-secure-store'
 //import { USERNAME, PASSWORD } from '@env'
 //import userService from './services/users'
 import Navigator from './Navigator'
@@ -12,6 +13,7 @@ import OfflineNotifier from './OfflineNotifier'
 import * as Font from 'expo-font'
 import { AppLoading } from 'expo'
 import { enableScreens } from 'react-native-screens'
+import userService from './services/users'
 
 enableScreens()
 
@@ -22,15 +24,36 @@ enableScreens()
 //   - Renderless components, or notification components that need to
 //     always stay active.
 
-function AppEntry() {
-  const getFonts = () =>
-    Font.loadAsync({
+const AppEntry = (props) => {
+
+  const initApp = async () => {
+    await Font.loadAsync({
       'nunito-regular': require('../assets/fonts/Nunito-Regular.ttf'),
       'nunito-bold': require('../assets/fonts/Nunito-Bold.ttf'),
       'nunito-extrabold': require('../assets/fonts/Nunito-ExtraBold.ttf'),
     })
 
-  const [fontsLoaded, setFontsLoaded] = useState(false)
+    try {
+      let currentUser = await SecureStore.getItemAsync('currentUser')
+
+      console.log('Current user: ' + currentUser)
+      if (currentUser) {
+        currentUser = JSON.parse(currentUser)
+        userService.setToken(currentUser.token)
+        await props.initializeEvents()
+        await props.getAll()
+        props.dispatch({
+          type: 'LOGIN_SUCCESS',
+          user: currentUser,
+        })
+      }
+    } catch (err) {
+      console.warn(err)
+      userService.setToken(null)
+    }
+  }
+
+  const [appReady, setAppReady] = useState(false)
 
   // //Autologin code to speed up development:
   // componentDidMount = async () => {
@@ -54,7 +77,7 @@ function AppEntry() {
   //   }
   // }
 
-  if (fontsLoaded) {
+  if (appReady) {
     return (
       <React.Fragment>
         <OfflineNotifier />
@@ -64,16 +87,17 @@ function AppEntry() {
     )
   } else {
     return (
-      <AppLoading startAsync={getFonts} onFinish={() => setFontsLoaded(true)} />
+      <AppLoading startAsync={initApp} onFinish={() => setAppReady(true)} />
     )
   }
 }
 
 const mapStateToProps = (state) => ({ user: state.user })
 
-export default connect(mapStateToProps, {
-  login,
-  initializeEvents,
-  initializeDives,
-  getAll,
-})(AppEntry)
+export default connect(mapStateToProps, dispatch => ({
+  login: (...args) => dispatch(login(args)),
+  initializeEvents: (...args) => dispatch(initializeEvents(args)),
+  initializeDives: (...args) => dispatch(initializeDives(args)),
+  getAll: (...args) => dispatch(getAll(args)),
+  dispatch,
+}))(AppEntry)

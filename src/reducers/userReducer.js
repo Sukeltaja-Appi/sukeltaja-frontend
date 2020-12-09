@@ -1,3 +1,5 @@
+import * as SecureStore from 'expo-secure-store'
+
 import loginService from '../services/login'
 import userService from '../services/users'
 
@@ -29,6 +31,17 @@ export const login = (credentials) => {
     try {
       const { username, password } = credentials
       const user = await loginService.login({ username, password })
+
+      SecureStore.setItemAsync('currentUser', JSON.stringify({
+        _id: user._id,
+        token: user.token,
+        username: user.username,
+        // We don't want to store all these
+        events: [],
+        dives: [],
+        messages: [],
+      }))
+        .catch(err => console.error(err))
 
       userService.setToken(user.token)
       dispatch({
