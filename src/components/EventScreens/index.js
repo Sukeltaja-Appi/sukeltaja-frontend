@@ -19,7 +19,8 @@ const EventMenuTabs = () => {
         }}
       >
         <Tab.Navigator tabBarOptions={{ style: { backgroundColor: 'transparent' }, activeTintColor: '#fff',
-          inactiveTintColor: '#fff', labelStyle:{ fontFamily: 'nunito-bold' }, indicatorStyle:{ backgroundColor: '#fff' } }} >
+          inactiveTintColor: '#fff', labelStyle:{ fontFamily: 'nunito-bold' },
+          indicatorStyle:{ backgroundColor: '#fff' } }} >
           <Tab.Screen name="Tapahtumat" component={EventMenuStack} />
           <Tab.Screen name="Kutsut" component={InviteStack} />
         </Tab.Navigator>
