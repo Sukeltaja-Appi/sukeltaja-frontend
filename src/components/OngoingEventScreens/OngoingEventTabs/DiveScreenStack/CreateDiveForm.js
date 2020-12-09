@@ -138,7 +138,6 @@ const CreateDiveForm = (props) => {
           <DateTimePickerButton
             date={startDate}
             setDate={setStartDate}
-            text=""
           />
           <AppText style={{
             color: colors.primary,
@@ -149,7 +148,6 @@ const CreateDiveForm = (props) => {
           <DateTimePickerButton
             date={endDate}
             setDate={setEndDate}
-            text=""
           />
           <View syle={style.buttonContainer}>
             <View style={style.buttonDivider} />
@@ -172,16 +170,14 @@ const Dive = t.struct({
 })
 
 const DateTimePickerButton = (props) => {
-  const { date, setDate, text } = props
+  const { date, setDate } = props
   const [isShowingDatePicker, showDatePicker] = useState(false)
   const [isShowingTimePicker, showTimePicker] = useState(false)
-  const [localDate, setLocalDate] = useState(date)
 
   const onDateChange = (event, newDate) => {
     showDatePicker(false)
     if (newDate !== undefined) {
       setDate(newDate)
-      setLocalDate(newDate)
       showTimePicker(true)
     }
   }
@@ -189,10 +185,7 @@ const DateTimePickerButton = (props) => {
   const onTimeChange = (event, newDate) => {
     showTimePicker(false)
     if (newDate !== undefined) {
-      setLocalDate(localDate.setMinutes(newDate.getMinutes()))
-      setLocalDate(localDate.setHours(newDate.getHours()))
-      setDate(localDate)
-      setLocalDate(localDate)
+      setDate(newDate)
     }
   }
 
@@ -206,7 +199,7 @@ const DateTimePickerButton = (props) => {
       )}
       <Button
         buttonStyle={style.button}
-        title={text + ' ' + formatDate(localDate)}
+        title={formatDate(date)}
         onPress={() => showDatePicker(true)}
       />
     </View>
