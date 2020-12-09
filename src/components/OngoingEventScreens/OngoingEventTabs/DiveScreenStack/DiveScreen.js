@@ -215,7 +215,7 @@ class DiveScreen extends React.Component {
           iconType="material"
           checkedIcon="clear"
           uncheckedIcon="add"
-          checkedColor="#fff"
+          checkedColor={colors.primary}
           textStyle={this.setUserTextColor(user)}
         />
       )

@@ -16,10 +16,11 @@ const style = {
     paddingHorizontal: 15
   },
   appButtonText: {
-    fontSize: 20,
+    fontSize: 16,
     color: '#fff',
-    fontFamily: 'nunito-bold',
+    fontFamily: 'nunito-extrabold',
     alignSelf: 'center',
+    textTransform: 'uppercase',
   }
 }
 

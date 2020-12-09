@@ -19,7 +19,7 @@ const BackgroundImage = (props) => {
               <Path transform="scale(0.26458333)"
                 // eslint-disable-next-line max-len
                 d="M 299.66406,744.56641 C 25.159468,854.51843 99.055821,879.50777 113.64258,923.51953 129.63666,966.11428 106.38745,1045.3848 0,1122.5195 H 377.95312 V 744.56641 Z"
-                fill="#2cccff" opacity="1" />
+                fill="#12bcff" opacity="1" />
             </G>
           </G>
         </G>
