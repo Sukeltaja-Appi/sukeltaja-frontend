@@ -50,7 +50,7 @@ const CreateDiveForm = (props) => {
   const [startDate, setStartDate] = useState(now())
   const [endDate, setEndDate] = useState(inTenMinutes())
   const [dive, setDive] = useState({
-    user: '',
+    user: props.user.username,
     longitude: '0.1',
     latitude: '0.1'
   })
@@ -182,12 +182,11 @@ const DateTimePickerButton = (props) => {
     if (newDate !== undefined) {
       setDate(newDate)
       setLocalDate(newDate)
+      showTimePicker(true)
     }
-    showTimePicker(true)
   }
 
   const onTimeChange = (event, newDate) => {
-    showDatePicker(false)
     showTimePicker(false)
     if (newDate !== undefined) {
       setLocalDate(localDate.setMinutes(newDate.getMinutes()))
@@ -208,10 +207,7 @@ const DateTimePickerButton = (props) => {
       <Button
         buttonStyle={style.button}
         title={text + ' ' + formatDate(localDate)}
-        onPress={() => {
-          showDatePicker(true)
-          showTimePicker(false)
-        }}
+        onPress={() => showDatePicker(true)}
       />
     </View>
   )
