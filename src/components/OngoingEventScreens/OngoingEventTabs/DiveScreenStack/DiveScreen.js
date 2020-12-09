@@ -53,9 +53,12 @@ class DiveScreen extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      startDate: null,
       counter: 0,
       ongoing: false,
       selectedUsers: [],
+      startDiveLoading: false,
+      endDiveLoading: false,
     }
     this.showList = this.showList.bind(this)
     this.showListTitle = this.showListTitle.bind(this)
@@ -64,9 +67,9 @@ class DiveScreen extends React.Component {
   navigate = (value) => this.props.navigation.navigate(value);
 
   counterUpdate = () => {
-    const { counter, ongoing } = this.state
+    const { startDate, ongoing } = this.state
 
-    if (ongoing) this.setState({ counter: counter + 1 })
+    if (ongoing) this.setState({ counter: Date.now() - startDate.getTime() })
   };
 
   userIsAdmin = () => {
@@ -88,10 +91,20 @@ class DiveScreen extends React.Component {
   };
 
   componentDidMount() {
+    // Set state of possible active dive
     this.interval = setInterval(() => this.counterUpdate(), 1000)
-
     if (!this.userIsAdmin()) {
       this.selectParticipantUser()
+    }
+    if (this.props.ongoingDives.length > 0) {
+      const startDate = new Date(this.props.ongoingDives[0].startdate)
+
+      this.setState({
+        ongoing: true,
+        selectedUsers: this.props.ongoingDives.map(d => d.user),
+        startDate,
+        counter: Date.now() - startDate.getTime()
+      })
     }
   }
 
@@ -103,42 +116,51 @@ class DiveScreen extends React.Component {
     const { selectedUsers } = this.state
 
     if (selectedUsers && selectedUsers.length > 0) {
-      let { ongoingEvent, startDives, user } = this.props
-
-      let latitude = 0
-      let longitude = 0
-
       try {
-        const location = await locationService.getLocationAsync()
+        let { ongoingEvent, startDives, user } = this.props
+        // TODO: Hyväksyykö backend null arvon? Ois varmaan parempi
 
-        latitude = location.coords.latitude
-        longitude = location.coords.longitude
-      } catch (err) {
-        console.log('Geolocation unavailable.')
-      }
+        this.setState({ startDiveLoading: true })
+        const { longitude, latitude } = await this.getLocation()
 
-      let dives = []
-
-      selectedUsers.forEach((u) => {
-        dives.push({
+        const startDate = new Date()
+        const dives = selectedUsers.map((u) => ({
           event: ongoingEvent._id,
-          startdate: new Date(),
+          startdate: startDate,
           user: u._id,
           latitude,
           longitude,
-        })
-      })
+        }))
 
-      await startDives(dives, user._id)
+        await startDives(dives, user._id)
 
-      this.setState({ counter: 0, ongoing: true })
+        this.setState({ counter: 0, ongoing: true, startDate })
+      } finally {
+        this.setState({ startDiveLoading: false })
+      }
+
     }
   };
+
+  getLocation = async () => {
+    try {
+      return await locationService.getLocationAsync()
+    } catch (err) {
+      console.log('Geolocation unavailable.')
+
+      return { longitude: 0, latitude: 0 }
+    }
+  }
 
   endButton = async () => {
     let { endDives, ongoingDives, user } = this.props
 
-    endDives(ongoingDives, user._id)
+    try {
+      this.setState({ endDiveLoading: true })
+      await endDives(ongoingDives, user._id)
+    } finally {
+      this.setState({ endDiveLoading: false })
+    }
 
     if (this.userIsAdmin())
       this.setState({ ongoing: false, selectedUsers: [] })
@@ -146,13 +168,13 @@ class DiveScreen extends React.Component {
   };
 
   duration = () =>
-    Duration.fromMillis(this.state.counter * 1000).toFormat('hh:mm:ss');
+    Duration.fromMillis(this.state.counter).toFormat('hh:mm:ss');
 
   toggleUserSelection = (user) => {
     const { ongoing, selectedUsers } = this.state
 
     if (!ongoing && this.userIsAdmin()) {
-      if (!selectedUsers.includes(user)) {
+      if (!selectedUsers.some(u => u._id === user._id)) {
         this.setState({ selectedUsers: [...selectedUsers, user] })
       } else {
         this.setState({
@@ -162,24 +184,8 @@ class DiveScreen extends React.Component {
     }
   };
 
-  userIsDiving = (user) => {
-    const { dives } = this.props.ongoingEvent
-
-    if (
-      dives
-        .filter((d) => !d.enddate)
-        .map((d) => d.user._id)
-        .includes(user._id)
-    )
-      return true
-
-    return false
-  };
-
   setUserColor = (user) => {
-    if (this.userIsDiving(user)) return { backgroundColor: '#fff' }
-
-    if (this.state.selectedUsers.includes(user))
+    if (this.state.selectedUsers.some(u => u._id === user._id))
       return {
         backgroundColor: colors.primary,
       }
@@ -188,15 +194,14 @@ class DiveScreen extends React.Component {
   };
 
   setUserTextColor = (user) => {
-    if (this.userIsDiving(user)) return { color: '#000' }
-
-    if (this.state.selectedUsers.includes(user))
+    if (this.state.selectedUsers.some(u => u._id === user._id))
       return {
         color: '#fff',
       }
 
     return {}
   };
+
   renderListItem = (user) => {
     const { selectedUsers } = this.state
 
@@ -281,6 +286,7 @@ class DiveScreen extends React.Component {
               title="Aloita sukellus"
               onPress={this.diveButton}
               disabled={this.noOneIsSelected()}
+              loading={this.state.startDiveLoading}
               raised
             />
             <View style={style.divider} />
@@ -313,10 +319,6 @@ class DiveScreen extends React.Component {
             <View style={style.divider} />
             <AppText style={style.counter}>{this.duration()}</AppText>
             <View style={style.divider} />
-            <CommonButton
-              title="Avaa sukelluslista"
-              onPress={() => this.navigate('DiveListScreen')}
-            />
             <View style={style.divider} />
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View
@@ -328,6 +330,7 @@ class DiveScreen extends React.Component {
               title="Lopeta sukellus"
               onPress={this.endButton}
               buttonStyle={{ backgroundColor: colors.red }}
+              loading={this.state.endDiveLoading}
             />
           </View>
         </View>
