@@ -14,6 +14,8 @@ const EventMenuTabs = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#118bfc' }} >
       <LinearGradient
         colors={['#118bfc', '#12bcff']}
+        start={[0, 0]}
+        end={[1, 1]}
         style={{
           height: '100%',
         }}

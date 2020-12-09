@@ -37,6 +37,8 @@ function ProfileStack() {
   return (
     <Profile.Navigator initialRouteName="Profiili" screenOptions={{ headerBackground: () => ( <LinearGradient
       colors={['#118bfc', '#12bcff']}
+      start={[0, 0]}
+      end={[1, 1]}
       style={{
         height: '100%',
       }}

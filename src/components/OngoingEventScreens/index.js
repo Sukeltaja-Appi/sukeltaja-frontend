@@ -8,12 +8,8 @@ import ChatMessage from './OngoingEventTabs/ChatMessage'
 import DiveScreenStack from './OngoingEventTabs/DiveScreenStack/index'
 import EventScreen from './OngoingEventTabs/EventScreen'
 import InviteScreen from './OngoingEventTabs/InviteScreen'
-<<<<<<< HEAD
-import CreateDiveForm from './OngoingEventTabs/DiveScreenStack/CreateDiveForm'
-=======
 import { endDives } from '../../reducers/diveReducer'
 
->>>>>>> master
 //poista InviteScreen kun EventScreen muutettu
 const EventScreenStackNav = createStackNavigator()
 const EventScreenStack = () => {
@@ -35,22 +31,6 @@ const ChatScreenStack = () => {
   )
 }
 
-<<<<<<< HEAD
-const DiveScreenStackNav = createStackNavigator()
-const DiveScreenStack = () => {
-  return (
-    <DiveScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
-      <DiveScreenStackNav.Screen name="DiveListScreen" component={DiveListScreen} />
-      <DiveScreenStackNav.Screen name="DiveScreen" component={DiveScreen} />
-      <DiveScreenStackNav.Screen name="CreateDiveForm" component={CreateDiveForm} />
-      <DiveScreenStackNav.Screen name="Dive" component={Dive} />
-      <DiveScreenStackNav.Screen name="EditDiveScreen" component={EditDiveScreen} />
-    </DiveScreenStackNav.Navigator>
-  )
-}
-
-=======
->>>>>>> master
 const OngoingEventTabsNav = createStackNavigator()
 
 const OngoingEventTabs = ({ navigation, endDives, ongoingDives, user }) => {

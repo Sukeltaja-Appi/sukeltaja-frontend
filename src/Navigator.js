@@ -144,6 +144,8 @@ function Navigator(props) {
       />
       <Stack.Screen options={{ headerBackground: () => ( <LinearGradient
         colors={['#118bfc', '#12bcff']}
+        start={[0, 0]}
+        end={[1, 1]}
         style={{
           height: '100%',
         }}
@@ -152,9 +154,17 @@ function Navigator(props) {
       name="Luo tapahtuma"
       component={EventInfoForm}
       />
-      <Stack.Screen
-        name="Muokkaa tapahtumaa"
-        component={EventInfoForm}
+      <Stack.Screen options={{ headerBackground: () => ( <LinearGradient
+        colors={['#118bfc', '#12bcff']}
+        start={[0, 0]}
+        end={[1, 1]}
+        style={{
+          height: '100%',
+        }}
+      /> ), headerTintColor: '#fff', headerTitleAlign: 'center',
+      headerTitleStyle: { fontFamily: 'nunito-bold' } }}
+      name="Muokkaa tapahtumaa"
+      component={EventInfoForm}
       />
       <Stack.Screen
         name="Valitse sijainti"
