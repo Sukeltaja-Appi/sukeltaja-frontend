@@ -55,6 +55,18 @@ const CreateDiveForm = (props) => {
     latitude: '0.1'
   })
 
+  useEffect(() => {
+    if (startDate > endDate) {
+      setEndDate(startDate)
+    }
+  }, [startDate])
+
+  useEffect(() => {
+    if (startDate > endDate) {
+      setStartDate(endDate)
+    }
+  }, [endDate])
+
   const getLocation = async() => {
     try {
       const location = await locationService.getLocationAsync()
