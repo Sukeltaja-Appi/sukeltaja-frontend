@@ -110,7 +110,8 @@ class DiveScreen extends React.Component {
     const event = events.find(e => e.dives.some(item => item._id === id))
 
     this.props.setOngoingEvent(event)
-    this.props.navigation.navigate('Event', { event })
+    this.props.navigation.navigate('Tapahtumat')
+    this.props.navigation.navigate('Tapahtuma', { event })
   }
 
   navigateToEdit = (dive) => {

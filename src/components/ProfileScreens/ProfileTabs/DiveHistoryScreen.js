@@ -28,12 +28,12 @@ const style = StyleSheet.create({
   },
   diveContainer: {
     paddingVertical: 0,
-    paddingLeft: 1,
+    paddingLeft: 0,
     justifyContent: 'flex-start',
     flexGrow: 100,
   },
   iconContainer: {
-    flexBasis: 100,
+    flexBasis: 85,
     flexGrow: 0,
     justifyContent: 'center',
     flexDirection: 'column',
@@ -58,7 +58,6 @@ class DiveHistoryScreen extends React.Component {
       dives: [],
       isFetching: false
     }
-    this.loadDives()
   }
 
   componentDidMount() {

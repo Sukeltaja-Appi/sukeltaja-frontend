@@ -53,6 +53,7 @@ class EditDiveScreen extends React.Component {
   }
 
   getLocation = async () => {
+    console.log(this.state)
     try {
       const location = await locationService.getLocationAsync()
 
@@ -69,6 +70,9 @@ class EditDiveScreen extends React.Component {
   }
 
   back = (dive) => {
+    this.props.navigation.navigate('Sukellus', { dive })
+
+    /*
     const resetAction = CommonActions.reset({
       index: 2,
       routes: [
@@ -79,6 +83,7 @@ class EditDiveScreen extends React.Component {
     })
 
     this.props.navigation.dispatch(resetAction)
+    */
   }
 
   // User can only edit dives in which they are the diver
