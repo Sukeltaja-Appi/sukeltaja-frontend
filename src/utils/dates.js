@@ -66,3 +66,11 @@ export const inTenMinutes = () => {
     .plus({ minutes: 10 })
     .toJSDate()
 }
+
+export const nextMonday = () => {
+  const { year, month, day } = DateTime.local()
+  const weekDayIndexesInLuxon = 7
+
+  return DateTime.local(year, month, day)
+    .plus({ days: weekDayIndexesInLuxon - DateTime.local().weekday + 1 })
+}

@@ -2,10 +2,6 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
-import CreateEventScreen from './EventMenuStack/CreateEventScreen'
-import EditEventScreen from './EventMenuStack/EditEventScreen'
-import Event from './EventMenuStack/Event'
 import EventListScreen from './EventMenuStack/EventListScreen'
 import InvitesScreen from '../ProfileScreens/ProfileTabs/InvitesScreen'
 import Invite from '../ProfileScreens/ProfileTabs/Invite'
@@ -29,9 +25,6 @@ function EventMenuStack() {
   return (
     <EventMenu.Navigator screenOptions={{ headerShown: false }}>
       <EventMenu.Screen name="Omat tapahtumat" component={EventListScreen} />
-      <EventMenu.Screen name="Tapahtumasivu" component={Event} />
-      <EventMenu.Screen name="Muokkaa tapahtumaa" component={EditEventScreen} />
-      <EventMenu.Screen name="Luo tapahtuma" component={CreateEventScreen} />
     </EventMenu.Navigator>
   )
 }

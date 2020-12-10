@@ -83,6 +83,7 @@ class LoginScreen extends React.Component {
         password: '',
       },
       validLogin: true,
+      showLoadingIndicator: false
     }
   }
 
@@ -91,20 +92,23 @@ class LoginScreen extends React.Component {
   login = async () => {
     if (this.refs.form.getValue()) {
       //const { login, initializeEvents, initializeDives, getAll } = this.props
-      this.setState({ validLogin: true })
-      const { login, initializeEvents, getAll } = this.props
+      try {
+        this.setState({ validLogin: true, showLoadingIndicator: true })
+        const { login, initializeEvents, getAll } = this.props
+        const user = await login(this.state.credentials)
 
-      const user = await login(this.state.credentials)
+        if (user) {
+          await initializeEvents()
+          //await initializeDives()
+          await getAll()
 
-      if (user) {
-        await initializeEvents()
-        //await initializeDives()
-        await getAll()
-
-        getServerListener().setupCommunication()
-      } else {
-        console.log('Wrong username or password')
-        this.setState({ validLogin: false })
+          getServerListener().setupCommunication()
+        } else {
+          console.log('Wrong username or password')
+          this.setState({ validLogin: false })
+        }
+      } finally {
+        this.setState({ showLoadingIndicator: false })
       }
     }
   };
@@ -112,6 +116,7 @@ class LoginScreen extends React.Component {
   render() {
     const { credentials } = this.state
     const { validLogin } = this.state
+    const { showLoadingIndicator } = this.state
     const reference = 'form'
 
     const User = t.struct({
@@ -145,7 +150,7 @@ class LoginScreen extends React.Component {
               value={credentials}
               onChange={(credentials) => this.setState({ credentials })}
             />
-            <AppButton title="Kirjaudu" onPress={this.login} />
+            <AppButton title="Kirjaudu" onPress={this.login} loading={showLoadingIndicator} />
 
             <View style={style.buttonDivider} />
             <TouchableOpacity onPress={() => this.navigate('ResetScreen')}>

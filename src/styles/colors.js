@@ -1,5 +1,5 @@
 export default {
-  primary: '#1a237e',
+  primary: '#118BFC',
   primary_light: '#534bae',
   primary_dark: '#000051',
 
@@ -18,5 +18,8 @@ export default {
 
   background: '#eeeeee',
 
-  primaryText: '#118BFC'
+  primaryText: '#118BFC',
+
+  buttonDisabled_dark: '#9ea3a3',
+  buttonDisabled_light: '#d6d6d6'
 }

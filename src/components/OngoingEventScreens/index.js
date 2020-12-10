@@ -1,28 +1,22 @@
 import React from 'react'
-import { createMaterialTopTabNavigator, MaterialTopTabBar } from '@react-navigation/material-top-tabs'
 import { createStackNavigator } from '@react-navigation/stack'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { Alert } from 'react-native'
+import { connect } from 'react-redux'
 
-import CustomTargetScreen from './OngoingEventTabs/CustomTargetScreen'
 import ChatScreen from './OngoingEventTabs/ChatScreen'
 import ChatMessage from './OngoingEventTabs/ChatMessage'
-import DiveScreen from './OngoingEventTabs/DiveScreenStack/DiveScreen'
-import DiveListScreen from './OngoingEventTabs/DiveScreenStack/DiveListScreen'
-import CreateDiveScreen from './OngoingEventTabs/DiveScreenStack/CreateDiveScreen'
-import Dive from './OngoingEventTabs/DiveScreenStack/Dive'
-import EditDiveScreen from './OngoingEventTabs/DiveScreenStack/EditDiveScreen'
+import DiveScreenStack from './OngoingEventTabs/DiveScreenStack/index'
 import EventScreen from './OngoingEventTabs/EventScreen'
 import InviteScreen from './OngoingEventTabs/InviteScreen'
-import TargetScreen from './OngoingEventTabs/TargetScreen'
+import { endDives } from '../../reducers/diveReducer'
 
-import Target from '../common/Target'
-
+//poista InviteScreen kun EventScreen muutettu
 const EventScreenStackNav = createStackNavigator()
 const EventScreenStack = () => {
   return (
     <EventScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
-      <EventScreenStackNav.Screen name="EventScreen" component={EventScreen} />
-      <EventScreenStackNav.Screen name="InviteScreen" component={InviteScreen} />
+      <EventScreenStackNav.Screen name='EventScreen' component={EventScreen} />
+      <EventScreenStackNav.Screen name='InviteScreen' component={InviteScreen} />
     </EventScreenStackNav.Navigator>
   )
 }
@@ -31,52 +25,71 @@ const ChatScreenStackNav = createStackNavigator()
 const ChatScreenStack = () => {
   return (
     <ChatScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
-      <ChatScreenStackNav.Screen name="ChatScreen" component={ChatScreen} />
-      <ChatScreenStackNav.Screen name="ChatMessage" component={ChatMessage} />
+      <ChatScreenStackNav.Screen name='ChatScreen' component={ChatScreen} />
+      <ChatScreenStackNav.Screen name='ChatMessage' component={ChatMessage} />
     </ChatScreenStackNav.Navigator>
   )
 }
 
-const DiveScreenStackNav = createStackNavigator()
-const DiveScreenStack = () => {
-  return (
-    <DiveScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
-      <DiveScreenStackNav.Screen name="DiveScreen" component={DiveScreen} />
-      <DiveScreenStackNav.Screen name="DiveListScreen" component={DiveListScreen} />
-      <DiveScreenStackNav.Screen name="CreateDiveScreen" component={CreateDiveScreen} />
-      <DiveScreenStackNav.Screen name="Dive" component={Dive} />
-      <DiveScreenStackNav.Screen name="EditDiveScreen" component={EditDiveScreen} />
-    </DiveScreenStackNav.Navigator>
-  )
-}
+const OngoingEventTabsNav = createStackNavigator()
 
-const TargetScreenStackNav = createStackNavigator()
-const TargetScreenStack = () => {
-  return (
-    <TargetScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
-      <TargetScreenStackNav.Screen name="TargetScreen" component={TargetScreen} />
-      <TargetScreenStackNav.Screen name="Target" component={Target} />
-      <TargetScreenStackNav.Screen name="CustomTargetScreen" component={CustomTargetScreen} />
-    </TargetScreenStackNav.Navigator>
-  )
-}
+const OngoingEventTabs = ({ navigation, endDives, ongoingDives, user }) => {
 
-const SafeAreaMaterialTopTabBar = ({ ...props }) => (
-  <SafeAreaView>
-    <MaterialTopTabBar {...props} />
-  </SafeAreaView>
-)
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+      console.log(ongoingDives)
+      if (ongoingDives.length) {
+        Alert.alert(
+          'Sukellus on käynnissä',
+          'Jos poistut tapahtumanäkymästä aktiiviset sukellukset lopetetaan.',
+          [
+            {
+              text: 'Peruuta',
+              style: 'Peruuta'
+            },
+            {
+              text: 'OK', onPress: async () => {
+                await endDives(ongoingDives, user._id)
+                navigation.goBack()
+              }
+            }
+          ],
+          { cancelable: false }
+        )
+        e.preventDefault()
+      }
+    })
 
-const OngoingEventTabsNav = createMaterialTopTabNavigator()
-const OngoingEventTabs = () => {
+    return unsubscribe
+  }, [navigation, ongoingDives])
+
   return (
-    <OngoingEventTabsNav.Navigator tabBar={props => <SafeAreaMaterialTopTabBar {...props} />}>
-      <OngoingEventTabsNav.Screen name="TargetScreen" component={TargetScreenStack} />
-      <OngoingEventTabsNav.Screen name="DiveScreen" component={DiveScreenStack} />
-      <OngoingEventTabsNav.Screen name="ChatScreen" component={ChatScreenStack} />
-      <OngoingEventTabsNav.Screen name="EventScreen" component={EventScreenStack} />
+    <OngoingEventTabsNav.Navigator>
+      <OngoingEventTabsNav.Screen name="Info"
+        component={EventScreenStack}
+        options={{ animationEnabled: false }}
+      />
+      <OngoingEventTabsNav.Screen name="Sukella"
+        component={DiveScreenStack}
+        options={{ animationEnabled: false }}
+      />
+      <OngoingEventTabsNav.Screen name="Chat"
+        component={ChatScreenStack}
+        options={{ animationEnabled: false }}
+      />
+      <OngoingEventTabsNav.Screen name="Kutsu osallistujia"
+        component={InviteScreen}
+        options={{ animationEnabled: false }}
+      />
     </OngoingEventTabsNav.Navigator>
   )
 }
 
-export default OngoingEventTabs
+const mapStateToProps = (state) => ({
+  ongoingDives: state.ongoingDives,
+  user: state.user,
+})
+
+export default connect(mapStateToProps, {
+  endDives,
+})(OngoingEventTabs)
