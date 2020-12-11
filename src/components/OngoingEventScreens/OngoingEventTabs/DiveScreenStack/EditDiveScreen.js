@@ -81,7 +81,7 @@ class EditDiveScreen extends React.Component {
     const { navigatedFromDiveHistory } = this.state
 
     if (navigatedFromDiveHistory) {
-      this.props.navigation.navigate('Sukellus', { dive })
+      this.props.navigation.navigate('Profiili')
 
       return
     }
@@ -118,7 +118,7 @@ class EditDiveScreen extends React.Component {
           dive.event = event._id
           dive = await updateDive(dive, user._id)
 
-          this.props.navigation.navigate('Sukellus', { dive })
+          this.back()
         }
 
         return
