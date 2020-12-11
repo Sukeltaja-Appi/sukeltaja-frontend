@@ -47,6 +47,7 @@ class EditDiveScreen extends React.Component {
         longitude,
         latitude
       },
+      navigatedFromDiveHistory: props.route.params.diveHistory ? true : false,
       originalDive: props.route.params.item,
       ...rest
     }
@@ -70,9 +71,14 @@ class EditDiveScreen extends React.Component {
   }
 
   back = (dive) => {
-    this.props.navigation.navigate('Sukellus', { dive })
+    const { navigatedFromDiveHistory } = this.state
 
-    /*
+    if (navigatedFromDiveHistory) {
+      this.props.navigation.navigate('Sukellus', { dive })
+
+      return
+    }
+
     const resetAction = CommonActions.reset({
       index: 2,
       routes: [
@@ -83,17 +89,33 @@ class EditDiveScreen extends React.Component {
     })
 
     this.props.navigation.dispatch(resetAction)
-    */
   }
 
   // User can only edit dives in which they are the diver
   // or any dives in the event if they have admin/creator status.
   updateButton = async () => {
+    var { dive } = this.state
     const validated = this.ref.current.getValue()
-    const { dive } = this.state
+    const { navigatedFromDiveHistory, user, events, ongoingEvent, updateDive } = this.props
+    const event = events.find(e => e.dives.some(item => item._id === dive._id))
 
     if (validated) {
-      const { user, ongoingEvent, updateDive } = this.props
+      if (navigatedFromDiveHistory) {
+        let allowed = false
+
+        if (dive.startdate < dive.enddate) {
+          allowed = true
+        }
+
+        if (allowed) {
+          dive.event = event._id
+          dive = await updateDive(dive, user._id)
+
+          this.props.navigation.navigate('Sukellus', { dive })
+        }
+
+        return
+      }
 
       let { creator, admins, participants } = ongoingEvent
 
@@ -162,6 +184,7 @@ class EditDiveScreen extends React.Component {
 
 const mapStateToProps = (state) => ({
   ongoingEvent: state.ongoingEvent,
+  events: state.events,
   user: state.user
 })
 

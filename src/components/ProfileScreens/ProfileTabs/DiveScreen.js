@@ -115,7 +115,7 @@ class DiveScreen extends React.Component {
   }
 
   navigateToEdit = (dive) => {
-    this.props.navigation.navigate('DiveEditScreen', { item : dive })
+    this.props.navigation.navigate('DiveEditScreen', { item : dive, diveHistory: true })
   }
 
   navigateToDiveHistory = () => {
