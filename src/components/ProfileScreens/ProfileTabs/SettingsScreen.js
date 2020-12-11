@@ -4,6 +4,7 @@ import { ListItem, Icon } from 'react-native-elements'
 import { SERVICE_EMAIL } from '@env'
 
 import styles from '../../../styles/global'
+import colors from '../../../styles/colors'
 
 const SettingsScreen = (props) => {
 
@@ -12,12 +13,12 @@ const SettingsScreen = (props) => {
   const data = [
     {
       title: 'Anna palautetta',
-      leftIcon: () => <Icon name='mail' type='feather' />,
+      leftIcon: () => <Icon name='mail' type='feather' color={colors.primary} />,
       onPress: () => Linking.openURL(`mailto:${SERVICE_EMAIL}`)
     },
     {
       title: 'Avoimen lähdekoodin lisenssit',
-      leftIcon: () => <Icon name='code' type='feather' />,
+      leftIcon: () => <Icon name='code' type='feather' color={colors.primary} />,
       onPress: () => navigate('Lisenssit')
     }
   ]
@@ -36,9 +37,17 @@ const SettingsScreen = (props) => {
             >
               {leftIcon()}
               <ListItem.Content>
-                <ListItem.Title>{title}</ListItem.Title>
+                <ListItem.Title
+                  style={{
+                    fontFamily: 'nunito-bold',
+                    color: colors.primary,
+                    fontSize: 16,
+                  }}
+                >
+                  {title}
+                </ListItem.Title>
               </ListItem.Content>
-              <ListItem.Chevron />
+              <ListItem.Chevron color={colors.primary} />
             </ListItem>
           )
         }

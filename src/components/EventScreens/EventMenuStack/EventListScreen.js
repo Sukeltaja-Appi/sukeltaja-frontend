@@ -11,6 +11,8 @@ import { nextMonday } from '../../../utils/dates'
 import styles from '../../../styles/global'
 import AppButtonRound from '../../common/AppButtonRound'
 import AppText from '../../common/AppText'
+import { LinearGradient } from 'expo-linear-gradient'
+import colors from '../../../styles/colors'
 
 const EventListScreen = (props) => {
   return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} groups={eventsSortedByGroup(props)} />
@@ -119,23 +121,27 @@ const List = (props) => {
                 setOngoingEvent(item) && navigate('Tapahtuma', item)
               }}
               containerStyle={style.event}
-              bottomDivider
               pad={0}
             >
               <ListItem.Content style={style.dateContainer}>
-                <View style={{ marginBottom: 5 }} >
-                  <AppText>{start.day}.{start.month}.{' - '}</AppText>
-                  <AppText>{end.day}.{end.month}.{end.year} </AppText>
-                </View>
-                <View style={style.flexrow}>
-                  <Icon name='schedule' type='material' color='white' size={20} style={style.icon} />
-                  <AppText>
-                    {start.hour}{':'}{start.minute.toString().padStart(2, '0')}
-                  </AppText>
-                </View>
-
+                <LinearGradient
+                  colors={['#118bfc', '#12bcff']}
+                  start={[0, 0]}
+                  end={[1, 1]}
+                  style={style.gradient}
+                >
+                  <View style={{ marginBottom: 5 }} >
+                    <AppText>{start.day}.{start.month}.{' - '}</AppText>
+                    <AppText>{end.day}.{end.month}.{end.year} </AppText>
+                  </View>
+                  <View style={style.flexrow}>
+                    <Icon name='schedule' type='material' color='white' size={20} style={style.icon} />
+                    <AppText>
+                      {start.hour}{':'}{start.minute.toString().padStart(2, '0')}
+                    </AppText>
+                  </View>
+                </LinearGradient>
               </ListItem.Content>
-
               <ListItem.Content style={style.infoContainer}>
                 <ListItem.Title numberOfLines={1} style={style.title}> {title} </ListItem.Title>
                 <View style={style.flexrow}>
@@ -201,11 +207,7 @@ const style = StyleSheet.create({
   dateContainer: {
     flexBasis: 100,
     flexGrow: 0,
-    justifyContent: 'center',
-    flexDirection: 'column',
-    backgroundColor: '#379EFE',
-    alignSelf: 'stretch',
-    paddingLeft: 8,
+    backgroundColor: 'transparent',
   },
   infoContainer: {
     justifyContent: 'flex-start',
@@ -231,8 +233,18 @@ const style = StyleSheet.create({
   event: {
     backgroundColor: 'white',
     height: 78,
+    borderWidth: 0.5,
+    borderColor: '#d4d4d4',
     padding: 0,
     paddingRight: 14,
+  },
+  gradient: {
+    height: '100%',
+    width: '100%',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignSelf: 'stretch',
+    paddingLeft: 8,
   }
 })
 

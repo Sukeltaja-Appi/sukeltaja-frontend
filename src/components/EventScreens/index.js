@@ -5,13 +5,16 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import EventListScreen from './EventMenuStack/EventListScreen'
 import InvitesScreen from '../ProfileScreens/ProfileTabs/InvitesScreen'
 import Invite from '../ProfileScreens/ProfileTabs/Invite'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const Tab = createMaterialTopTabNavigator()
 
 const EventMenuTabs = () => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }} >
-      <Tab.Navigator>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#118bfc' }} >
+      <Tab.Navigator tabBarOptions={{ style: { backgroundColor: '#118bfc' }, activeTintColor: '#fff',
+        inactiveTintColor: '#fff', labelStyle:{ fontFamily: 'nunito-bold' },
+        indicatorStyle:{ backgroundColor: '#fff' } }} >
         <Tab.Screen name="Tapahtumat" component={EventMenuStack} />
         <Tab.Screen name="Kutsut" component={InviteStack} />
       </Tab.Navigator>

@@ -12,6 +12,7 @@ import { MaterialIcons, MaterialCommunityIcons, Fontisto } from '@expo/vector-ic
 import OngoingEventTabs from './components/OngoingEventScreens/'
 import EventInfoForm from './components/EventScreens/EventMenuStack/EventInfoForm'
 import SelectTargetScreen from './components/MapScreens/SelectTargetScreen'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -141,13 +142,29 @@ function Navigator(props) {
           ),
         })}
       />
-      <Stack.Screen
-        name="Luo tapahtuma"
-        component={EventInfoForm}
+      <Stack.Screen options={{ headerBackground: () => ( <LinearGradient
+        colors={['#118bfc', '#12bcff']}
+        start={[0, 0]}
+        end={[1, 1]}
+        style={{
+          height: '100%',
+        }}
+      /> ), headerTintColor: '#fff', headerTitleAlign: 'center',
+      headerTitleStyle: { fontFamily: 'nunito-bold' } }}
+      name="Luo tapahtuma"
+      component={EventInfoForm}
       />
-      <Stack.Screen
-        name="Muokkaa tapahtumaa"
-        component={EventInfoForm}
+      <Stack.Screen options={{ headerBackground: () => ( <LinearGradient
+        colors={['#118bfc', '#12bcff']}
+        start={[0, 0]}
+        end={[1, 1]}
+        style={{
+          height: '100%',
+        }}
+      /> ), headerTintColor: '#fff', headerTitleAlign: 'center',
+      headerTitleStyle: { fontFamily: 'nunito-bold' } }}
+      name="Muokkaa tapahtumaa"
+      component={EventInfoForm}
       />
       <Stack.Screen
         name="Valitse sijainti"
@@ -171,7 +188,8 @@ const style = StyleSheet.create({
     padding: 5,
   },
   iconTextStyle: {
-    color: '#118BFC'
+    color: '#118BFC',
+    fontFamily: 'nunito-bold'
   },
   headerViewStyle: {
     marginHorizontal: 20,

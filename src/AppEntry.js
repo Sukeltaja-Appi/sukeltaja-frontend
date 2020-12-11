@@ -30,6 +30,7 @@ const AppEntry = (props) => {
     await Font.loadAsync({
       'nunito-regular': require('../assets/fonts/Nunito-Regular.ttf'),
       'nunito-bold': require('../assets/fonts/Nunito-Bold.ttf'),
+      'nunito-extrabold': require('../assets/fonts/Nunito-ExtraBold.ttf'),
     })
 
     try {

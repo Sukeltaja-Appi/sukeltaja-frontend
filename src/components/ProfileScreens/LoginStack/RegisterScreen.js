@@ -170,6 +170,9 @@ class RegisterScreen extends React.Component {
                 color: 'white',
                 fontSize: 34,
                 marginTop: 50,
+                textShadowOffset: { width: 2, height: 2 },
+                textShadowRadius: 1,
+                textShadowColor: '#000',
               }}
             >
               Rekisteröidy

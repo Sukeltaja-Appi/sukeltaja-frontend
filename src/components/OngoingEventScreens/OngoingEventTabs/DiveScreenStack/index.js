@@ -8,6 +8,7 @@ import Dive from './Dive'
 import EditDiveScreen from './EditDiveScreen'
 import { endDives } from '../../../../reducers/diveReducer'
 import { getOngoingEvent } from '../../../../reducers/eventReducer'
+import CreateDiveForm from './CreateDiveForm'
 
 const DiveScreenStackNav = createStackNavigator()
 const DiveScreenStack = ({ navigation, ongoingDives }) => {
@@ -25,6 +26,7 @@ const DiveScreenStack = ({ navigation, ongoingDives }) => {
     <DiveScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
       <DiveScreenStackNav.Screen name="DiveListScreen" component={DiveListScreen} />
       <DiveScreenStackNav.Screen name="DiveScreen" component={DiveScreen} />
+      <DiveScreenStackNav.Screen name="CreateDiveForm" component={CreateDiveForm} />
       <DiveScreenStackNav.Screen name="Dive" component={Dive} />
       <DiveScreenStackNav.Screen name="EditDiveScreen" component={EditDiveScreen} />
     </DiveScreenStackNav.Navigator>

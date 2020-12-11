@@ -13,8 +13,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@react-native-community/datetimepicker": "^3.0.3",
     "@material-ui/core": "^4.11.0",
+    "@react-native-community/datetimepicker": "^3.0.3",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.9.0",
     "@react-navigation/drawer": "^5.9.1",
@@ -27,6 +27,7 @@
     "babel-plugin-dotenv-import": "^2.1.0",
     "expo": "^38.0.10",
     "expo-cli": "^3.26.2",
+    "expo-linear-gradient": "~8.2.1",
     "expo-location": "^8.2.1",
     "expo-permissions": "^9.0.1",
     "luxon": "^1.25.0",
