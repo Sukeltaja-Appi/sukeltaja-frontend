@@ -47,10 +47,17 @@ class EditDiveScreen extends React.Component {
         longitude,
         latitude
       },
-      navigatedFromDiveHistory: props.route.params.diveHistory ? true : false,
+      navigatedFromDiveHistory: false,
       originalDive: props.route.params.item,
       ...rest
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      navigatedFromDiveHistory:
+        this.props.route.params.diveHistory ? true : false
+    })
   }
 
   getLocation = async () => {
@@ -94,9 +101,9 @@ class EditDiveScreen extends React.Component {
   // User can only edit dives in which they are the diver
   // or any dives in the event if they have admin/creator status.
   updateButton = async () => {
-    var { dive } = this.state
+    var { dive, navigatedFromDiveHistory } = this.state
     const validated = this.ref.current.getValue()
-    const { navigatedFromDiveHistory, user, events, ongoingEvent, updateDive } = this.props
+    const { user, events, ongoingEvent, updateDive } = this.props
     const event = events.find(e => e.dives.some(item => item._id === dive._id))
 
     if (validated) {
