@@ -20,6 +20,7 @@ import styles from '../../../styles/global'
 import { paddingSides } from '../../../styles/global'
 import BackgroundImage from '../../common/BackgroundImage'
 import AppText from '../../common/AppText'
+import decimalToDMS from '../../../utils/coordinates'
 
 const style = {
   buttonEnd: {
@@ -90,6 +91,7 @@ class EventScreen extends React.Component {
 
   componentDidMount() {
     this.loadEvent()
+    console.log(this.props.ongoingEvent)
   }
 
   navigate = (value, item) => this.props.navigation.navigate(value, { item });
@@ -140,6 +142,10 @@ class EventScreen extends React.Component {
 
     const startingDate = new Date(startdate)
     const startTime = `${startingDate.getHours()}:${startingDate.getMinutes().toString().padStart(2, '0')}`
+    const location = target ? (
+      target.name === '' || target.name === undefined ?
+        `${decimalToDMS(target.latitude)}, ${decimalToDMS(target.longitude)}`
+        : target.name) : 'ei kohdetta'
 
     return (
       <View style={styles.noPadding}>
@@ -232,7 +238,7 @@ class EventScreen extends React.Component {
                 />
                 <AppText style={style.lowerTitle}>Sijainti</AppText>
               </View>
-              <AppText style={style.text}>{target ? target.name : 'ei kohdetta'}</AppText>
+              <AppText style={style.text}>{location}</AppText>
 
               {target ?
                 <View style={style.mapContainer}>

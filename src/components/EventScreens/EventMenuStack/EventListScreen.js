@@ -77,6 +77,7 @@ const EmptyList = (props) => {
 }
 
 const List = (props) => {
+  const n4 = 3
   const sectionListRef = useRef(null)
 
   const { ongoingEvent, setOngoingEvent, groups, user } = props
@@ -116,8 +117,8 @@ const List = (props) => {
           const end = DateTime.fromISO(enddate)
 
           const location = target ? (
-            target.name === '' ?
-              `${decimalToDMS(target.latitude)}, ${decimalToDMS(target.longitude)}`
+            target.name === '' || target.name === undefined ?
+              `${parseFloat(target.latitude).toFixed(n4)}, ${parseFloat(target.longitude).toFixed(n4)}`
               : target.name) : 'ei kohdetta'
 
           return (
