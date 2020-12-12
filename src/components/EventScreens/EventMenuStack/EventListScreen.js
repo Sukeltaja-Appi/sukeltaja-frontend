@@ -12,7 +12,7 @@ import styles from '../../../styles/global'
 import AppButtonRound from '../../common/AppButtonRound'
 import AppText from '../../common/AppText'
 import { LinearGradient } from 'expo-linear-gradient'
-import colors from '../../../styles/colors'
+import decimalToDMS from '../../../utils/coordinates'
 
 const EventListScreen = (props) => {
   return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} groups={eventsSortedByGroup(props)} />
@@ -115,6 +115,11 @@ const List = (props) => {
           const start = DateTime.fromISO(startdate)
           const end = DateTime.fromISO(enddate)
 
+          const location = target ? (
+            target.name === '' ?
+              `${decimalToDMS(target.latitude)}, ${decimalToDMS(target.longitude)}`
+              : target.name) : 'ei kohdetta'
+
           return (
             <ListItem
               onPress={() => {
@@ -154,7 +159,7 @@ const List = (props) => {
                 <View style={style.flexrow}>
                   <Icon name='room' type='material' color='#686868' size={20} style={style.icon} />
                   <Text numberOfLines={1} style={style.subtitle}>
-                    {!target ? 'ei kohdetta' : target.name}
+                    {location}
                   </Text>
                 </View>
               </ListItem.Content>
