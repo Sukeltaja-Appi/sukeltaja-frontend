@@ -154,12 +154,14 @@ class EventScreen extends React.Component {
                 >
                   {title}
                 </AppText>
-                <TouchableOpacity
-                  onPress={this.toEditing}
-                  style={style.settingsButton}
-                >
-                  <Icon name="settings" size={60} color="white" />
-                </TouchableOpacity>
+                {!this.userIsNotAdmin() &&
+                  <TouchableOpacity
+                    onPress={this.toEditing}
+                    style={style.settingsButton}
+                  >
+                    <Icon name="settings" size={60} color="white" />
+                  </TouchableOpacity>
+                }
               </View>
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
@@ -177,9 +179,9 @@ class EventScreen extends React.Component {
                 <Icon name="event" type="material" color="white" size={20} />
                 <AppText style={style.text}>
                   {new Date(startdate).getDate()}.
-                  {new Date(startdate).getMonth()+1} -{' '}
+                  {new Date(startdate).getMonth() + 1} -{' '}
                   {new Date(enddate).getDate()}.
-                  {new Date(enddate).getMonth()+1}.
+                  {new Date(enddate).getMonth() + 1}.
                   {new Date(enddate).getFullYear()}
                 </AppText>
               </View>
