@@ -67,26 +67,21 @@ export const ProfileScreen = (props) => {
     )
 
   const resetPassword = async () => {
-    console.log(props.user.username)
-    console.log('Resetting password for: ' + props.user.username)
-
     const message = await resetService.reset(props.user)
 
     if (message.success) {
-      console.log('Reset success, email sent : ', message)
       Alert.alert(
         'Salasanan vaihtolinkki lähetetty',
         'Linkki on lähetetty sähköpostiisi ja se on voimassa 10 minuuttia',
-        [{ text: 'Ok', onPress: () => console.log('Ok') }]
+        [{ text: 'Ok' }]
       )
       this.navigate('LoginScreen')
     }
     if (message.error) {
-      console.log('Reset error: ', message)
       Alert.alert(
         'Tapahtuma epäonnistui',
         'Palautuslinkin lähetys ei onnistunut, yritä uudelleen.',
-        [{ text: 'Ok', onPress: () => console.log('Ok') }]
+        [{ text: 'Ok' }]
       )
     }
   }
