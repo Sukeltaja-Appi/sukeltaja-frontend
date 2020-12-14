@@ -20,6 +20,8 @@ const DiveForm = (props) => {
   const item = props.route.params?.item
   const editingDive = item !== undefined ? true : false
   const diveHistory = props.route.params?.diveHistory ? true : false
+  const [locationLoadingVisible, setLocationLoadingVisible] = useState(false)
+  const [submitLoadingVisible, setSubmitLoadingVisible] = useState(false)
   const event = diveHistory ? props.route.params.ongoingEvent : props.ongoingEvent
   const [startDate, setStartDate] = useState(editingDive ? new Date(item.startdate) : now())
   const [endDate, setEndDate] = useState(editingDive ? new Date(item.enddate) : inTenMinutes())
@@ -41,6 +43,7 @@ const DiveForm = (props) => {
 
   const getLocation = async () => {
     try {
+      setLocationLoadingVisible(true)
       const location = await locationService.getLocationAsync()
 
       const latitude = location.coords.latitude
@@ -50,7 +53,11 @@ const DiveForm = (props) => {
       dive.longitude = longitude
       setDive(null)
       setDive(dive)
-    } catch (err) { console.log('Geolocation unavailable.') }
+    } catch (err) {
+      console.log('Geolocation unavailable.')
+    } finally {
+      setLocationLoadingVisible(false)
+    }
   }
 
   // Any user in the event is allowed to create Dives for themselves
@@ -62,52 +69,57 @@ const DiveForm = (props) => {
     const { user, ongoingEvent, createDive, updateDive } = props
     let { creator, admins, participants } = event
 
-    admins = [creator, ...admins]
-    const allParticipants = [creator, ...admins, ...participants]
-    let allowed = false
+    try {
+      setSubmitLoadingVisible(true)
+      admins = [creator, ...admins]
+      const allParticipants = [creator, ...admins, ...participants]
+      let allowed = false
 
-    if (user.username === dive.user) {
-      dive.user = user._id
-      allowed = true
+      if (user.username === dive.user) {
+        dive.user = user._id
+        allowed = true
 
-    } else if (admins.map(a => a._id).includes(user._id)) {
+      } else if (admins.map(a => a._id).includes(user._id)) {
 
-      for (let i = 0; i < allParticipants.length; i++) {
+        for (let i = 0; i < allParticipants.length; i++) {
 
-        if (allParticipants[i].username === dive.user) {
+          if (allParticipants[i].username === dive.user) {
 
-          dive.user = allParticipants[i]._id
-          allowed = true
-          break
+            dive.user = allParticipants[i]._id
+            allowed = true
+            break
+          }
         }
       }
-    }
 
-    if (editingDive) {
-      dive.user = user._id
-    }
-
-    const diving = {
-      ...dive,
-      startdate: startDate,
-      enddate: endDate,
-      event: ongoingEvent._id,
-    }
-
-    if (allowed) {
       if (editingDive) {
-        const updatedDive = { ...item, ...diving, event: event._id }
-
-        await updateDive(updatedDive, user._id)
-      } else {
-        await createDive(diving, user._id)
+        dive.user = user._id
       }
 
-      if (diveHistory) {
-        props.navigation.navigate('Profiili')
-      } else {
-        props.navigation.replace('DiveListScreen')
+      const diving = {
+        ...dive,
+        startdate: startDate,
+        enddate: endDate,
+        event: ongoingEvent._id,
       }
+
+      if (allowed) {
+        if (editingDive) {
+          const updatedDive = { ...item, ...diving, event: event._id }
+
+          await updateDive(updatedDive, user._id)
+        } else {
+          await createDive(diving, user._id)
+        }
+
+        if (diveHistory) {
+          props.navigation.navigate('Profiili')
+        } else {
+          props.navigation.replace('DiveListScreen')
+        }
+      }
+    } finally {
+      setSubmitLoadingVisible(false)
     }
   }
 
@@ -122,10 +134,11 @@ const DiveForm = (props) => {
             value={dive}
             onChange={(dive) => setDive(dive)}
           />
-          <Button
+          <CommonButton
             buttonStyle={style.button}
             title='Hae sijainti'
             onPress={getLocation}
+            loading={locationLoadingVisible}
           />
           <AppText style={{
             color: colors.primary,
@@ -153,6 +166,7 @@ const DiveForm = (props) => {
               title={editingDive ? 'Tallenna muutokset' : 'Luo sukellus'}
               onPress={submitForm}
               containerStyle={style.submitButton}
+              loading={submitLoadingVisible}
             />
           </View>
         </View>
