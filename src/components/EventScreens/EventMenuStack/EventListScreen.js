@@ -12,7 +12,6 @@ import styles from '../../../styles/global'
 import AppButtonRound from '../../common/AppButtonRound'
 import AppText from '../../common/AppText'
 import { LinearGradient } from 'expo-linear-gradient'
-import decimalToDMS from '../../../utils/coordinates'
 
 const EventListScreen = (props) => {
   return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} groups={eventsSortedByGroup(props)} />
@@ -77,7 +76,7 @@ const EmptyList = (props) => {
 }
 
 const List = (props) => {
-  const n4 = 3
+  const n4 = 4
   const sectionListRef = useRef(null)
 
   const { ongoingEvent, setOngoingEvent, groups, user } = props
