@@ -114,8 +114,15 @@ class DiveScreen extends React.Component {
     this.props.navigation.navigate('Tapahtuma', { event })
   }
 
-  navigateToEdit = (dive) => {
-    this.props.navigation.navigate('DiveEditScreen', { item : dive, diveHistory: true })
+  navigateToEdit = (dive, id) => {
+    const { events } = this.props
+    const event = events.find(e => e.dives.some(item => item._id === id))
+
+    this.props.navigation.navigate('DiveForm', {
+      item: dive,
+      ongoingEvent: event,
+      diveHistory: true
+    })
   }
 
   navigateToDiveHistory = () => {
@@ -171,7 +178,7 @@ class DiveScreen extends React.Component {
               type='feather'
               size={40}
               color={colors.gray}
-              onPress={() => this.navigateToEdit(dive)}
+              onPress={() => this.navigateToEdit(dive, _id)}
             />
             <Text style={style.text}>Muokkaa</Text>
           </View>

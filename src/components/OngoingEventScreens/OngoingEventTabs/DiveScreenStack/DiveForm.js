@@ -3,57 +3,29 @@ import { connect } from 'react-redux'
 import { View, ScrollView } from 'react-native'
 import { Button } from 'react-native-elements'
 import locationService from '../../../../services/location'
-import { createDive } from '../../../../reducers/diveReducer'
-import { now, inOneHour, formatDate, inTenMinutes } from '../../../../utils/dates'
+import { createDive, updateDive } from '../../../../reducers/diveReducer'
+import { now, formatDate, inTenMinutes } from '../../../../utils/dates'
 import _ from 'lodash'
 import { paddingSides } from '../../../../styles/global'
 import t from 'tcomb-form-native'
 import RNDateTimePicker from '@react-native-community/datetimepicker'
 import CommonButton from '../../../common/CommonButton'
 import AppText from '../../../common/AppText'
-import { useIsFocused } from '@react-navigation/native'
 import colors from '../../../../styles/colors'
 
 const { Form } = t.form
 
-const style = {
-  container: {
-    width: '100%',
-    padding: paddingSides,
-    paddingBottom: 50,
-  },
-  dateButton: {
-    width: '100%',
-    paddingVertical: 10,
-    marginTop: 5,
-    marginBottom: 20,
-    backgroundColor: 'rgba(52, 52, 52, 0.5)',
-    borderRadius: 10,
-  },
-  buttonContainer: {
-    paddingBottom: 40,
-    marginTop: 40,
-    paddingVertical: 50,
-  },
-  button: {
-    paddingVertical: 10,
-    marginBottom: 20,
-    borderRadius: 10,
-    backgroundColor: colors.primary,
-  },
-  buttonDivider: {
-    height: 20,
-  },
-}
-
-const CreateDiveForm = (props) => {
-  const [startDate, setStartDate] = useState(now())
-  const [endDate, setEndDate] = useState(inTenMinutes())
-  const [dive, setDive] = useState({
-    user: props.user.username,
-    longitude: '0.1',
-    latitude: '0.1'
-  })
+const DiveForm = (props) => {
+  const reference = React.createRef()
+  const item = props.route.params?.item
+  const editingDive = item !== undefined ? true : false
+  const diveHistory = props.route.params?.diveHistory ? true : false
+  const event = diveHistory ? props.route.params.ongoingEvent : props.ongoingEvent
+  const [startDate, setStartDate] = useState(editingDive ? new Date(item.startdate) : now())
+  const [endDate, setEndDate] = useState(editingDive ? new Date(item.enddate) : inTenMinutes())
+  const [dive, setDive] = useState(editingDive ?
+    { user: item.user.username, longitude: item.longitude, latitude: item.latitude } :
+    { user: props.user.username, longitude: '0.1', latitude: '0.1' })
 
   useEffect(() => {
     if (startDate > endDate) {
@@ -67,7 +39,7 @@ const CreateDiveForm = (props) => {
     }
   }, [endDate])
 
-  const getLocation = async() => {
+  const getLocation = async () => {
     try {
       const location = await locationService.getLocationAsync()
 
@@ -77,19 +49,18 @@ const CreateDiveForm = (props) => {
       dive.latitude = latitude
       dive.longitude = longitude
       setDive(null)
-      setDive( dive )
-    } catch(err) { console.log('Geolocation unavailable.') }
+      setDive(dive)
+    } catch (err) { console.log('Geolocation unavailable.') }
   }
 
   // Any user in the event is allowed to create Dives for themselves
   // To create dives for some other event user, the user must be event admin.
-  const createButton = async () => {
-
+  const createDive = async () => {
     const { user, ongoingEvent, createDive } = props
     let { creator, admins, participants } = ongoingEvent
 
-    admins = [ creator, ...admins]
-    const allParticipants = [ creator, ...admins, ...participants ]
+    admins = [creator, ...admins]
+    const allParticipants = [creator, ...admins, ...participants]
     let allowed = false
 
     if (user.username === dive.user) {
@@ -98,9 +69,9 @@ const CreateDiveForm = (props) => {
 
     } else if (admins.map(a => a._id).includes(user._id)) {
 
-      for (let i=0; i < allParticipants.length; i++) {
+      for (let i = 0; i < allParticipants.length; i++) {
 
-        if(allParticipants[i].username === dive.user) {
+        if (allParticipants[i].username === dive.user) {
 
           dive.user = allParticipants[i]._id
           allowed = true
@@ -118,11 +89,58 @@ const CreateDiveForm = (props) => {
       enddate: endDate,
     }
 
-    if(allowed) {
+    if (allowed) {
       console.log(diving)
       console.log(user._id)
       await createDive(diving, user._id)
       props.navigation.replace('DiveListScreen')
+    }
+  }
+
+  const editDive = async () => {
+    if (!reference.current.getValue()) {
+      return
+    }
+    const { user, updateDive } = props
+    let { creator, admins, participants } = event
+
+    admins = [creator, ...admins]
+    const allParticipants = [creator, ...admins, ...participants]
+    let allowed = false
+
+    if (user.username === dive.user) {
+      dive.user = user._id
+      allowed = true
+
+    } else if (admins.map(a => a._id).includes(user._id)) {
+
+      for (let i = 0; i < allParticipants.length; i++) {
+
+        if (allParticipants[i].username === dive.user) {
+
+          dive.user = allParticipants[i]._id
+          allowed = true
+          break
+        }
+      }
+    }
+
+    if (allowed) {
+      const updatedDive = ({
+        ...item,
+        ...dive,
+        event: event._id,
+        startdate: startDate,
+        enddate: endDate,
+      })
+
+      await updateDive(updatedDive, user._id)
+
+      if (diveHistory) {
+        props.navigation.navigate('Profiili')
+      } else {
+        props.navigation.replace('DiveListScreen')
+      }
     }
   }
 
@@ -131,8 +149,9 @@ const CreateDiveForm = (props) => {
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={style.container}>
           <Form
+            ref={reference}
             type={Dive}
-            options={userOptions}
+            options={options}
             value={dive}
             onChange={(dive) => setDive(dive)}
           />
@@ -164,8 +183,8 @@ const CreateDiveForm = (props) => {
           <View syle={style.buttonContainer}>
             <View style={style.buttonDivider} />
             <CommonButton
-              title="Lisää sukellus"
-              onPress={createButton}
+              title={editingDive ? 'Tallenna muutokset' : 'Luo sukellus'}
+              onPress={editingDive ? editDive : createDive}
               containerStyle={style.submitButton}
             />
           </View>
@@ -218,6 +237,36 @@ const DateTimePickerButton = (props) => {
   )
 }
 
+const style = {
+  container: {
+    width: '100%',
+    padding: paddingSides,
+    paddingBottom: 50,
+  },
+  dateButton: {
+    width: '100%',
+    paddingVertical: 10,
+    marginTop: 5,
+    marginBottom: 20,
+    backgroundColor: 'rgba(52, 52, 52, 0.5)',
+    borderRadius: 10,
+  },
+  buttonContainer: {
+    paddingBottom: 40,
+    marginTop: 40,
+    paddingVertical: 50,
+  },
+  button: {
+    paddingVertical: 10,
+    marginBottom: 20,
+    borderRadius: 10,
+    backgroundColor: colors.primary,
+  },
+  buttonDivider: {
+    height: 20,
+  },
+}
+
 const stylesheet = _.cloneDeep(t.form.Form.stylesheet)
 
 stylesheet.textbox.normal.backgroundColor = 'white'
@@ -231,21 +280,21 @@ stylesheet.controlLabel.error.color = 'white'
 stylesheet.controlLabel.error.marginLeft = 15
 stylesheet.textbox.error.borderRadius = 20
 
-const userOptions = {
+const options = {
   fields: {
     user: {
       label: 'Sukeltajan nimi',
       error: 'Sukeltajan nimi ei saa olla tyhjä.',
       stylesheet: stylesheet,
     },
-    latitude: {
-      label: 'Leveysaste',
-      error: 'Leveysaste ei saa olla tyhjä.',
-      stylesheet: stylesheet,
-    },
     longitude: {
       label: 'Pituusaste',
       error: 'Pituusaste ei saa olla tyhjä.',
+      stylesheet: stylesheet,
+    },
+    latitude: {
+      label: 'Leveysaste',
+      error: 'Leveysaste ei saa olla tyhjä.',
       stylesheet: stylesheet,
     }
   }
@@ -258,5 +307,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
   mapStateToProps,
-  { createDive }
-)(CreateDiveForm)
+  { createDive, updateDive }
+)(DiveForm)

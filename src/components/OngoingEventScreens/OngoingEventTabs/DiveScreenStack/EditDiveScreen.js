@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { CommonActions } from '@react-navigation/native'
 import { View, ScrollView } from 'react-native'
 import { Button } from 'react-native-elements'
-import DiveForm from '../../../common/DiveForm'
 
 import locationService from '../../../../services/location'
 import { updateDive } from '../../../../reducers/diveReducer'
@@ -162,14 +161,6 @@ class EditDiveScreen extends React.Component {
     return (
       <View style={styles.noPadding}>
         <ScrollView keyboardShouldPersistTaps='handled'>
-          <DiveForm
-            ref={this.ref}
-            dive={dive}
-            onFormChange={(dive) => this.setState({ dive })}
-            onButtonPress={this.updateButton}
-            buttonStyle={{ backgroundColor: colors.success }}
-            buttonTitle='Tallenna muutokset'
-          />
           <View style={style.buttonContainer}>
             <Button
               title='Hae Nykyinen sijaintini'

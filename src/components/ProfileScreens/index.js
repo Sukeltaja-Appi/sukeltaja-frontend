@@ -7,7 +7,7 @@ import ProfileScreen from './ProfileTabs/ProfileScreen'
 import SettingsScreen from './ProfileTabs/SettingsScreen'
 import DiveHistoryScreen from './ProfileTabs/DiveHistoryScreen'
 import DiveScreen from './ProfileTabs/DiveScreen'
-import EditDiveScreen from './../OngoingEventScreens/OngoingEventTabs/DiveScreenStack/EditDiveScreen'
+import DiveForm from './../OngoingEventScreens/OngoingEventTabs/DiveScreenStack/DiveForm'
 import { LinearGradient } from 'expo-linear-gradient'
 
 const StackMessage = createStackNavigator()
@@ -39,7 +39,7 @@ function DiveStack() {
     <StackDive.Navigator>
       <StackDive.Screen name="Sukellushistoria" component={DiveHistoryScreen} />
       <StackDive.Screen name="Sukellus" component={DiveScreen} />
-      <StackDive.Screen name="DiveEditScreen" component={EditDiveScreen} />
+      <StackDive.Screen name="DiveForm" component={DiveForm} />
     </StackDive.Navigator>
   )
 }
