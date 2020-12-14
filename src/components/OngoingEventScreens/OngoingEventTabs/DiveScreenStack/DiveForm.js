@@ -55,53 +55,11 @@ const DiveForm = (props) => {
 
   // Any user in the event is allowed to create Dives for themselves
   // To create dives for some other event user, the user must be event admin.
-  const createDive = async () => {
-    const { user, ongoingEvent, createDive } = props
-    let { creator, admins, participants } = ongoingEvent
-
-    admins = [creator, ...admins]
-    const allParticipants = [creator, ...admins, ...participants]
-    let allowed = false
-
-    if (user.username === dive.user) {
-      dive.user = user._id
-      allowed = true
-
-    } else if (admins.map(a => a._id).includes(user._id)) {
-
-      for (let i = 0; i < allParticipants.length; i++) {
-
-        if (allParticipants[i].username === dive.user) {
-
-          dive.user = allParticipants[i]._id
-          allowed = true
-          break
-        }
-      }
-    }
-
-    dive.user = user._id
-
-    const diving = {
-      ...dive,
-      startdate: startDate,
-      event: ongoingEvent._id,
-      enddate: endDate,
-    }
-
-    if (allowed) {
-      console.log(diving)
-      console.log(user._id)
-      await createDive(diving, user._id)
-      props.navigation.replace('DiveListScreen')
-    }
-  }
-
-  const editDive = async () => {
+  const submitForm = async () => {
     if (!reference.current.getValue()) {
       return
     }
-    const { user, updateDive } = props
+    const { user, ongoingEvent, createDive, updateDive } = props
     let { creator, admins, participants } = event
 
     admins = [creator, ...admins]
@@ -125,16 +83,25 @@ const DiveForm = (props) => {
       }
     }
 
-    if (allowed) {
-      const updatedDive = ({
-        ...item,
-        ...dive,
-        event: event._id,
-        startdate: startDate,
-        enddate: endDate,
-      })
+    if (editingDive) {
+      dive.user = user._id
+    }
 
-      await updateDive(updatedDive, user._id)
+    const diving = {
+      ...dive,
+      startdate: startDate,
+      enddate: endDate,
+      event: ongoingEvent._id,
+    }
+
+    if (allowed) {
+      if (editingDive) {
+        const updatedDive = { ...item, ...diving, event: event._id }
+
+        await updateDive(updatedDive, user._id)
+      } else {
+        await createDive(diving, user._id)
+      }
 
       if (diveHistory) {
         props.navigation.navigate('Profiili')
@@ -184,7 +151,7 @@ const DiveForm = (props) => {
             <View style={style.buttonDivider} />
             <CommonButton
               title={editingDive ? 'Tallenna muutokset' : 'Luo sukellus'}
-              onPress={editingDive ? editDive : createDive}
+              onPress={submitForm}
               containerStyle={style.submitButton}
             />
           </View>
@@ -196,8 +163,8 @@ const DiveForm = (props) => {
 
 const Dive = t.struct({
   user: t.String,
+  latitude: t.Number,
   longitude: t.Number,
-  latitude: t.Number
 })
 
 const DateTimePickerButton = (props) => {
@@ -287,14 +254,14 @@ const options = {
       error: 'Sukeltajan nimi ei saa olla tyhjä.',
       stylesheet: stylesheet,
     },
-    longitude: {
-      label: 'Pituusaste',
-      error: 'Pituusaste ei saa olla tyhjä.',
-      stylesheet: stylesheet,
-    },
     latitude: {
       label: 'Leveysaste',
       error: 'Leveysaste ei saa olla tyhjä.',
+      stylesheet: stylesheet,
+    },
+    longitude: {
+      label: 'Pituusaste',
+      error: 'Pituusaste ei saa olla tyhjä.',
       stylesheet: stylesheet,
     }
   }
