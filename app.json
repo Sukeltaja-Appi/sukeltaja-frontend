@@ -7,7 +7,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.1",
+    "version": "1.1.5",
     "orientation": "portrait",
     "icon": "./assets/logo_1_512_3.png",
     "splash": {
@@ -23,7 +23,7 @@
     ],
     "android": {
       "package": "com.sukeltaja.sukeltajaapp",
-      "versionCode": 2
+      "versionCode": 11
     },
     "ios": {
       "supportsTablet": true,

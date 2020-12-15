@@ -4,6 +4,7 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
@@ -13,6 +14,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import {
   setOngoingEvent,
   getOngoingEvent,
+  deleteEvent,
 } from '../../../reducers/eventReducer'
 import { endDives } from '../../../reducers/diveReducer'
 import colors from '../../../styles/colors'
@@ -127,8 +129,28 @@ class EventScreen extends React.Component {
     return false
   };
 
+  deleteThisEvent = async () => {
+    const { ongoingEvent } = this.props
+
+    await this.props.deleteEvent(ongoingEvent, ongoingEvent)
+    this.props.navigation.navigate('Tapahtumat')
+  }
+
+  deleteEventConfirmation = () => {
+    Alert.alert(
+      'Tapahtumasta poistuminen',
+      'Haluatko varmasti poistua tapahtumasta?',
+      [
+        { text: 'Peruuta', style: 'cancel' },
+        { text: 'Kyllä', onPress: () => this.deleteThisEvent() }
+      ]
+    )
+  }
+
   render() {
     const { ongoingEvent } = this.props
+
+    if (!ongoingEvent) return null
     const {
       //admins,
       participants,
@@ -257,6 +279,13 @@ class EventScreen extends React.Component {
                   </MapView>
                 </View>
                 : null}
+              <View style={{ padding:10 }}>
+                <TouchableOpacity
+                  onPress={() => this.deleteEventConfirmation()}
+                >
+                  <Icon name="trash" type='feather' size={60} color="white" />
+                </TouchableOpacity>
+              </View>
             </View>
 
           </ScrollView>
@@ -276,4 +305,5 @@ export default connect(mapStateToProps, {
   endDives,
   setOngoingEvent,
   getOngoingEvent,
+  deleteEvent,
 })(EventScreen)
