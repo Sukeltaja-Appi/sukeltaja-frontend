@@ -9,6 +9,7 @@ import { formatDate } from '../../../utils/dates'
 import colors from '../../../styles/colors'
 import { setOngoingEvent } from '../../../reducers/eventReducer'
 import { deleteDive } from '../../../reducers/diveReducer'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const style = {
   container: {
@@ -61,12 +62,12 @@ class DiveScreen extends React.Component {
 
   lengthOfDive = (startTime, endTime) => {
 
-    if(endTime === null) {
+    if (endTime === null) {
       return null
     }
 
     const diff = new Date(endTime) - new Date(startTime)
-    const minutes = Math.round((diff/n1000)/n60)
+    const minutes = Math.round((diff / n1000) / n60)
 
     return minutes
   }
@@ -75,7 +76,7 @@ class DiveScreen extends React.Component {
     const { events } = this.props
     const event = events.find(e => e.dives.some(item => item._id === eventId))
 
-    if (event===undefined) {
+    if (event === undefined) {
       return
     }
 
@@ -86,15 +87,15 @@ class DiveScreen extends React.Component {
     const { events } = this.props
     const event = events.find(e => e.dives.some(item => item._id === eventId))
 
-    if (event===undefined) {
+    if (event === undefined) {
       return
     }
 
-    if (event.target===undefined) {
+    if (event.target === undefined) {
       return 'Oma kohde: nimetön'
     }
 
-    if (event.target.type===undefined) {
+    if (event.target.type === undefined) {
       return 'Oma kohde: ' + event.target.name
     }
     const targetName = event.target.name + '/' + event.target.type
@@ -156,52 +157,55 @@ class DiveScreen extends React.Component {
           </View>
           <Divider style={style.divider} />
           <View style={{ flexDirection: 'row', marginTop: 0 }}>
-            <MaterialIcons name='schedule' size={20} color={colors.primary}/>
+            <MaterialIcons name='schedule' size={20} color={colors.primary} />
             <Text style={style.text}>
               Kesto: {this.lengthOfDive(startdate, enddate)} min
             </Text>
           </View>
           <View style={{ flexDirection: 'row', marginTop: 10 }}>
-            <MaterialIcons name='room' size={20} color={colors.primary}/>
+            <MaterialIcons name='room' size={20} color={colors.primary} />
             <Text style={style.text}>
               L: {parseFloat(latitude).toFixed(n6)}; P: {parseFloat(longitude).toFixed(n6)}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', marginTop: 10 }}>
-            <MaterialIcons name='date-range' size={20} color={colors.primary}/>
+            <MaterialIcons name='date-range' size={20} color={colors.primary} />
             <Text style={style.text}> {eventName} </Text>
           </View>
           <Divider style={style.divider} />
-          <View style={{ flexDirection: 'row', marginTop: 0, alignItems: 'center' }}>
+          <TouchableOpacity style={{ flexDirection: 'row', marginTop: 0, alignItems: 'center' }}
+            onPress={() => this.navigateToEdit(dive, _id)}
+          >
             <Icon
               name='edit'
               type='feather'
               size={40}
               color={colors.gray}
-              onPress={() => this.navigateToEdit(dive, _id)}
             />
             <Text style={style.text}>Muokkaa</Text>
-          </View>
-          <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}
+            onPress={() => this.navigateToRemove(dive)}
+          >
             <Icon
               name='trash'
               type='feather'
               size={40}
               color={colors.gray}
-              onPress={() => this.navigateToRemove(dive)}
             />
             <Text style={style.text}>Poista</Text>
-          </View>
-          <View style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ flexDirection: 'row', marginTop: 10, alignItems: 'center' }}
+            onPress={() => this.navigateToEvent(_id)}
+          >
             <MaterialIcons
               name='date-range'
               type='feather'
               size={40}
               color={colors.gray}
-              onPress={() => this.navigateToEvent(_id)}
             />
             <Text style={style.text}>Sukellustapahtumaan</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     )
