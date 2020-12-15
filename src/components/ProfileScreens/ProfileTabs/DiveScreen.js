@@ -145,9 +145,9 @@ class DiveScreen extends React.Component {
     return (
       <View style={style.noPadding}>
         <View style={style.container}>
-          <View style={styles.row}>
+          <View style={{ ...styles.row, alignItems: 'center' }}>
             <View style={style.iconContaineritem}>
-              <FontAwesome5 name='water' size={36} color={'#fff'} />
+              <FontAwesome5 name='water' size={36} color={'#118BFC'} />
             </View>
             <View style={style.container}>
               <Text style={style.title}>
