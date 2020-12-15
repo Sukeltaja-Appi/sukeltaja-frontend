@@ -100,7 +100,6 @@ const DiveForm = (props) => {
         ...dive,
         startdate: startDate,
         enddate: endDate,
-        event: ongoingEvent._id,
       }
 
       if (allowed) {
@@ -109,7 +108,7 @@ const DiveForm = (props) => {
 
           await updateDive(updatedDive, user._id)
         } else {
-          await createDive(diving, user._id)
+          await createDive({ ...diving, event: ongoingEvent._id }, user._id)
         }
 
         if (diveHistory) {
