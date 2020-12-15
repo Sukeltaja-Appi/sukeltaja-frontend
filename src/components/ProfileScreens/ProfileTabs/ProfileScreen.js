@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
   Linking,
+  Alert
 } from 'react-native'
 import { Icon, Text, ListItem } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -21,6 +22,7 @@ import BackgroundImage from '../../common/BackgroundImage'
 import { SERVICE_EMAIL } from '@env'
 import AppText from '../../common/AppText'
 import colors from '../../../styles/colors'
+import resetService from '../../../services/reset'
 
 export const ProfileScreen = (props) => {
   const [invites, setInvites] = useState([])
@@ -53,6 +55,36 @@ export const ProfileScreen = (props) => {
     SecureStore.deleteItemAsync('currentUser').catch(err => console.error(err))
   }
 
+  const passwordResetConfirmation = () =>
+    Alert.alert(
+      'Salasanan vaihto',
+      'Haluatko vaihtaa salasanasi?',
+      [
+        { text: 'Peruuta', style: 'cancel' },
+        { text: 'Kyllä', onPress: () => resetPassword() }
+      ],
+      { cancelable: true }
+    )
+
+  const resetPassword = async () => {
+    const message = await resetService.reset(props.user)
+
+    if (message.success) {
+      Alert.alert(
+        'Salasanan vaihtolinkki lähetetty',
+        'Linkki on lähetetty sähköpostiisi ja se on voimassa 10 minuuttia',
+        [{ text: 'Ok' }]
+      )
+    }
+    if (message.error) {
+      Alert.alert(
+        'Tapahtuma epäonnistui',
+        'Palautuslinkin lähetys ei onnistunut, yritä uudelleen.',
+        [{ text: 'Ok' }]
+      )
+    }
+  }
+
   const menuData = [
     {
       title: 'Sukellushistoria',
@@ -63,6 +95,11 @@ export const ProfileScreen = (props) => {
       title: 'Asetukset',
       leftIcon: () => <Icon name="settings" type="material" color={colors.primary} />,
       onPress: () => navigate('Asetukset'),
+    },
+    {
+      title: 'Vaihda salasana',
+      leftIcon: () => <Icon name="lock" type="material" color={colors.primary} />,
+      onPress: () => passwordResetConfirmation(),
     },
     {
       title: 'Palaute',
