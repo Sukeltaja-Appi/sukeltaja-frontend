@@ -5,9 +5,10 @@ import InvitesScreen from './ProfileTabs/InvitesScreen'
 import LicenseScreen from './ProfileTabs/LicenseScreen'
 import ProfileScreen from './ProfileTabs/ProfileScreen'
 import SettingsScreen from './ProfileTabs/SettingsScreen'
-import EventListScreen from '../EventScreens/EventMenuStack/EventListScreen'
+import DiveHistoryScreen from './ProfileTabs/DiveHistoryScreen'
+import DiveScreen from './ProfileTabs/DiveScreen'
+import DiveForm from './../OngoingEventScreens/OngoingEventTabs/DiveScreenStack/DiveForm'
 import { LinearGradient } from 'expo-linear-gradient'
-import { Header } from 'react-native/Libraries/NewAppScreen'
 
 const StackMessage = createStackNavigator()
 
@@ -31,6 +32,18 @@ function SettingsStack() {
   )
 }
 
+const StackDive = createStackNavigator()
+
+function DiveStack() {
+  return (
+    <StackDive.Navigator>
+      <StackDive.Screen name="Sukellushistoria" component={DiveHistoryScreen} />
+      <StackDive.Screen name="Sukellus" component={DiveScreen} />
+      <StackDive.Screen name="DiveForm" component={DiveForm} />
+    </StackDive.Navigator>
+  )
+}
+
 const Profile = createStackNavigator()
 
 function ProfileStack() {
@@ -47,7 +60,7 @@ function ProfileStack() {
       <Profile.Screen name="Profiili" component={ProfileScreen} options={{ headerShown: false }}/>
       <Profile.Screen name="Kutsut" component={MessageStack} />
       <Profile.Screen name="Asetukset" component={SettingsStack} />
-      <Profile.Screen name="Sukellushistoria" component={EventListScreen} />
+      <Profile.Screen name="Sukellushistoria" component={DiveStack} />
     </Profile.Navigator>
   )
 }

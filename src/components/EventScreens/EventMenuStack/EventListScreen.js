@@ -12,7 +12,6 @@ import styles from '../../../styles/global'
 import AppButtonRound from '../../common/AppButtonRound'
 import AppText from '../../common/AppText'
 import { LinearGradient } from 'expo-linear-gradient'
-import colors from '../../../styles/colors'
 
 const EventListScreen = (props) => {
   return props.events.length === 0 ? <EmptyList {...props} /> : <List {...props} groups={eventsSortedByGroup(props)} />

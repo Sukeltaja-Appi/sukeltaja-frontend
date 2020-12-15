@@ -5,10 +5,9 @@ import { connect } from 'react-redux'
 import DiveScreen from './DiveScreen'
 import DiveListScreen from './DiveListScreen'
 import Dive from './Dive'
-import EditDiveScreen from './EditDiveScreen'
 import { endDives } from '../../../../reducers/diveReducer'
 import { getOngoingEvent } from '../../../../reducers/eventReducer'
-import CreateDiveForm from './CreateDiveForm'
+import DiveForm from './DiveForm'
 
 const DiveScreenStackNav = createStackNavigator()
 const DiveScreenStack = ({ navigation, ongoingDives }) => {
@@ -26,9 +25,9 @@ const DiveScreenStack = ({ navigation, ongoingDives }) => {
     <DiveScreenStackNav.Navigator screenOptions={{ headerShown: false }} >
       <DiveScreenStackNav.Screen name="DiveListScreen" component={DiveListScreen} />
       <DiveScreenStackNav.Screen name="DiveScreen" component={DiveScreen} />
-      <DiveScreenStackNav.Screen name="CreateDiveForm" component={CreateDiveForm} />
+      <DiveScreenStackNav.Screen name="CreateDiveForm" component={DiveForm} />
       <DiveScreenStackNav.Screen name="Dive" component={Dive} />
-      <DiveScreenStackNav.Screen name="EditDiveScreen" component={EditDiveScreen} />
+      <DiveScreenStackNav.Screen name="EditDiveForm" component={DiveForm} />
     </DiveScreenStackNav.Navigator>
   )
 }
