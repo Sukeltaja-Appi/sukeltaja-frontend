@@ -75,7 +75,6 @@ export const ProfileScreen = (props) => {
         'Linkki on lähetetty sähköpostiisi ja se on voimassa 10 minuuttia',
         [{ text: 'Ok' }]
       )
-      this.navigate('LoginScreen')
     }
     if (message.error) {
       Alert.alert(
