@@ -76,6 +76,7 @@ const EmptyList = (props) => {
 }
 
 const List = (props) => {
+  const n4 = 4
   const sectionListRef = useRef(null)
 
   const { ongoingEvent, setOngoingEvent, groups, user } = props
@@ -113,6 +114,11 @@ const List = (props) => {
           const { title, startdate, enddate, creator, target } = item
           const start = DateTime.fromISO(startdate)
           const end = DateTime.fromISO(enddate)
+
+          const location = target ? (
+            target.name === '' || target.name === undefined ?
+              `${parseFloat(target.latitude).toFixed(n4)}, ${parseFloat(target.longitude).toFixed(n4)}`
+              : target.name) : 'ei kohdetta'
 
           return (
             <ListItem
@@ -153,7 +159,7 @@ const List = (props) => {
                 <View style={style.flexrow}>
                   <Icon name='room' type='material' color='#686868' size={20} style={style.icon} />
                   <Text numberOfLines={1} style={style.subtitle}>
-                    {!target ? 'ei kohdetta' : target.name}
+                    {location}
                   </Text>
                 </View>
               </ListItem.Content>
