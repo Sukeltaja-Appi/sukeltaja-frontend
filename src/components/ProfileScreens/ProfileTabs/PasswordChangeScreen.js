@@ -70,6 +70,7 @@ const options = {
 class PasswordChangeScreen extends React.Component {
   constructor(props) {
     super(props)
+    this.formRef = React.createRef()
     this.state = {
       passwordChange: {
         currentPassword: '',
@@ -85,7 +86,7 @@ class PasswordChangeScreen extends React.Component {
 
   changePW = async () => {
     this.setState({ passwordMatch: true, validationFail: false })
-    if (this.refs.form.getValue()) {
+    if (this.formRef.current.getValue()) {
       if (
         this.state.passwordChange.newPassword ===
         this.state.passwordChange.newPasswordVerification
@@ -105,7 +106,7 @@ class PasswordChangeScreen extends React.Component {
             console.log('Reset error: ', response)
             Alert.alert(
               'Salasanan vaihto epäonnistui',
-              'Salasanan vaihto ei onnistunut. Onko nykyinen salasana kirjoitettu on oikein?',
+              'Tarkista nykyinen salasana.',
               [{ text: 'Ok', onPress: () => console.log('Ok') }]
             )
           }
@@ -122,7 +123,6 @@ class PasswordChangeScreen extends React.Component {
     const { passwordChange } = this.state
     const { passwordMatch } = this.state
     const { showLoadingIndicator } = this.state
-    const reference = 'form'
 
     const User = t.struct({
       currentPassword: t.String,
@@ -154,7 +154,7 @@ class PasswordChangeScreen extends React.Component {
               </AppText>
             )}
             <Form
-              ref={reference}
+              ref={this.formRef}
               type={User}
               options={options}
               value={passwordChange}
