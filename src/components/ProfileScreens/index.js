@@ -6,6 +6,7 @@ import LicenseScreen from './ProfileTabs/LicenseScreen'
 import ProfileScreen from './ProfileTabs/ProfileScreen'
 import SettingsScreen from './ProfileTabs/SettingsScreen'
 import EventListScreen from '../EventScreens/EventMenuStack/EventListScreen'
+import PasswordChangeScreen from './ProfileTabs/PasswordChangeScreen'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Header } from 'react-native/Libraries/NewAppScreen'
 
@@ -27,6 +28,7 @@ function SettingsStack() {
     <StackSettings.Navigator>
       <StackSettings.Screen name="Asetukset" component={SettingsScreen} />
       <StackSettings.Screen name="Lisenssit" component={LicenseScreen} />
+      <StackSettings.Screen name="SalasananVaihto" component={PasswordChangeScreen} />
     </StackSettings.Navigator>
   )
 }

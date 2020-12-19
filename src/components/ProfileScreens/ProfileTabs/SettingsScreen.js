@@ -12,6 +12,11 @@ const SettingsScreen = (props) => {
 
   const data = [
     {
+      title: 'Vaihda salasana',
+      leftIcon: () => <Icon name='lock' type='feather' color={colors.primary} />,
+      onPress: () => navigate('SalasananVaihto')
+    },
+    {
       title: 'Anna palautetta',
       leftIcon: () => <Icon name='mail' type='feather' color={colors.primary} />,
       onPress: () => Linking.openURL(`mailto:${SERVICE_EMAIL}`)
