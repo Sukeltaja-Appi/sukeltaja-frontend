@@ -4,6 +4,7 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { connect } from 'react-redux'
@@ -13,6 +14,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import {
   setOngoingEvent,
   getOngoingEvent,
+  deleteEvent,
 } from '../../../reducers/eventReducer'
 import { endDives } from '../../../reducers/diveReducer'
 import colors from '../../../styles/colors'
@@ -20,6 +22,7 @@ import styles from '../../../styles/global'
 import { paddingSides } from '../../../styles/global'
 import BackgroundImage from '../../common/BackgroundImage'
 import AppText from '../../common/AppText'
+import decimalToDMS from '../../../utils/coordinates'
 
 const style = {
   buttonEnd: {
@@ -90,6 +93,7 @@ class EventScreen extends React.Component {
 
   componentDidMount() {
     this.loadEvent()
+    console.log(this.props.ongoingEvent)
   }
 
   navigate = (value, item) => this.props.navigation.navigate(value, { item });
@@ -125,8 +129,28 @@ class EventScreen extends React.Component {
     return false
   };
 
+  deleteThisEvent = async () => {
+    const { ongoingEvent } = this.props
+
+    await this.props.deleteEvent(ongoingEvent, ongoingEvent)
+    this.props.navigation.navigate('Tapahtumat')
+  }
+
+  deleteEventConfirmation = () => {
+    Alert.alert(
+      'Tapahtumasta poistuminen',
+      'Haluatko varmasti poistua tapahtumasta?',
+      [
+        { text: 'Peruuta', style: 'cancel' },
+        { text: 'Kyllä', onPress: () => this.deleteThisEvent() }
+      ]
+    )
+  }
+
   render() {
     const { ongoingEvent } = this.props
+
+    if (!ongoingEvent) return null
     const {
       //admins,
       participants,
@@ -140,6 +164,10 @@ class EventScreen extends React.Component {
 
     const startingDate = new Date(startdate)
     const startTime = `${startingDate.getHours()}:${startingDate.getMinutes().toString().padStart(2, '0')}`
+    const location = target ? (
+      target.name === '' || target.name === undefined ?
+        `${decimalToDMS(target.latitude)}, ${decimalToDMS(target.longitude)}`
+        : target.name) : 'ei kohdetta'
 
     return (
       <View style={styles.noPadding}>
@@ -154,12 +182,14 @@ class EventScreen extends React.Component {
                 >
                   {title}
                 </AppText>
-                <TouchableOpacity
-                  onPress={this.toEditing}
-                  style={style.settingsButton}
-                >
-                  <Icon name="settings" size={60} color="white" />
-                </TouchableOpacity>
+                {!this.userIsNotAdmin() &&
+                  <TouchableOpacity
+                    onPress={this.toEditing}
+                    style={style.settingsButton}
+                  >
+                    <Icon name="settings" size={60} color="white" />
+                  </TouchableOpacity>
+                }
               </View>
               <View
                 style={{ flexDirection: 'row', justifyContent: 'flex-start' }}
@@ -177,9 +207,9 @@ class EventScreen extends React.Component {
                 <Icon name="event" type="material" color="white" size={20} />
                 <AppText style={style.text}>
                   {new Date(startdate).getDate()}.
-                  {new Date(startdate).getMonth()+1} -{' '}
+                  {new Date(startdate).getMonth() + 1} -{' '}
                   {new Date(enddate).getDate()}.
-                  {new Date(enddate).getMonth()+1}.
+                  {new Date(enddate).getMonth() + 1}.
                   {new Date(enddate).getFullYear()}
                 </AppText>
               </View>
@@ -230,7 +260,7 @@ class EventScreen extends React.Component {
                 />
                 <AppText style={style.lowerTitle}>Sijainti</AppText>
               </View>
-              <AppText style={style.text}>{target ? target.name : 'ei kohdetta'}</AppText>
+              <AppText style={style.text}>{location}</AppText>
 
               {target ?
                 <View style={style.mapContainer}>
@@ -249,6 +279,13 @@ class EventScreen extends React.Component {
                   </MapView>
                 </View>
                 : null}
+              <View style={{ padding:10 }}>
+                <TouchableOpacity
+                  onPress={() => this.deleteEventConfirmation()}
+                >
+                  <Icon name="trash" type='feather' size={60} color="white" />
+                </TouchableOpacity>
+              </View>
             </View>
 
           </ScrollView>
@@ -268,4 +305,5 @@ export default connect(mapStateToProps, {
   endDives,
   setOngoingEvent,
   getOngoingEvent,
+  deleteEvent,
 })(EventScreen)

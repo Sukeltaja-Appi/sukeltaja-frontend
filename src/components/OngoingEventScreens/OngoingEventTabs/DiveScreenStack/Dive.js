@@ -77,7 +77,7 @@ const Dive = (props) => {
           <Icon
             name='edit'
             type='feather'
-            onPress={() => navigate('EditDiveScreen', { item: dive })}
+            onPress={() => navigate('EditDiveForm', { item: dive })}
             color={colors.red}
             size={34}
             iconStyle={{ padding: 8 }}
